@@ -1,5 +1,11 @@
 window.ACTUARIAL_VOCAB = [
 {w:'actuary',ipa:'/ˈæk.tʃu.ə.ri/',fr:'actuaire',cat:'Profession',def:'A professional who uses mathematics, statistics and financial theory to assess risk.',ex:'The actuary estimated the long-term cost of the pension scheme.'},
+{w:'actuarial',ipa:'/ˌæk.tʃuˈeə.ri.əl/',fr:'actuariel / actuarielle',cat:'Profession',def:'Relating to the work, methods or professional judgement of actuaries.',ex:'The team prepared an actuarial analysis of the portfolio.'},
+{w:'risk',ipa:'/rɪsk/',fr:'risque',cat:'Risk',def:'The possibility that an uncertain event or outcome may create a loss or other adverse effect.',ex:'Actuaries assess risk before recommending a decision.'},
+{w:'uncertainty',ipa:'/ʌnˈsɜː.tən.ti/',fr:'incertitude',cat:'Risk',def:'A situation in which future outcomes or their probabilities are not known with certainty.',ex:'The model helps communicate uncertainty around future claims.'},
+{w:'probability',ipa:'/ˌprɒb.əˈbɪl.ə.ti/',fr:'probabilité',cat:'Statistics',def:'A numerical measure of how likely an event is to occur.',ex:'The actuary estimated the probability of a large loss.'},
+{w:'insurance',ipa:'/ɪnˈʃʊə.rəns/',fr:'assurance',cat:'Insurance',def:'A financial arrangement that transfers specified risks in exchange for a premium.',ex:'Insurance helps individuals and organisations manage financial risk.'},
+{w:'model',ipa:'/ˈmɒd.əl/',fr:'modèle',cat:'Modelling',def:'A simplified mathematical or statistical representation used to analyse possible outcomes.',ex:'The actuary used a model to estimate future claim costs.'},
 {w:'premium',ipa:'/ˈpriː.mi.əm/',fr:'prime',cat:'Insurance',def:'The amount paid for an insurance policy.',ex:'The annual premium depends on the level of cover.'},
 {w:'claim',ipa:'/kleɪm/',fr:'sinistre / demande d’indemnisation',cat:'Insurance',def:'A request for payment under an insurance policy.',ex:'The insurer received more claims after the storm.'},
 {w:'policyholder',ipa:'/ˈpɒl.ə.siˌhəʊl.də/',fr:'titulaire d’une police',cat:'Insurance',def:'The person or organisation that owns an insurance policy.',ex:'Policyholders were informed of the new conditions.'},

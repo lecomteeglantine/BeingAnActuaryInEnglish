@@ -12,8 +12,11 @@
   const nav=document.querySelector('.main-nav');
   if(nav){
     const page=location.pathname.split('/').pop()||'index.html';
+    const section=page.startsWith('m1-')?'m1.html':page.startsWith('m2-')?'m2.html':page;
     nav.querySelectorAll('a').forEach(a=>{
-      if(a.getAttribute('href')===page){ a.classList.add('active'); a.setAttribute('aria-current','page'); }
+      const href=a.getAttribute('href');
+      if(href===page){ a.classList.add('active'); a.setAttribute('aria-current','page'); }
+      else if(href===section){ a.classList.add('active'); a.setAttribute('aria-current','location'); }
     });
   }
 

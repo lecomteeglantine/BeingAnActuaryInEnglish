@@ -1,9 +1,10 @@
-const CACHE='actuarial-english-2026-09-03-r4';
+const CACHE='actuarial-english-2026-09-03-r5-session1';
 const CORE=[
   './','./index.html','./styles.css','./shared.js','./home.js','./dictionary.html','./dictionary.js','./m1.html','./m2.html',
-  './m1-day1.html','./m1-day2.html','./m1-day3.html','./m1-day4.html','./m1-day5.html','./m2-day1.html','./m2-day2.html','./m2-day3.html','./m2-day4.html','./m2-day5.html',
+  './m1-day1.html','./m1-session1-individual.html','./m1-session1-individual.js','./m1-session1-group.html','./m1-session1-group.js','./m1-day2.html','./m1-day3.html','./m1-day4.html','./m1-day5.html','./m2-day1.html','./m2-day2.html','./m2-day3.html','./m2-day4.html','./m2-day5.html',
   './grammar.html','./pronunciation.html','./games.html','./games.js','./flashcards.html','./flashcards.js','./notebook.html','./notebook.js','./privacy.html','./accessibility.html','./404.html',
-  './data/vocabulary.js','./manifest.webmanifest','./icons/favicon.png','./icons/apple-touch-icon.png','./icons/icon-192.png','./icons/icon-512.png'
+  './data/vocabulary.js','./manifest.webmanifest','./icons/favicon.png','./icons/apple-touch-icon.png','./icons/icon-192.png','./icons/icon-512.png',
+  './assets/session1/individual-hero.svg','./assets/session1/security-gate.svg','./assets/session1/case-files.svg','./assets/session1/risk-lab.svg','./assets/session1/elevator.svg','./assets/session1/group-hero.svg','./assets/session1/firm-board.svg'
 ];
 
 self.addEventListener('install',event=>{

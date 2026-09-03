@@ -1,86 +1,68 @@
-BEING AN ACTUARY IN ENGLISH — CORRECTION / FULL QA
+BEING AN ACTUARY IN ENGLISH — SESSION 1 M1 BUILD / QA
 Date: 3 September 2026
-Target: https://lecomteeglantine.github.io/BeingAnActuaryInEnglish/
 
-REQUESTED COURSE RESET
-- M1 and M2 invented themes removed.
-- All invented objectives, vocabulary lists, speaking tasks, useful-language blocks and course-resource descriptions removed from the 10 session pages.
-- M1 and M2 hubs now contain neutral Session 1–5 placeholders only.
-- Session pages now contain only a neutral placeholder so the course can be built progressively.
-- M1/M2 descriptions on the home page were neutralised.
+SCOPE
+- Created M1 Session 1: “What does an actuary do?”
+- Added two activity cards side-by-side on desktop:
+  1) Individual activity — “Actuary for a Day”
+  2) Group activity — “Build the Ideal Actuarial Firm”
+- Sessions 2–5 remain neutral / untouched.
 
-AUDIO / PRONUNCIATION PERFORMANCE
-Problem found in the deployed code:
-- speechSynthesis.getVoices() was called again on every Listen click.
-- speechSynthesis.cancel() was called unconditionally on every click.
-- Dictionary, Word of the Day and Flashcards pronounced the term plus its whole example sentence.
-- Listen & Choose added an unnecessary 180 ms delay before speaking.
-- Voice selection did not prefer a local/on-device voice, so a slower remote voice could be selected.
+INDIVIDUAL ACTIVITY
+- 6 deterministic missions:
+  1. Welcome / key vocabulary
+  2. Pronunciation Security Gate
+  3. Three client case files
+  4. Risk Lab
+  5. Myth or Reality
+  6. 60-second Elevator Test
+- 10 pronunciation targets with British-English IPA and browser speech:
+  actuary, actuarial, liability, probability, insurance, premium,
+  uncertainty, forecast, portfolio, model.
+- Sound on/off control.
+- Web Audio feedback sounds for correct / incorrect / unlock events.
+- No random branching or random scoring: identical choices produce identical outcomes.
+- Progress is stored in sessionStorage only so another student using the same computer later does not inherit the previous student's mission state.
 
-Corrections:
-- Voice list is cached at page initialisation.
-- One lightweight refresh is allowed at the first real user interaction for browsers that load voices late.
-- Local en-GB voices are preferred before remote voices.
-- cancel() is used only when speech is actually active or queued.
-- Dictionary, Word of the Day and Flashcards pronounce the term only.
-- Listen & Choose starts speech immediately; artificial 180 ms delay removed.
-- Interrupted speech is restarted safely on Chromium without adding delay to first-click speech.
+GROUP ACTIVITY
+- Explicitly for groups of 3 or 4.
+- Explicit instruction to use one device per group.
+- English-only collaboration instruction.
+- 6 clear build stages: identity, services, first client, team, values, final pitch.
+- Professional language support with audio buttons.
+- Generated final firm brief from the group’s selections.
+- Every student must speak for approximately 2 minutes.
+- Group choices stored in sessionStorage only.
 
-PWA / UPDATE CACHE
-- Service-worker cache version bumped to r4.
-- HTML, JS, CSS, vocabulary data and manifest now use network-first behaviour when online, with cache as offline fallback.
-- Old cache versions are deleted on activation.
-- Service-worker registration uses updateViaCache:'none' and requests an update after registration.
-- This reduces the risk of students remaining on an obsolete GitHub Pages version after a deployment.
+VISUALS
+- 7 original local SVG illustrations created for Session 1.
+- All SVG files XML-validated successfully.
+- No external image host or hotlink dependency.
 
-CONTENT / LABEL CLEANUP
-- Residual “Mrs Lecomte's Students” label in the phone mock-up removed; now “M1 & M2”.
-- Residual “Mrs Lecomte's dictionary” wording removed; now “the site dictionary”.
-- Footer remains exactly:
-  Created by Mrs Lecomte and Mr Lemoine, with the help of Chat GPT
+DICTIONARY
+- Expanded from 79 to 85 terms.
+- Added: actuarial, risk, uncertainty, probability, insurance, model.
+- No duplicate vocabulary entries detected.
 
-STATIC QA
-- 22 HTML pages checked.
-- 0 broken local href/src references.
-- 0 duplicate HTML IDs.
-- 0 missing form labels found.
-- 0 broken aria-controls / aria-labelledby references.
-- Main navigation consistent on all 22 pages.
-- Footer credit correct on all 22 pages.
-- 0 old invented M1/M2 theme titles remaining.
-- 0 residual “Mrs Lecomte's …” / “for Mrs Lecomte …” wording in deployed pages.
-- manifest.webmanifest parses correctly and all referenced icons exist.
-- service-worker precache list: 36 valid resources.
-- JavaScript syntax check: PASS for all JS files.
-- CSS brace validation: PASS.
-- Vocabulary data: 79 terms, all required fields present, 0 duplicate English terms.
+SITE / PWA
+- Service worker cache bumped to r5-session1.
+- New Session 1 pages, scripts and illustrations added to offline CORE cache.
+- M1 navigation now remains highlighted on M1 subpages.
 
-BROWSER / INTERACTION QA
-Chromium render-and-interaction tests were run with the real HTML/CSS/JS injected locally:
-- 22/22 desktop pages: no console/page errors detected, no body horizontal overflow.
-- 22/22 mobile pages (390 px): no console/page errors detected, no body horizontal overflow.
-- Home install-help control: PASS.
-- Word of the Day randomisation: PASS.
-- Dictionary search/filter: PASS.
-- Dictionary count: 79 terms.
-- Flashcard flip: PASS.
-- Flashcard deck: 79 cards.
-- Notebook saved-term rendering: PASS.
-- Notebook note loading: PASS.
-- Games: Match It / Definition Detective / French↔English / Listen & Choose / Spell It / Odd One Out all open correctly.
-- M1 hub titles: Session 1 / 2 / 3 / 4 / 5 only.
-- M2 hub titles: Session 1 / 2 / 3 / 4 / 5 only.
+FINAL AUTOMATED QA
+- HTML pages checked: 24
+- Session 1 SVG illustrations checked: 7
+- Vocabulary terms checked: 85
+- Service-worker CORE resources checked: 47
+- Broken local links/assets detected: 0
+- Duplicate HTML IDs detected: 0
+- Images without alt attributes detected: 0
+- Invalid SVG XML files: 0
+- JavaScript syntax errors (Node --check): 0
+- CSS opening/closing brace mismatch: 0
+- Local deployment HTTP check: 47 / 47 CORE resources returned HTTP 200
+- Legacy invented M1 themes retained in Session 1: 0
 
-AUDIO MOCK QA
-Three consecutive Dictionary Listen actions produced:
-- getVoices calls: 2 total (initial load + first-interaction refresh), NOT once per word.
-- speak calls: 3.
-- cancel calls while idle: 0.
-- spoken strings: “actuary”, “premium”, “claim” only.
-
-HTTP FILE QA
-- 37 deployable resources requested from a local HTTP server.
-- 37/37 returned HTTP 200.
-
-KNOWN PLATFORM LIMITATION
-Actual first-ever speech-engine startup time is controlled partly by the browser/operating system. The site now removes avoidable delays and prioritises a local British voice, but it cannot force an operating-system speech engine itself to initialise instantly on every device.
+FOOTER
+“Created by Mrs Lecomte and Mr Lemoine, with the help of Chat GPT”
+remains present on all HTML pages.
