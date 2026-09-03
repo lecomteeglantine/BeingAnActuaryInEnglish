@@ -1,16 +1,21 @@
-ACTUARIAL ENGLISH FOR MRS LECOMTE'S STUDENTS
-=============================================
+BEING AN ACTUARY IN ENGLISH
+============================
 
 GITHUB PAGES — READY TO UPLOAD
 
-1. Create a new GitHub repository.
-2. Upload the CONTENTS of this folder to the repository root.
-3. GitHub > Settings > Pages > Deploy from a branch > main / root.
-4. Open the generated GitHub Pages URL.
+Live repository/site target:
+https://lecomteeglantine.github.io/BeingAnActuaryInEnglish/
+
+UPLOAD
+1. Unzip this archive.
+2. Upload the CONTENTS of the folder to the root of the BeingAnActuaryInEnglish GitHub repository.
+3. Replace the existing files when GitHub asks.
+4. Keep GitHub Pages configured for the main branch / root.
+5. After deployment, refresh the site once. The new service worker is designed to take control immediately and clear the previous cache version.
 
 SITE ORGANISATION
 - Home
-- Dictionary
+- Dictionary (79 terms)
 - M1 > 5 course-session pages
 - M2 > 5 course-session pages
 - Grammar
@@ -22,15 +27,14 @@ SITE ORGANISATION
 - Accessibility
 - PWA / offline cache
 
-CURRICULUM ALIGNMENT
-The initial M1/M2 themes were aligned with the current ISFA Actuariat curriculum areas visible in September 2026 (statistics/econometrics, simulation/GLMs, finance and insurance in M1; pricing, advanced statistics, ERM, life/non-life insurance and market finance in M2). They are English-course scaffolds, not replacements for the official syllabus.
-
 TECHNICAL
-- Static HTML/CSS/JS: no framework, no build step.
+- Static HTML/CSS/JS: no framework and no build step.
 - No account, analytics, advertising or remote student database.
-- Notebook, saved terms and preferences use localStorage only.
-- Speech synthesis requests an en-GB voice when available.
-- Service worker caches all local pages for offline use after first visit.
+- Notebook, saved terms, game best scores and accessibility preferences use localStorage only.
+- Speech synthesis requests British English when an en-GB voice is available.
+- Service worker provides offline access after resources have been cached.
+
+See QA-REPORT.txt for the complete correction audit.
 
 CREDIT
-Created by Mrs Lecomte, with the help of ChatGPT.
+Created by Mrs Lecomte and Mr Lemoine, with the help of Chat GPT

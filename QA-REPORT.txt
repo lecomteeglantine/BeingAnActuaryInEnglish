@@ -1,30 +1,90 @@
-ACTUARIAL ENGLISH — QA REPORT
-==============================
+BEING AN ACTUARY IN ENGLISH — QA / CORRECTION REPORT
+======================================================
+Audit and correction pass: 3 September 2026
+Target deployment: GitHub Pages / BeingAnActuaryInEnglish
 
-Final V1 checks completed on 3 September 2026.
+REQUESTED TEXT CHANGES
+- Removed the former teacher-specific student subtitle everywhere, including page headers, titles/metadata and the PWA manifest.
+- Replaced the site credit on all 22 HTML pages with exactly:
+  Created by Mrs Lecomte and Mr Lemoine, with the help of Chat GPT
+- Reworded teacher-specific labels such as “Mrs Lecomte's resources” to neutral “Course resources”.
+- Updated the home-page creator line to Mrs Lecomte & Mr Lemoine.
 
-STRUCTURE
-- 22 HTML pages.
-- M1: 5 clickable course-session pages.
-- M2: 5 clickable course-session pages.
-- Dictionary: 74 actuarial English terms.
-- Games: 6 revision modes.
-- Flashcards + personal notebook.
-- Grammar + pronunciation review.
-- Privacy/GDPR + accessibility pages.
-- PWA/offline service worker.
+BUGS / RISKS FOUND AND FIXED
+1. PWA stale-version risk
+   - Reworked the service worker so page navigations prefer the network and fall back to cache offline.
+   - Static assets use cache + network refresh instead of blindly serving an old build forever.
+   - Added skipWaiting() and clients.claim() and bumped the cache version.
+   - Restricted runtime caching to same-origin GET requests.
+   - Failed asset requests no longer receive index.html as fake CSS/JS responses.
 
-STATIC QA
-- Broken local links/assets: NONE.
-- Duplicate HTML IDs: NONE.
-- JavaScript syntax: OK.
-- manifest.webmanifest: VALID.
-- Service-worker cache targets: 36 checked.
-- CSS braces: BALANCED.
-- Local HTTP smoke test: index, M1/M2, session, dictionary and games returned HTTP 200.
+2. Inconsistent PWA metadata
+   - Added theme colour, description, manifest, favicon and Apple touch icon consistently to all 22 pages.
+   - Added PWA registration to pages that previously could not register the service worker when visited first.
+   - Neutralised the manifest app name to “Actuarial English” and added explicit scope.
 
-BROWSER-ENVIRONMENT NOTE
-Chromium is installed in the sandbox but its headless process does not terminate reliably because of the container DBus/zygote environment. For that reason the final automated QA is static + HTTP rather than screenshot-based. The responsive CSS includes desktop/tablet/mobile breakpoints and all local dependencies were verified.
+3. Accessibility inconsistencies
+   - Added a working Skip to main content link and main#main target to every page.
+   - Added accessible labels to unlabelled search/filter/notes controls.
+   - Added aria-current to the active navigation item.
+   - Improved the accessibility panel with aria-expanded, Escape-to-close and click-outside closing.
+   - Added clear :focus-visible styling and automatic prefers-reduced-motion support.
+   - Added keyboard semantics/labels to flashcards.
+   - Disabled Previous/Next session endpoints are no longer keyboard-actionable links.
 
-ISSUES FOUND
-- None in the automated checks.
+4. Mobile navigation
+   - On small screens the main navigation now scrolls horizontally instead of wrapping into a large block.
+   - Removed the fixed brand minimum width on narrow screens.
+   - Improved flashcard sizing and footer clearance on phones.
+
+5. Games reliability
+   - Fixed a real answer-collision case: “coverage” and “hedging” both translate as “couverture”; duplicate visible MCQ labels are now excluded from the same question.
+   - Correct answers are now marked by item identity rather than matching button text.
+   - Category selection now keeps the target words inside the selected category instead of silently falling back to all categories.
+   - Locked category/question controls during a round so a mid-game change cannot corrupt later questions.
+   - Replaced biased array sorting with Fisher-Yates shuffling.
+   - Disabled answered choices to prevent double scoring.
+   - Speech is cancelled when leaving an audio round.
+   - “Questions” is now labelled “Maximum questions” because small categories can contain fewer terms than the selected maximum.
+
+6. Dictionary / notebook resilience
+   - Hardened localStorage reads against malformed or unavailable browser storage.
+   - Dictionary save buttons update without rerendering the whole page and losing focus.
+   - Added a clear no-results state.
+   - Notebook removal/listening controls are explicit and keyboard accessible.
+   - Clearing notebook notes now asks for confirmation when notes are non-empty.
+
+7. Flashcards
+   - Added the missing Listen control promised by the site copy.
+   - Added safe handling for an unexpectedly empty vocabulary file.
+   - Improved shuffle quality and accessibility labels.
+
+8. Session vocabulary integrity
+   - Found five session tags that did not map to exact dictionary entries:
+     data; distribution; generalised linear model; recommendation; materiality.
+   - Added all five as proper dictionary entries with British-English IPA, French translation, definition and contextual example.
+   - Dictionary now contains 79 complete entries.
+
+9. 404 / utility pages
+   - 404 now has the normal navigation, footer, accessibility tools and PWA registration.
+   - Privacy and Accessibility pages now use the same technical shell as the rest of the site.
+
+FINAL AUTOMATED QA
+- HTML pages: 22
+- Dictionary entries: 79
+- Requested old wording remaining: 0 occurrences
+- Exact new credit: present on 22 / 22 pages
+- Broken local links/assets: 0
+- Duplicate HTML IDs: 0
+- Unlabelled form controls: 0
+- Disabled navigation anchors with live href: 0
+- Session Previous/Next chains: valid for M1 and M2
+- Session vocabulary links missing exact dictionary entry: 0
+- JavaScript syntax: all files pass node --check
+- manifest.webmanifest: valid JSON
+- Service-worker core targets: all present
+- CSS parser errors (tinycss2): 0
+- Local HTTP smoke test: all 37 deployable local files returned HTTP 200
+
+ENVIRONMENT NOTE
+The container's Chromium build hangs because of its DBus/zygote environment, including under Xvfb, so screenshot-based browser automation could not be used reliably. The final pass therefore combines source audit, HTML/accessibility checks, JavaScript syntax checks, CSS parsing, link/asset verification, service-worker target verification and local HTTP smoke testing.
