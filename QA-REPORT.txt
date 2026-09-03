@@ -1,70 +1,59 @@
-BeingAnActuaryInEnglish — QA / BUGFIX REPORT
+BeingAnActuaryInEnglish — AUDIT / BUGFIX REPORT
 Date: 2026-09-03
 
 SCOPE
-- Full static site audit after deployment of M1 Session 1.
-- 24 HTML pages, shared CSS/JS, M1/M2 pages, dictionary, flashcards, games, pronunciation, notebook, PWA/service worker, and Session 1 individual/group activities.
+- Full static audit of the current site package after replacing the M1 Session 1 final challenge.
+- 24 HTML pages, shared CSS/JS, M1/M2 pages, dictionary, flashcards, games, pronunciation, notebook, PWA/service worker, Session 1 individual activity, and Session 1 group activity.
 
-CONFIRMED BUGS FIXED
-1. AUDIO LATENCY
-- Reworked speech synthesis to avoid re-querying/choosing a remote voice on every click.
-- Prioritises an on-device British English voice, then another local English voice.
-- Voice list is primed early and cached.
-- Avoids unnecessary speechSynthesis.cancel() calls.
-- Fast retry fallback if a selected voice errors.
-- Sound-off now stops current speech cleanly.
+REQUESTED CHANGE COMPLETED
+1. REMOVED THE 60-SECOND CHALLENGE
+- Removed every user-facing and JavaScript reference to the old Elevator / 60-second challenge.
+- Removed the timer, countdown sounds, timer state and timer-specific controls.
+- Removed the obsolete elevator illustration from the deployable package and service-worker cache.
+- Updated the Session 1 card and Mission 6 progress label.
 
-2. M1 PAGE CONTRADICTION
-- Removed copy saying no activity/theme existed while Session 1 was already live.
-- Session 1 is now clearly marked as available; Sessions 2–5 remain intentionally unbuilt.
+2. NEW FINAL MISSION: “THE CLIENT HAS A QUESTION”
+- Four guided decisions progressively build an accurate explanation of actuarial work.
+- Incorrect answers give corrective feedback and can be retried.
+- Correct answers unlock the next decision deterministically.
+- The completed professional answer can be heard with British-English speech synthesis.
+- “Make It Sound Human” asks the student to explain the profession aloud in plain, jargon-free English.
+- No timer is used.
+- Pronunciation support remains available for actuary, actuarial, risk, data, future and decisions.
+- A self-check, model answer and client reaction complete the mission.
+- Final-stage progress persists across a page refresh using sessionStorage.
 
-3. SHARED-COMPUTER SESSION STATE
-- New launches of the individual/group activities from Session 1 start clean.
-- A page reload/back-forward navigation preserves the current student's/group's work.
-- Prevents the next class group inheriting the previous group's answers when starting normally from Session 1.
+3. AUDIO PERFORMANCE CLEANUP
+- Once a suitable speech voice has been selected, the site no longer re-queries the browser voice list on every ordinary click.
+- Local British English remains the first preference, followed by another local English voice.
+- Existing safe interruption/fallback behaviour is retained.
 
-4. INDIVIDUAL ACTIVITY STATE / TIMER
-- Elevator challenge completion restores correctly after refresh.
-- Timer finish is guarded against duplicate completion.
-- Progress bar width is clamped.
-- Progress dots expose the current step accessibly.
-- Restart now asks for confirmation and stops active speech/timer.
-- Stage 1 wording no longer claims that listening to every word is technically enforced.
+4. PWA / CACHE
+- Service-worker cache bumped to actuarial-english-2026-09-03-r7-client-task.
+- Obsolete elevator.svg removed from CORE.
+- Network-first behaviour for HTML/JS/CSS/data remains in place so GitHub updates replace old cached content quickly when online.
 
-5. GROUP ACTIVITY STATE / BRIEF
-- Selections and typed content persist during a reload.
-- Generated final brief is restored after a reload.
-- Editing an answer invalidates/hides a stale brief until regenerated.
-- Validation messages are clearer and announced accessibly.
-- User-entered text is escaped before rendering.
-- Clear-all asks for confirmation when work exists.
-- Audio practice buttons have explicit accessible labels.
-
-6. PWA / UPDATE RELIABILITY
-- Cache version bumped to a new audit-fix version.
-- Service-worker install no longer fails entirely if one cached resource fails: CORE caching uses Promise.allSettled().
-- skipWaiting()/clients.claim() retained so new deployments take effect more reliably.
-- Added .nojekyll for GitHub Pages deployment hygiene.
-
-7. DOCUMENTATION
-- README dictionary count corrected to 85 terms.
-- README now mentions M1 Session 1 individual and group activities.
+5. DOCUMENTATION
+- README corrected: M1 Session 1 is built; only M1 Sessions 2–5 and M2 Sessions 1–5 remain neutral.
 
 FINAL AUTOMATED STATIC QA
 - HTML pages: 24
-- Local SVG illustrations: 7
-- Vocabulary entries: 85
-- Service-worker CORE resources: 47
+- Local SVG illustrations: 6
+- Vocabulary entries: 85 unique terms
+- Service-worker CORE references: 46
 - Missing local links/assets: 0 detected
 - Duplicate HTML IDs: 0 detected
-- Unlabelled form controls/buttons in audit: 0 detected
-- Missing image alt attributes in audit: 0 detected
+- Unlabelled form controls: 0 detected
+- Images without alt attributes: 0 detected
 - JavaScript syntax errors: 0 detected
-- CSS parse errors: 0 detected
+- CSS brace errors: 0 detected
 - Manifest JSON: valid
-- Vocabulary duplicate/missing required fields: 0 detected
+- Vocabulary duplicates: 0 detected
+- Required Session 1 vocabulary present: yes
 - Service-worker CORE entries missing on disk: 0 detected
 - Local SVG XML parsing errors: 0 detected
+- Retired “60-second / Elevator” references in HTML/JS: 0 detected
+- Local HTTP resource check: 48/48 normal deployable files returned HTTP 200
 
-TESTING LIMITATION
-Automated Chromium end-to-end rendering against localhost/file URLs was blocked by this execution environment's browser policy (ERR_BLOCKED_BY_ADMINISTRATOR). Static, syntax, state-logic and asset/link audits were completed instead. A final spot-check on the deployed GitHub Pages site after upload is still recommended for browser-specific speech voice availability, because speech synthesis voices depend on the student's OS/browser.
+BROWSER-TEST LIMITATION
+The environment permits Chromium to launch but blocks Chromium navigation to localhost/file content with ERR_BLOCKED_BY_ADMINISTRATOR, so automated end-to-end click testing in Chromium cannot be truthfully claimed here. Static, syntax, asset, state-logic, accessibility-structure and local HTTP checks all passed. Browser speech synthesis remains OS/browser dependent by nature.

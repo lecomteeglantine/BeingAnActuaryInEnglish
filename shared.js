@@ -76,7 +76,7 @@
     const value=String(text||'').trim();
     if(!value) return false;
 
-    refreshVoices();
+    if(!cachedVoice) refreshVoices();
     const hadSpeech=synth.speaking || synth.pending;
     if(hadSpeech){ try{synth.cancel();}catch(_){} }
     if(synth.paused){ try{synth.resume();}catch(_){} }

@@ -6,11 +6,10 @@
   const stageDots=[...document.querySelectorAll('#stageDots li')];
   const soundToggle=document.getElementById('soundToggle');
   const resetButton=document.getElementById('resetMission');
-  const STORAGE_KEY='actuarial_m1_s1_individual_v2';
+  const STORAGE_KEY='actuarial_m1_s1_individual_v3';
   let soundOn=true;
   let audioCtx=null;
   let currentStage=1;
-  let timerId=null;
 
   // A deliberate new launch from the Session 1 overview starts clean on shared
   // classroom devices. A reload/back-forward keeps the current student's work.
@@ -180,7 +179,7 @@
 
   function renderMyths(){
     stageContainer.innerHTML=stageFrame('09:50 · MYTH OR REALITY?','Correct the office rumours','Mission 5 of 6 · about 4 minutes','',`
-      <p class="task-prompt">Five notifications have appeared on your screen. Decide whether each statement reflects real actuarial work.</p><div id="mythList" class="myth-list"></div><div class="mission-score" id="mythScore">0 / ${myths.length} checked</div><div class="stage-actions"><button type="button" class="primary-link" id="mythNext" disabled>Go to the lift →</button></div>`);
+      <p class="task-prompt">Five notifications have appeared on your screen. Decide whether each statement reflects real actuarial work.</p><div id="mythList" class="myth-list"></div><div class="mission-score" id="mythScore">0 / ${myths.length} checked</div><div class="stage-actions"><button type="button" class="primary-link" id="mythNext" disabled>Go to the client meeting →</button></div>`);
     const list=document.getElementById('mythList'); let done=0; let score=0;
     myths.forEach((m,i)=>{ const el=document.createElement('article'); el.className='myth-item'; el.dataset.index=i; el.innerHTML=`<p>${m.text}</p><div><button type="button" data-answer="false">MYTH</button><button type="button" data-answer="true">REALITY</button></div><span class="inline-feedback" aria-live="polite"></span>`; list.appendChild(el); });
     list.addEventListener('click',e=>{
@@ -193,43 +192,195 @@
     document.getElementById('mythNext').addEventListener('click',nextStage);
   }
 
-  function renderElevator(){
-    if(timerId) clearInterval(timerId);
-    const supports=['risk','uncertainty','data','models','financial impact','decisions'];
-    stageContainer.innerHTML=stageFrame('10:00 · THE ELEVATOR TEST','Explain the job in 60 seconds','Mission 6 of 6 · final challenge','assets/session1/elevator.svg',`
-      <div class="elevator-question"><span>COLLEAGUE</span><blockquote>“I’ve never really understood what actuaries do. What exactly is an actuary?”</blockquote></div>
-      <div class="final-instructions"><h3>Your instructions</h3><ol><li>Explain the job <strong>in your own words</strong>. Do not read a definition.</li><li>Give <strong>one concrete example</strong>.</li><li>Use at least <strong>four</strong> of the key terms below.</li><li>Speak for up to <strong>60 seconds</strong>.</li></ol></div>
-      <div class="support-words">${supports.map(w=>`<button type="button" data-say="${w}">🔊 ${w}</button>`).join('')}</div>
-      <div class="timer-card"><span id="timerValue">60</span><small>SECONDS</small><div class="timer-bar"><span id="timerBar"></span></div></div>
-      <div class="stage-actions" id="timerActions"><button type="button" class="primary-link" id="startTimer">Start my 60-second pitch</button></div>
-      <div id="selfCheck" class="self-check" hidden><h3>Self-check</h3><label><input type="checkbox"> I explained what an actuary does.</label><label><input type="checkbox"> I mentioned risk or uncertainty.</label><label><input type="checkbox"> I explained why data or models are used.</label><label><input type="checkbox"> I mentioned decision-making.</label><label><input type="checkbox"> I gave a concrete example.</label><label><input type="checkbox"> I pronounced <em>actuary</em> and <em>actuarial</em> carefully.</label><div class="model-answer"><button type="button" class="secondary-btn" id="modelAnswer">🔊 Listen to a model answer</button><p>An actuary uses data, mathematics and statistical models to understand financial risk and uncertainty. Actuaries estimate possible future outcomes, explain their financial impact and help organisations make informed decisions. For example, an actuary may analyse claims data to help an insurer set sustainable premiums.</p></div><div class="completion-badges"><span>🔎 Risk Spotter</span><span>📊 Data Detective</span><span>🧠 Uncertainty Analyst</span><span>🎤 Clear Communicator</span></div><div class="mission-complete"><strong>FIRST DAY COMPLETED</strong><span>You are ready to explain what an actuary actually does.</span></div></div>`);
-    document.querySelectorAll('.support-words button').forEach(b=>b.addEventListener('click',()=>say(b.dataset.say)));
-    const start=document.getElementById('startTimer');
+  function renderClientQuestion(){
+    const decisions=[
+      {
+        question:'What does an actuary work with?',
+        options:[
+          ['Data, statistics and models',true],
+          ['Intuition and personal opinion',false],
+          ['Advertising slogans and branding',false],
+          ['Only last year’s final result',false]
+        ],
+        feedback:'Exactly. Actuaries use evidence, statistics and models to analyse uncertain outcomes.'
+      },
+      {
+        question:'What is the actuary trying to understand?',
+        options:[
+          ['The exact future, with no uncertainty',false],
+          ['Risk and uncertainty',true],
+          ['What customers will buy next week',false],
+          ['Only what has already happened',false]
+        ],
+        feedback:'Right. The point is not to know the future exactly, but to understand risk and uncertainty.'
+      },
+      {
+        question:'Why does this analysis matter?',
+        options:[
+          ['To make reports look more technical',false],
+          ['To remove every possible risk',false],
+          ['To estimate financial consequences and support better decisions',true],
+          ['To replace business judgement completely',false]
+        ],
+        feedback:'Yes. Actuarial analysis becomes useful when it helps an organisation understand consequences and make informed decisions.'
+      },
+      {
+        question:'Which example best shows actuarial work?',
+        options:[
+          ['Guaranteeing which policyholder will have an accident',false],
+          ['Choosing an insurer’s advertising slogan',false],
+          ['Ignoring recent claims because models are always right',false],
+          ['Analysing claims data to help an insurer set sustainable premiums',true]
+        ],
+        feedback:'Exactly. This connects data, uncertainty, financial impact and a real business decision.'
+      }
+    ];
+
+    stageContainer.innerHTML=stageFrame('10:00 · CLIENT MEETING','The Client Has a Question','Mission 6 of 6 · final client task','',`
+      <div class="client-meeting-visual" aria-hidden="true">
+        <div class="client-visual-person client"></div><div class="client-visual-table"></div><div class="client-visual-person actuary"></div>
+        <div class="client-visual-screen"><span></span><span></span><span></span><i></i></div>
+      </div>
+      <div class="client-question"><span>CLIENT</span><blockquote>“I understand the numbers… but what exactly does an actuary bring to a company?”</blockquote></div>
+      <p class="task-prompt">Build a clear answer. Choose the best idea at each step. If a choice is too vague, too technical or simply wrong, try again.</p>
+      <div id="clientDecisions" class="client-decisions"></div>
+      <div id="builtAnswer" class="built-answer" hidden>
+        <p class="module-number">YOUR PROFESSIONAL ANSWER</p>
+        <p><strong>An actuary uses data, statistics and models to understand risk and uncertainty. They estimate possible financial consequences and help organisations make informed decisions. For example, an actuary may analyse claims data to help an insurer set sustainable premiums.</strong></p>
+        <button type="button" class="mini-btn" id="hearBuiltAnswer">🔊 Hear this answer</button>
+      </div>
+      <div id="humanChallenge" class="human-challenge" hidden>
+        <div class="client-question client-followup"><span>CLIENT</span><blockquote>“That sounds very technical. Can you explain it in normal English?”</blockquote></div>
+        <div class="plain-english-task">
+          <p class="module-number">MAKE IT SOUND HUMAN</p>
+          <h3>Now explain the job aloud in your own words.</h3>
+          <p>Imagine you are talking to someone who knows nothing about actuarial science. Keep it <strong>clear, concrete and jargon-free</strong>. Give one simple example. There is <strong>no timer</strong>.</p>
+          <div class="support-words" aria-label="Pronunciation support">
+            ${['actuary','actuarial','risk','data','future','decisions'].map(w=>`<button type="button" data-say="${w}" aria-label="Listen to ${w}">🔊 ${w}</button>`).join('')}
+          </div>
+          <div class="stage-instruction"><strong>Helpful idea</strong><span>You do not need to sound like a textbook. Explain what the job is useful <em>for</em>.</span></div>
+          <div class="stage-actions"><button type="button" class="primary-link" id="humanDone">I’ve explained it aloud →</button></div>
+        </div>
+      </div>
+      <div id="selfCheck" class="self-check" hidden>
+        <h3>Quick self-check</h3>
+        <label><input type="checkbox"> I explained risk or uncertainty in simple words.</label>
+        <label><input type="checkbox"> I explained why data or models are useful.</label>
+        <label><input type="checkbox"> I explained how actuaries help people make decisions.</label>
+        <label><input type="checkbox"> I gave one concrete example.</label>
+        <label><input type="checkbox"> I avoided unnecessary jargon.</label>
+        <label><input type="checkbox"> I pronounced <em>actuary</em> and <em>actuarial</em> carefully.</label>
+        <div class="model-answer"><button type="button" class="secondary-btn" id="modelAnswer">🔊 Hear a clear example</button><p>An actuary looks at data to understand what might happen in the future and what it could cost. They help organisations prepare for risk and make better decisions. For example, they can help an insurance company decide how much it needs to charge so it can pay future claims.</p></div>
+        <div class="stage-actions"><button type="button" class="primary-link" id="clientReaction">See the client’s reaction →</button></div>
+      </div>
+      <div id="clientEnding" class="client-ending" hidden>
+        <div class="client-question client-success"><span>CLIENT</span><blockquote>“Right — so you don’t predict the future. You help people make better decisions when the future is uncertain.”</blockquote></div>
+        <p class="exactly">Exactly.</p>
+        <div class="completion-badges"><span>🔎 Risk Spotter</span><span>📊 Data Detective</span><span>🧠 Uncertainty Analyst</span><span>💬 Clear Communicator</span></div>
+        <div class="mission-complete"><strong>FIRST DAY COMPLETED</strong><span>You can explain what an actuary does — without hiding behind jargon.</span></div>
+      </div>`);
+
+    const wrap=document.getElementById('clientDecisions');
     const saved=getState();
-    if(saved.completed){
-      document.getElementById('timerValue').textContent='0';
-      document.getElementById('timerBar').style.width='0%';
-      document.getElementById('selfCheck').hidden=false;
-      start.hidden=true;
-    }else{
-      start.addEventListener('click',()=>{
-        let left=60; let finished=false; start.textContent='I’m done'; start.classList.add('timer-running');
-        const finish=()=>{ if(finished)return; finished=true; if(timerId){clearInterval(timerId);timerId=null;} document.getElementById('timerValue').textContent='0'; document.getElementById('timerBar').style.width='0%'; document.getElementById('selfCheck').hidden=false; start.hidden=true; playTone('unlock'); saveState({completed:true}); };
-        start.onclick=finish;
-        timerId=setInterval(()=>{ left--; document.getElementById('timerValue').textContent=left; document.getElementById('timerBar').style.width=`${Math.max(0,(left/60)*100)}%`; if(left<=0)finish(); else if(left<=5) playTone('tick'); },1000);
-      },{once:true});
+    let step=Math.max(0,Math.min(4,Number(saved.clientStep)||0));
+
+    decisions.forEach((d,i)=>{
+      const article=document.createElement('article');
+      article.className='client-decision';
+      article.dataset.index=i;
+      article.hidden=i>step;
+      article.innerHTML=`<div class="client-decision-head"><span>${i+1}</span><h3>${d.question}</h3></div><div class="client-decision-options">${d.options.map((o,j)=>`<button type="button" data-option="${j}">${o[0]}</button>`).join('')}</div><p class="inline-feedback" aria-live="polite"></p>`;
+      wrap.appendChild(article);
+    });
+
+    function restoreCompletedDecisions(){
+      [...wrap.querySelectorAll('.client-decision')].forEach((article,i)=>{
+        if(i<step){
+          article.hidden=false;
+          const correctIndex=decisions[i].options.findIndex(o=>o[1]);
+          article.querySelectorAll('button').forEach((b,j)=>{ b.disabled=true; if(j===correctIndex)b.classList.add('correct'); });
+          article.querySelector('.inline-feedback').innerHTML=`<strong>Good choice.</strong> ${decisions[i].feedback}`;
+        }else if(i===step && step<4){ article.hidden=false; }
+      });
     }
-    document.getElementById('modelAnswer').addEventListener('click',()=>say('An actuary uses data, mathematics and statistical models to understand financial risk and uncertainty. Actuaries estimate possible future outcomes, explain their financial impact and help organisations make informed decisions. For example, an actuary may analyse claims data to help an insurer set sustainable premiums.'));
+
+    function revealFinalBlocks(){
+      const built=document.getElementById('builtAnswer');
+      const human=document.getElementById('humanChallenge');
+      if(step===4){ built.hidden=false; human.hidden=false; }
+      if(saved.humanDone || saved.completed) document.getElementById('selfCheck').hidden=false;
+      if(saved.humanDone || saved.completed){ const btn=document.getElementById('humanDone'); if(btn)btn.hidden=true; }
+      if(saved.completed){ document.getElementById('clientEnding').hidden=false; const r=document.getElementById('clientReaction'); if(r)r.hidden=true; }
+    }
+
+    restoreCompletedDecisions();
+    revealFinalBlocks();
+
+    wrap.addEventListener('click',e=>{
+      const btn=e.target.closest('button[data-option]');
+      if(!btn)return;
+      const article=btn.closest('.client-decision');
+      const i=Number(article.dataset.index);
+      if(i!==step)return;
+      const choice=Number(btn.dataset.option);
+      const d=decisions[i];
+      const feedback=article.querySelector('.inline-feedback');
+      if(!d.options[choice][1]){
+        btn.classList.add('wrong');
+        feedback.innerHTML='<strong>Not quite.</strong> Think about what actuarial work contributes to a real decision, then try again.';
+        playTone('bad');
+        return;
+      }
+      article.querySelectorAll('button').forEach(b=>b.disabled=true);
+      btn.classList.add('correct');
+      feedback.innerHTML=`<strong>Good choice.</strong> ${d.feedback}`;
+      playTone('ok');
+      step++;
+      saveState({clientStep:step});
+      const next=wrap.querySelector(`.client-decision[data-index="${step}"]`);
+      if(next){ next.hidden=false; next.scrollIntoView({behavior:'smooth',block:'center'}); }
+      else{
+        document.getElementById('builtAnswer').hidden=false;
+        document.getElementById('humanChallenge').hidden=false;
+        document.getElementById('builtAnswer').scrollIntoView({behavior:'smooth',block:'center'});
+        playTone('unlock');
+      }
+    });
+
+    const builtAudio=document.getElementById('hearBuiltAnswer');
+    if(builtAudio) builtAudio.addEventListener('click',()=>say('An actuary uses data, statistics and models to understand risk and uncertainty. They estimate possible financial consequences and help organisations make informed decisions. For example, an actuary may analyse claims data to help an insurer set sustainable premiums.'));
+    document.querySelectorAll('.support-words button').forEach(b=>b.addEventListener('click',()=>say(b.dataset.say)));
+
+    const humanDone=document.getElementById('humanDone');
+    if(humanDone) humanDone.addEventListener('click',()=>{
+      document.getElementById('selfCheck').hidden=false;
+      humanDone.hidden=true;
+      saveState({humanDone:true});
+      playTone('ok');
+      document.getElementById('selfCheck').scrollIntoView({behavior:'smooth',block:'center'});
+    });
+
+    const model=document.getElementById('modelAnswer');
+    if(model) model.addEventListener('click',()=>say('An actuary looks at data to understand what might happen in the future and what it could cost. They help organisations prepare for risk and make better decisions. For example, they can help an insurance company decide how much it needs to charge so it can pay future claims.'));
+
+    const reaction=document.getElementById('clientReaction');
+    if(reaction) reaction.addEventListener('click',()=>{
+      document.getElementById('clientEnding').hidden=false;
+      reaction.hidden=true;
+      saveState({completed:true,humanDone:true,clientStep:4});
+      playTone('unlock');
+      document.getElementById('clientEnding').scrollIntoView({behavior:'smooth',block:'center'});
+    });
   }
 
   function renderStage(){
     updateProgress();
-    ({1:renderWelcome,2:renderPronunciation,3:renderCases,4:renderRiskLab,5:renderMyths,6:renderElevator}[currentStage]||renderWelcome)();
+    ({1:renderWelcome,2:renderPronunciation,3:renderCases,4:renderRiskLab,5:renderMyths,6:renderClientQuestion}[currentStage]||renderWelcome)();
     stageContainer.querySelectorAll('.mission-listen').forEach(b=>b.addEventListener('click',()=>say(b.dataset.say)));
   }
 
   soundToggle.addEventListener('click',()=>{ soundOn=!soundOn; soundToggle.setAttribute('aria-pressed',String(soundOn)); soundToggle.textContent=soundOn?'🔊 Sound on':'🔇 Sound off'; if(!soundOn && window.stopSpeech) window.stopSpeech(); });
-  resetButton.addEventListener('click',()=>{ if(!confirm('Restart Actuary for a Day from Mission 1?')) return; if(timerId){clearInterval(timerId);timerId=null;} if(window.stopSpeech) window.stopSpeech(); try{sessionStorage.removeItem(STORAGE_KEY);}catch(_){} currentStage=1; renderStage(); window.scrollTo({top:0,behavior:'smooth'}); });
+  resetButton.addEventListener('click',()=>{ if(!confirm('Restart Actuary for a Day from Mission 1?')) return; if(window.stopSpeech) window.stopSpeech(); try{sessionStorage.removeItem(STORAGE_KEY);}catch(_){} currentStage=1; renderStage(); window.scrollTo({top:0,behavior:'smooth'}); });
 
   const saved=getState();
   if(Number.isInteger(saved.stage) && saved.stage>=1 && saved.stage<=6) currentStage=saved.stage;
