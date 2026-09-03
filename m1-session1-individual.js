@@ -100,18 +100,57 @@
   }
 
   function renderWelcome(){
-    const cards=vocab.map(([w,ipa,def])=>`<article class="vocab-pass"><div><strong>${w}</strong><span class="ipa">${ipa}</span></div><p>${def}</p>${listenButton(w)}</article>`).join('');
-    stageContainer.innerHTML=stageFrame('08:45 · WELCOME TO THE RISK FLOOR','Collect your professional badge','Mission 1 of 6 · about 3 minutes','',`
-      <div class="scene-message"><div class="avatar">NS</div><div><strong>Welcome to Northstar.</strong><p>Before your first client meeting, you need to prove that you can speak the language of risk. Start with the eight words below. Listen, then say each word aloud.</p></div></div>
-      <div class="vocab-pass-grid">${cards}</div>
-      <div class="stage-instruction"><strong>Your task</strong><span>Use the Listen buttons to practise the words you need. Then say: <em>“An actuary uses data and models to understand risk and uncertainty.”</em></span></div>
-      <div class="stage-actions"><button type="button" class="primary-link" id="completeWelcome">I’m ready. Give me my badge →</button></div>`);
+    const briefItems=[
+      {before:'Our team needs an', after:'to review the financial', answer1:'actuary', answer2:'risk'},
+      {before:'We have ten years of claims', after:'but there is still considerable', answer1:'data', answer2:'uncertainty'},
+      {before:'Use a', after:'to estimate outcomes and discuss the', answer1:'model', answer2:'probability'},
+      {before:'Prepare an', after:'report with a five-year', answer1:'actuarial', answer2:'forecast'}
+    ];
+    const words=['actuary','actuarial','risk','uncertainty','probability','data','model','forecast'];
+    const options=['<option value="">Choose a term…</option>'].concat(words.map(w=>`<option value="${w}">${w}</option>`)).join('');
+    const notes=briefItems.map((item,i)=>`<article class="brief-note" data-index="${i}"><div class="brief-note-top"><span>CLIENT NOTE ${String(i+1).padStart(2,'0')}</span><span class="brief-status" aria-hidden="true">UNRESOLVED</span></div><p>${item.before} <select data-slot="1" aria-label="Client note ${i+1}, first missing term">${options}</select> ${item.after} <select data-slot="2" aria-label="Client note ${i+1}, second missing term">${options}</select>.</p><div class="brief-feedback" aria-live="polite"></div></article>`).join('');
+    stageContainer.innerHTML=stageFrame('08:45 · WELCOME TO THE RISK FLOOR','Repair the corrupted client brief','Mission 1 of 6 · about 4 minutes','assets/session1/case-files.svg',`
+      <div class="scene-message"><div class="avatar">NS</div><div><strong>Welcome to Northstar.</strong><p>Your first client brief has been corrupted. Eight essential actuarial terms have disappeared from the file. Restore the brief before the 09:00 meeting.</p></div></div>
+      <div class="stage-instruction"><strong>Your task</strong><span>Complete the four client notes with the correct terms. Each of the eight words is used once. Focus on meaning and context — you do not need to memorise a definition.</span></div>
+      <div class="brief-word-bank" aria-label="Available terms">${words.map(w=>`<span>${w}</span>`).join('')}</div>
+      <div class="brief-repair-grid">${notes}</div>
+      <p class="inline-feedback" id="briefOverall" aria-live="polite"></p>
+      <div class="stage-actions"><button type="button" class="primary-link" id="checkBrief">Check the client brief</button><button type="button" class="primary-link" id="completeWelcome" hidden>Brief restored — collect my badge →</button></div>`);
+
+    document.getElementById('checkBrief').addEventListener('click',()=>{
+      let correctCount=0;
+      const chosen=[];
+      [...document.querySelectorAll('.brief-note')].forEach((note,i)=>{
+        const item=briefItems[i];
+        const a=note.querySelector('select[data-slot="1"]').value;
+        const b=note.querySelector('select[data-slot="2"]').value;
+        chosen.push(a,b);
+        const ok=a===item.answer1 && b===item.answer2;
+        note.classList.toggle('brief-correct',ok);
+        note.classList.toggle('brief-wrong',!ok);
+        note.querySelector('.brief-status').textContent=ok?'RESTORED':'CHECK AGAIN';
+        note.querySelector('.brief-feedback').textContent=ok?'Correct — this note now makes professional sense.':'One or both terms do not fit the meaning of this note.';
+        if(ok) correctCount++;
+      });
+      const duplicates=chosen.filter(Boolean).some((w,i,a)=>a.indexOf(w)!==i);
+      const overall=document.getElementById('briefOverall');
+      if(correctCount===briefItems.length && !duplicates){
+        overall.innerHTML='<strong>Client brief restored.</strong> You have identified how the core terms work together in real actuarial language.';
+        document.getElementById('checkBrief').hidden=true;
+        document.getElementById('completeWelcome').hidden=false;
+        document.querySelectorAll('.brief-note select').forEach(sel=>sel.disabled=true);
+        playTone('ok');
+      }else{
+        overall.innerHTML=duplicates?'<strong>Almost.</strong> Each term is used once. Check for repeated words and review the notes marked CHECK AGAIN.':'<strong>Not quite.</strong> Review the notes marked CHECK AGAIN and use the meaning of the full sentence as your clue.';
+        playTone('bad');
+      }
+    });
     document.getElementById('completeWelcome').addEventListener('click',()=>{ playTone('ok'); nextStage(); });
   }
 
   function renderPronunciation(){
     stageContainer.innerHTML=stageFrame('09:00 · SECURITY GATE','Pass the pronunciation check','Mission 2 of 6 · about 5 minutes','assets/session1/security-gate.svg',`
-      <p class="task-prompt">The gate opens only when you can identify the correct stress pattern. Use <strong>Listen</strong>, choose an answer, read the feedback, then say the word aloud.</p>
+      <p class="task-prompt">The gate opens only when you can identify the correct stress pattern. Use <strong>Listen</strong>, choose an answer and read the feedback. Focus on recognising stress and pronunciation accurately.</p>
       <div id="pronunciationQuiz" class="pronunciation-quiz"></div>
       <div class="mission-score" id="pronScore">0 / ${pronunciation.length} checked</div>
       <div class="stage-actions"><button type="button" class="primary-link" id="pronNext" disabled>Security cleared →</button></div>`);
@@ -128,8 +167,8 @@
       const q=pronunciation[Number(item.dataset.index)]; const choice=Number(btn.dataset.choice); item.dataset.done='1'; checked++;
       item.querySelectorAll('.pron-options button').forEach((b,j)=>{ b.disabled=true; if(j===q.correct)b.classList.add('correct'); });
       const fb=item.querySelector('.inline-feedback');
-      if(choice===q.correct){ correct++; btn.classList.add('correct'); fb.innerHTML=`<strong>Correct.</strong> ${q.note} Say it aloud now.`; playTone('ok'); }
-      else { btn.classList.add('wrong'); fb.innerHTML=`<strong>Not quite.</strong> ${q.note} Listen again, then say it aloud.`; playTone('bad'); }
+      if(choice===q.correct){ correct++; btn.classList.add('correct'); fb.innerHTML=`<strong>Correct.</strong> ${q.note}`; playTone('ok'); }
+      else { btn.classList.add('wrong'); fb.innerHTML=`<strong>Not quite.</strong> ${q.note} Use Listen again if you want to compare the stress pattern.`; playTone('bad'); }
       say(q.word);
       document.getElementById('pronScore').textContent=`${checked} / ${pronunciation.length} checked · ${correct} correct first time`;
       if(checked===pronunciation.length) document.getElementById('pronNext').disabled=false;
