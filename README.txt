@@ -16,7 +16,7 @@ UPLOAD
 CURRENT COURSE STATUS
 - M1 Session 1 is built: “What does an actuary do?”
   • Individual activity: Actuary for a Day
-  • Group activity: Build the Ideal Actuarial Firm
+  • Group activity: The Actuarial Firm Draft
 - M1 Sessions 2–5 remain intentionally neutral and will be built progressively.
 - M2 Sessions 1–5 remain intentionally neutral and will be built progressively.
 
@@ -36,3 +36,13 @@ See QA-REPORT.txt for the full audit.
 
 CREDIT
 Created by Mrs Lecomte and Mr Lemoine, with the help of Chat GPT
+
+M1 Session 1 group activity: The Actuarial Firm Draft uses a deterministic 100-point budget. Same choices always produce the same budget, challenge and configuration code across devices.
+
+GROUP ACTIVITY — THE ACTUARIAL FIRM DRAFT
+- 100-point fixed budget.
+- 8 rounds: client, expertise, team, tools, identity, review, client alert, boardroom.
+- No random scoring or random branching.
+- Same choices = same budget, challenge and configuration code on every device.
+- 7 dedicated SVG illustrations and British-English audio support.
+- Final presentation: every student speaks for approximately 2 minutes.

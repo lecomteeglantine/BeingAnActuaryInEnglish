@@ -1,59 +1,110 @@
-BeingAnActuaryInEnglish — AUDIT / BUGFIX REPORT
+BeingAnActuaryInEnglish — M1 SESSION 1 GROUP ACTIVITY BUILD / QA REPORT
 Date: 2026-09-03
 
 SCOPE
-- Full static audit of the current site package after replacing the M1 Session 1 final challenge.
-- 24 HTML pages, shared CSS/JS, M1/M2 pages, dictionary, flashcards, games, pronunciation, notebook, PWA/service worker, Session 1 individual activity, and Session 1 group activity.
+- Rebuilt the M1 Session 1 group activity as “The Actuarial Firm Draft”.
+- Preserved the existing individual activity “Actuary for a Day / The Client Has a Question”.
+- Checked the complete current site package: 24 HTML pages, shared CSS/JS, M1/M2 pages, dictionary, flashcards, games, pronunciation, notebook, PWA/service worker and all Session 1 assets.
 
-REQUESTED CHANGE COMPLETED
-1. REMOVED THE 60-SECOND CHALLENGE
-- Removed every user-facing and JavaScript reference to the old Elevator / 60-second challenge.
-- Removed the timer, countdown sounds, timer state and timer-specific controls.
-- Removed the obsolete elevator illustration from the deployable package and service-worker cache.
-- Updated the Session 1 card and Mission 6 progress label.
+GROUP ACTIVITY CREATED
+THE ACTUARIAL FIRM DRAFT — “Build your firm with 100 points.”
+- Groups of 3 or 4 students.
+- One device per group recommended.
+- Clear English-only instructions.
+- Every student speaks for approximately 2 minutes in the final boardroom presentation.
 
-2. NEW FINAL MISSION: “THE CLIENT HAS A QUESTION”
-- Four guided decisions progressively build an accurate explanation of actuarial work.
-- Incorrect answers give corrective feedback and can be retried.
-- Correct answers unlock the next decision deterministically.
-- The completed professional answer can be heard with British-English speech synthesis.
-- “Make It Sound Human” asks the student to explain the profession aloud in plain, jargon-free English.
-- No timer is used.
-- Pronunciation support remains available for actuary, actuarial, risk, data, future and decisions.
-- A self-check, model answer and client reaction complete the mission.
-- Final-stage progress persists across a page refresh using sessionStorage.
+8 FIXED ROUNDS
+1. Choose one target client.
+2. Choose exactly two areas of actuarial expertise.
+3. Hire exactly two core team profiles.
+4. Buy exactly two tools.
+5. Choose exactly two free identity traits.
+6. Review the firm and budget.
+7. Handle a deterministic client alert.
+8. Generate the boardroom brief and prepare the oral presentation.
 
-3. AUDIO PERFORMANCE CLEANUP
-- Once a suitable speech voice has been selected, the site no longer re-queries the browser voice list on every ordinary click.
-- Local British English remains the first preference, followed by another local English voice.
-- Existing safe interruption/fallback behaviour is retained.
+BUDGET / CROSS-DEVICE DETERMINISM
+- Starting budget: 100 points.
+- Every paid option has one fixed cost stored directly in the HTML data model.
+- Budget is always recalculated from the currently selected options. It is NOT incremented/decremented from click history, preventing score drift.
+- No Math.random() or random branch is used in the group activity.
+- Next-round order is fixed: 1→2→3→4→5→6→7→8.
+- The client alert is selected by a fixed rule based on client/expertise:
+  • climate client/expertise → Extreme weather shock
+  • pensions client/expertise → Longevity assumptions challenged
+  • insurance/pricing/reserving → Unexpected claims spike
+  • healthcare → Data quality problem
+  • otherwise → Board challenges your model
+- Same choices therefore produce the same cost, points left, challenge and configuration code on every device.
+- Round 3 checks that at least 18 points remain for the minimum valid two-tool combination, preventing a dead-end on the next round.
+- Round 4 blocks continuation if the final paid configuration exceeds 100 points.
 
-4. PWA / CACHE
-- Service-worker cache bumped to actuarial-english-2026-09-03-r7-client-task.
-- Obsolete elevator.svg removed from CORE.
-- Network-first behaviour for HTML/JS/CSS/data remains in place so GitHub updates replace old cached content quickly when online.
+BUDGET MODEL QA
+- Full paid-choice combinations enumerated: 28,350.
+- Valid combinations at or below 100 points: 12,739.
+- Deliberately over-budget combinations: 15,611 (budget therefore creates real trade-offs).
+- Possible total cost range before the 100-point cap: 86–122 points.
+- Every client+expertise+team configuration allowed past the reserve check has at least one valid two-tool combination.
 
-5. DOCUMENTATION
-- README corrected: M1 Session 1 is built; only M1 Sessions 2–5 and M2 Sessions 1–5 remain neutral.
+CLIENT ALERT
+- Four deterministic challenge families with four response options each.
+- Responses give immediate “Strong actuarial response / Partly convincing / Risky response” feedback.
+- Challenge responses do not alter the 100-point budget, avoiding a hidden second scoring system.
 
-FINAL AUTOMATED STATIC QA
+FINAL BOARDROOM
+- Firm name + one-sentence promise.
+- Auto-generated summary of client, expertise, team, tools, identity, budget, challenge and response.
+- Deterministic configuration code shown for easy comparison.
+- Copy-brief button.
+- Explicit speaking distribution for groups of 3 and groups of 4.
+- Every student speaks for approximately 2 minutes.
+
+ILLUSTRATIONS / AUDIO
+- 7 new local SVG illustrations created specifically for the Firm Draft:
+  draft-room.svg
+  draft-clients.svg
+  draft-expertise.svg
+  draft-team.svg
+  draft-tools.svg
+  draft-crisis.svg
+  draft-boardroom.svg
+- All SVGs parse correctly as XML and contain no remote dependency.
+- British-English pronunciation support reuses the site’s fast speech-synthesis system.
+- Useful discussion phrases and key actuarial terms have one-click audio.
+- Sound on/off control retained.
+
+STATE / SHARED COMPUTERS
+- Current group work is stored only in sessionStorage.
+- Refresh/back-forward preserves the current group’s draft.
+- Starting the group activity afresh from the Session 1 overview clears the previous group’s state on a shared computer.
+- “Start a new firm” has a confirmation before clearing work.
+- Stored option IDs are sanitised on load so stale/invalid state cannot create ghost selections.
+
+PWA / CACHE
+- Cache version bumped to: actuarial-english-2026-09-03-r8-firm-draft.
+- All new illustrations added to the service-worker CORE list.
+- Obsolete group-hero.svg and firm-board.svg removed from the deployable package/cache because they are no longer referenced.
+- Network-first behaviour for HTML/JS/CSS/data remains in place for GitHub update freshness.
+
+FULL STATIC QA RESULTS
 - HTML pages: 24
-- Local SVG illustrations: 6
 - Vocabulary entries: 85 unique terms
-- Service-worker CORE references: 46
+- New Firm Draft SVG illustrations: 7
+- Service-worker CORE references: 51
+- Total packaged files checked over local HTTP: 55 / 55 returned HTTP 200
 - Missing local links/assets: 0 detected
 - Duplicate HTML IDs: 0 detected
 - Unlabelled form controls: 0 detected
-- Images without alt attributes: 0 detected
 - JavaScript syntax errors: 0 detected
-- CSS brace errors: 0 detected
+- CSS parser errors: 0 detected
 - Manifest JSON: valid
-- Vocabulary duplicates: 0 detected
-- Required Session 1 vocabulary present: yes
 - Service-worker CORE entries missing on disk: 0 detected
-- Local SVG XML parsing errors: 0 detected
-- Retired “60-second / Elevator” references in HTML/JS: 0 detected
-- Local HTTP resource check: 48/48 normal deployable files returned HTTP 200
+- SVG/XML parsing errors: 0 detected
+- Retired “Build the Ideal Actuarial Firm” wording in active HTML: 0 occurrences
+- Retired “60-second challenge” wording in active HTML: 0 occurrences
+- Exact footer credit retained on all 24 HTML pages.
 
 BROWSER-TEST LIMITATION
-The environment permits Chromium to launch but blocks Chromium navigation to localhost/file content with ERR_BLOCKED_BY_ADMINISTRATOR, so automated end-to-end click testing in Chromium cannot be truthfully claimed here. Static, syntax, asset, state-logic, accessibility-structure and local HTTP checks all passed. Browser speech synthesis remains OS/browser dependent by nature.
+- This environment allows Chromium to start but blocks automated navigation to localhost/file URLs with ERR_BLOCKED_BY_ADMINISTRATOR. Therefore no claim is made that a full end-to-end Chromium click run was completed here.
+- Static structure, syntax, asset resolution, complete option-cost enumeration, deterministic state/branch logic and local HTTP serving were all checked successfully.
+- Browser speech synthesis still depends on the voices installed on the student’s OS/browser, as expected.

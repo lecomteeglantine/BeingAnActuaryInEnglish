@@ -1,13 +1,246 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#102a43"><meta name="description" content="Build the Ideal Actuarial Firm: an immersive group activity for M1 actuarial English."><title>Build the Ideal Actuarial Firm · M1 Session 1</title><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icons/favicon.png"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="stylesheet" href="styles.css"></head><body><a class="skip-link" href="#main">Skip to main content</a><header class="topbar"><a class="brand" href="index.html"><span aria-hidden="true" class="brand-mark">📊</span><span><strong>Actuarial English</strong></span></a><nav aria-label="Main navigation" class="main-nav"><a href="index.html">Home</a><a href="dictionary.html">Dictionary</a><a href="m1.html">M1</a><a href="m2.html">M2</a><a href="grammar.html">Grammar</a><a href="pronunciation.html">Pronunciation</a><a href="games.html">Games</a></nav></header>
-<main id="main" class="group-builder-main"><section class="group-builder-hero"><div><p class="section-kicker">M1 · SESSION 1 · GROUP ACTIVITY</p><h1>Build the Ideal Actuarial Firm</h1><p>Work in a team of <strong>3 or 4 students</strong>. Imagine that you are founding a new actuarial consultancy. Your goal is to build a firm that is useful, credible, ethical and easy to explain to a potential client.</p><div class="hero-buttons"><a class="ghost-link" href="m1-day1.html">← Session 1</a><button class="secondary-btn" id="groupSoundToggle" type="button" aria-pressed="true">🔊 Sound on</button></div></div><img src="assets/session1/group-hero.svg" alt="A team of four building their actuarial consultancy around a table."></section>
-<section class="group-brief"><div class="brief-number">01</div><div><p class="module-number">BEFORE YOU START</p><h2>Set up your team</h2><ol class="clear-steps"><li><strong>Make a team of 3 or 4.</strong></li><li><strong>Use one device for the whole group.</strong> One student controls the screen; everyone must take part in every decision.</li><li><strong>Speak English throughout the activity.</strong> Use the language support on the page whenever you need it.</li><li><strong>Choose a temporary project manager.</strong> Their job is to keep the group moving, not to make all the decisions.</li></ol><div class="notice"><strong>Final task:</strong> pitch your ideal actuarial firm to the class. <strong>Every student must speak for approximately 2 minutes.</strong></div></div></section>
-<section class="group-builder-layout"><aside class="firm-board-panel"><img src="assets/session1/firm-board.svg" alt="A strategy board with areas for services, clients, team, values and a final pitch."><div class="group-language"><p class="module-number">USEFUL LANGUAGE</p><div class="audio-phrase"><button type="button" class="mini-btn group-speak" data-say="Our firm specialises in" aria-label="Listen: Our firm specialises in">🔊</button><span>Our firm specialises in…</span></div><div class="audio-phrase"><button type="button" class="mini-btn group-speak" data-say="Our clients need us to" aria-label="Listen: Our clients need us to">🔊</button><span>Our clients need us to…</span></div><div class="audio-phrase"><button type="button" class="mini-btn group-speak" data-say="The main risk is" aria-label="Listen: The main risk is">🔊</button><span>The main risk is…</span></div><div class="audio-phrase"><button type="button" class="mini-btn group-speak" data-say="We would use data and models to" aria-label="Listen: We would use data and models to">🔊</button><span>We would use data and models to…</span></div><div class="audio-phrase"><button type="button" class="mini-btn group-speak" data-say="What makes our firm different is" aria-label="Listen: What makes our firm different is">🔊</button><span>What makes our firm different is…</span></div></div></aside>
-<div class="builder-decisions">
-<section class="builder-step"><div class="builder-step-head"><span>1</span><div><p class="module-number">IDENTITY</p><h2>Name your firm</h2></div></div><p>Choose a professional name and write one short sentence that explains what your firm wants to achieve.</p><label>Firm name<input class="text-input" id="firmName" type="text" maxlength="60" placeholder="e.g. Northbridge Actuarial"></label><label>One-sentence mission<textarea class="notes-area builder-textarea" id="firmMission" maxlength="220" placeholder="We help organisations understand risk and make better decisions under uncertainty."></textarea></label></section>
-<section class="builder-step"><div class="builder-step-head"><span>2</span><div><p class="module-number">SERVICES</p><h2>Choose what your firm does</h2></div></div><p>Select <strong>exactly three</strong> services. Be ready to explain why they belong together.</p><div class="selectable-grid" data-max="3" id="serviceChoices"><button type="button" data-value="Insurance pricing">Insurance pricing<small>Set sustainable premiums using risk data.</small></button><button type="button" data-value="Pensions and longevity">Pensions &amp; longevity<small>Estimate long-term retirement obligations.</small></button><button type="button" data-value="Risk and capital">Risk &amp; capital<small>Help organisations understand severe scenarios.</small></button><button type="button" data-value="Climate and catastrophe risk">Climate &amp; catastrophe risk<small>Assess financial exposure to extreme events.</small></button><button type="button" data-value="Data and predictive modelling">Data &amp; predictive modelling<small>Turn complex data into decision-support models.</small></button><button type="button" data-value="Business and strategic advice">Business &amp; strategic advice<small>Translate actuarial analysis into business decisions.</small></button></div></section>
-<section class="builder-step"><div class="builder-step-head"><span>3</span><div><p class="module-number">CLIENT</p><h2>Choose your first major client</h2></div></div><p>Select one client. Discuss what they are worried about and what an actuary could do for them.</p><div class="selectable-grid single-select" id="clientChoices"><button type="button" data-value="A motor insurer facing rising claim costs">🚗 Motor insurer<small>Claim costs are rising faster than expected.</small></button><button type="button" data-value="A pension fund worried about longevity">👵 Pension fund<small>Members may live longer than current assumptions.</small></button><button type="button" data-value="A coastal business exposed to extreme weather">🌊 Climate-exposed business<small>Extreme weather could create large financial losses.</small></button></div></section>
-<section class="builder-step"><div class="builder-step-head"><span>4</span><div><p class="module-number">TEAM</p><h2>Design the team</h2></div></div><p>Assign one responsibility to each student. If you are a group of 3, combine two roles.</p><div class="role-grid"><div><strong>Lead actuary</strong><span>Coordinates the analysis and final recommendation.</span></div><div><strong>Data &amp; modelling lead</strong><span>Checks data and builds or challenges models.</span></div><div><strong>Risk &amp; ethics lead</strong><span>Challenges assumptions and identifies limitations.</span></div><div><strong>Client communication lead</strong><span>Turns technical results into clear advice.</span></div></div><label>Who does what?<textarea class="notes-area builder-textarea" id="rolesNote" maxlength="280" placeholder="Alex: lead actuary; Sam: data and modelling; …"></textarea></label></section>
-<section class="builder-step"><div class="builder-step-head"><span>5</span><div><p class="module-number">VALUES</p><h2>Decide what makes your firm worth trusting</h2></div></div><p>Select <strong>three values</strong>. For each one, prepare a concrete example of what it would look like in practice.</p><div class="selectable-grid values-grid" data-max="3" id="valueChoices"><button type="button" data-value="Accuracy">Accuracy</button><button type="button" data-value="Transparency">Transparency</button><button type="button" data-value="Independence">Independence</button><button type="button" data-value="Ethics">Ethics</button><button type="button" data-value="Innovation">Innovation</button><button type="button" data-value="Clear communication">Clear communication</button></div></section>
-<section class="builder-step pitch-step"><div class="builder-step-head"><span>6</span><div><p class="module-number">FINAL DELIVERABLE</p><h2>Prepare your pitch</h2></div></div><p>Your presentation should make the class understand both <strong>what actuaries do</strong> and <strong>why your firm would be useful</strong>.</p><div class="pitch-structure"><div><strong>Student 1 · The firm</strong><span>Name, mission and the problem you want to solve.</span></div><div><strong>Student 2 · The actuarial work</strong><span>Services, data, models, risk and uncertainty.</span></div><div><strong>Student 3 · The client</strong><span>Your first client, their risks and your recommendations.</span></div><div><strong>Student 4 · Why trust you?</strong><span>Team, values and what makes the firm different.</span></div></div><p class="notice"><strong>3-person group?</strong> Combine Students 3 and 4. <strong>Each student still speaks for approximately 2 minutes.</strong></p><div class="builder-actions"><button class="primary-link" id="buildBrief" type="button">Generate our firm brief</button><button class="secondary-btn" id="clearBrief" type="button">Clear our choices</button></div><div id="firmBrief" class="firm-brief-output" hidden aria-live="polite"></div></section>
-</div></section>
-</main><footer class="site-footer"><p><strong>Actuarial English</strong></p><p class="footer-credit">Created by Mrs Lecomte and Mr Lemoine, with the help of Chat GPT</p><p class="privacy"><strong>Privacy &amp; GDPR:</strong> no student account, analytics, advertising or remote database. Learning-tool data is stored locally in this browser. <a href="privacy.html">Privacy details</a> · <a href="accessibility.html">Accessibility</a></p></footer><script src="shared.js"></script><script src="m1-session1-group.js"></script><script defer src="pwa.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#102a43">
+  <meta name="description" content="The Actuarial Firm Draft: an immersive M1 group activity in which students build an actuarial consultancy with a 100-point budget.">
+  <title>The Actuarial Firm Draft · M1 Session 1</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/favicon.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="topbar">
+  <a class="brand" href="index.html"><span aria-hidden="true" class="brand-mark">📊</span><span><strong>Actuarial English</strong></span></a>
+  <nav aria-label="Main navigation" class="main-nav"><a href="index.html">Home</a><a href="dictionary.html">Dictionary</a><a class="active" href="m1.html">M1</a><a href="m2.html">M2</a><a href="grammar.html">Grammar</a><a href="pronunciation.html">Pronunciation</a><a href="games.html">Games</a></nav>
+</header>
+
+<main id="main" class="draft-main">
+  <section class="draft-hero">
+    <div>
+      <p class="section-kicker">M1 · SESSION 1 · GROUP ACTIVITY</p>
+      <h1>The Actuarial Firm Draft</h1>
+      <p class="draft-tagline">Build your firm with <strong>100 points</strong>. You cannot buy everything, so every choice must have a reason.</p>
+      <div class="hero-buttons"><a class="ghost-link" href="m1-day1.html">← Session 1</a><button class="secondary-btn" id="groupSoundToggle" type="button" aria-pressed="true">🔊 Sound on</button></div>
+    </div>
+    <img src="assets/session1/draft-room.svg" alt="Four professionals planning an actuarial firm around a strategy table with a 100-point budget." loading="eager">
+  </section>
+
+  <section class="draft-instructions" aria-labelledby="draftInstructionsTitle">
+    <div class="brief-number">01</div>
+    <div>
+      <p class="module-number">READ THIS FIRST</p>
+      <h2 id="draftInstructionsTitle">Your mission</h2>
+      <ol class="clear-steps">
+        <li>Work in a group of <strong>3 or 4 students</strong>.</li>
+        <li>Use <strong>one device per group</strong> if possible. Discuss every decision before clicking.</li>
+        <li>You start with <strong>100 points</strong>. Every client, expertise, team member and tool has a fixed cost.</li>
+        <li>You must stay within budget. <strong>You cannot choose everything.</strong></li>
+        <li>There is <strong>no random scoring</strong>: the same choices always give the same cost, the same next round and the same final challenge on every device.</li>
+        <li>At the end, prepare a boardroom presentation. <strong>Every student speaks for approximately 2 minutes.</strong></li>
+      </ol>
+      <div class="notice"><strong>English only:</strong> explain your choices to your teammates before you validate them. The language and pronunciation support on the page is there to help you.</div>
+    </div>
+  </section>
+
+  <section class="draft-workspace">
+    <aside class="draft-sidebar" aria-label="Firm dashboard">
+      <div class="budget-card">
+        <p class="module-number">YOUR BUDGET</p>
+        <div class="budget-number"><strong id="budgetLeft">100</strong><span>points left</span></div>
+        <div class="budget-track" aria-hidden="true"><span id="budgetBar"></span></div>
+        <p id="budgetSpent">0 points spent</p>
+      </div>
+
+      <div class="draft-mini-summary">
+        <p class="module-number">YOUR FIRM SO FAR</p>
+        <dl>
+          <div><dt>Client</dt><dd id="summaryClient">—</dd></div>
+          <div><dt>Expertise</dt><dd id="summaryExpertise">—</dd></div>
+          <div><dt>Team</dt><dd id="summaryTeam">—</dd></div>
+          <div><dt>Tools</dt><dd id="summaryTools">—</dd></div>
+          <div><dt>Identity</dt><dd id="summaryIdentity">—</dd></div>
+        </dl>
+      </div>
+
+      <div class="group-language">
+        <p class="module-number">USEFUL LANGUAGE</p>
+        <div class="audio-phrase"><button type="button" class="mini-btn group-speak" data-say="I think we should invest in" aria-label="Listen: I think we should invest in">🔊</button><span>I think we should invest in…</span></div>
+        <div class="audio-phrase"><button type="button" class="mini-btn group-speak" data-say="The main advantage is" aria-label="Listen: The main advantage is">🔊</button><span>The main advantage is…</span></div>
+        <div class="audio-phrase"><button type="button" class="mini-btn group-speak" data-say="The trade-off is" aria-label="Listen: The trade-off is">🔊</button><span>The trade-off is…</span></div>
+        <div class="audio-phrase"><button type="button" class="mini-btn group-speak" data-say="This would help our clients to" aria-label="Listen: This would help our clients to">🔊</button><span>This would help our clients to…</span></div>
+        <div class="audio-phrase"><button type="button" class="mini-btn group-speak" data-say="We chose this option because" aria-label="Listen: We chose this option because">🔊</button><span>We chose this option because…</span></div>
+      </div>
+
+      <div class="draft-pronunciation">
+        <p class="module-number">QUICK PRONUNCIATION</p>
+        <div class="pron-chip-grid">
+          <button class="group-speak" type="button" data-say="actuary">🔊 actuary</button>
+          <button class="group-speak" type="button" data-say="actuarial">🔊 actuarial</button>
+          <button class="group-speak" type="button" data-say="liability">🔊 liability</button>
+          <button class="group-speak" type="button" data-say="uncertainty">🔊 uncertainty</button>
+          <button class="group-speak" type="button" data-say="premium">🔊 premium</button>
+          <button class="group-speak" type="button" data-say="claim">🔊 claim</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="draft-game" id="draftGame">
+      <div class="draft-progress" aria-label="Draft progress">
+        <ol>
+          <li class="active" data-progress="1"><span>1</span><small>Clients</small></li>
+          <li data-progress="2"><span>2</span><small>Expertise</small></li>
+          <li data-progress="3"><span>3</span><small>Team</small></li>
+          <li data-progress="4"><span>4</span><small>Tools</small></li>
+          <li data-progress="5"><span>5</span><small>Identity</small></li>
+          <li data-progress="6"><span>6</span><small>Review</small></li>
+          <li data-progress="7"><span>7</span><small>Challenge</small></li>
+          <li data-progress="8"><span>8</span><small>Boardroom</small></li>
+        </ol>
+      </div>
+
+      <section class="draft-round" data-round="1" aria-labelledby="round1Title">
+        <div class="draft-round-art"><img src="assets/session1/draft-clients.svg" alt="Illustrated cards representing several possible client sectors."></div>
+        <p class="module-number">ROUND 1 · CHOOSE ONE</p>
+        <h2 id="round1Title">Who will your firm work for?</h2>
+        <p>Choose your first target market. This decision will influence the challenge your firm receives later.</p>
+        <div class="draft-option-grid" id="clientChoices">
+          <button type="button" data-group="client" data-id="insurance" data-label="Insurance companies" data-cost="14"><span class="draft-option-icon">🚗</span><strong>Insurance companies</strong><small>Pricing, claims and portfolio risk.</small><em>14 pts</em></button>
+          <button type="button" data-group="client" data-id="pensions" data-label="Pension funds" data-cost="14"><span class="draft-option-icon">🏦</span><strong>Pension funds</strong><small>Long-term obligations and longevity.</small><em>14 pts</em></button>
+          <button type="button" data-group="client" data-id="banks" data-label="Banks & financial institutions" data-cost="16"><span class="draft-option-icon">📈</span><strong>Banks &amp; financial institutions</strong><small>Financial risk, capital and scenarios.</small><em>16 pts</em></button>
+          <button type="button" data-group="client" data-id="health" data-label="Healthcare organisations" data-cost="12"><span class="draft-option-icon">🏥</span><strong>Healthcare organisations</strong><small>Costs, uncertainty and population data.</small><em>12 pts</em></button>
+          <button type="button" data-group="client" data-id="climate" data-label="Climate-risk clients" data-cost="18"><span class="draft-option-icon">🌍</span><strong>Climate-risk clients</strong><small>Extreme events and financial exposure.</small><em>18 pts</em></button>
+          <button type="button" data-group="client" data-id="international" data-label="International companies" data-cost="18"><span class="draft-option-icon">🌐</span><strong>International companies</strong><small>Complex risk across several markets.</small><em>18 pts</em></button>
+        </div>
+        <div class="draft-discuss"><strong>Discuss before you click:</strong> What risks would this client expect an actuary to understand?</div>
+        <div class="draft-nav"><span></span><button type="button" class="primary-link draft-next" data-next="2">Confirm client →</button></div>
+      </section>
+
+      <section class="draft-round" data-round="2" aria-labelledby="round2Title" hidden>
+        <div class="draft-round-art"><img src="assets/session1/draft-expertise.svg" alt="An actuarial dashboard showing different areas of expertise."></div>
+        <p class="module-number">ROUND 2 · CHOOSE EXACTLY TWO</p>
+        <h2 id="round2Title">What will your firm specialise in?</h2>
+        <p>You need a clear offer. Choose two areas of expertise that make sense together.</p>
+        <div class="draft-option-grid" id="expertiseChoices">
+          <button type="button" data-group="expertise" data-id="pricing" data-label="Pricing" data-cost="16"><strong>Pricing</strong><small>Estimate sustainable premiums.</small><em>16 pts</em></button>
+          <button type="button" data-group="expertise" data-id="reserving" data-label="Reserving" data-cost="16"><strong>Reserving</strong><small>Estimate future claim obligations.</small><em>16 pts</em></button>
+          <button type="button" data-group="expertise" data-id="pensions" data-label="Pensions & longevity" data-cost="16"><strong>Pensions &amp; longevity</strong><small>Model long-term retirement liabilities.</small><em>16 pts</em></button>
+          <button type="button" data-group="expertise" data-id="risk" data-label="Risk management" data-cost="16"><strong>Risk management</strong><small>Assess severe scenarios and uncertainty.</small><em>16 pts</em></button>
+          <button type="button" data-group="expertise" data-id="data" data-label="Data modelling" data-cost="14"><strong>Data modelling</strong><small>Turn complex data into decision-support models.</small><em>14 pts</em></button>
+          <button type="button" data-group="expertise" data-id="climate" data-label="Climate risk" data-cost="18"><strong>Climate risk</strong><small>Model exposure to extreme events.</small><em>18 pts</em></button>
+          <button type="button" data-group="expertise" data-id="reinsurance" data-label="Reinsurance" data-cost="18"><strong>Reinsurance</strong><small>Analyse risk transfer and protection.</small><em>18 pts</em></button>
+        </div>
+        <div class="draft-discuss"><strong>Discuss:</strong> Why do these two areas belong in the same firm?</div>
+        <div class="draft-nav"><button type="button" class="secondary-btn draft-back" data-back="1">← Back</button><button type="button" class="primary-link draft-next" data-next="3">Confirm expertise →</button></div>
+      </section>
+
+      <section class="draft-round" data-round="3" aria-labelledby="round3Title" hidden>
+        <div class="draft-round-art"><img src="assets/session1/draft-team.svg" alt="A diverse actuarial consultancy team."></div>
+        <p class="module-number">ROUND 3 · HIRE EXACTLY TWO</p>
+        <h2 id="round3Title">Build your core team</h2>
+        <p>Your founders cannot do everything. Buy two additional profiles for your new firm.</p>
+        <div class="draft-option-grid" id="teamChoices">
+          <button type="button" data-group="team" data-id="senior" data-label="Senior actuary" data-cost="22"><strong>Senior actuary</strong><small>Experience, judgement and client credibility.</small><em>22 pts</em></button>
+          <button type="button" data-group="team" data-id="graduates" data-label="Two graduate actuaries" data-cost="16"><strong>Two graduate actuaries</strong><small>Flexible analytical capacity.</small><em>16 pts</em></button>
+          <button type="button" data-group="team" data-id="data" data-label="Data scientist" data-cost="18"><strong>Data scientist</strong><small>Data engineering and predictive methods.</small><em>18 pts</em></button>
+          <button type="button" data-group="team" data-id="economist" data-label="Economist" data-cost="14"><strong>Economist</strong><small>Economic context and scenario thinking.</small><em>14 pts</em></button>
+          <button type="button" data-group="team" data-id="compliance" data-label="Compliance specialist" data-cost="14"><strong>Compliance specialist</strong><small>Governance, regulation and documentation.</small><em>14 pts</em></button>
+          <button type="button" data-group="team" data-id="communication" data-label="Client communication officer" data-cost="12"><strong>Client communication officer</strong><small>Clear explanations for non-specialists.</small><em>12 pts</em></button>
+        </div>
+        <div class="draft-discuss"><strong>Discuss:</strong> What can your chosen people do that the other profiles cannot?</div>
+        <div class="draft-nav"><button type="button" class="secondary-btn draft-back" data-back="2">← Back</button><button type="button" class="primary-link draft-next" data-next="4">Confirm team →</button></div>
+      </section>
+
+      <section class="draft-round" data-round="4" aria-labelledby="round4Title" hidden>
+        <div class="draft-round-art"><img src="assets/session1/draft-tools.svg" alt="A modelling dashboard with scenario analysis, dashboards and stress tests."></div>
+        <p class="module-number">ROUND 4 · CHOOSE EXACTLY TWO</p>
+        <h2 id="round4Title">Invest in your tools</h2>
+        <p>Technology costs money. Choose the two tools your team really needs.</p>
+        <div class="draft-option-grid" id="toolChoices">
+          <button type="button" data-group="tools" data-id="traditional" data-label="Traditional actuarial modelling" data-cost="8"><strong>Traditional actuarial modelling</strong><small>Reliable core modelling environment.</small><em>8 pts</em></button>
+          <button type="button" data-group="tools" data-id="scenario" data-label="Advanced scenario analysis" data-cost="10"><strong>Advanced scenario analysis</strong><small>Compare plausible future outcomes.</small><em>10 pts</em></button>
+          <button type="button" data-group="tools" data-id="ai" data-label="AI-assisted analytics" data-cost="14"><strong>AI-assisted analytics</strong><small>Support pattern detection and analysis.</small><em>14 pts</em></button>
+          <button type="button" data-group="tools" data-id="dashboards" data-label="Interactive dashboards" data-cost="10"><strong>Interactive dashboards</strong><small>Make results easier to explore and explain.</small><em>10 pts</em></button>
+          <button type="button" data-group="tools" data-id="stress" data-label="Stress-testing tools" data-cost="10"><strong>Stress-testing tools</strong><small>Test severe but plausible conditions.</small><em>10 pts</em></button>
+          <button type="button" data-group="tools" data-id="cat" data-label="Catastrophe visualisation" data-cost="14"><strong>Catastrophe visualisation</strong><small>Map exposure to extreme events.</small><em>14 pts</em></button>
+        </div>
+        <div class="draft-discuss"><strong>Budget warning:</strong> expensive is not automatically better. Your choices must fit your client and expertise.</div>
+        <div class="draft-nav"><button type="button" class="secondary-btn draft-back" data-back="3">← Back</button><button type="button" class="primary-link draft-next" data-next="5">Confirm tools →</button></div>
+      </section>
+
+      <section class="draft-round" data-round="5" aria-labelledby="round5Title" hidden>
+        <p class="module-number">ROUND 5 · FREE CHOICE · CHOOSE EXACTLY TWO</p>
+        <h2 id="round5Title">What kind of firm are you building?</h2>
+        <p>These identity choices cost 0 points, but you must be able to prove them in your final presentation.</p>
+        <div class="draft-option-grid identity-grid" id="identityChoices">
+          <button type="button" data-group="identity" data-id="reliable" data-label="Reliable & conservative" data-cost="0"><strong>Reliable &amp; conservative</strong><small>Careful assumptions and robust processes.</small><em>FREE</em></button>
+          <button type="button" data-group="identity" data-id="innovative" data-label="Innovative & data-driven" data-cost="0"><strong>Innovative &amp; data-driven</strong><small>New methods backed by evidence.</small><em>FREE</em></button>
+          <button type="button" data-group="identity" data-id="client" data-label="Client-focused & clear" data-cost="0"><strong>Client-focused &amp; clear</strong><small>Technical work translated into useful advice.</small><em>FREE</em></button>
+          <button type="button" data-group="identity" data-id="specialist" data-label="Specialist & high-level" data-cost="0"><strong>Specialist &amp; high-level</strong><small>Deep expertise in selected areas.</small><em>FREE</em></button>
+          <button type="button" data-group="identity" data-id="international" data-label="International & ambitious" data-cost="0"><strong>International &amp; ambitious</strong><small>Complex clients across markets.</small><em>FREE</em></button>
+          <button type="button" data-group="identity" data-id="agile" data-label="Agile & modern" data-cost="0"><strong>Agile &amp; modern</strong><small>Small team, quick decisions and adaptability.</small><em>FREE</em></button>
+        </div>
+        <div class="draft-discuss"><strong>Discuss:</strong> What concrete behaviour would make a client believe these two words?</div>
+        <div class="draft-nav"><button type="button" class="secondary-btn draft-back" data-back="4">← Back</button><button type="button" class="primary-link draft-next" data-next="6">Review our draft →</button></div>
+      </section>
+
+      <section class="draft-round" data-round="6" aria-labelledby="round6Title" hidden>
+        <p class="module-number">ROUND 6 · BUDGET CHECK</p>
+        <h2 id="round6Title">Does your firm make sense?</h2>
+        <div class="draft-review" id="draftReview"></div>
+        <div class="draft-review-questions">
+          <h3>Before you continue, discuss these three questions:</h3>
+          <ol>
+            <li>Which choice gives your firm its strongest advantage?</li>
+            <li>What did you <strong>not</strong> buy because of the budget?</li>
+            <li>Where is your firm potentially weak?</li>
+          </ol>
+        </div>
+        <div class="draft-nav"><button type="button" class="secondary-btn draft-back" data-back="5">← Change choices</button><button type="button" class="primary-link draft-next" data-next="7">Open the client alert →</button></div>
+      </section>
+
+      <section class="draft-round crisis-round" data-round="7" aria-labelledby="round7Title" hidden>
+        <div class="draft-round-art"><img src="assets/session1/draft-crisis.svg" alt="A client alert dashboard showing an unexpected change in risk."></div>
+        <p class="module-number">ROUND 7 · CLIENT ALERT</p>
+        <h2 id="round7Title">Your first real test</h2>
+        <div id="challengeCard" class="challenge-card"></div>
+        <div class="draft-discuss"><strong>Important:</strong> your challenge is generated by a fixed rule from your client and expertise. It is not random.</div>
+        <div class="draft-nav"><button type="button" class="secondary-btn draft-back" data-back="6">← Back to review</button><button type="button" class="primary-link draft-next" data-next="8">Go to the boardroom →</button></div>
+      </section>
+
+      <section class="draft-round boardroom-round" data-round="8" aria-labelledby="round8Title" hidden>
+        <div class="draft-round-art"><img src="assets/session1/draft-boardroom.svg" alt="A professional boardroom where the new actuarial firm is presenting its proposal."></div>
+        <p class="module-number">FINAL ROUND · BOARDROOM</p>
+        <h2 id="round8Title">Turn your draft into a firm</h2>
+        <p>You have made the technical choices. Now make the firm memorable and prepare to defend it.</p>
+        <div class="boardroom-fields">
+          <label>Firm name<input class="text-input" id="firmName" type="text" maxlength="60" placeholder="e.g. Northbridge Actuarial"></label>
+          <label>One-sentence promise<textarea class="notes-area builder-textarea" id="firmPromise" maxlength="220" placeholder="We help organisations understand uncertainty and make clear, evidence-based decisions."></textarea></label>
+        </div>
+        <div id="firmBrief" class="firm-brief-output" aria-live="polite"></div>
+        <div class="pitch-brief">
+          <p class="module-number">YOUR ORAL PRESENTATION</p>
+          <h3>Every student speaks for approximately 2 minutes.</h3>
+          <div class="pitch-structure">
+            <div><strong>Student 1 · Who we are</strong><span>Firm name, target client and the problem you want to solve.</span></div>
+            <div><strong>Student 2 · What actuaries do</strong><span>Your expertise, risk, data, models and uncertainty.</span></div>
+            <div><strong>Student 3 · How you built the firm</strong><span>Your team, tools, budget choices and trade-offs.</span></div>
+            <div><strong>Student 4 · Why trust you?</strong><span>Your identity, client alert response and competitive advantage.</span></div>
+          </div>
+          <p class="notice"><strong>3-person group?</strong> Student 3 also explains the client alert response. Everyone still speaks for approximately 2 minutes.</p>
+        </div>
+        <div class="draft-actions"><button type="button" class="secondary-btn" id="copyFirmBrief">Copy our firm brief</button><button type="button" class="secondary-btn" id="restartDraft">Start a new firm</button></div>
+      </section>
+
+      <div class="draft-error" id="draftError" role="alert" aria-live="assertive" hidden></div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer"><p><strong>Actuarial English</strong></p><p class="footer-credit">Created by Mrs Lecomte and Mr Lemoine, with the help of Chat GPT</p><p class="privacy"><strong>Privacy &amp; GDPR:</strong> no student account, analytics, advertising or remote database. Learning-tool data is stored locally in this browser. <a href="privacy.html">Privacy details</a> · <a href="accessibility.html">Accessibility</a></p></footer>
+<script src="shared.js"></script><script src="m1-session1-group.js"></script><script defer src="pwa.js"></script>
+</body>
+</html>
