@@ -26,7 +26,7 @@
     if(mode==='match'){const text=x=>x.fr;prompt.textContent=`Choose the French translation of “${target.w}”.`;mcq(shuffle([target,...distractors(target,text)]),text,target)}
     if(mode==='definition'){const text=x=>x.w;prompt.textContent=target.def;mcq(shuffle([target,...distractors(target,text)]),text,target)}
     if(mode==='translate'){const frToEn=Math.random()>.5;const text=x=>frToEn?x.w:x.fr;prompt.textContent=frToEn?`Translate into English: ${target.fr}`:`Translate into French: ${target.w}`;mcq(shuffle([target,...distractors(target,text)]),text,target)}
-    if(mode==='listen'){const text=x=>x.w;prompt.textContent='Listen, then choose the term you hear.';listen.hidden=false;listen.onclick=()=>speakWord(target.w);mcq(shuffle([target,...distractors(target,text)]),text,target);setTimeout(()=>{if(mode==='listen'&&!arena.hidden&&!answered)speakWord(target.w)},180)}
+    if(mode==='listen'){const text=x=>x.w;prompt.textContent='Listen, then choose the term you hear.';listen.hidden=false;listen.onclick=()=>speakWord(target.w);mcq(shuffle([target,...distractors(target,text)]),text,target);speakWord(target.w)}
     if(mode==='spell'){prompt.textContent=`${target.def} — 🇫🇷 ${target.fr}`;opts.hidden=true;spellForm.hidden=false;spellInput.value='';setTimeout(()=>spellInput.focus(),0)}
     if(mode==='odd') renderOdd();
   }

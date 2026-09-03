@@ -1,4 +1,6 @@
 (function(){
+  'use strict';
+
   const storage = {
     get(key, fallback='') { try { const v=localStorage.getItem(key); return v===null?fallback:v; } catch (_) { return fallback; } },
     set(key, value) { try { localStorage.setItem(key,value); return true; } catch (_) { return false; } },
@@ -15,18 +17,78 @@
     });
   }
 
-  function britishVoice(){
-    if(!('speechSynthesis' in window)) return null;
-    const voices=speechSynthesis.getVoices();
-    return voices.find(v=>/^en-GB$/i.test(v.lang)) || voices.find(v=>/^en-GB/i.test(v.lang)) || voices.find(v=>/^en/i.test(v.lang)) || null;
+  // Speech synthesis: cache the preferred voice once instead of rebuilding the
+  // full voice list on every click. This greatly reduces click-to-sound latency,
+  // especially on Chrome/Windows where voices can initialise slowly.
+  const synth=('speechSynthesis' in window)?window.speechSynthesis:null;
+  let cachedVoice=null;
+  let voiceList=[];
+
+  function selectBritishVoice(voices){
+    // Prefer an on-device British voice: remote/cloud voices can take several
+    // seconds to start on some browsers and networks.
+    return voices.find(v=>v.localService && /^en-GB$/i.test(v.lang)) ||
+           voices.find(v=>v.localService && /^en-GB/i.test(v.lang)) ||
+           voices.find(v=>/^en-GB$/i.test(v.lang)) ||
+           voices.find(v=>/^en-GB/i.test(v.lang)) ||
+           voices.find(v=>v.localService && /^en(?:-|_)/i.test(v.lang)) ||
+           voices.find(v=>/^en(?:-|_)/i.test(v.lang)) ||
+           voices.find(v=>/^en/i.test(v.lang)) || null;
   }
+
+  function refreshVoices(){
+    if(!synth) return null;
+    const voices=synth.getVoices();
+    if(voices && voices.length){
+      voiceList=voices;
+      cachedVoice=selectBritishVoice(voices);
+    }
+    return cachedVoice;
+  }
+
+  if(synth){
+    refreshVoices();
+    if(typeof synth.addEventListener==='function') synth.addEventListener('voiceschanged',refreshVoices);
+    else synth.onvoiceschanged=refreshVoices;
+
+    // Ask the browser for its voice list at the earliest real user interaction.
+    // This is safe under autoplay policies and avoids doing expensive discovery
+    // inside the actual Listen button handler.
+    let primed=false;
+    const prime=()=>{ if(primed) return; primed=true; refreshVoices(); };
+    document.addEventListener('pointerdown',prime,{once:true,capture:true,passive:true});
+    document.addEventListener('keydown',prime,{once:true,capture:true});
+  }
+
+  window.prepareSpeech=refreshVoices;
   window.speakWord=function(text){
-    if(!('speechSynthesis' in window) || !window.SpeechSynthesisUtterance) return false;
-    speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(String(text||''));
-    u.lang='en-GB'; u.rate=.86;
-    const voice=britishVoice(); if(voice) u.voice=voice;
-    speechSynthesis.speak(u); return true;
+    if(!synth || !window.SpeechSynthesisUtterance) return false;
+    const value=String(text||'').trim();
+    if(!value) return false;
+
+    // Only cancel when there is actually something queued. Repeated unconditional
+    // cancel() calls can add a noticeable delay in Chromium-based browsers.
+    const hadSpeech=synth.speaking || synth.pending;
+    if(hadSpeech) synth.cancel();
+    if(synth.paused) synth.resume();
+
+    const utterance=new SpeechSynthesisUtterance(value);
+    utterance.lang=(cachedVoice && cachedVoice.lang) || 'en-GB';
+    if(cachedVoice) utterance.voice=cachedVoice;
+    utterance.rate=0.92;
+    utterance.pitch=1;
+    utterance.volume=1;
+
+    const speak=()=>{
+      try { synth.speak(utterance); }
+      catch (_) { return false; }
+      return true;
+    };
+
+    // Chromium can swallow an utterance spoken in the exact same task as cancel().
+    // A zero-delay task only applies after an interruption; first-click speech is immediate.
+    if(hadSpeech) setTimeout(speak,0); else speak();
+    return true;
   };
 
   const state=storage.json('actuarial_access',{});

@@ -21,6 +21,6 @@
   if(next) next.addEventListener('click',()=>{if(!deck.length)return;i=(i+1)%deck.length;back=false;render();});
   if(prev) prev.addEventListener('click',()=>{if(!deck.length)return;i=(i-1+deck.length)%deck.length;back=false;render();});
   if(shuffleBtn) shuffleBtn.addEventListener('click',()=>{deck=shuffled(deck);i=0;back=false;render();});
-  if(listenBtn) listenBtn.addEventListener('click',()=>{if(deck.length)speakWord(deck[i].w+'. '+deck[i].ex);});
+  if(listenBtn) listenBtn.addEventListener('click',()=>{if(deck.length)speakWord(deck[i].w);});
   render();
 })();

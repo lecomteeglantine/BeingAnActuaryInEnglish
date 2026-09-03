@@ -1,90 +1,86 @@
-BEING AN ACTUARY IN ENGLISH — QA / CORRECTION REPORT
-======================================================
-Audit and correction pass: 3 September 2026
-Target deployment: GitHub Pages / BeingAnActuaryInEnglish
+BEING AN ACTUARY IN ENGLISH — CORRECTION / FULL QA
+Date: 3 September 2026
+Target: https://lecomteeglantine.github.io/BeingAnActuaryInEnglish/
 
-REQUESTED TEXT CHANGES
-- Removed the former teacher-specific student subtitle everywhere, including page headers, titles/metadata and the PWA manifest.
-- Replaced the site credit on all 22 HTML pages with exactly:
+REQUESTED COURSE RESET
+- M1 and M2 invented themes removed.
+- All invented objectives, vocabulary lists, speaking tasks, useful-language blocks and course-resource descriptions removed from the 10 session pages.
+- M1 and M2 hubs now contain neutral Session 1–5 placeholders only.
+- Session pages now contain only a neutral placeholder so the course can be built progressively.
+- M1/M2 descriptions on the home page were neutralised.
+
+AUDIO / PRONUNCIATION PERFORMANCE
+Problem found in the deployed code:
+- speechSynthesis.getVoices() was called again on every Listen click.
+- speechSynthesis.cancel() was called unconditionally on every click.
+- Dictionary, Word of the Day and Flashcards pronounced the term plus its whole example sentence.
+- Listen & Choose added an unnecessary 180 ms delay before speaking.
+- Voice selection did not prefer a local/on-device voice, so a slower remote voice could be selected.
+
+Corrections:
+- Voice list is cached at page initialisation.
+- One lightweight refresh is allowed at the first real user interaction for browsers that load voices late.
+- Local en-GB voices are preferred before remote voices.
+- cancel() is used only when speech is actually active or queued.
+- Dictionary, Word of the Day and Flashcards pronounce the term only.
+- Listen & Choose starts speech immediately; artificial 180 ms delay removed.
+- Interrupted speech is restarted safely on Chromium without adding delay to first-click speech.
+
+PWA / UPDATE CACHE
+- Service-worker cache version bumped to r4.
+- HTML, JS, CSS, vocabulary data and manifest now use network-first behaviour when online, with cache as offline fallback.
+- Old cache versions are deleted on activation.
+- Service-worker registration uses updateViaCache:'none' and requests an update after registration.
+- This reduces the risk of students remaining on an obsolete GitHub Pages version after a deployment.
+
+CONTENT / LABEL CLEANUP
+- Residual “Mrs Lecomte's Students” label in the phone mock-up removed; now “M1 & M2”.
+- Residual “Mrs Lecomte's dictionary” wording removed; now “the site dictionary”.
+- Footer remains exactly:
   Created by Mrs Lecomte and Mr Lemoine, with the help of Chat GPT
-- Reworded teacher-specific labels such as “Mrs Lecomte's resources” to neutral “Course resources”.
-- Updated the home-page creator line to Mrs Lecomte & Mr Lemoine.
 
-BUGS / RISKS FOUND AND FIXED
-1. PWA stale-version risk
-   - Reworked the service worker so page navigations prefer the network and fall back to cache offline.
-   - Static assets use cache + network refresh instead of blindly serving an old build forever.
-   - Added skipWaiting() and clients.claim() and bumped the cache version.
-   - Restricted runtime caching to same-origin GET requests.
-   - Failed asset requests no longer receive index.html as fake CSS/JS responses.
+STATIC QA
+- 22 HTML pages checked.
+- 0 broken local href/src references.
+- 0 duplicate HTML IDs.
+- 0 missing form labels found.
+- 0 broken aria-controls / aria-labelledby references.
+- Main navigation consistent on all 22 pages.
+- Footer credit correct on all 22 pages.
+- 0 old invented M1/M2 theme titles remaining.
+- 0 residual “Mrs Lecomte's …” / “for Mrs Lecomte …” wording in deployed pages.
+- manifest.webmanifest parses correctly and all referenced icons exist.
+- service-worker precache list: 36 valid resources.
+- JavaScript syntax check: PASS for all JS files.
+- CSS brace validation: PASS.
+- Vocabulary data: 79 terms, all required fields present, 0 duplicate English terms.
 
-2. Inconsistent PWA metadata
-   - Added theme colour, description, manifest, favicon and Apple touch icon consistently to all 22 pages.
-   - Added PWA registration to pages that previously could not register the service worker when visited first.
-   - Neutralised the manifest app name to “Actuarial English” and added explicit scope.
+BROWSER / INTERACTION QA
+Chromium render-and-interaction tests were run with the real HTML/CSS/JS injected locally:
+- 22/22 desktop pages: no console/page errors detected, no body horizontal overflow.
+- 22/22 mobile pages (390 px): no console/page errors detected, no body horizontal overflow.
+- Home install-help control: PASS.
+- Word of the Day randomisation: PASS.
+- Dictionary search/filter: PASS.
+- Dictionary count: 79 terms.
+- Flashcard flip: PASS.
+- Flashcard deck: 79 cards.
+- Notebook saved-term rendering: PASS.
+- Notebook note loading: PASS.
+- Games: Match It / Definition Detective / French↔English / Listen & Choose / Spell It / Odd One Out all open correctly.
+- M1 hub titles: Session 1 / 2 / 3 / 4 / 5 only.
+- M2 hub titles: Session 1 / 2 / 3 / 4 / 5 only.
 
-3. Accessibility inconsistencies
-   - Added a working Skip to main content link and main#main target to every page.
-   - Added accessible labels to unlabelled search/filter/notes controls.
-   - Added aria-current to the active navigation item.
-   - Improved the accessibility panel with aria-expanded, Escape-to-close and click-outside closing.
-   - Added clear :focus-visible styling and automatic prefers-reduced-motion support.
-   - Added keyboard semantics/labels to flashcards.
-   - Disabled Previous/Next session endpoints are no longer keyboard-actionable links.
+AUDIO MOCK QA
+Three consecutive Dictionary Listen actions produced:
+- getVoices calls: 2 total (initial load + first-interaction refresh), NOT once per word.
+- speak calls: 3.
+- cancel calls while idle: 0.
+- spoken strings: “actuary”, “premium”, “claim” only.
 
-4. Mobile navigation
-   - On small screens the main navigation now scrolls horizontally instead of wrapping into a large block.
-   - Removed the fixed brand minimum width on narrow screens.
-   - Improved flashcard sizing and footer clearance on phones.
+HTTP FILE QA
+- 37 deployable resources requested from a local HTTP server.
+- 37/37 returned HTTP 200.
 
-5. Games reliability
-   - Fixed a real answer-collision case: “coverage” and “hedging” both translate as “couverture”; duplicate visible MCQ labels are now excluded from the same question.
-   - Correct answers are now marked by item identity rather than matching button text.
-   - Category selection now keeps the target words inside the selected category instead of silently falling back to all categories.
-   - Locked category/question controls during a round so a mid-game change cannot corrupt later questions.
-   - Replaced biased array sorting with Fisher-Yates shuffling.
-   - Disabled answered choices to prevent double scoring.
-   - Speech is cancelled when leaving an audio round.
-   - “Questions” is now labelled “Maximum questions” because small categories can contain fewer terms than the selected maximum.
-
-6. Dictionary / notebook resilience
-   - Hardened localStorage reads against malformed or unavailable browser storage.
-   - Dictionary save buttons update without rerendering the whole page and losing focus.
-   - Added a clear no-results state.
-   - Notebook removal/listening controls are explicit and keyboard accessible.
-   - Clearing notebook notes now asks for confirmation when notes are non-empty.
-
-7. Flashcards
-   - Added the missing Listen control promised by the site copy.
-   - Added safe handling for an unexpectedly empty vocabulary file.
-   - Improved shuffle quality and accessibility labels.
-
-8. Session vocabulary integrity
-   - Found five session tags that did not map to exact dictionary entries:
-     data; distribution; generalised linear model; recommendation; materiality.
-   - Added all five as proper dictionary entries with British-English IPA, French translation, definition and contextual example.
-   - Dictionary now contains 79 complete entries.
-
-9. 404 / utility pages
-   - 404 now has the normal navigation, footer, accessibility tools and PWA registration.
-   - Privacy and Accessibility pages now use the same technical shell as the rest of the site.
-
-FINAL AUTOMATED QA
-- HTML pages: 22
-- Dictionary entries: 79
-- Requested old wording remaining: 0 occurrences
-- Exact new credit: present on 22 / 22 pages
-- Broken local links/assets: 0
-- Duplicate HTML IDs: 0
-- Unlabelled form controls: 0
-- Disabled navigation anchors with live href: 0
-- Session Previous/Next chains: valid for M1 and M2
-- Session vocabulary links missing exact dictionary entry: 0
-- JavaScript syntax: all files pass node --check
-- manifest.webmanifest: valid JSON
-- Service-worker core targets: all present
-- CSS parser errors (tinycss2): 0
-- Local HTTP smoke test: all 37 deployable local files returned HTTP 200
-
-ENVIRONMENT NOTE
-The container's Chromium build hangs because of its DBus/zygote environment, including under Xvfb, so screenshot-based browser automation could not be used reliably. The final pass therefore combines source audit, HTML/accessibility checks, JavaScript syntax checks, CSS parsing, link/asset verification, service-worker target verification and local HTTP smoke testing.
+KNOWN PLATFORM LIMITATION
+Actual first-ever speech-engine startup time is controlled partly by the browser/operating system. The site now removes avoidable delays and prioritises a local British voice, but it cannot force an operating-system speech engine itself to initialise instantly on every device.

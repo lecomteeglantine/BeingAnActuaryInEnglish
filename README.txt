@@ -1,40 +1,27 @@
 BEING AN ACTUARY IN ENGLISH
 ============================
 
-GITHUB PAGES — READY TO UPLOAD
+GITHUB PAGES — CORRECTED VERSION
 
-Live repository/site target:
+Target site:
 https://lecomteeglantine.github.io/BeingAnActuaryInEnglish/
 
 UPLOAD
 1. Unzip this archive.
-2. Upload the CONTENTS of the folder to the root of the BeingAnActuaryInEnglish GitHub repository.
-3. Replace the existing files when GitHub asks.
+2. Upload ALL contents to the root of the BeingAnActuaryInEnglish GitHub repository.
+3. Replace the existing files.
 4. Keep GitHub Pages configured for the main branch / root.
-5. After deployment, refresh the site once. The new service worker is designed to take control immediately and clear the previous cache version.
+5. After GitHub Pages finishes deploying, refresh the site. The new service worker is configured to update aggressively and clear the previous cache version.
 
-SITE ORGANISATION
-- Home
-- Dictionary (79 terms)
-- M1 > 5 course-session pages
-- M2 > 5 course-session pages
-- Grammar
-- Pronunciation
-- Games (6 modes)
-- Flashcards
-- Personal notebook
-- Privacy / GDPR
-- Accessibility
-- PWA / offline cache
+IMPORTANT M1 / M2 STATUS
+- M1: five neutral session placeholders; no theme or lesson content assigned.
+- M2: five neutral session placeholders; no theme or lesson content assigned.
+- The actual course will be built progressively.
 
-TECHNICAL
-- Static HTML/CSS/JS: no framework and no build step.
-- No account, analytics, advertising or remote student database.
-- Notebook, saved terms, game best scores and accessibility preferences use localStorage only.
-- Speech synthesis requests British English when an en-GB voice is available.
-- Service worker provides offline access after resources have been cached.
+MAIN TECHNICAL FIX
+Pronunciation now caches the available voices, prioritises a local British English voice, avoids unnecessary speech cancellation, and speaks only the selected word in Dictionary / Word of the Day / Flashcards.
 
-See QA-REPORT.txt for the complete correction audit.
+See QA-REPORT.txt for the full audit.
 
 CREDIT
 Created by Mrs Lecomte and Mr Lemoine, with the help of Chat GPT

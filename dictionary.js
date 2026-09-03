@@ -23,7 +23,7 @@
       const left=document.createElement('div'); addText(left,'h3',v.w); addText(left,'p',v.ipa,'ipa'); top.appendChild(left); addText(top,'span',v.cat,'tag'); card.appendChild(top);
       addText(card,'p',v.def); addText(card,'p','🇫🇷 '+v.fr,'translation'); const ex=addText(card,'p',v.ex,'muted'); ex.innerHTML='<em></em>'; ex.querySelector('em').textContent=v.ex;
       const actions=document.createElement('div'); actions.className='term-actions';
-      const listen=document.createElement('button'); listen.type='button'; listen.className='mini-btn'; listen.textContent='🔊 Listen'; listen.setAttribute('aria-label','Listen to '+v.w+' in British English'); listen.addEventListener('click',()=>speakWord(v.w+'. '+v.ex));
+      const listen=document.createElement('button'); listen.type='button'; listen.className='mini-btn'; listen.textContent='🔊 Listen'; listen.setAttribute('aria-label','Listen to '+v.w+' in British English'); listen.addEventListener('click',()=>speakWord(v.w));
       const save=document.createElement('button'); save.type='button'; save.className='mini-btn'; const on=s.includes(v.w); save.textContent=on?'★ Saved':'☆ Save'; save.setAttribute('aria-pressed',String(on)); save.addEventListener('click',()=>toggle(v.w,save));
       actions.append(listen,save); card.appendChild(actions); grid.appendChild(card);
     });
