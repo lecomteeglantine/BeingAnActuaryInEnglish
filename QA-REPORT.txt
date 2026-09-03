@@ -1,0 +1,30 @@
+ACTUARIAL ENGLISH — QA REPORT
+==============================
+
+Final V1 checks completed on 3 September 2026.
+
+STRUCTURE
+- 22 HTML pages.
+- M1: 5 clickable course-session pages.
+- M2: 5 clickable course-session pages.
+- Dictionary: 74 actuarial English terms.
+- Games: 6 revision modes.
+- Flashcards + personal notebook.
+- Grammar + pronunciation review.
+- Privacy/GDPR + accessibility pages.
+- PWA/offline service worker.
+
+STATIC QA
+- Broken local links/assets: NONE.
+- Duplicate HTML IDs: NONE.
+- JavaScript syntax: OK.
+- manifest.webmanifest: VALID.
+- Service-worker cache targets: 36 checked.
+- CSS braces: BALANCED.
+- Local HTTP smoke test: index, M1/M2, session, dictionary and games returned HTTP 200.
+
+BROWSER-ENVIRONMENT NOTE
+Chromium is installed in the sandbox but its headless process does not terminate reliably because of the container DBus/zygote environment. For that reason the final automated QA is static + HTTP rather than screenshot-based. The responsive CSS includes desktop/tablet/mobile breakpoints and all local dependencies were verified.
+
+ISSUES FOUND
+- None in the automated checks.
