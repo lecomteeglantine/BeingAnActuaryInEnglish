@@ -117,3 +117,12 @@ UPDATE — M1 SESSION 1 INDIVIDUAL / MISSION 1
 - Activity is deterministic and mobile-safe: fixed terms, fixed answers, no randomisation.
 - Service-worker cache bumped to r9-client-brief so GitHub Pages updates propagate cleanly.
 - Final static QA: 24 HTML pages; 0 missing local links/assets; 0 duplicate IDs; all top-level JS passes node --check; manifest valid; 51 PWA refs present.
+
+=== 2026-09-03 · M1 SESSION 1 FINAL-TASK REVISION ===
+- Removed the individual-task instruction asking students to explain the profession aloud.
+- Removed “Make It Sound Human” and its self-check from active code.
+- Added “The Jargon Rescue”: students repair a jargon-heavy board slide through four deterministic editing decisions.
+- Added a board-ready final explanation and client approval ending.
+- No timer and no compulsory solo speaking in the final individual task.
+- Session storage key bumped to v4 so stale completion state from the previous Mission 6 cannot bypass the new task.
+- PWA cache bumped to r10-jargon-rescue.

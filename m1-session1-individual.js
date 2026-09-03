@@ -6,7 +6,7 @@
   const stageDots=[...document.querySelectorAll('#stageDots li')];
   const soundToggle=document.getElementById('soundToggle');
   const resetButton=document.getElementById('resetMission');
-  const STORAGE_KEY='actuarial_m1_s1_individual_v3';
+  const STORAGE_KEY='actuarial_m1_s1_individual_v4';
   let soundOn=true;
   let audioCtx=null;
   let currentStage=1;
@@ -275,53 +275,86 @@
       }
     ];
 
+    const rescueSteps=[
+      {
+        question:'1 · Replace the jargon-heavy opening',
+        options:[
+          ['Actuaries leverage stochastic frameworks to optimise contingent liabilities.',false],
+          ['Actuaries help organisations understand financial risk when the future is uncertain.',true],
+          ['Actuaries calculate numbers so managers do not have to.',false]
+        ],
+        feedback:'Clear and accurate: it explains the purpose of the job without hiding behind technical vocabulary.'
+      },
+      {
+        question:'2 · Explain what they actually do',
+        options:[
+          ['They use data and models to explore possible outcomes and their financial consequences.',true],
+          ['They remove uncertainty from business decisions.',false],
+          ['They mainly produce spreadsheets and regulatory documents.',false]
+        ],
+        feedback:'Good. This keeps the core actuarial process but uses language a non-specialist can understand.'
+      },
+      {
+        question:'3 · Add one useful example',
+        options:[
+          ['For example, they can analyse claims to help an insurer decide what premiums are sustainable.',true],
+          ['For example, they can predict exactly who will make a claim next year.',false],
+          ['For example, they choose which insurance advertisements will perform best.',false]
+        ],
+        feedback:'Exactly. A concrete example makes the explanation credible and easy to remember.'
+      },
+      {
+        question:'4 · Finish with the value of the profession',
+        options:[
+          ['In short, actuaries turn information about risk into better-informed decisions.',true],
+          ['In short, actuaries guarantee that companies will not lose money.',false],
+          ['In short, actuaries replace managers when decisions become difficult.',false]
+        ],
+        feedback:'That is the message the client needs: actuarial work supports decisions rather than pretending to eliminate uncertainty.'
+      }
+    ];
+
     stageContainer.innerHTML=stageFrame('10:00 · CLIENT MEETING','The Client Has a Question','Mission 6 of 6 · final client task','',`
       <div class="client-meeting-visual" aria-hidden="true">
         <div class="client-visual-person client"></div><div class="client-visual-table"></div><div class="client-visual-person actuary"></div>
         <div class="client-visual-screen"><span></span><span></span><span></span><i></i></div>
       </div>
       <div class="client-question"><span>CLIENT</span><blockquote>“I understand the numbers… but what exactly does an actuary bring to a company?”</blockquote></div>
-      <p class="task-prompt">Build a clear answer. Choose the best idea at each step. If a choice is too vague, too technical or simply wrong, try again.</p>
+      <p class="task-prompt">Build a clear answer. Choose the best idea at each step. If a choice is vague, misleading or wrong, try again.</p>
       <div id="clientDecisions" class="client-decisions"></div>
       <div id="builtAnswer" class="built-answer" hidden>
-        <p class="module-number">YOUR PROFESSIONAL ANSWER</p>
+        <p class="module-number">YOUR FIRST DRAFT</p>
         <p><strong>An actuary uses data, statistics and models to understand risk and uncertainty. They estimate possible financial consequences and help organisations make informed decisions. For example, an actuary may analyse claims data to help an insurer set sustainable premiums.</strong></p>
         <button type="button" class="mini-btn" id="hearBuiltAnswer">🔊 Hear this answer</button>
       </div>
-      <div id="humanChallenge" class="human-challenge" hidden>
-        <div class="client-question client-followup"><span>CLIENT</span><blockquote>“That sounds very technical. Can you explain it in normal English?”</blockquote></div>
+      <div id="jargonRescue" class="human-challenge" hidden>
+        <div class="client-question client-followup"><span>CLIENT</span><blockquote>“Good. But this slide goes to the board in five minutes — and the draft my team wrote is impossible to understand. Can you rescue it?”</blockquote></div>
         <div class="plain-english-task">
-          <p class="module-number">MAKE IT SOUND HUMAN</p>
-          <h3>Now explain the job aloud in your own words.</h3>
-          <p>Imagine you are talking to someone who knows nothing about actuarial science. Keep it <strong>clear, concrete and jargon-free</strong>. Give one simple example. There is <strong>no timer</strong>.</p>
-          <div class="support-words" aria-label="Pronunciation support">
-            ${['actuary','actuarial','risk','data','future','decisions'].map(w=>`<button type="button" data-say="${w}" aria-label="Listen to ${w}">🔊 ${w}</button>`).join('')}
-          </div>
-          <div class="stage-instruction"><strong>Helpful idea</strong><span>You do not need to sound like a textbook. Explain what the job is useful <em>for</em>.</span></div>
-          <div class="stage-actions"><button type="button" class="primary-link" id="humanDone">I’ve explained it aloud →</button></div>
+          <p class="module-number">THE JARGON RESCUE</p>
+          <h3>Fix the board slide before it goes live.</h3>
+          <p>The draft below is technically impressive but useless for a non-specialist audience.</p>
+          <div class="model-answer"><p><strong>BAD DRAFT</strong></p><p>“Actuarial professionals leverage stochastic methodologies, probabilistic frameworks and liability projections to optimise risk-adjusted organisational outcomes.”</p></div>
+          <div class="stage-instruction"><strong>Your task</strong><span>Choose the clearest replacement at each step. Your final version must explain the job accurately without unnecessary jargon.</span></div>
+          <div id="rescueSteps" class="client-decisions"></div>
         </div>
       </div>
-      <div id="selfCheck" class="self-check" hidden>
-        <h3>Quick self-check</h3>
-        <label><input type="checkbox"> I explained risk or uncertainty in simple words.</label>
-        <label><input type="checkbox"> I explained why data or models are useful.</label>
-        <label><input type="checkbox"> I explained how actuaries help people make decisions.</label>
-        <label><input type="checkbox"> I gave one concrete example.</label>
-        <label><input type="checkbox"> I avoided unnecessary jargon.</label>
-        <label><input type="checkbox"> I pronounced <em>actuary</em> and <em>actuarial</em> carefully.</label>
-        <div class="model-answer"><button type="button" class="secondary-btn" id="modelAnswer">🔊 Hear a clear example</button><p>An actuary looks at data to understand what might happen in the future and what it could cost. They help organisations prepare for risk and make better decisions. For example, they can help an insurance company decide how much it needs to charge so it can pay future claims.</p></div>
-        <div class="stage-actions"><button type="button" class="primary-link" id="clientReaction">See the client’s reaction →</button></div>
+      <div id="rescuedSlide" class="built-answer" hidden>
+        <p class="module-number">BOARD-READY VERSION</p>
+        <h3>What actuaries bring to an organisation</h3>
+        <p><strong>Actuaries help organisations understand financial risk when the future is uncertain. They use data and models to explore possible outcomes and their financial consequences. For example, they can analyse claims to help an insurer decide what premiums are sustainable. In short, actuaries turn information about risk into better-informed decisions.</strong></p>
+        <div class="stage-actions"><button type="button" class="secondary-btn" id="hearRescuedSlide">🔊 Hear the final version</button><button type="button" class="primary-link" id="sendToBoard">Send to the board →</button></div>
       </div>
       <div id="clientEnding" class="client-ending" hidden>
-        <div class="client-question client-success"><span>CLIENT</span><blockquote>“Right — so you don’t predict the future. You help people make better decisions when the future is uncertain.”</blockquote></div>
-        <p class="exactly">Exactly.</p>
-        <div class="completion-badges"><span>🔎 Risk Spotter</span><span>📊 Data Detective</span><span>🧠 Uncertainty Analyst</span><span>💬 Clear Communicator</span></div>
-        <div class="mission-complete"><strong>FIRST DAY COMPLETED</strong><span>You can explain what an actuary does — without hiding behind jargon.</span></div>
+        <div class="client-question client-success"><span>CLIENT</span><blockquote>“Perfect. Clear, useful and accurate — and now everyone in the room will understand why actuarial work matters.”</blockquote></div>
+        <div class="completion-badges"><span>🔎 Risk Spotter</span><span>📊 Data Detective</span><span>🧠 Uncertainty Analyst</span><span>✂️ Jargon Cutter</span></div>
+        <div class="mission-complete"><strong>FIRST DAY COMPLETED</strong><span>You can recognise what actuaries do and explain their value clearly to a non-specialist audience.</span></div>
       </div>`);
 
     const wrap=document.getElementById('clientDecisions');
+    const rescueWrap=document.getElementById('rescueSteps');
     const saved=getState();
     let step=Math.max(0,Math.min(4,Number(saved.clientStep)||0));
+    let rescueStep=Math.max(0,Math.min(4,Number(saved.rescueStep)||0));
 
     decisions.forEach((d,i)=>{
       const article=document.createElement('article');
@@ -332,27 +365,40 @@
       wrap.appendChild(article);
     });
 
-    function restoreCompletedDecisions(){
-      [...wrap.querySelectorAll('.client-decision')].forEach((article,i)=>{
-        if(i<step){
+    rescueSteps.forEach((d,i)=>{
+      const article=document.createElement('article');
+      article.className='client-decision';
+      article.dataset.rescueIndex=i;
+      article.hidden=i>rescueStep;
+      article.innerHTML=`<div class="client-decision-head"><span>${i+1}</span><h3>${d.question}</h3></div><div class="client-decision-options">${d.options.map((o,j)=>`<button type="button" data-rescue-option="${j}">${o[0]}</button>`).join('')}</div><p class="inline-feedback" aria-live="polite"></p>`;
+      rescueWrap.appendChild(article);
+    });
+
+    function restoreSet(container,data,current,dataAttribute){
+      [...container.querySelectorAll('.client-decision')].forEach((article,i)=>{
+        if(i<current){
           article.hidden=false;
-          const correctIndex=decisions[i].options.findIndex(o=>o[1]);
+          const correctIndex=data[i].options.findIndex(o=>o[1]);
           article.querySelectorAll('button').forEach((b,j)=>{ b.disabled=true; if(j===correctIndex)b.classList.add('correct'); });
-          article.querySelector('.inline-feedback').innerHTML=`<strong>Good choice.</strong> ${decisions[i].feedback}`;
-        }else if(i===step && step<4){ article.hidden=false; }
+          article.querySelector('.inline-feedback').innerHTML=`<strong>Good choice.</strong> ${data[i].feedback}`;
+        }else if(i===current && current<4){ article.hidden=false; }
       });
     }
 
     function revealFinalBlocks(){
-      const built=document.getElementById('builtAnswer');
-      const human=document.getElementById('humanChallenge');
-      if(step===4){ built.hidden=false; human.hidden=false; }
-      if(saved.humanDone || saved.completed) document.getElementById('selfCheck').hidden=false;
-      if(saved.humanDone || saved.completed){ const btn=document.getElementById('humanDone'); if(btn)btn.hidden=true; }
-      if(saved.completed){ document.getElementById('clientEnding').hidden=false; const r=document.getElementById('clientReaction'); if(r)r.hidden=true; }
+      if(step===4){
+        document.getElementById('builtAnswer').hidden=false;
+        document.getElementById('jargonRescue').hidden=false;
+      }
+      if(rescueStep===4 || saved.completed) document.getElementById('rescuedSlide').hidden=false;
+      if(saved.completed){
+        document.getElementById('clientEnding').hidden=false;
+        const send=document.getElementById('sendToBoard'); if(send)send.hidden=true;
+      }
     }
 
-    restoreCompletedDecisions();
+    restoreSet(wrap,decisions,step,'option');
+    restoreSet(rescueWrap,rescueSteps,rescueStep,'rescue-option');
     revealFinalBlocks();
 
     wrap.addEventListener('click',e=>{
@@ -380,33 +426,53 @@
       if(next){ next.hidden=false; next.scrollIntoView({behavior:'smooth',block:'center'}); }
       else{
         document.getElementById('builtAnswer').hidden=false;
-        document.getElementById('humanChallenge').hidden=false;
+        document.getElementById('jargonRescue').hidden=false;
         document.getElementById('builtAnswer').scrollIntoView({behavior:'smooth',block:'center'});
+        playTone('unlock');
+      }
+    });
+
+    rescueWrap.addEventListener('click',e=>{
+      const btn=e.target.closest('button[data-rescue-option]');
+      if(!btn)return;
+      const article=btn.closest('.client-decision');
+      const i=Number(article.dataset.rescueIndex);
+      if(i!==rescueStep)return;
+      const choice=Number(btn.dataset.rescueOption);
+      const d=rescueSteps[i];
+      const feedback=article.querySelector('.inline-feedback');
+      if(!d.options[choice][1]){
+        btn.classList.add('wrong');
+        feedback.innerHTML='<strong>Not the best board-room version.</strong> Keep the meaning, but remove exaggeration, jargon and false certainty.';
+        playTone('bad');
+        return;
+      }
+      article.querySelectorAll('button').forEach(b=>b.disabled=true);
+      btn.classList.add('correct');
+      feedback.innerHTML=`<strong>Good edit.</strong> ${d.feedback}`;
+      playTone('ok');
+      rescueStep++;
+      saveState({rescueStep});
+      const next=rescueWrap.querySelector(`.client-decision[data-rescue-index="${rescueStep}"]`);
+      if(next){ next.hidden=false; next.scrollIntoView({behavior:'smooth',block:'center'}); }
+      else{
+        document.getElementById('rescuedSlide').hidden=false;
+        document.getElementById('rescuedSlide').scrollIntoView({behavior:'smooth',block:'center'});
         playTone('unlock');
       }
     });
 
     const builtAudio=document.getElementById('hearBuiltAnswer');
     if(builtAudio) builtAudio.addEventListener('click',()=>say('An actuary uses data, statistics and models to understand risk and uncertainty. They estimate possible financial consequences and help organisations make informed decisions. For example, an actuary may analyse claims data to help an insurer set sustainable premiums.'));
-    document.querySelectorAll('.support-words button').forEach(b=>b.addEventListener('click',()=>say(b.dataset.say)));
 
-    const humanDone=document.getElementById('humanDone');
-    if(humanDone) humanDone.addEventListener('click',()=>{
-      document.getElementById('selfCheck').hidden=false;
-      humanDone.hidden=true;
-      saveState({humanDone:true});
-      playTone('ok');
-      document.getElementById('selfCheck').scrollIntoView({behavior:'smooth',block:'center'});
-    });
+    const finalAudio=document.getElementById('hearRescuedSlide');
+    if(finalAudio) finalAudio.addEventListener('click',()=>say('Actuaries help organisations understand financial risk when the future is uncertain. They use data and models to explore possible outcomes and their financial consequences. For example, they can analyse claims to help an insurer decide what premiums are sustainable. In short, actuaries turn information about risk into better-informed decisions.'));
 
-    const model=document.getElementById('modelAnswer');
-    if(model) model.addEventListener('click',()=>say('An actuary looks at data to understand what might happen in the future and what it could cost. They help organisations prepare for risk and make better decisions. For example, they can help an insurance company decide how much it needs to charge so it can pay future claims.'));
-
-    const reaction=document.getElementById('clientReaction');
-    if(reaction) reaction.addEventListener('click',()=>{
+    const send=document.getElementById('sendToBoard');
+    if(send) send.addEventListener('click',()=>{
       document.getElementById('clientEnding').hidden=false;
-      reaction.hidden=true;
-      saveState({completed:true,humanDone:true,clientStep:4});
+      send.hidden=true;
+      saveState({completed:true,clientStep:4,rescueStep:4});
       playTone('unlock');
       document.getElementById('clientEnding').scrollIntoView({behavior:'smooth',block:'center'});
     });
