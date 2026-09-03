@@ -6,11 +6,20 @@
   const stageDots=[...document.querySelectorAll('#stageDots li')];
   const soundToggle=document.getElementById('soundToggle');
   const resetButton=document.getElementById('resetMission');
-  const STORAGE_KEY='actuarial_m1_s1_individual_v1';
+  const STORAGE_KEY='actuarial_m1_s1_individual_v2';
   let soundOn=true;
   let audioCtx=null;
   let currentStage=1;
   let timerId=null;
+
+  // A deliberate new launch from the Session 1 overview starts clean on shared
+  // classroom devices. A reload/back-forward keeps the current student's work.
+  try{
+    const navEntry=performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    const navType=navEntry && navEntry.type;
+    const refPath=document.referrer ? new URL(document.referrer).pathname : '';
+    if(navType==='navigate' && /\/m1-day1\.html$/.test(refPath)) sessionStorage.removeItem(STORAGE_KEY);
+  }catch(_){}
 
   const pronunciation=[
     {word:'actuary',ipa:'/ˈæk.tʃu.ə.ri/',options:['ACT-u-ar-y','act-u-AR-y'],correct:0,note:'Stress the first syllable.'},
@@ -81,7 +90,7 @@
 
   function updateProgress(){
     progressFill.style.width=`${((currentStage-1)/5)*100}%`;
-    stageDots.forEach((li,i)=>{ li.classList.toggle('active',i===currentStage-1); li.classList.toggle('done',i<currentStage-1); });
+    stageDots.forEach((li,i)=>{ const active=i===currentStage-1; li.classList.toggle('active',active); li.classList.toggle('done',i<currentStage-1); if(active) li.setAttribute('aria-current','step'); else li.removeAttribute('aria-current'); });
     saveState();
   }
 
@@ -96,7 +105,7 @@
     stageContainer.innerHTML=stageFrame('08:45 · WELCOME TO THE RISK FLOOR','Collect your professional badge','Mission 1 of 6 · about 3 minutes','',`
       <div class="scene-message"><div class="avatar">NS</div><div><strong>Welcome to Northstar.</strong><p>Before your first client meeting, you need to prove that you can speak the language of risk. Start with the eight words below. Listen, then say each word aloud.</p></div></div>
       <div class="vocab-pass-grid">${cards}</div>
-      <div class="stage-instruction"><strong>Your task</strong><span>Listen to every word at least once. Then say: <em>“An actuary uses data and models to understand risk and uncertainty.”</em></span></div>
+      <div class="stage-instruction"><strong>Your task</strong><span>Use the Listen buttons to practise the words you need. Then say: <em>“An actuary uses data and models to understand risk and uncertainty.”</em></span></div>
       <div class="stage-actions"><button type="button" class="primary-link" id="completeWelcome">I’m ready. Give me my badge →</button></div>`);
     document.getElementById('completeWelcome').addEventListener('click',()=>{ playTone('ok'); nextStage(); });
   }
@@ -196,12 +205,20 @@
       <div id="selfCheck" class="self-check" hidden><h3>Self-check</h3><label><input type="checkbox"> I explained what an actuary does.</label><label><input type="checkbox"> I mentioned risk or uncertainty.</label><label><input type="checkbox"> I explained why data or models are used.</label><label><input type="checkbox"> I mentioned decision-making.</label><label><input type="checkbox"> I gave a concrete example.</label><label><input type="checkbox"> I pronounced <em>actuary</em> and <em>actuarial</em> carefully.</label><div class="model-answer"><button type="button" class="secondary-btn" id="modelAnswer">🔊 Listen to a model answer</button><p>An actuary uses data, mathematics and statistical models to understand financial risk and uncertainty. Actuaries estimate possible future outcomes, explain their financial impact and help organisations make informed decisions. For example, an actuary may analyse claims data to help an insurer set sustainable premiums.</p></div><div class="completion-badges"><span>🔎 Risk Spotter</span><span>📊 Data Detective</span><span>🧠 Uncertainty Analyst</span><span>🎤 Clear Communicator</span></div><div class="mission-complete"><strong>FIRST DAY COMPLETED</strong><span>You are ready to explain what an actuary actually does.</span></div></div>`);
     document.querySelectorAll('.support-words button').forEach(b=>b.addEventListener('click',()=>say(b.dataset.say)));
     const start=document.getElementById('startTimer');
-    start.addEventListener('click',()=>{
-      let left=60; start.textContent='I’m done'; start.classList.add('timer-running');
-      const finish=()=>{ if(timerId){clearInterval(timerId);timerId=null;} document.getElementById('timerValue').textContent='0'; document.getElementById('timerBar').style.width='0%'; document.getElementById('selfCheck').hidden=false; start.hidden=true; playTone('unlock'); saveState({completed:true}); };
-      start.onclick=finish;
-      timerId=setInterval(()=>{ left--; document.getElementById('timerValue').textContent=left; document.getElementById('timerBar').style.width=`${(left/60)*100}%`; if(left<=0)finish(); else if(left<=5) playTone('tick'); },1000);
-    },{once:true});
+    const saved=getState();
+    if(saved.completed){
+      document.getElementById('timerValue').textContent='0';
+      document.getElementById('timerBar').style.width='0%';
+      document.getElementById('selfCheck').hidden=false;
+      start.hidden=true;
+    }else{
+      start.addEventListener('click',()=>{
+        let left=60; let finished=false; start.textContent='I’m done'; start.classList.add('timer-running');
+        const finish=()=>{ if(finished)return; finished=true; if(timerId){clearInterval(timerId);timerId=null;} document.getElementById('timerValue').textContent='0'; document.getElementById('timerBar').style.width='0%'; document.getElementById('selfCheck').hidden=false; start.hidden=true; playTone('unlock'); saveState({completed:true}); };
+        start.onclick=finish;
+        timerId=setInterval(()=>{ left--; document.getElementById('timerValue').textContent=left; document.getElementById('timerBar').style.width=`${Math.max(0,(left/60)*100)}%`; if(left<=0)finish(); else if(left<=5) playTone('tick'); },1000);
+      },{once:true});
+    }
     document.getElementById('modelAnswer').addEventListener('click',()=>say('An actuary uses data, mathematics and statistical models to understand financial risk and uncertainty. Actuaries estimate possible future outcomes, explain their financial impact and help organisations make informed decisions. For example, an actuary may analyse claims data to help an insurer set sustainable premiums.'));
   }
 
@@ -211,8 +228,8 @@
     stageContainer.querySelectorAll('.mission-listen').forEach(b=>b.addEventListener('click',()=>say(b.dataset.say)));
   }
 
-  soundToggle.addEventListener('click',()=>{ soundOn=!soundOn; soundToggle.setAttribute('aria-pressed',String(soundOn)); soundToggle.textContent=soundOn?'🔊 Sound on':'🔇 Sound off'; if(!soundOn && 'speechSynthesis' in window) window.speechSynthesis.cancel(); });
-  resetButton.addEventListener('click',()=>{ if(timerId)clearInterval(timerId); try{sessionStorage.removeItem(STORAGE_KEY);}catch(_){} currentStage=1; renderStage(); window.scrollTo({top:0,behavior:'smooth'}); });
+  soundToggle.addEventListener('click',()=>{ soundOn=!soundOn; soundToggle.setAttribute('aria-pressed',String(soundOn)); soundToggle.textContent=soundOn?'🔊 Sound on':'🔇 Sound off'; if(!soundOn && window.stopSpeech) window.stopSpeech(); });
+  resetButton.addEventListener('click',()=>{ if(!confirm('Restart Actuary for a Day from Mission 1?')) return; if(timerId){clearInterval(timerId);timerId=null;} if(window.stopSpeech) window.stopSpeech(); try{sessionStorage.removeItem(STORAGE_KEY);}catch(_){} currentStage=1; renderStage(); window.scrollTo({top:0,behavior:'smooth'}); });
 
   const saved=getState();
   if(Number.isInteger(saved.stage) && saved.stage>=1 && saved.stage<=6) currentStage=saved.stage;

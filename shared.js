@@ -20,23 +20,19 @@
     });
   }
 
-  // Speech synthesis: cache the preferred voice once instead of rebuilding the
-  // full voice list on every click. This greatly reduces click-to-sound latency,
-  // especially on Chrome/Windows where voices can initialise slowly.
+  // Fast, dependable browser speech. Prefer an on-device British voice, then
+  // another on-device English voice. Remote/cloud voices are deliberately not
+  // selected explicitly because they can take many seconds to start on some
+  // Windows/Chromium installations.
   const synth=('speechSynthesis' in window)?window.speechSynthesis:null;
   let cachedVoice=null;
   let voiceList=[];
 
-  function selectBritishVoice(voices){
-    // Prefer an on-device British voice: remote/cloud voices can take several
-    // seconds to start on some browsers and networks.
+  function selectFastEnglishVoice(voices){
     return voices.find(v=>v.localService && /^en-GB$/i.test(v.lang)) ||
            voices.find(v=>v.localService && /^en-GB/i.test(v.lang)) ||
-           voices.find(v=>/^en-GB$/i.test(v.lang)) ||
-           voices.find(v=>/^en-GB/i.test(v.lang)) ||
            voices.find(v=>v.localService && /^en(?:-|_)/i.test(v.lang)) ||
-           voices.find(v=>/^en(?:-|_)/i.test(v.lang)) ||
-           voices.find(v=>/^en/i.test(v.lang)) || null;
+           voices.find(v=>v.localService && /^en/i.test(v.lang)) || null;
   }
 
   function refreshVoices(){
@@ -44,7 +40,7 @@
     const voices=synth.getVoices();
     if(voices && voices.length){
       voiceList=voices;
-      cachedVoice=selectBritishVoice(voices);
+      cachedVoice=selectFastEnglishVoice(voices);
     }
     return cachedVoice;
   }
@@ -54,43 +50,70 @@
     if(typeof synth.addEventListener==='function') synth.addEventListener('voiceschanged',refreshVoices);
     else synth.onvoiceschanged=refreshVoices;
 
-    // Ask the browser for its voice list at the earliest real user interaction.
-    // This is safe under autoplay policies and avoids doing expensive discovery
-    // inside the actual Listen button handler.
+    // Voice discovery is requested before the click handler that actually speaks.
+    // This keeps Listen buttons responsive without playing unwanted audio.
     let primed=false;
-    const prime=()=>{ if(primed) return; primed=true; refreshVoices(); };
+    const prime=()=>{
+      if(primed) return;
+      primed=true;
+      refreshVoices();
+      // Chromium sometimes populates voices a few milliseconds after the first
+      // interaction. Two cheap retries avoid doing this work inside later clicks.
+      setTimeout(refreshVoices,50);
+      setTimeout(refreshVoices,250);
+    };
     document.addEventListener('pointerdown',prime,{once:true,capture:true,passive:true});
     document.addEventListener('keydown',prime,{once:true,capture:true});
   }
 
   window.prepareSpeech=refreshVoices;
+  window.stopSpeech=function(){
+    if(!synth) return;
+    try{ synth.cancel(); }catch(_){}
+  };
   window.speakWord=function(text){
     if(!synth || !window.SpeechSynthesisUtterance) return false;
     const value=String(text||'').trim();
     if(!value) return false;
 
-    // Only cancel when there is actually something queued. Repeated unconditional
-    // cancel() calls can add a noticeable delay in Chromium-based browsers.
+    refreshVoices();
     const hadSpeech=synth.speaking || synth.pending;
-    if(hadSpeech) synth.cancel();
-    if(synth.paused) synth.resume();
+    if(hadSpeech){ try{synth.cancel();}catch(_){} }
+    if(synth.paused){ try{synth.resume();}catch(_){} }
 
-    const utterance=new SpeechSynthesisUtterance(value);
-    utterance.lang=(cachedVoice && cachedVoice.lang) || 'en-GB';
-    if(cachedVoice) utterance.voice=cachedVoice;
-    utterance.rate=0.92;
-    utterance.pitch=1;
-    utterance.volume=1;
-
-    const speak=()=>{
-      try { synth.speak(utterance); }
-      catch (_) { return false; }
-      return true;
+    const makeUtterance=(withVoice=true)=>{
+      const u=new SpeechSynthesisUtterance(value);
+      u.lang='en-GB';
+      if(withVoice && cachedVoice){ u.voice=cachedVoice; u.lang=cachedVoice.lang || 'en-GB'; }
+      u.rate=0.92;
+      u.pitch=1;
+      u.volume=1;
+      return u;
     };
 
-    // Chromium can swallow an utterance spoken in the exact same task as cancel().
-    // A zero-delay task only applies after an interruption; first-click speech is immediate.
-    if(hadSpeech) setTimeout(speak,0); else speak();
+    let retried=false;
+    const speak=(withVoice=true)=>{
+      const utterance=makeUtterance(withVoice);
+      utterance.onerror=(event)=>{
+        // A local voice can occasionally become unavailable after sleep/device
+        // changes. Retry once using the browser's default en-GB resolver.
+        if(!retried && withVoice && event.error!=='canceled' && event.error!=='interrupted'){
+          retried=true;
+          cachedVoice=null;
+          setTimeout(()=>speak(false),40);
+        }
+      };
+      try{ synth.speak(utterance); return true; }
+      catch(_){
+        if(!retried && withVoice){ retried=true; cachedVoice=null; setTimeout(()=>speak(false),40); return true; }
+        return false;
+      }
+    };
+
+    // Chromium may swallow a new utterance if it is queued in the same task as
+    // cancel(). Only interrupted speech gets the tiny delay; a normal first click
+    // still starts immediately.
+    if(hadSpeech) setTimeout(()=>speak(true),25); else speak(true);
     return true;
   };
 
