@@ -26,7 +26,7 @@ Mission 6 is now “The Client Has a Question”:
 1. Students build a correct professional explanation through four guided decisions.
 2. They hear/read the resulting professional answer.
 3. The client asks for a jargon-free explanation.
-4. Students complete “The Jargon Rescue”: they edit a jargon-heavy board slide into a clear, accurate explanation for non-specialists.
+4. Students complete “Make It Sound Human” aloud with no timer.
 5. A short self-check and client reaction complete the mission.
 
 AUDIO
