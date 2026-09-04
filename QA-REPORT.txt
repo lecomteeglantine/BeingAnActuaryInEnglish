@@ -119,3 +119,12 @@ Additional fix (realistic individual visuals):
 - Added assets/session1/realistic/boardroom.png
 - Updated M1 Session 1 and Actuary for a Day to use the realistic image set.
 - Updated the individual activity card text so it no longer mentions the removed speaking task.
+
+
+Additional fix (extended individual game):
+- Extended Actuary for a Day from 6 to 8 missions.
+- Added Mission 4: Follow-up Questions.
+- Added Mission 7: Client Meeting.
+- Updated progress bar and stage labels to 8 steps.
+- Updated Session 1 card duration from 20–25 to 30–35 minutes.
+- Bumped service-worker cache version to force the new content to appear after deployment.
