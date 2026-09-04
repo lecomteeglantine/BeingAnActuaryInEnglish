@@ -1,688 +1,163 @@
 (function(){
-  'use strict';
+'use strict';
+const $=(s,r=document)=>r.querySelector(s); const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const mount=$('#stageMount'), mapItems=$$('#missionMap li'), overlay=$('#missionOverlay');
+const timeEl=$('#officeTime'), locationEl=$('#officeLocation'), missionEl=$('#missionNumber'), statusEl=$('#statusText');
+const repEl=$('#repValue'), meterEl=$('#badgeMeter'), levelEl=$('#badgeLevel');
+const soundBtn=$('#soundToggle'), resetBtn=$('#resetGame'), continueBtn=$('#continueMission');
+const KEY='actuary_m1_s1_northstar_v12';
+const REWARDS={1:12,2:14,3:16,4:14,5:14,6:15,7:15};
+const STAGES={
+ 1:{time:'08:45',place:'Brief Desk',status:'Client file corrupted'},
+ 2:{time:'09:00',place:'Access Gate',status:'Audio clearance required'},
+ 3:{time:'09:15',place:'Case Room',status:'Three client files waiting'},
+ 4:{time:'09:38',place:'Risk Lab',status:'Model tray incomplete'},
+ 5:{time:'09:52',place:'Team Inbox',status:'Client pack at risk'},
+ 6:{time:'10:05',place:'Client Meeting',status:'Meeting live'},
+ 7:{time:'10:16',place:'Boardroom',status:'Presentation starts soon'}
+};
+const defaultState=()=>({stage:1,soundOn:true,rep:0,earned:{},brief:{},briefChecked:false,pron:{},caseDone:{},casePanel:'motor',lab:[],labTrayOK:false,labShock:false,inbox:{},meeting:[],meetingWrong:'',slide:{},slideChecked:false});
+let state=load(); let selectedWord=''; let selectedReplacement=''; let voice=null; let audioCtx=null;
+try{const nav=performance.getEntriesByType&&performance.getEntriesByType('navigation')[0]; const ref=document.referrer?new URL(document.referrer).pathname:''; if(nav&&nav.type==='navigate'&&/\/m1-day1\.html$/.test(ref)){sessionStorage.removeItem(KEY);state=defaultState();}}catch(_){ }
 
-  const stageContainer = document.getElementById('stageContainer');
-  const progressFill = document.getElementById('progressFill');
-  const stageDots = [...document.querySelectorAll('#stageDots li')];
-  const soundToggle = document.getElementById('soundToggle');
-  const resetButton = document.getElementById('resetMission');
-  const officeTime = document.getElementById('officeTime');
-  const officeLocation = document.getElementById('officeLocation');
-  const STORAGE_KEY = 'actuarial_m1_s1_individual_v8_extended';
-  let soundOn = true;
-  let audioCtx = null;
+const briefSlots=[
+{id:'b1',text:'Northstar has hired a junior ___ to support the team.',answer:'actuary'},
+{id:'b2',text:'The client needs help understanding financial ___.',answer:'risk'},
+{id:'b3',text:'The team is doing ___ work for the insurer.',answer:'actuarial'},
+{id:'b4',text:'The future contains significant ___.',answer:'uncertainty'},
+{id:'b5',text:'The team compares outcomes using ___.',answer:'probability'},
+{id:'b6',text:'The analysis needs reliable ___.',answer:'data'},
+{id:'b7',text:'The actuary builds a ___ to represent the situation.',answer:'model'},
+{id:'b8',text:'The work supports a financial ___.',answer:'forecast'}];
+const briefWords=['actuary','risk','actuarial','uncertainty','probability','data','model','forecast'];
+const pron=[
+{id:'actuary',word:'actuary',ipa:'/ˈæk.tʃu.ə.ri/',opts:['ACT-u-ar-y','act-u-AR-y'],correct:0,note:'Main stress on the first syllable.'},
+{id:'actuarial',word:'actuarial',ipa:'/ˌæk.tʃuˈeə.ri.əl/',opts:['AC-tu-ar-i-al','ac-tu-AR-i-al'],correct:1,note:'Main stress on AR.'},
+{id:'liability',word:'liability',ipa:'/ˌlaɪ.əˈbɪl.ə.ti/',opts:['LI-a-bi-li-ty','li-a-BIL-i-ty'],correct:1,note:'Main stress on BIL.'},
+{id:'probability',word:'probability',ipa:'/ˌprɒb.əˈbɪl.ə.ti/',opts:['PROB-a-bi-li-ty','prob-a-BIL-i-ty'],correct:1,note:'Main stress on BIL.'},
+{id:'insurance',word:'insurance',ipa:'/ɪnˈʃʊə.rəns/',opts:['IN-sur-ance','in-SUR-ance'],correct:1,note:'Main stress on SUR.'},
+{id:'premium',word:'premium',ipa:'/ˈpriː.mi.əm/',opts:['PRE-mi-um','pre-MI-um'],correct:0,note:'Main stress on PRE.'},
+{id:'uncertainty',word:'uncertainty',ipa:'/ʌnˈsɜː.tən.ti/',opts:['UN-cer-tain-ty','un-CER-tain-ty'],correct:1,note:'Main stress on CER.'},
+{id:'forecast',word:'forecast',ipa:'/ˈfɔː.kɑːst/',opts:['FORE-cast','fore-CAST'],correct:0,note:'As a noun, stress FORE.'}];
+const cases={
+ motor:{label:'Motor insurer',icon:'🚗',problem:'Claim frequency is stable, but average repair costs are rising quickly.',q1:'What should the actuary do first?',o1:['Analyse claims data and update assumptions','Promise the client that costs will fall','Launch a safer-driving advert'],c1:0,q2:'What is the actuary ultimately trying to estimate?',o2:['The likely financial impact of future claims','Which driver will claim next Tuesday','The company’s best marketing slogan'],c2:0,feedback:'Evidence → assumptions → financial impact.'},
+ pension:{label:'Pension fund',icon:'👥',problem:'The scheme is worried that future obligations may become more expensive.',q1:'What should the actuary investigate?',o1:['Longevity and future liabilities','Office rent and furniture','Social-media engagement'],c1:0,q2:'Why does this matter?',o2:['Longer lives can change the cost of future payments','The actuary needs to predict each member’s exact date of death','It guarantees investment returns'],c2:0,feedback:'Actuaries model long-term obligations under uncertainty.'},
+ climate:{label:'Climate-risk client',icon:'🌊',problem:'A client exposed to severe weather is renewing its insurance programme.',q1:'What should the actuary focus on?',o1:['Exposure scenarios and possible losses','Only last Tuesday’s weather','Removing uncertainty from the report'],c1:0,q2:'What would make the advice stronger?',o2:['Testing several plausible scenarios','Using a single optimistic forecast','Ignoring extreme outcomes'],c2:0,feedback:'Scenario analysis helps quantify uncertain future losses.'}
+};
+const labItems=[['Historical claims','Claims evidence',true],['Claim frequency','How often claims occur',true],['Average claim cost','Severity of losses',true],['Repair-cost inflation','Cost pressure',true],['Model assumptions','How the model is built',true],['Company logo colour','No impact on the estimate',false],['CEO’s favourite car','Noise',false],['Social-media followers','Not relevant here',false]];
+const inbox=[
+{id:'i1',from:'Pricing manager',time:'09:52',text:'An actuary helps a company make informed decisions under uncertainty.',good:true,why:'Keep it: clear, accurate and client-friendly.'},
+{id:'i2',from:'Intern',time:'09:54',text:'Actuaries predict the exact future.',good:false,why:'Archive it: actuaries estimate possible outcomes; they do not know the exact future.'},
+{id:'i3',from:'Data team',time:'09:56',text:'Weak data can distort the model and the decision that follows.',good:true,why:'Keep it: data quality matters.'},
+{id:'i4',from:'Office chat',time:'09:58',text:'Actuaries mainly make spreadsheets and reports look complicated.',good:false,why:'Archive it: the goal is useful insight, not complexity for its own sake.'},
+{id:'i5',from:'Manager',time:'10:00',text:'Actuaries can work in insurance, pensions, finance, consulting and risk teams.',good:true,why:'Keep it: that is a useful overview of the profession.'}];
+const meeting=[
+{speaker:'Client',q:'Can your model tell us exactly what will happen next year?',answers:[['Not exactly. It can estimate likely outcomes and compare scenarios.',true],['Yes. Once the model is finished, the future is certain.',false],['We should avoid discussing uncertainty with clients.',false]],reaction:'Good. Honest about uncertainty, but still useful.'},
+{speaker:'Finance Director',q:'Why do you keep asking us for better data?',answers:[['Because weak data can distort the model and lead to poor decisions.',true],['Because actuaries collect as much data as possible, even when it is irrelevant.',false],['Because good data means we no longer need professional judgement.',false]],reaction:'Exactly. Data quality affects the whole analysis.'},
+{speaker:'Board Member',q:'Does an actuary only work for insurance companies?',answers:[['No. Actuaries also work in pensions, finance, consulting and wider risk roles.',true],['Yes. Insurance is the only place actuarial skills are used.',false],['Mostly, but only in motor insurance.',false]],reaction:'Right. The profession is broader than insurance.'},
+{speaker:'CEO',q:'So, in one sentence, what do actuaries bring to a company?',answers:[['They help organisations understand financial risk and make better decisions under uncertainty.',true],['They make technical reports for senior management.',false],['They remove uncertainty from every business decision.',false]],reaction:'That is the clearest summary of the morning.'}];
+const slideSlots=[
+{id:'s1',bad:'Actuarial professionals leverage stochastic methodologies to optimise financial resilience.',answer:'Actuaries use data and models to help organisations understand future financial risk.'},
+{id:'s2',bad:'The actuarial function integrates probabilistic frameworks for liability calibration.',answer:'They help organisations think clearly about uncertain future costs and risks.'},
+{id:'s3',bad:'Outputs are translated into pricing adequacy metrics.',answer:'For example, an actuary can analyse claims data to help an insurer set sustainable premiums.'},
+{id:'s4',bad:'The discipline delivers multi-vector optimisation under dynamic uncertainty.',answer:'In short, actuaries help people make better decisions when the future is uncertain.'}];
+const replacements=[...slideSlots.map(x=>x.answer),'Actuaries always know which exact event will happen next.','Actuaries mainly produce complex spreadsheets for technical teams.','The best actuarial model removes the need for judgement.','Actuarial work is only useful in motor insurance.'];
 
-  try {
-    const navEntry = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
-    const navType = navEntry && navEntry.type;
-    const refPath = document.referrer ? new URL(document.referrer).pathname : '';
-    if (navType === 'navigate' && /\/m1-day1\.html$/.test(refPath)) sessionStorage.removeItem(STORAGE_KEY);
-  } catch (_) {}
+function load(){try{return {...defaultState(),...(JSON.parse(sessionStorage.getItem(KEY)||'null')||{})};}catch(_){return defaultState();}}
+function save(){state.soundOn=state.soundOn!==false; try{sessionStorage.setItem(KEY,JSON.stringify(state));}catch(_){}}
+function maxUnlocked(){let n=1; for(let i=1;i<=7;i++){if(state.earned[i]) n=Math.min(7,i+1); else break;} return n;}
+function badgeLevel(){const r=state.rep||0; if(r>=100)return ['Northstar cleared','Boardroom access']; if(r>=75)return ['Client trusted','Level 4 access']; if(r>=50)return ['Project team','Level 3 access']; if(r>=25)return ['Analyst access','Level 2 access']; return ['Visitor access','Level 1 access'];}
+function updateHUD(){const s=STAGES[state.stage]; timeEl.textContent=s.time; locationEl.textContent=s.place; missionEl.textContent=state.stage; statusEl.textContent=state.earned[state.stage]?'Mission cleared':s.status; repEl.textContent=state.rep||0; meterEl.style.width=Math.min(100,state.rep||0)+'%'; levelEl.textContent=badgeLevel()[0]; mapItems.forEach(li=>{const n=Number(li.dataset.step); li.classList.toggle('active',n===state.stage); li.classList.toggle('done',!!state.earned[n]); const btn=$('button',li); btn.disabled=n>maxUnlocked(); btn.style.cursor=n<=maxUnlocked()?'pointer':'default';}); save();}
+function stageFrame(num,title,subtitle,img,chips,body){return `<article class="stage-card"><div class="stage-visual"><img src="${img}" alt="Illustration for ${escapeHtml(title)}"><div class="visual-copy"><span class="mission-label">${STAGES[num].time} · MISSION ${num} OF 7</span><h2>${title}</h2><p>${subtitle}</p><div class="visual-chip-row">${chips.map(c=>`<span>${c}</span>`).join('')}</div></div></div><div class="stage-body">${body}</div></article>`;}
+function dispatch(icon,title,text){return `<div class="dispatch"><div class="dispatch-icon">${icon}</div><div><strong>${title}</strong><p>${text}</p></div></div>`;}
+function footer(score,nextEnabled,label='Mission complete'){return `<div class="stage-footer"><div class="stage-score">${score}</div><div class="stage-actions"><button class="primary-game" id="completeMission" ${nextEnabled?'':'disabled'}>${label} →</button></div></div>`;}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function selectClass(selected,correct,idx){if(selected===undefined)return 'choice'; if(idx===correct)return 'choice correct'; if(idx===selected)return 'choice wrong'; return 'choice';}
+function awardAndClear(num,title,text){const fresh=!state.earned[num];if(fresh){state.earned[num]=true;state.rep=Math.min(100,(state.rep||0)+REWARDS[num]);save();sfx('clear');} $('#clearTitle').textContent=title; $('#clearText').textContent=text; $('#clearReward').textContent=fresh?('+'+REWARDS[num]):'earned'; overlay.hidden=false; continueBtn.dataset.from=String(num); updateHUD();}
+continueBtn.addEventListener('click',()=>{const from=Number(continueBtn.dataset.from)||state.stage; overlay.hidden=true; if(from<7){state.stage=Math.max(state.stage,from+1);render(); window.scrollTo({top:document.querySelector('.game-layout').offsetTop-80,behavior:'smooth'});} else {render();}});
+mapItems.forEach(li=>$('button',li).addEventListener('click',()=>{const n=Number(li.dataset.step); if(n<=maxUnlocked()){state.stage=n;render();window.scrollTo({top:document.querySelector('.game-layout').offsetTop-80,behavior:'smooth'});}}));
+resetBtn.addEventListener('click',()=>{if(!confirm('Restart Actuary for a Day from the beginning?'))return;sessionStorage.removeItem(KEY);location.reload();});
+soundBtn.addEventListener('click',()=>{state.soundOn=!state.soundOn; soundBtn.textContent=state.soundOn?'🔊 Sound on':'🔈 Sound off'; soundBtn.setAttribute('aria-pressed',String(state.soundOn));save();primeVoice();});
+function primeVoice(){if(!('speechSynthesis'in window))return;const voices=speechSynthesis.getVoices(); if(!voice&&voices.length){voice=voices.find(v=>v.localService&&/en-GB/i.test(v.lang))||voices.find(v=>/en-GB/i.test(v.lang))||voices.find(v=>v.localService&&/^en/i.test(v.lang))||voices.find(v=>/^en/i.test(v.lang))||null;}}
+if('speechSynthesis'in window){primeVoice();speechSynthesis.addEventListener&&speechSynthesis.addEventListener('voiceschanged',primeVoice,{once:false});}
+function speak(text){if(!state.soundOn||!('speechSynthesis'in window))return;primeVoice();const u=new SpeechSynthesisUtterance(text);if(voice)u.voice=voice;u.lang=voice?.lang||'en-GB';u.rate=.94;if(speechSynthesis.speaking)speechSynthesis.cancel();speechSynthesis.speak(u);}
+function sfx(kind){if(!state.soundOn)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();const now=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);const seq=kind==='clear'?[523,784]:kind==='bad'?[210,165]:[660,820];o.type=kind==='bad'?'triangle':'sine';o.frequency.setValueAtTime(seq[0],now);o.frequency.exponentialRampToValueAtTime(seq[1],now+.13);g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(.08,now+.01);g.gain.exponentialRampToValueAtTime(.0001,now+.19);o.start(now);o.stop(now+.2);}catch(_){}}
 
-  const times = {
-    1:['08:45','Risk Floor · Brief Desk'],
-    2:['09:00','Security Gate · Audio Check'],
-    3:['09:15','Client Desk · Case Files'],
-    4:['09:25','Meeting Room · Follow-up Questions'],
-    5:['09:40','Risk Lab · Modelling Bay'],
-    6:['09:50','Team Inbox · Reality Check'],
-    7:['10:00','Client Meeting · Clear Explanations'],
-    8:['10:10','Boardroom · Slide Emergency']
-  };
-
-  const defaultState = () => ({
-    stage: 1,
-    briefAnswers: {},
-    briefChecked: false,
-    pronAnswers: {},
-    caseAnswers: {},
-    followAnswers: {},
-    labSelected: [],
-    labSolved: false,
-    inboxAnswers: {},
-    meetingAnswers: {},
-    rescueAnswers: {},
-    soundOn: true
-  });
-
-  const briefBlocks = [
-    {
-      title:'Brief note 1 · Role and mission',
-      intro:'A new insurer has asked Northstar to explain the value of actuarial work.',
-      items:[
-        {id:'b1', prompt:'Northstar has hired a junior ___ to support the team.', options:['actuary','premium','policyholder','broker'], correct:0, note:'An actuary is the professional, not the product or the customer.'},
-        {id:'b2', prompt:'The first question from the client is about financial ___.', options:['marketing','risk','branding','recruitment'], correct:1, note:'Actuarial work focuses on uncertainty and financial risk.'}
-      ]
-    },
-    {
-      title:'Brief note 2 · Type of work',
-      intro:'The project needs the right label and the right business context.',
-      items:[
-        {id:'b3', prompt:'The team is doing ___ work for the insurer.', options:['medical','actuarial','advertising','legal'], correct:1, note:'Actuarial is the adjective that describes the work.'},
-        {id:'b4', prompt:'The client wants help because the future contains too much ___.', options:['certainty','certainty planning','uncertainty','routine'], correct:2, note:'Uncertainty is central to actuarial analysis.'}
-      ]
-    },
-    {
-      title:'Brief note 3 · Evidence',
-      intro:'The analyst has drafted the evidence section but two keywords are missing.',
-      items:[
-        {id:'b5', prompt:'To compare possible outcomes, the team studies ___.', options:['probability','publicity','liquidity','geometry'], correct:0, note:'Probability helps estimate how likely an event is.'},
-        {id:'b6', prompt:'To do that properly, the team also needs reliable ___.', options:['rumours','data','guesswork','opinions'], correct:1, note:'Data gives the evidence base for the analysis.'}
-      ]
-    },
-    {
-      title:'Brief note 4 · Output',
-      intro:'The client now wants to know what the team will build and deliver.',
-      items:[
-        {id:'b7', prompt:'The actuary will build a ___ to represent the situation.', options:['poster','model','slogan','discount'], correct:1, note:'A model helps structure assumptions and evidence.'},
-        {id:'b8', prompt:'That work will support a financial ___.', options:['forecast','corridor','certificate','meeting room'], correct:0, note:'A forecast is an estimate about future outcomes.'}
-      ]
-    }
-  ];
-
-  const pronunciation = [
-    {id:'actuary', word:'actuary', ipa:'/ˈæk.tʃu.ə.ri/', options:['ACT-u-ar-y','act-u-AR-y'], correct:0, note:'Stress the first syllable.'},
-    {id:'actuarial', word:'actuarial', ipa:'/ˌæk.tʃuˈeə.ri.əl/', options:['AC-tu-ar-i-al','ac-tu-AR-i-al'], correct:1, note:'The main stress falls on AR.'},
-    {id:'liability', word:'liability', ipa:'/ˌlaɪ.əˈbɪl.ə.ti/', options:['LI-a-bi-li-ty','li-a-BIL-i-ty'], correct:1, note:'Stress BIL.'},
-    {id:'probability', word:'probability', ipa:'/ˌprɒb.əˈbɪl.ə.ti/', options:['PROB-a-bi-li-ty','prob-a-BIL-i-ty'], correct:1, note:'Again, the stress falls on BIL.'},
-    {id:'insurance', word:'insurance', ipa:'/ɪnˈʃʊə.rəns/', options:['IN-sur-ance','in-SUR-ance'], correct:1, note:'Stress the second syllable.'},
-    {id:'premium', word:'premium', ipa:'/ˈpriː.mi.əm/', options:['PRE-mi-um','pre-MI-um'], correct:0, note:'Stress the first syllable.'},
-    {id:'uncertainty', word:'uncertainty', ipa:'/ʌnˈsɜː.tən.ti/', options:['UN-cer-tain-ty','un-CER-tain-ty'], correct:1, note:'Stress CER.'},
-    {id:'forecast', word:'forecast', ipa:'/ˈfɔː.kɑːst/', options:['FORE-cast','fore-CAST'], correct:0, note:'As a noun, the stress is on FORE.'}
-  ];
-
-  const cases = [
-    {
-      id:'c1',
-      label:'Motor insurance',
-      icon:'🚗',
-      problem:'Claims frequency is stable, but average claim costs are rising quickly.',
-      question:'What would an actuary most usefully do first?',
-      options:['Redesign the company logo','Analyse claims data and update assumptions','Promise clients that claims will fall next year','Write a TV advert about safer driving'],
-      correct:1,
-      feedback:'That is the actuarial move: analyse evidence, update assumptions and estimate the financial impact.'
-    },
-    {
-      id:'c2',
-      label:'Pension fund',
-      icon:'👥',
-      problem:'A pension scheme needs to know whether future obligations may become too expensive.',
-      question:'How can an actuary help?',
-      options:['By modelling longevity and future costs','By guessing how long members will live','By replacing the trustees','By choosing the office furniture'],
-      correct:0,
-      feedback:'Exactly. Pension work often involves liabilities, longevity and long-term financial projections.'
-    },
-    {
-      id:'c3',
-      label:'Climate risk',
-      icon:'🌊',
-      problem:'A client exposed to severe weather wants advice before renewing its insurance programme.',
-      question:'What should the actuary focus on?',
-      options:['Future exposure scenarios and possible losses','Only the weather last Tuesday','The colour of the annual report','Removing every mention of uncertainty'],
-      correct:0,
-      feedback:'Yes. Scenario analysis and exposure modelling are exactly the kinds of tools actuaries use here.'
-    }
-  ];
-
-  const followUps = [
-    {
-      id:'f1',
-      label:'Motor insurer',
-      prompt:'Which follow-up question would best help an actuary here?',
-      options:[
-        'How have claim frequency and average repair costs changed this year?',
-        'Which social-media campaign performed best?',
-        'What snacks are available in the staff room?'
-      ],
-      correct:0,
-      feedback:'That question targets the variables that could change the financial estimate.'
-    },
-    {
-      id:'f2',
-      label:'Pension fund',
-      prompt:'What would an actuary most need to ask next?',
-      options:[
-        'Are future obligations likely to increase if members live longer than expected?',
-        'Would members prefer a different office location?',
-        'Can we ignore long-term uncertainty to save time?'
-      ],
-      correct:0,
-      feedback:'Exactly. Pension work often starts with future obligations, longevity and cost pressure.'
-    },
-    {
-      id:'f3',
-      label:'Climate-risk client',
-      prompt:'Which question best reflects actuarial thinking?',
-      options:[
-        'What loss scenarios should we test if severe weather becomes more frequent or more costly?',
-        'Can we remove all uncertainty from the discussion?',
-        'What font should the report use?'
-      ],
-      correct:0,
-      feedback:'Good. An actuary asks for scenarios, exposure and potential losses — not cosmetic details.'
-    }
-  ];
-
-  const labItems = [
-    ['Historical claims', 'Relevant', true],
-    ['Claim frequency', 'Relevant', true],
-    ['Average claim cost', 'Relevant', true],
-    ['Repair-cost inflation', 'Relevant', true],
-    ['Model assumptions', 'Relevant', true],
-    ['Company logo colour', 'Noise', false],
-    ['CEO’s favourite car', 'Noise', false],
-    ['Social media followers', 'Noise', false]
-  ];
-
-  const inboxItems = [
-    {id:'i1', from:'Pricing manager', time:'09:51', text:'“An actuary helps a company make informed decisions under uncertainty.”', reality:true, why:'Useful insight. It is clear, accurate and client-friendly.'},
-    {id:'i2', from:'Intern', time:'09:53', text:'“Actuaries predict the exact future.”', reality:false, why:'Misleading. Actuaries estimate possible outcomes; they do not know the future exactly.'},
-    {id:'i3', from:'Colleague', time:'09:55', text:'“Good data matters because weak data can distort the model.”', reality:true, why:'Useful insight. Data quality affects the entire analysis.'},
-    {id:'i4', from:'Office chat', time:'09:56', text:'“Actuaries mainly make reports sound technical.”', reality:false, why:'Misleading. The goal is insight and decision support, not empty jargon.'},
-    {id:'i5', from:'Manager', time:'09:58', text:'“Actuaries often work with insurers, pensions, investments and risk teams.”', reality:true, why:'Useful insight. That is a solid overview of where the profession works.'}
-  ];
-
-  const meetingMoves = [
-    {
-      id:'m1',
-      from:'Client question',
-      text:'“Can you tell us exactly what will happen next year?”',
-      prompt:'Choose the best actuarial answer.',
-      options:[
-        ['Not exactly, but we can estimate likely outcomes and compare different scenarios.', true],
-        ['Yes. Actuaries know the exact future once the model is finished.', false],
-        ['We prefer not to talk to clients about the future at all.', false]
-      ],
-      feedback:'A good answer is honest about uncertainty but still useful.'
-    },
-    {
-      id:'m2',
-      from:'Finance director',
-      text:'“Why do you keep asking for better data?”',
-      prompt:'Choose the clearest reply.',
-      options:[
-        ['Because weak data can distort the model and lead to poor decisions.', true],
-        ['Because actuaries like collecting numbers, even when they are not useful.', false],
-        ['Because good data means we no longer need judgement.', false]
-      ],
-      feedback:'Clear and practical: data quality affects the whole analysis.'
-    },
-    {
-      id:'m3',
-      from:'Board member',
-      text:'“So what does an actuary bring to a company?”',
-      prompt:'Choose the strongest summary.',
-      options:[
-        ['Actuaries help organisations understand financial risk and make better decisions under uncertainty.', true],
-        ['Actuaries mainly make reports sound technical.', false],
-        ['Actuaries work alone and avoid business decisions.', false]
-      ],
-      feedback:'That summary is accurate, professional and understandable for a non-specialist.'
-    }
-  ];
-
-  const rescueSteps = [
-    {
-      id:'r1',
-      title:'Fix the opening line',
-      bad:'“Actuarial professionals leverage stochastic methodologies to optimise financial resilience.”',
-      options:[
-        ['Actuaries use data and models to help organisations understand future financial risk.', true],
-        ['Actuaries write complex sentences so that reports sound technical.', false],
-        ['Actuaries are specialists who always remove uncertainty completely.', false]
-      ],
-      feedback:'Start simple: who the actuaries are, what they use, and what problem they help solve.'
-    },
-    {
-      id:'r2',
-      title:'Explain the core job',
-      bad:'“The actuarial function integrates probabilistic frameworks for liability calibration.”',
-      options:[
-        ['They help organisations think clearly about uncertain future costs and risks.', true],
-        ['They mainly make spreadsheets look more complicated.', false],
-        ['They decide every business strategy on behalf of management.', false]
-      ],
-      feedback:'The board needs the purpose of the job, not a cloud of technical nouns.'
-    },
-    {
-      id:'r3',
-      title:'Add a concrete example',
-      bad:'“Outputs are translated into pricing adequacy metrics.”',
-      options:[
-        ['For example, an actuary can analyse claims data to help an insurer set sustainable premiums.', true],
-        ['For example, an actuary can guarantee exactly who will make a claim next year.', false],
-        ['For example, an actuary can remove the need for any human judgement.', false]
-      ],
-      feedback:'A concrete example helps a non-specialist understand the value immediately.'
-    },
-    {
-      id:'r4',
-      title:'Finish with the value',
-      bad:'“The discipline delivers multi-vector optimisation under dynamic uncertainty.”',
-      options:[
-        ['In short, actuaries help people make better decisions when the future is uncertain.', true],
-        ['In short, actuaries replace every other professional in the company.', false],
-        ['In short, actuaries should avoid explaining their work in simple words.', false]
-      ],
-      feedback:'End with the client benefit: better decisions under uncertainty.'
-    }
-  ];
-
-  let state = loadState();
-  let currentStage = clampStage(state.stage || 1);
-  soundOn = state.soundOn !== false;
-  updateSoundUI();
-
-  soundToggle.addEventListener('click', () => {
-    soundOn = !soundOn;
-    state.soundOn = soundOn;
-    saveState();
-    updateSoundUI();
-    playTone(soundOn ? 'ok' : 'tick');
-  });
-
-  resetButton.addEventListener('click', () => {
-    if (!window.confirm('Restart this mission from the beginning?')) return;
-    sessionStorage.removeItem(STORAGE_KEY);
-    state = defaultState();
-    currentStage = 1;
-    soundOn = true;
-    updateSoundUI();
-    renderStage();
-    window.scrollTo({top:0, behavior:'smooth'});
-  });
-
-  function clampStage(n){ return Math.max(1, Math.min(8, Number(n) || 1)); }
-
-  function loadState(){
-    try {
-      const parsed = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || 'null');
-      return parsed ? {...defaultState(), ...parsed} : defaultState();
-    } catch (_) {
-      return defaultState();
-    }
-  }
-
-  function saveState(){
-    state.stage = currentStage;
-    state.soundOn = soundOn;
-    try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) {}
-  }
-
-  function updateSoundUI(){
-    soundToggle.textContent = soundOn ? '🔊 Sound on' : '🔈 Sound off';
-    soundToggle.setAttribute('aria-pressed', String(soundOn));
-  }
-
-  function playTone(kind='ok'){
-    if(!soundOn) return;
-    try{
-      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-      if(audioCtx.state === 'suspended') audioCtx.resume();
-      const now = audioCtx.currentTime;
-      const o = audioCtx.createOscillator();
-      const g = audioCtx.createGain();
-      o.connect(g); g.connect(audioCtx.destination);
-      const map={ok:[660,880],bad:[240,190],unlock:[523,659],tick:[880,880]};
-      const pair=map[kind]||map.ok;
-      o.type = kind==='bad' ? 'triangle' : 'sine';
-      o.frequency.setValueAtTime(pair[0],now);
-      o.frequency.exponentialRampToValueAtTime(pair[1],now+.12);
-      g.gain.setValueAtTime(.0001,now);
-      g.gain.exponentialRampToValueAtTime(.12,now+.015);
-      g.gain.exponentialRampToValueAtTime(.0001,now+.18);
-      o.start(now); o.stop(now+.2);
-    }catch(_){ }
-  }
-
-  function say(text){ if(soundOn && window.speakWord) window.speakWord(text); }
-  function listenButton(text,label='Listen'){ return `<button type="button" class="mini-btn mission-listen" data-say="${escapeHtml(text)}">🔊 ${label}</button>`; }
-  function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-  function attachListenButtons(scope=stageContainer){
-    scope.querySelectorAll('.mission-listen').forEach(btn=>btn.addEventListener('click',()=>say(btn.dataset.say)));
-  }
-
-  function stageFrame(kicker,title,time,img,content){
-    return `<div class="stage-card"><div class="stage-card-head"><div><p class="module-number">${kicker}</p><h2>${title}</h2><p class="stage-time">${time}</p></div>${img?`<img src="${img}" alt="Illustration for ${title}">`:""}</div><div class="stage-card-body">${content}</div></div>`;
-  }
-
-  function updateProgress(){
-    progressFill.style.width = `${((currentStage-1)/7)*100}%`;
-    stageDots.forEach((li,i)=>{
-      const active = i === currentStage-1;
-      li.classList.toggle('active', active);
-      li.classList.toggle('done', i < currentStage-1);
-      if(active) li.setAttribute('aria-current','step'); else li.removeAttribute('aria-current');
-    });
-    const t = times[currentStage] || ['',''];
-    if(officeTime) officeTime.textContent = t[0];
-    if(officeLocation) officeLocation.textContent = t[1];
-    saveState();
-  }
-
-  function nextStage(){
-    if(currentStage < 8){
-      currentStage += 1;
-      updateProgress();
-      renderStage();
-      playTone('unlock');
-      window.scrollTo({top:document.querySelector('.mission-progress').offsetTop - 20, behavior:'smooth'});
-    }
-  }
-
-  function renderStage(){
-    updateProgress();
-    ({1:renderBrief,2:renderPronunciation,3:renderCases,4:renderFollowUps,5:renderRiskLab,6:renderInbox,7:renderMeeting,8:renderRescue}[currentStage] || renderBrief)();
-    attachListenButtons(stageContainer);
-  }
-
-  function renderBrief(){
-    const cards = briefBlocks.map(block=>`
-      <article class="note-card">
-        <h3>${block.title}</h3>
-        <p>${block.intro}</p>
-        ${block.items.map(item=>{
-          const saved = state.briefAnswers[item.id];
-          const checked = state.briefChecked;
-          return `<div class="blank-block"><strong>${item.prompt}</strong><div class="choice-row">${item.options.map((opt,i)=>{
-            let cls = '';
-            if(saved === i) cls += ' selected';
-            if(checked && saved !== undefined){
-              if(i === item.correct) cls += ' correct';
-              else if(saved === i && saved !== item.correct) cls += ' wrong';
-            }
-            return `<button type="button" data-brief="${item.id}" data-choice="${i}" class="${cls.trim()}">${opt}</button>`;
-          }).join('')}</div></div>`;
-        }).join('')}
-      </article>`).join('');
-
-    stageContainer.innerHTML = stageFrame('08:45 · CLIENT BRIEF DESK','Rebuild the corrupted client brief','Mission 1 of 8 · about 4 minutes','assets/session1/realistic/brief-desk.png',`
-      <div class="scene-message"><div class="avatar">NS</div><div><strong>Your manager needs help.</strong><p>A badly exported client brief has arrived on your desk. Key actuarial terms have disappeared. Restore the brief before the 09:00 security check.</p></div></div>
-      <div class="office-alert"><strong>Objective</strong><div>Choose the correct term for each missing line. This mission covers the 8 key words you need today: <strong>actuary, actuarial, risk, uncertainty, probability, data, model, forecast</strong>.</div></div>
-      <div class="stage-note-grid">${cards}</div>
-      <p id="briefFeedback" class="inline-feedback" aria-live="polite">${state.briefMessage || ''}</p>
-      <div class="stage-actions"><button type="button" class="secondary-btn" id="checkBrief">Check the brief</button><button type="button" class="primary-link" id="briefNext" ${allBriefCorrect() ? '' : 'disabled'}>Badge collected →</button></div>
-    `);
-
-    stageContainer.querySelectorAll('[data-brief]').forEach(btn=>btn.addEventListener('click',()=>{
-      state.briefAnswers[btn.dataset.brief] = Number(btn.dataset.choice);
-      state.briefChecked = false;
-      state.briefMessage = '';
-      saveState();
-      renderBrief();
-    }));
-
-    document.getElementById('checkBrief').addEventListener('click',()=>{
-      const total = briefBlocks.flatMap(b=>b.items).length;
-      const chosen = Object.keys(state.briefAnswers).length;
-      const fb = document.getElementById('briefFeedback');
-      if(chosen < total){
-        state.briefMessage = `<strong>Almost there.</strong> ${total-chosen} line(s) still need a term.`;
-        saveState();
-        fb.innerHTML = state.briefMessage;
-        playTone('bad');
-        return;
-      }
-      state.briefChecked = true;
-      saveState();
-      if(allBriefCorrect()){
-        state.briefMessage = '<strong>Brief restored.</strong> Your client note is now clear, accurate and ready for the team.';
-        saveState();
-        playTone('ok');
-        renderBrief();
-      } else {
-        const correct = briefCorrectCount();
-        state.briefMessage = `<strong>Good start.</strong> ${correct} / ${total} lines are correct. Review the red choices and fix the brief.`;
-        saveState();
-        playTone('bad');
-        renderBrief();
-      }
-    });
-
-    document.getElementById('briefNext').addEventListener('click', nextStage);
-  }
-
-  function briefCorrectCount(){
-    return briefBlocks.flatMap(b=>b.items).reduce((sum,item)=>sum + (state.briefAnswers[item.id] === item.correct ? 1 : 0), 0);
-  }
-  function allBriefCorrect(){ return briefCorrectCount() === briefBlocks.flatMap(b=>b.items).length; }
-
-  function renderPronunciation(){
-    stageContainer.innerHTML = stageFrame('09:00 · SECURITY GATE','Pass the pronunciation check','Mission 2 of 8 · about 5 minutes','assets/session1/realistic/hero-office.png',`
-      <div class="scene-message"><div class="avatar">🔐</div><div><strong>The security gate is voice-controlled.</strong><p>Before the client files unlock, check the correct stress pattern for each key word. Use the audio when needed.</p></div></div>
-      <div id="pronunciationQuiz" class="pronunciation-quiz"></div>
-      <div class="mission-score" id="pronScore">${Object.keys(state.pronAnswers).length} / ${pronunciation.length} checked</div>
-      <div class="stage-actions"><button type="button" class="primary-link" id="pronNext" ${Object.keys(state.pronAnswers).length===pronunciation.length ? '' : 'disabled'}>Security cleared →</button></div>
-    `);
-    const quiz = document.getElementById('pronunciationQuiz');
-    pronunciation.forEach((q,i)=>{
-      const saved = state.pronAnswers[q.id];
-      const article = document.createElement('article');
-      article.className = 'pron-item';
-      article.innerHTML = `<div class="pron-word"><div><span class="pron-count">${String(i+1).padStart(2,'0')}</span><strong>${q.word}</strong><span class="ipa">${q.ipa}</span></div>${listenButton(q.word,'Listen')}</div><div class="pron-options">${q.options.map((o,j)=>{
-        let cls='';
-        if(saved !== undefined){ if(j===q.correct) cls='correct'; if(saved===j && saved!==q.correct) cls='wrong'; }
-        return `<button type="button" data-word="${q.id}" data-choice="${j}" class="${cls}" ${saved !== undefined ? 'disabled' : ''}>${o}</button>`;
-      }).join('')}</div><p class="inline-feedback" aria-live="polite">${saved !== undefined ? `<strong>${saved===q.correct?'Correct.':'Correction.'}</strong> ${q.note}` : ''}</p>`;
-      quiz.appendChild(article);
-    });
-    quiz.addEventListener('click',e=>{
-      const btn = e.target.closest('button[data-word]'); if(!btn) return;
-      const id = btn.dataset.word;
-      if(state.pronAnswers[id] !== undefined) return;
-      state.pronAnswers[id] = Number(btn.dataset.choice);
-      saveState();
-      playTone(state.pronAnswers[id]===pronunciation.find(x=>x.id===id).correct ? 'ok' : 'bad');
-      renderPronunciation();
-    });
-    document.getElementById('pronNext').addEventListener('click', nextStage);
-  }
-
-  function renderCases(){
-    stageContainer.innerHTML = stageFrame('09:15 · THREE FILES, THREE DECISIONS','Open your first client files','Mission 3 of 8 · about 5 minutes','assets/session1/realistic/case-files.png',`
-      <div class="scene-message"><div class="avatar">📁</div><div><strong>Your manager has left three files on your desk.</strong><p>For each client, choose the response that best reflects actuarial work.</p></div></div>
-      <div id="caseList" class="case-list"></div>
-      <div class="mission-score" id="caseScore">${Object.keys(state.caseAnswers).length} / ${cases.length} files reviewed</div>
-      <div class="stage-actions"><button type="button" class="primary-link" id="caseNext" ${Object.keys(state.caseAnswers).length===cases.length ? '' : 'disabled'}>Send my advice →</button></div>
-    `);
-    const list = document.getElementById('caseList');
-    cases.forEach(c=>{
-      const saved = state.caseAnswers[c.id];
-      const el = document.createElement('article');
-      el.className = 'client-file';
-      el.innerHTML = `<div class="file-tab">${c.icon} ${c.label}</div><h3>${c.problem}</h3><p><strong>${c.question}</strong></p><div class="case-options">${c.options.map((o,j)=>{
-        let cls='';
-        if(saved !== undefined){ if(j===c.correct) cls='correct'; if(saved===j && saved!==c.correct) cls='wrong'; }
-        return `<button type="button" data-case="${c.id}" data-choice="${j}" class="${cls}" ${saved !== undefined ? 'disabled' : ''}>${o}</button>`;
-      }).join('')}</div><p class="inline-feedback" aria-live="polite">${saved !== undefined ? `<strong>${saved===c.correct?'Good actuarial judgement.':'Think like an actuary.'}</strong> ${c.feedback}` : ''}</p>`;
-      list.appendChild(el);
-    });
-    list.addEventListener('click',e=>{
-      const btn = e.target.closest('button[data-case]'); if(!btn) return;
-      const c = cases.find(x=>x.id===btn.dataset.case); if(!c || state.caseAnswers[c.id] !== undefined) return;
-      state.caseAnswers[c.id] = Number(btn.dataset.choice);
-      saveState();
-      playTone(state.caseAnswers[c.id]===c.correct ? 'ok' : 'bad');
-      renderCases();
-    });
-    document.getElementById('caseNext').addEventListener('click', nextStage);
-  }
-
-  function renderFollowUps(){
-    stageContainer.innerHTML = stageFrame('09:25 · FOLLOW-UP QUESTIONS','Ask the right actuarial question','Mission 4 of 8 · about 4 minutes','assets/session1/realistic/client-meeting.png',`
-      <div class="scene-message"><div class="avatar">💬</div><div><strong>You are now in the meeting room.</strong><p>Your manager wants to know whether you can ask useful actuarial follow-up questions before the client arrives.</p></div></div>
-      <div id="followList" class="case-list"></div>
-      <div class="mission-score" id="followScore">${Object.keys(state.followAnswers).length} / ${followUps.length} questions chosen</div>
-      <div class="stage-actions"><button type="button" class="primary-link" id="followNext" ${Object.keys(state.followAnswers).length===followUps.length ? '' : 'disabled'}>Move to the modelling bay →</button></div>
-    `);
-    const list = document.getElementById('followList');
-    followUps.forEach((q,i)=>{
-      const saved = state.followAnswers[q.id];
-      const el = document.createElement('article');
-      el.className = 'client-file';
-      el.innerHTML = `<span class="file-tab">QUESTION ${i+1}</span><h3>${q.label}</h3><p><strong>${q.prompt}</strong></p><div class="case-options">${q.options.map((opt,j)=>{
-        let cls='';
-        if(saved !== undefined){ if(j===q.correct) cls='correct'; if(saved===j && saved!==q.correct) cls='wrong'; }
-        return `<button type="button" data-follow="${q.id}" data-choice="${j}" class="${cls}" ${saved !== undefined ? 'disabled' : ''}>${opt}</button>`;
-      }).join('')}</div><p class="inline-feedback" aria-live="polite">${saved !== undefined ? `<strong>${saved===q.correct?'Good choice.':'Correction.'}</strong> ${q.feedback}` : ''}</p>`;
-      list.appendChild(el);
-    });
-    list.addEventListener('click',e=>{
-      const btn = e.target.closest('button[data-follow]'); if(!btn) return;
-      const q = followUps.find(x=>x.id===btn.dataset.follow); if(!q || state.followAnswers[q.id] !== undefined) return;
-      state.followAnswers[q.id] = Number(btn.dataset.choice);
-      saveState();
-      playTone(state.followAnswers[q.id]===q.correct ? 'ok' : 'bad');
-      renderFollowUps();
-    });
-    document.getElementById('followNext').addEventListener('click', nextStage);
-  }
-
-  function renderRiskLab(){
-    const selected = state.labSelected || [];
-    stageContainer.innerHTML = stageFrame('09:35 · RISK LAB','Find the signal in the noise','Mission 5 of 8 · about 4 minutes','assets/session1/realistic/risk-lab.png',`
-      <div class="lab-brief"><strong>Situation</strong><span>Last year, 10,000 policyholders generated 620 claims. This year, repair costs are rising. Select the five items that an actuary should prioritise before giving advice.</span></div>
-      <div class="lab-grid" id="labGrid">${labItems.map((it,i)=>`<button type="button" data-index="${i}" aria-pressed="${selected.includes(i)}" class="${selected.includes(i)?'selected':''}"><span>${it[0]}</span><small>${it[1]}</small></button>`).join('')}</div>
-      <p id="labFeedback" class="inline-feedback" aria-live="polite">${state.labSolved ? '<strong>Dashboard ready.</strong> You focused on evidence that changes claims, costs or assumptions.' : ''}</p>
-      <div class="stage-actions"><button type="button" class="secondary-btn" id="checkLab">Check my dashboard</button><button type="button" class="primary-link" id="labNext" ${state.labSolved ? '' : 'disabled'}>Enter the client meeting →</button></div>
-    `);
-    const grid = document.getElementById('labGrid');
-    grid.addEventListener('click',e=>{
-      const b = e.target.closest('button[data-index]'); if(!b) return;
-      const idx = Number(b.dataset.index);
-      const arr = new Set(state.labSelected || []);
-      if(arr.has(idx)) arr.delete(idx); else arr.add(idx);
-      state.labSelected = [...arr].sort((a,b)=>a-b);
-      state.labSolved = false;
-      saveState();
-      renderRiskLab();
-    });
-    document.getElementById('checkLab').addEventListener('click',()=>{
-      const correct = state.labSelected.length===5 && state.labSelected.every(i=>labItems[i][2]);
-      state.labSolved = correct;
-      saveState();
-      const fb = document.getElementById('labFeedback');
-      if(correct){
-        fb.innerHTML = '<strong>Dashboard ready.</strong> You focused on the evidence that genuinely drives the analysis.';
-        playTone('ok');
-        renderRiskLab();
-      } else {
-        fb.innerHTML = '<strong>Not yet.</strong> Choose exactly five items that could change the analysis. Remove the noise.';
-        playTone('bad');
-      }
-    });
-    document.getElementById('labNext').addEventListener('click', nextStage);
-  }
-
-  function renderInbox(){
-    stageContainer.innerHTML = stageFrame('09:50 · TEAM INBOX','Reality check: which messages deserve to stay?','Mission 6 of 8 · about 4 minutes','assets/session1/realistic/hero-office.png',`
-      <div class="scene-message"><div class="avatar">✉️</div><div><strong>The office inbox is buzzing.</strong><p>Your manager wants you to clean up the messages before they go into the client pack. Keep the useful insights and reject the misleading ones.</p></div></div>
-      <div id="inboxList" class="inbox-list"></div>
-      <div class="mission-score" id="inboxScore">${Object.keys(state.inboxAnswers).length} / ${inboxItems.length} messages checked</div>
-      <div class="stage-actions"><button type="button" class="primary-link" id="inboxNext" ${Object.keys(state.inboxAnswers).length===inboxItems.length ? '' : 'disabled'}>Go to the boardroom →</button></div>
-    `);
-    const list = document.getElementById('inboxList');
-    inboxItems.forEach(item=>{
-      const saved = state.inboxAnswers[item.id];
-      const card = document.createElement('article');
-      card.className = 'inbox-card';
-      card.innerHTML = `<div class="inbox-card-head"><strong>${item.from}</strong><span>${item.time}</span></div><p>${item.text}</p><div class="decision-buttons">${[['Misleading',false],['Useful actuarial insight',true]].map(([label,val])=>{
-        let cls='';
-        if(saved !== undefined){ if(item.reality===val) cls='correct'; if(saved===val && saved!==item.reality) cls='wrong'; }
-        return `<button type="button" data-inbox="${item.id}" data-answer="${val}" class="${cls}" ${saved !== undefined ? 'disabled' : ''}>${label}</button>`;
-      }).join('')}</div><p class="inline-feedback" aria-live="polite">${saved !== undefined ? `<strong>${saved===item.reality?'Correct.':'Correction.'}</strong> ${item.why}` : ''}</p>`;
-      list.appendChild(card);
-    });
-    list.addEventListener('click',e=>{
-      const btn = e.target.closest('button[data-inbox]'); if(!btn) return;
-      const item = inboxItems.find(x=>x.id===btn.dataset.inbox); if(!item || state.inboxAnswers[item.id] !== undefined) return;
-      state.inboxAnswers[item.id] = btn.dataset.answer === 'true';
-      saveState();
-      playTone(state.inboxAnswers[item.id]===item.reality ? 'ok' : 'bad');
-      renderInbox();
-    });
-    document.getElementById('inboxNext').addEventListener('click', nextStage);
-  }
-
-  function renderMeeting(){
-    stageContainer.innerHTML = stageFrame('10:00 · CLIENT MEETING','Give the clearest professional answer','Mission 7 of 8 · about 4 minutes','assets/session1/realistic/client-meeting.png',`
-      <div class="scene-message"><div class="avatar">🤝</div><div><strong>The client has arrived.</strong><p>Three people ask you direct questions. Choose the clearest professional answer each time.</p></div></div>
-      <div id="meetingList" class="inbox-list"></div>
-      <div class="mission-score" id="meetingScore">${Object.keys(state.meetingAnswers).length} / ${meetingMoves.length} replies chosen</div>
-      <div class="stage-actions"><button type="button" class="primary-link" id="meetingNext" ${Object.keys(state.meetingAnswers).length===meetingMoves.length ? '' : 'disabled'}>Enter the boardroom →</button></div>
-    `);
-    const list = document.getElementById('meetingList');
-    meetingMoves.forEach(item=>{
-      const saved = state.meetingAnswers[item.id];
-      const card = document.createElement('article');
-      card.className = 'inbox-card';
-      card.innerHTML = `<div class="inbox-card-head"><strong>${item.from}</strong><span>Live</span></div><p>${item.text}</p><p><strong>${item.prompt}</strong></p><div class="decision-buttons">${item.options.map((opt,j)=>{
-        let cls='';
-        if(saved !== undefined){ if(opt[1]) cls='correct'; if(saved===j && !opt[1]) cls='wrong'; }
-        return `<button type="button" data-meeting="${item.id}" data-choice="${j}" class="${cls}" ${saved !== undefined ? 'disabled' : ''}>${opt[0]}</button>`;
-      }).join('')}</div><p class="inline-feedback" aria-live="polite">${saved !== undefined ? `<strong>${item.options[saved][1]?'Correct.':'Correction.'}</strong> ${item.feedback}` : ''}</p>`;
-      list.appendChild(card);
-    });
-    list.addEventListener('click',e=>{
-      const btn = e.target.closest('button[data-meeting]'); if(!btn) return;
-      const item = meetingMoves.find(x=>x.id===btn.dataset.meeting); if(!item || state.meetingAnswers[item.id] !== undefined) return;
-      state.meetingAnswers[item.id] = Number(btn.dataset.choice);
-      saveState();
-      playTone(item.options[state.meetingAnswers[item.id]][1] ? 'ok' : 'bad');
-      renderMeeting();
-    });
-    document.getElementById('meetingNext').addEventListener('click', nextStage);
-  }
-
-  function renderRescue(){
-    const unlocked = rescueUnlockedCount();
-    stageContainer.innerHTML = stageFrame('10:10 · BOARDROOM','Rescue the boardroom slide','Mission 8 of 8 · final mission','assets/session1/realistic/boardroom.png',`
-      <div class="scene-message"><div class="avatar">📣</div><div><strong>Emergency from the boardroom.</strong><p>A slide for the client meeting is far too technical. Rewrite it now so the board can understand what actuaries actually do.</p></div></div>
-      <div class="rescue-bad"><p class="module-number">THE BAD SLIDE</p><h3>Current draft</h3><ul>${rescueSteps.map(step=>`<li>${step.bad}</li>`).join('')}</ul></div>
-      <div id="rescueStepsWrap">${rescueSteps.map((step,index)=>{
-        const saved = state.rescueAnswers[step.id];
-        const locked = index > unlocked;
-        return `<article class="rescue-step ${locked?'locked':''}" ${locked?'data-locked="1"':''}><p class="module-number">STEP ${index+1}</p><h4>${step.title}</h4><p>${step.feedback}</p><div class="rescue-options">${step.options.map((opt,j)=>{
-          let cls='';
-          if(saved !== undefined){ if(opt[1]) cls='correct'; if(saved===j && !opt[1]) cls='wrong'; }
-          const dis = locked || saved !== undefined ? 'disabled' : '';
-          return `<button type="button" data-rescue="${step.id}" data-choice="${j}" class="${cls}" ${dis}>${opt[0]}</button>`;
-        }).join('')}</div><p class="inline-feedback" aria-live="polite">${saved !== undefined ? `<strong>Saved.</strong> ${step.options[saved][1] ? 'This line is now fit for a non-specialist audience.' : 'Use the highlighted correction instead.'}` : locked ? 'Complete the previous step first.' : ''}</p></article>`;
-      }).join('')}</div>
-      <div id="boardReady" ${unlocked===rescueSteps.length ? '' : 'hidden'} class="board-ready-slide"><p class="module-number">BOARD-READY VERSION</p><h3>What does an actuary do?</h3><ul><li>Actuaries use data and models to understand future financial risk.</li><li>They help organisations think clearly about uncertain future costs and risks.</li><li>For example, they can analyse claims data to help an insurer set sustainable premiums.</li><li>In short, actuaries help people make better decisions when the future is uncertain.</li></ul><blockquote>“Clear, concrete and client-friendly. Send it.”</blockquote></div>
-      <div id="missionComplete" ${unlocked===rescueSteps.length ? '' : 'hidden'} class="mission-complete"><strong>FIRST MORNING COMPLETED</strong><span>You restored the brief, handled the files, survived the client meeting and turned actuarial jargon into a clear client message.</span></div>
-    `);
-    const rescueWrap = document.getElementById('rescueStepsWrap');
-    rescueWrap.addEventListener('click',e=>{
-      const btn = e.target.closest('button[data-rescue]'); if(!btn) return;
-      const step = rescueSteps.find(x=>x.id===btn.dataset.rescue); if(!step) return;
-      if(state.rescueAnswers[step.id] !== undefined) return;
-      const stepIndex = rescueSteps.findIndex(x=>x.id===step.id);
-      if(stepIndex > rescueUnlockedCount()) return;
-      const choice = Number(btn.dataset.choice);
-      if(!step.options[choice][1]){
-        playTone('bad');
-        btn.classList.add('wrong');
-        const feedback = btn.closest('.rescue-step').querySelector('.inline-feedback');
-        feedback.innerHTML = '<strong>Too vague or too technical.</strong> Try again and choose the clearest option.';
-        return;
-      }
-      state.rescueAnswers[step.id] = choice;
-      saveState();
-      playTone('ok');
-      renderRescue();
-    });
-  }
-
-  function rescueUnlockedCount(){
-    let count = 0;
-    for(const step of rescueSteps){
-      const idx = state.rescueAnswers[step.id];
-      if(idx === undefined || !step.options[idx] || !step.options[idx][1]) break;
-      count += 1;
-    }
-    return count;
-  }
-
-  renderStage();
+function renderBrief(){
+ const used=Object.values(state.brief); const correctCount=briefSlots.filter(x=>state.brief[x.id]===x.answer).length;
+ mount.innerHTML=stageFrame(1,'Restore the client brief','Your first file is corrupted. Rebuild it from the word bank before your visitor badge expires.','assets/session1/realistic/brief-desk.png',['Vocabulary puzzle','Tap-to-place','8 key terms'],`${dispatch('🗂️','Message from your manager','Select a term from the word bank, then click the line where it belongs. You can move terms until the brief is correct.')}
+ <div class="word-bank">${briefWords.map(w=>`<button class="word-chip ${selectedWord===w?'active':''} ${used.includes(w)?'used':''}" data-word="${w}">${w}</button>`).join('')}</div>
+ <div class="game-grid">${briefSlots.map((x,i)=>{const assigned=state.brief[x.id]||'drop term';let cls='drop-line';if(state.briefChecked)cls+=assigned===x.answer?' correct':' wrong';return `<button class="${cls}" data-slot="${x.id}"><span class="micro-label">LINE ${i+1}</span><div>${x.text.replace('___',`<span>${escapeHtml(assigned)}</span>`)}</div></button>`;}).join('')}</div>
+ <div class="feedback" id="briefFeedback">${state.briefChecked?(correctCount===8?'Brief restored. Every key term is now in the right place.':`${correctCount}/8 lines are correct. Move the red terms and check again.`):'Tip: a used term can still be moved to another line.'}</div>
+ <div class="stage-footer"><div class="stage-score">${correctCount}/8 lines correct</div><div class="stage-actions"><button class="secondary-game" id="checkBrief">Check brief</button><button class="primary-game" id="completeMission" ${correctCount===8?'':'disabled'}>Send to manager →</button></div></div>`);
+ $$('[data-word]',mount).forEach(b=>b.onclick=()=>{selectedWord=b.dataset.word;renderBrief();});
+ $$('[data-slot]',mount).forEach(b=>b.onclick=()=>{if(!selectedWord)return;Object.keys(state.brief).forEach(k=>{if(state.brief[k]===selectedWord)delete state.brief[k];});state.brief[b.dataset.slot]=selectedWord;selectedWord='';state.briefChecked=false;save();renderBrief();});
+ $('#checkBrief').onclick=()=>{state.briefChecked=true;sfx(correctCount===8?'ok':'bad');save();renderBrief();};
+ $('#completeMission').onclick=()=>awardAndClear(1,'Brief rescued','You restored the client brief and unlocked analyst access.');
+}
+function renderPron(){
+ const done=Object.keys(state.pron).length;
+ mount.innerHTML=stageFrame(2,'Clear the access gate','The client floor is locked. Use the audio and identify the correct stress pattern for eight words.','assets/session1/realistic/hero-office.png',['British English','Audio gate','Stress patterns'],`${dispatch('🎧','Security protocol','Listen when you need to. A wrong answer triggers a correction but does not lock you out; choose again to clear that word.')}
+ <div class="gate-grid">${pron.map((w,i)=>`<div class="gate-card"><div class="gate-head"><div class="gate-word"><span class="micro-label">CHECKPOINT ${i+1}</span><strong>${w.word}</strong><small>${w.ipa}</small></div><button class="listen-btn" data-say="${w.word}">🔊 Listen</button></div><div class="choice-grid">${w.opts.map((o,j)=>`<button class="choice ${state.pron[w.id]?'correct':''}" data-pron="${w.id}" data-choice="${j}" ${state.pron[w.id]?'disabled':''}>${o}</button>`).join('')}</div><div class="feedback" id="fb-${w.id}">${state.pron[w.id]?w.note:''}</div></div>`).join('')}</div>${footer(`${done}/8 access checks cleared`,done===8,'Open client floor')}`);
+ $$('[data-say]',mount).forEach(b=>b.onclick=()=>speak(b.dataset.say));
+ $$('[data-pron]',mount).forEach(b=>b.onclick=()=>{const w=pron.find(x=>x.id===b.dataset.pron),choice=Number(b.dataset.choice);if(choice===w.correct){state.pron[w.id]=true;sfx('ok');save();renderPron();}else{sfx('bad');b.classList.add('wrong');$('#fb-'+w.id).textContent='Not that stress pattern. Listen again and retry.';}});
+ $('#completeMission').onclick=()=>awardAndClear(2,'Access granted','The security gate recognises your actuarial English. The client floor is open.');
+}
+function caseComplete(id){const c=state.caseDone[id];return c&&c.q1&&c.q2;}
+function renderCases(){
+ const ids=Object.keys(cases),done=ids.filter(caseComplete).length,active=cases[state.casePanel]||cases.motor;
+ mount.innerHTML=stageFrame(3,'Triage the client files','Three cases have arrived at once. Open each folder and make two actuarial decisions before the manager returns.','assets/session1/realistic/case-files.png',['3 client sectors','2 decisions per file','Case triage'],`${dispatch('📁','Case room unlocked','Choose a folder. Each client has two decisions: what to do first, then what the actuarial analysis is actually trying to understand.')}
+ <div class="folder-shelf">${ids.map(id=>`<button class="folder-btn ${state.casePanel===id?'active':''} ${caseComplete(id)?'done':''}" data-folder="${id}"><strong>${cases[id].icon} ${cases[id].label}</strong><small>${caseComplete(id)?'✓ File cleared':'Open file'}</small></button>`).join('')}</div>
+ <div class="case-panel"><span class="micro-label">ACTIVE FILE</span><h3>${active.icon} ${active.label}</h3><div class="problem">${active.problem}</div>${caseQuestion(state.casePanel,1,active.q1,active.o1,active.c1)}${state.caseDone[state.casePanel]?.q1?caseQuestion(state.casePanel,2,active.q2,active.o2,active.c2):''}<div class="feedback">${caseComplete(state.casePanel)?active.feedback:''}</div></div>
+ ${footer(`${done}/3 client files cleared`,done===3,'Send triage report')}`);
+ $$('[data-folder]',mount).forEach(b=>b.onclick=()=>{state.casePanel=b.dataset.folder;save();renderCases();});
+ $$('[data-case]',mount).forEach(b=>b.onclick=()=>{const id=b.dataset.case,step='q'+b.dataset.step,c=cases[id],correct=c['c'+b.dataset.step],choice=Number(b.dataset.choice);state.caseDone[id]=state.caseDone[id]||{};if(choice===correct){state.caseDone[id][step]=true;sfx('ok');save();renderCases();}else{sfx('bad');b.classList.add('wrong');const fb=$(`#casefb-${id}-${b.dataset.step}`);if(fb)fb.textContent='That would not move the actuarial analysis forward. Try another option.';}});
+ $('#completeMission').onclick=()=>awardAndClear(3,'Case triage complete','You identified how actuaries approach insurance, pensions and climate-risk problems.');
+}
+function caseQuestion(id,step,q,opts,correct){const done=state.caseDone[id]?.['q'+step];return `<div style="margin-top:17px"><strong>${q}</strong><div class="choice-grid one">${opts.map((o,i)=>`<button class="choice ${done&&i===correct?'correct':''}" data-case="${id}" data-step="${step}" data-choice="${i}" ${done?'disabled':''}>${o}</button>`).join('')}</div><div class="feedback" id="casefb-${id}-${step}"></div></div>`;}
+function renderLab(){
+ const selected=state.lab||[],correct=selected.length===5&&selected.every(i=>labItems[i][2]),complete=state.labTrayOK&&state.labShock;
+ mount.innerHTML=stageFrame(4,'Build the model tray','The modelling bay is full of data. Your model has only five input slots: keep the signal and reject the noise.','assets/session1/realistic/risk-lab.png',['Signal vs noise','Model inputs','Assumption shock'],`${dispatch('📊','Risk Lab brief','A motor portfolio has 10,000 policyholders and 620 claims. Repair costs are rising. Pick exactly five items that should enter the analysis.')}
+ <div class="lab-layout"><div class="data-wall">${labItems.map((x,i)=>`<button class="data-tile ${selected.includes(i)?'selected':''}" data-lab="${i}" ${state.labTrayOK?'disabled':''}><strong>${x[0]}</strong><small>${x[1]}</small></button>`).join('')}</div><div class="model-tray"><h3>MODEL TRAY</h3><p>${selected.length}/5 slots filled</p>${[0,1,2,3,4].map(i=>`<div class="tray-slot ${selected[i]!==undefined?'filled':''}">${selected[i]!==undefined?labItems[selected[i]][0]:'Empty input slot'}</div>`).join('')}</div></div>
+ <div class="feedback" id="labFeedback">${state.labTrayOK?'Model tray accepted. A new alert just arrived.':''}</div>
+ ${state.labTrayOK?`<div class="game-card" style="margin-top:18px"><span class="micro-label">ASSUMPTION SHOCK</span><h3>Repair costs suddenly rise by 18%.</h3><p>Which part of the model should be reviewed immediately?</p><div class="choice-grid one"><button class="choice ${state.labShock?'correct':''}" data-shock="0" ${state.labShock?'disabled':''}>Claim-cost / inflation assumptions</button><button class="choice" data-shock="1" ${state.labShock?'disabled':''}>The company logo</button><button class="choice" data-shock="2" ${state.labShock?'disabled':''}>The office seating plan</button></div><div class="feedback" id="shockFeedback">${state.labShock?'Correct. The cost assumptions must reflect the new environment.':''}</div></div>`:''}
+ <div class="stage-footer"><div class="stage-score">${complete?'Risk Lab cleared':state.labTrayOK?'Tray accepted — solve the shock':'Select 5 model inputs'}</div><div class="stage-actions">${!state.labTrayOK?'<button class="secondary-game" id="checkLab">Run model check</button>':''}<button class="primary-game" id="completeMission" ${complete?'':'disabled'}>Send model note →</button></div></div>`);
+ $$('[data-lab]',mount).forEach(b=>b.onclick=()=>{const i=Number(b.dataset.lab);if(state.labTrayOK)return;state.lab=selected.includes(i)?selected.filter(x=>x!==i):selected.length<5?[...selected,i]:selected;save();renderLab();});
+ if($('#checkLab'))$('#checkLab').onclick=()=>{if(correct){state.labTrayOK=true;sfx('ok');save();renderLab();}else{sfx('bad');$('#labFeedback').textContent=selected.length!==5?'Fill exactly five slots first.':'Some of your inputs are noise. Remove them and rebuild the tray.';}};
+ $$('[data-shock]',mount).forEach(b=>b.onclick=()=>{if(Number(b.dataset.shock)===0){state.labShock=true;sfx('ok');save();renderLab();}else{sfx('bad');b.classList.add('wrong');$('#shockFeedback').textContent='That would not change the financial estimate. Try again.';}});
+ $('#completeMission').onclick=()=>awardAndClear(4,'Risk Lab cleared','You separated useful evidence from noise and reacted to a change in assumptions.');
+}
+function renderInbox(){
+ const done=Object.keys(state.inbox).length;
+ mount.innerHTML=stageFrame(5,'Protect the client pack','The team inbox is filling up. Decide what belongs in the client pack before misinformation reaches the meeting.','assets/session1/realistic/hero-office.png',['Inbox clean-up','Myth vs reality','Client pack quality'],`${dispatch('📥','Incoming messages','For each message, choose KEEP if it is a useful actuarial insight or ARCHIVE if it is misleading.')}
+ <div class="phone-frame"><div class="phone-screen"><div class="phone-head"><strong>Northstar · Team Inbox</strong><span>${done}/${inbox.length} checked</span></div><div class="mail-list">${inbox.map(m=>`<article class="mail"><div class="mail-top"><strong>${m.from}</strong><span>${m.time}</span></div><p>${m.text}</p><div class="mail-actions"><button class="choice ${state.inbox[m.id]===true?'correct':''}" data-mail="${m.id}" data-v="true" ${state.inbox[m.id]!==undefined?'disabled':''}>✓ Keep</button><button class="choice ${state.inbox[m.id]===false?'correct':''}" data-mail="${m.id}" data-v="false" ${state.inbox[m.id]!==undefined?'disabled':''}>Archive</button></div><div class="feedback" id="mailfb-${m.id}">${state.inbox[m.id]!==undefined?m.why:''}</div></article>`).join('')}</div></div></div>
+ ${footer(`${done}/${inbox.length} messages classified`,done===inbox.length,'Send clean client pack')}`);
+ $$('[data-mail]',mount).forEach(b=>b.onclick=()=>{const m=inbox.find(x=>x.id===b.dataset.mail),v=b.dataset.v==='true';if(v===m.good){state.inbox[m.id]=v;sfx('ok');save();renderInbox();}else{sfx('bad');b.classList.add('wrong');$('#mailfb-'+m.id).textContent='That would damage the client pack. Reconsider this message.';}});
+ $('#completeMission').onclick=()=>awardAndClear(5,'Client pack protected','You removed the myths and kept the explanations that a client can actually use.');
+}
+function renderMeeting(){
+ const idx=state.meeting.length,turn=meeting[idx],complete=idx===meeting.length;
+ const transcript=state.meeting.map((a,i)=>`<div class="bubble client"><strong>${meeting[i].speaker}:</strong> ${meeting[i].q}</div><div class="bubble you"><strong>You:</strong> ${meeting[i].answers[a][0]}</div>`).join('');
+ mount.innerHTML=stageFrame(6,'Keep the client meeting on track','The client is here. This time the questions arrive one by one — answer clearly without overpromising or hiding behind jargon.','assets/session1/realistic/client-meeting.png',['Live conversation','Clear English','Decision support'],`${dispatch('🤝','Meeting live','A poor answer stalls the conversation; a clear one moves it forward. There is no timer.')}
+ <div class="meeting-scene"><div class="meeting-photo"><img src="assets/session1/realistic/client-meeting.png" alt="Actuarial consultant in a client meeting."></div><div class="chat-panel"><div class="chat-log">${transcript}${!complete?`<div class="bubble client"><strong>${turn.speaker}:</strong> ${turn.q}</div>`:''}</div>${!complete?`<div class="live-choice"><span class="micro-label">YOUR RESPONSE</span><div class="choice-grid one">${turn.answers.map((a,i)=>`<button class="choice" data-meet="${i}">${a[0]}</button>`).join('')}</div><div class="feedback" id="meetingFeedback">${state.meetingWrong||''}</div></div>`:`<div class="final-card"><span class="micro-label" style="color:#b8e4e5">MEETING RESULT</span><h3>Client confidence maintained</h3><p>You were useful without pretending that uncertainty can disappear.</p></div>`}</div></div>
+ ${footer(`${idx}/${meeting.length} questions handled`,complete,'Close the meeting')}`);
+ $$('[data-meet]',mount).forEach(b=>b.onclick=()=>{const i=Number(b.dataset.meet);if(turn.answers[i][1]){state.meeting.push(i);state.meetingWrong='';sfx('ok');save();renderMeeting();}else{state.meetingWrong='The room goes quiet. That answer is either too confident, too vague or simply wrong. Try another response.';sfx('bad');renderMeeting();}});
+ $('#completeMission').onclick=()=>awardAndClear(6,'Meeting survived','You explained actuarial thinking clearly without promising certainty.');
+}
+function renderBoard(){
+ const used=Object.values(state.slide),correct=slideSlots.filter(s=>state.slide[s.id]===s.answer).length;
+ mount.innerHTML=stageFrame(7,'Rescue the board slide','The meeting is over — almost. The final slide is unreadable actuarial jargon. Fix it before it appears on the boardroom screen.','assets/session1/realistic/boardroom.png',['Final mission','Jargon rescue','Board-ready English'],`${dispatch('🚨','Five minutes to presentation','Select a clear replacement from the deck, then click the line you want to replace. Four correct lines will rebuild the slide.')}
+ <div class="slide-workbench"><div class="bad-slide"><span class="micro-label" style="color:#9ec5d3">ORIGINAL SLIDE</span><h3>What actuarial professionals deliver</h3><ul>${slideSlots.map(s=>`<li>${s.bad}</li>`).join('')}</ul></div><div class="good-slide"><span class="micro-label">YOUR BOARD-READY SLIDE</span><h3>What does an actuary do?</h3>${slideSlots.map((s,i)=>{const val=state.slide[s.id];let cls='slide-slot';if(val)cls+=' filled';if(state.slideChecked)cls+=val===s.answer?' correct':' wrong';return `<button class="${cls}" data-slide="${s.id}"><span class="micro-label">LINE ${i+1}</span><div>${val?escapeHtml(val):'Choose a replacement line…'}</div></button>`;}).join('')}</div></div>
+ <div class="replacement-deck">${replacements.map((r,i)=>`<button class="replacement ${selectedReplacement===r?'active':''} ${used.includes(r)?'used':''}" data-replace="${i}">${r}</button>`).join('')}</div>
+ <div class="feedback" id="slideFeedback">${state.slideChecked?(correct===4?'Board-ready. Clear, concrete and useful.':`${correct}/4 lines work. Replace the red lines.`):'Pick a line from the deck, then choose its destination.'}</div>
+ <div class="stage-footer"><div class="stage-score">${correct}/4 board lines correct</div><div class="stage-actions"><button class="secondary-game" id="checkSlide">Run clarity check</button><button class="primary-game" id="completeMission" ${correct===4?'':'disabled'}>Send to board →</button></div></div>
+ ${state.earned[7]?finalSummary():''}`);
+ $$('[data-replace]',mount).forEach(b=>b.onclick=()=>{selectedReplacement=replacements[Number(b.dataset.replace)];renderBoard();});
+ $$('[data-slide]',mount).forEach(b=>b.onclick=()=>{if(!selectedReplacement)return;Object.keys(state.slide).forEach(k=>{if(state.slide[k]===selectedReplacement)delete state.slide[k];});state.slide[b.dataset.slide]=selectedReplacement;selectedReplacement='';state.slideChecked=false;save();renderBoard();});
+ $('#checkSlide').onclick=()=>{state.slideChecked=true;sfx(correct===4?'ok':'bad');save();renderBoard();};
+ $('#completeMission').onclick=()=>awardAndClear(7,'Northstar cleared','The board slide is clear. Your visitor badge has become full Northstar access.');
+}
+function finalSummary(){return `<div class="final-card"><span class="micro-label" style="color:#b8e4e5">FIRST MORNING COMPLETE</span><h3>Northstar access: CLEARED</h3><p>You repaired a real brief, handled three client sectors, filtered model inputs, protected a client pack, survived a meeting and translated actuarial jargon into usable English.</p><div class="final-stats"><div><span>REPUTATION</span><strong>${state.rep}/100</strong></div><div><span>MISSIONS</span><strong>7/7</strong></div><div><span>ACCESS</span><strong>BOARDROOM</strong></div></div><div style="margin-top:16px"><a class="primary-link" href="m1-day1.html">Return to Session 1 →</a></div></div>`;}
+function render(){updateHUD();soundBtn.textContent=state.soundOn?'🔊 Sound on':'🔈 Sound off';soundBtn.setAttribute('aria-pressed',String(state.soundOn));({1:renderBrief,2:renderPron,3:renderCases,4:renderLab,5:renderInbox,6:renderMeeting,7:renderBoard}[state.stage]||renderBrief)();}
+render();
 })();

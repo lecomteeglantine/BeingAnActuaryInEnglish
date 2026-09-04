@@ -20,14 +20,17 @@ CURRENT COURSE STATUS
 - M1 Sessions 2–5 remain intentionally neutral and will be built progressively.
 - M2 Sessions 1–5 remain intentionally neutral and will be built progressively.
 
-SESSION 1 FINAL-TASK CHANGE
-The former 60-second elevator challenge has been completely removed.
-Mission 6 is now “The Client Has a Question”:
-1. Students build a correct professional explanation through four guided decisions.
-2. They hear/read the resulting professional answer.
-3. The client asks for a jargon-free explanation.
-4. Students complete “Make It Sound Human” aloud with no timer.
-5. A short self-check and client reaction complete the mission.
+SESSION 1 INDIVIDUAL GAME
+Actuary for a Day is now a 7-mission story-driven game:
+1. Restore a corrupted client brief.
+2. Clear the pronunciation access gate.
+3. Triage three client files.
+4. Build a five-input risk model and react to an assumption shock.
+5. Clean up the team inbox and protect the client pack.
+6. Handle a live client meeting with clear professional answers.
+7. Rescue a jargon-heavy board slide before the presentation.
+
+The page includes a Northstar office map, reputation points, access levels, mission-clear screens, realistic local illustrations and deterministic progress.
 
 AUDIO
 Pronunciation caches the selected voice, prioritises a local British English voice, and no longer refreshes the voice list on every normal click once a usable voice has been found.
