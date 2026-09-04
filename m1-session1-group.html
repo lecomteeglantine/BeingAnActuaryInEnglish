@@ -4,12 +4,82 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#102a43">
-  <meta name="description" content="The Actuarial Firm Draft: an immersive M1 group activity in which students build an actuarial consultancy with a 100-point budget.">
+  <meta name="description" content="The Actuarial Firm Draft: an immersive strategy game for M1 students.">
   <title>The Actuarial Firm Draft · M1 Session 1</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/favicon.png">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .firm-main{max-width:1320px;margin:0 auto;padding:0 20px 80px}
+    .firm-hero{display:grid;grid-template-columns:1.08fr .92fr;gap:28px;align-items:center;padding:34px 0 22px}
+    .firm-hero img{width:100%;height:100%;max-height:390px;object-fit:cover;border-radius:28px;border:1px solid #d7e3ea;box-shadow:0 22px 48px rgba(16,42,67,.14)}
+    .firm-kicker{display:inline-flex;align-items:center;gap:10px;padding:8px 14px;border-radius:999px;background:#e8f8f8;color:#0b6668;font-size:.82rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+    .firm-hero h1{font-size:clamp(2.7rem,5vw,4.7rem);line-height:.94;letter-spacing:-.05em;color:#102a43;margin:14px 0 16px}
+    .firm-lead{font-size:1.1rem;color:#526b80;max-width:700px}
+    .firm-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+    .mission-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:10px 0 28px}
+    .mission-card{background:linear-gradient(135deg,#fff,#f7fbfc);border:1px solid #d7e3ea;border-radius:18px;padding:14px 16px;box-shadow:0 12px 24px rgba(16,42,67,.06)}
+    .mission-card .label{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#6c8596;font-weight:800}
+    .mission-card .value{display:block;font-size:1.35rem;font-weight:900;color:#102a43;margin-top:5px}
+    .mission-card .sub{display:block;font-size:.82rem;color:#567;margin-top:2px}
+    .firm-layout{display:grid;grid-template-columns:minmax(290px,340px) 1fr;gap:22px;align-items:start}
+    .firm-sidebar{position:sticky;top:84px;display:grid;gap:16px}
+    .panel{background:#fff;border:1px solid #d7e3ea;border-radius:24px;padding:18px;box-shadow:0 16px 32px rgba(16,42,67,.07)}
+    .panel.dark{background:linear-gradient(135deg,#102a43,#0f3254);color:#fff;border:none}
+    .panel h2,.panel h3,.panel h4{margin:0;color:inherit}
+    .budget-left{font-size:2.8rem;font-weight:900;line-height:1;color:#fff;margin:8px 0 4px}
+    .budget-left small{display:block;font-size:.92rem;color:#d9eef0;font-weight:700}
+    .budget-track{height:10px;background:rgba(255,255,255,.18);border-radius:999px;overflow:hidden;margin:12px 0 8px}
+    .budget-track span{display:block;height:100%;width:0;background:linear-gradient(90deg,#52d1dc,#f3c35d);transition:width .35s ease}
+    .code-badge{display:inline-flex;align-items:center;gap:8px;border-radius:999px;background:#fff7df;border:1px solid #ecd28d;color:#6f5611;padding:7px 12px;font-size:.78rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+    .quick-list{display:grid;gap:10px;margin-top:12px}
+    .quick-list div{display:flex;justify-content:space-between;gap:12px;font-size:.95rem;border-bottom:1px dashed #d7e3ea;padding-bottom:8px}
+    .quick-list strong{color:#102a43}
+    .phrase{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px dashed #d7e3ea}
+    .phrase:last-child{border-bottom:none;padding-bottom:0}
+    .progress-panel{background:#f5f8fb;border:1px solid #d7e3ea;border-radius:24px;padding:15px 18px;position:sticky;top:0;z-index:10}
+    .progress-panel .track{height:8px;background:#dce5ec;border-radius:999px;overflow:hidden}.progress-panel .track span{display:block;height:100%;width:0;background:linear-gradient(90deg,#0f9fa9,#f1b44c);transition:width .35s ease}
+    .progress-panel ol{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:repeat(8,1fr);gap:8px}.progress-panel li{text-align:center;color:#8094a5;font-size:.79rem;font-weight:900}.progress-panel li small{display:block;font-size:.67rem}.progress-panel li.active{color:#102a43}.progress-panel li.done{color:#0b6668}
+    .stage-shell{padding-top:14px}
+    .stage-card{background:#fff;border:1px solid #d7e3ea;border-radius:30px;overflow:hidden;box-shadow:0 20px 45px rgba(16,42,67,.08)}
+    .stage-head{display:grid;grid-template-columns:1fr minmax(260px,420px);gap:24px;align-items:center;padding:28px;background:linear-gradient(135deg,#fff,#eef7f8);border-bottom:1px solid #d7e3ea}
+    .stage-head img{width:100%;max-height:290px;object-fit:cover;border-radius:22px;border:1px solid #d7e3ea}
+    .round-time{color:#0b6668;font-weight:900;margin:0}
+    .stage-head h2{font-size:clamp(2rem,4vw,3.1rem);line-height:1.02;letter-spacing:-.04em;color:#102a43;margin:6px 0 8px}
+    .stage-body{padding:28px 30px 32px}
+    .objective{display:grid;grid-template-columns:90px 1fr;gap:16px;align-items:start;background:#102a43;color:#fff;border-radius:20px;padding:18px 20px;margin-bottom:22px}.objective .icon{font-size:2rem;text-align:center}.objective p{margin:4px 0 0;color:#d7e4ed}
+    .mini-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.mini-badges span{display:inline-flex;align-items:center;gap:6px;background:#fff7df;border:1px solid #ecd28d;color:#6f5611;padding:6px 10px;border-radius:999px;font-size:.8rem;font-weight:800}
+    .notice-box{background:#fff8df;border-left:5px solid #f1b44c;border-radius:16px;padding:14px 16px;margin-bottom:18px;color:#5e4b1a}
+    .option-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .choice-card{border:1px solid #d7e3ea;border-radius:22px;padding:18px;background:#fbfdff;cursor:pointer;transition:transform .18s ease,border-color .18s ease, box-shadow .18s ease;position:relative}
+    .choice-card:hover{transform:translateY(-2px);border-color:#98cfd6;box-shadow:0 16px 30px rgba(16,42,67,.08)}
+    .choice-card.selected{border-color:#0f9fa9;box-shadow:inset 0 0 0 2px #0f9fa9;background:#eaf8f8}
+    .choice-card.disabled{opacity:.45;pointer-events:none}
+    .choice-card .top{display:flex;justify-content:space-between;gap:10px;align-items:start;margin-bottom:10px}
+    .emoji{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:#e6f5f7;font-size:1.3rem}
+    .cost-pill{display:inline-flex;align-items:center;border-radius:999px;background:#102a43;color:#fff;padding:6px 10px;font-size:.78rem;font-weight:900;letter-spacing:.03em}
+    .choice-card h3{margin:0 0 6px;color:#102a43;font-size:1.15rem}
+    .choice-card p{margin:0;color:#526b80}
+    .choice-card ul{margin:10px 0 0 18px;color:#526b80;padding:0}
+    .decision-row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px;flex-wrap:wrap}
+    .selection-meter{font-weight:900;color:#0b6668}
+    .nav-row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:26px}
+    .review-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
+    .review-box,.insight-box{background:#fbfdff;border:1px solid #d7e3ea;border-radius:22px;padding:18px}
+    .summary-list{display:grid;gap:10px}.summary-list div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed #d7e3ea;padding-bottom:10px}.summary-list strong{color:#102a43}
+    .status-pill{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:7px 12px;font-size:.82rem;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+    .status-good{background:#edf9f0;color:#174e27;border:1px solid #61b97b}.status-warning{background:#fff8df;color:#6f5611;border:1px solid #ecd28d}.status-bad{background:#fff0f0;color:#7b2323;border:1px solid #d67c7c}
+    .challenge-choices{display:grid;gap:12px;margin-top:14px}.challenge-choice{border:1px solid #d7e3ea;border-radius:18px;padding:16px;background:#fff;cursor:pointer}.challenge-choice.correct{border-color:#61b97b;background:#edf9f0}.challenge-choice.wrong{border-color:#d67c7c;background:#fff0f0}.challenge-choice:hover{border-color:#98cfd6}
+    .brief-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.input-box{display:grid;gap:8px}.text-input,.text-area{width:100%;border:1px solid #cbd6de;border-radius:16px;padding:12px 14px;font:inherit}.text-area{min-height:110px;resize:vertical}
+    .firm-brief{background:linear-gradient(135deg,#f6fbfc,#ffffff);border:1px solid #d7e3ea;border-radius:24px;padding:18px;margin-top:18px}
+    .brief-columns{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .student-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}.student-grid div{background:#fff;border:1px solid #d7e3ea;border-radius:18px;padding:14px}
+    .finish-banner{margin-top:18px;background:linear-gradient(135deg,#102a43,#0f9fa9);color:#fff;border-radius:22px;padding:22px}.finish-banner strong{display:block;font-size:1.4rem}.finish-banner span{display:block;margin-top:6px;color:#d9eef0}
+    .hidden{display:none !important}
+    @media(max-width:1020px){.firm-layout,.firm-hero,.stage-head,.review-grid,.brief-grid{grid-template-columns:1fr}.mission-strip{grid-template-columns:1fr 1fr}.progress-panel ol{grid-template-columns:repeat(8,92px);overflow-x:auto;justify-content:start}.progress-panel li small{display:none}.firm-sidebar{position:static}}
+    @media(max-width:700px){.firm-main{padding:0 14px 70px}.mission-strip{grid-template-columns:1fr}.option-grid,.student-grid,.brief-columns{grid-template-columns:1fr}.stage-body,.stage-head{padding:20px}.objective{grid-template-columns:1fr}.nav-row > *{width:100%}.decision-row{align-items:flex-start}}
+  </style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
@@ -17,230 +87,322 @@
   <a class="brand" href="index.html"><span aria-hidden="true" class="brand-mark">📊</span><span><strong>Actuarial English</strong></span></a>
   <nav aria-label="Main navigation" class="main-nav"><a href="index.html">Home</a><a href="dictionary.html">Dictionary</a><a class="active" href="m1.html">M1</a><a href="m2.html">M2</a><a href="grammar.html">Grammar</a><a href="pronunciation.html">Pronunciation</a><a href="games.html">Games</a></nav>
 </header>
-
-<main id="main" class="draft-main">
-  <section class="draft-hero">
+<main id="main" class="firm-main">
+  <section class="firm-hero">
     <div>
-      <p class="section-kicker">M1 · SESSION 1 · GROUP ACTIVITY</p>
+      <span class="firm-kicker">M1 · Session 1 · Group activity</span>
       <h1>The Actuarial Firm Draft</h1>
-      <p class="draft-tagline">Build your firm with <strong>100 points</strong>. You cannot buy everything, so every choice must have a reason.</p>
-      <div class="hero-buttons"><a class="ghost-link" href="m1-day1.html">← Session 1</a><button class="secondary-btn" id="groupSoundToggle" type="button" aria-pressed="true">🔊 Sound on</button></div>
+      <p class="firm-lead">You are not just ticking options. You are a new actuarial strategy team preparing to launch a consultancy before an investor board arrives. Build a firm with <strong>100 points</strong>, react to a client alert and defend your choices in the boardroom.</p>
+      <div class="firm-toolbar"><a class="ghost-link" href="m1-day1.html">← Session 1</a><button class="secondary-btn" type="button" id="soundToggle" aria-pressed="true">🔊 Sound on</button><button class="secondary-btn" type="button" id="restartDraft">↺ Restart firm</button></div>
     </div>
-    <img src="assets/session1/draft-room.svg" alt="Four professionals planning an actuarial firm around a strategy table with a 100-point budget." loading="eager">
+    <img src="assets/session1/group-realistic/hero-meeting.png" alt="A realistic strategic meeting in an actuarial consultancy.">
+  </section>
+  <section class="mission-strip" aria-label="Game overview">
+    <div class="mission-card"><span class="label">Team format</span><span class="value">3 or 4</span><span class="sub">One device per team is recommended</span></div>
+    <div class="mission-card"><span class="label">Budget</span><span class="value">100 points</span><span class="sub">Fixed costs, no random scoring</span></div>
+    <div class="mission-card"><span class="label">Final task</span><span class="value">Boardroom pitch</span><span class="sub">Every student speaks for about 2 minutes</span></div>
+    <div class="mission-card"><span class="label">Important</span><span class="value">Same choices = same result</span><span class="sub">Same budget, same challenge, same page on every device</span></div>
   </section>
 
-  <section class="draft-instructions" aria-labelledby="draftInstructionsTitle">
-    <div class="brief-number">01</div>
-    <div>
-      <p class="module-number">READ THIS FIRST</p>
-      <h2 id="draftInstructionsTitle">Your mission</h2>
-      <ol class="clear-steps">
-        <li>Work in a group of <strong>3 or 4 students</strong>.</li>
-        <li>Use <strong>one device per group</strong> if possible. Discuss every decision before clicking.</li>
-        <li>You start with <strong>100 points</strong>. Every client, expertise, team member and tool has a fixed cost.</li>
-        <li>You must stay within budget. <strong>You cannot choose everything.</strong></li>
-        <li>There is <strong>no random scoring</strong>: the same choices always give the same cost, the same next round and the same final challenge on every device.</li>
-        <li>At the end, prepare a boardroom presentation. <strong>Every student speaks for approximately 2 minutes.</strong></li>
-      </ol>
-      <div class="notice"><strong>English only:</strong> explain your choices to your teammates before you validate them. The language and pronunciation support on the page is there to help you.</div>
-    </div>
-  </section>
-
-  <section class="draft-workspace">
-    <aside class="draft-sidebar" aria-label="Firm dashboard">
-      <div class="budget-card">
-        <p class="module-number">YOUR BUDGET</p>
-        <div class="budget-number"><strong id="budgetLeft">100</strong><span>points left</span></div>
-        <div class="budget-track" aria-hidden="true"><span id="budgetBar"></span></div>
-        <p id="budgetSpent">0 points spent</p>
+  <section class="firm-layout">
+    <aside class="firm-sidebar">
+      <div class="panel dark">
+        <p class="module-number" style="color:#d9eef0;margin:0">MISSION CONTROL</p>
+        <div class="budget-left" id="budgetLeft">100<small>points left</small></div>
+        <div class="budget-track"><span id="budgetBar"></span></div>
+        <p id="budgetSpent" style="margin:0;color:#d9eef0">0 points spent</p>
       </div>
-
-      <div class="draft-mini-summary">
-        <p class="module-number">YOUR FIRM SO FAR</p>
-        <dl>
-          <div><dt>Client</dt><dd id="summaryClient">—</dd></div>
-          <div><dt>Expertise</dt><dd id="summaryExpertise">—</dd></div>
-          <div><dt>Team</dt><dd id="summaryTeam">—</dd></div>
-          <div><dt>Tools</dt><dd id="summaryTools">—</dd></div>
-          <div><dt>Identity</dt><dd id="summaryIdentity">—</dd></div>
-        </dl>
-      </div>
-
-      <div class="group-language">
-        <p class="module-number">USEFUL LANGUAGE</p>
-        <div class="audio-phrase"><button type="button" class="mini-btn group-speak" data-say="I think we should invest in" aria-label="Listen: I think we should invest in">🔊</button><span>I think we should invest in…</span></div>
-        <div class="audio-phrase"><button type="button" class="mini-btn group-speak" data-say="The main advantage is" aria-label="Listen: The main advantage is">🔊</button><span>The main advantage is…</span></div>
-        <div class="audio-phrase"><button type="button" class="mini-btn group-speak" data-say="The trade-off is" aria-label="Listen: The trade-off is">🔊</button><span>The trade-off is…</span></div>
-        <div class="audio-phrase"><button type="button" class="mini-btn group-speak" data-say="This would help our clients to" aria-label="Listen: This would help our clients to">🔊</button><span>This would help our clients to…</span></div>
-        <div class="audio-phrase"><button type="button" class="mini-btn group-speak" data-say="We chose this option because" aria-label="Listen: We chose this option because">🔊</button><span>We chose this option because…</span></div>
-      </div>
-
-      <div class="draft-pronunciation">
-        <p class="module-number">QUICK PRONUNCIATION</p>
-        <div class="pron-chip-grid">
-          <button class="group-speak" type="button" data-say="actuary">🔊 actuary</button>
-          <button class="group-speak" type="button" data-say="actuarial">🔊 actuarial</button>
-          <button class="group-speak" type="button" data-say="liability">🔊 liability</button>
-          <button class="group-speak" type="button" data-say="uncertainty">🔊 uncertainty</button>
-          <button class="group-speak" type="button" data-say="premium">🔊 premium</button>
-          <button class="group-speak" type="button" data-say="claim">🔊 claim</button>
+      <div class="panel">
+        <p class="module-number" style="margin:0">FIRM STATUS</p>
+        <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:10px;align-items:center"><span class="code-badge" id="configCode">Config code · —</span><span id="statusPill" class="status-pill status-warning">Planning</span></div>
+        <div class="quick-list">
+          <div><strong>Client</strong><span id="sumClient">—</span></div>
+          <div><strong>Expertise</strong><span id="sumExpertise">—</span></div>
+          <div><strong>Team</strong><span id="sumTeam">—</span></div>
+          <div><strong>Tools</strong><span id="sumTools">—</span></div>
+          <div><strong>Identity</strong><span id="sumIdentity">—</span></div>
         </div>
+      </div>
+      <div class="panel">
+        <p class="module-number" style="margin:0">USEFUL LANGUAGE</p>
+        <div class="phrase"><button type="button" class="mini-btn speak" data-say="I think this client fits our firm best.">🔊</button><span>I think this client fits our firm best.</span></div>
+        <div class="phrase"><button type="button" class="mini-btn speak" data-say="The trade-off is that we cannot afford everything.">🔊</button><span>The trade-off is that we cannot afford everything.</span></div>
+        <div class="phrase"><button type="button" class="mini-btn speak" data-say="This option strengthens our actuarial offer.">🔊</button><span>This option strengthens our actuarial offer.</span></div>
+        <div class="phrase"><button type="button" class="mini-btn speak" data-say="We chose this because it helps us manage risk more clearly.">🔊</button><span>We chose this because it helps us manage risk more clearly.</span></div>
+      </div>
+      <div class="panel">
+        <p class="module-number" style="margin:0">QUICK PRONUNCIATION</p>
+        <div class="phrase"><button type="button" class="mini-btn speak" data-say="actuary">🔊</button><span>actuary</span></div>
+        <div class="phrase"><button type="button" class="mini-btn speak" data-say="actuarial">🔊</button><span>actuarial</span></div>
+        <div class="phrase"><button type="button" class="mini-btn speak" data-say="uncertainty">🔊</button><span>uncertainty</span></div>
+        <div class="phrase"><button type="button" class="mini-btn speak" data-say="liability">🔊</button><span>liability</span></div>
       </div>
     </aside>
 
-    <div class="draft-game" id="draftGame">
-      <div class="draft-progress" aria-label="Draft progress">
-        <ol>
-          <li class="active" data-progress="1"><span>1</span><small>Clients</small></li>
-          <li data-progress="2"><span>2</span><small>Expertise</small></li>
-          <li data-progress="3"><span>3</span><small>Team</small></li>
-          <li data-progress="4"><span>4</span><small>Tools</small></li>
-          <li data-progress="5"><span>5</span><small>Identity</small></li>
-          <li data-progress="6"><span>6</span><small>Review</small></li>
-          <li data-progress="7"><span>7</span><small>Challenge</small></li>
-          <li data-progress="8"><span>8</span><small>Boardroom</small></li>
-        </ol>
-      </div>
-
-      <section class="draft-round" data-round="1" aria-labelledby="round1Title">
-        <div class="draft-round-art"><img src="assets/session1/draft-clients.svg" alt="Illustrated cards representing several possible client sectors."></div>
-        <p class="module-number">ROUND 1 · CHOOSE ONE</p>
-        <h2 id="round1Title">Who will your firm work for?</h2>
-        <p>Choose your first target market. This decision will influence the challenge your firm receives later.</p>
-        <div class="draft-option-grid" id="clientChoices">
-          <button type="button" data-group="client" data-id="insurance" data-label="Insurance companies" data-cost="14"><span class="draft-option-icon">🚗</span><strong>Insurance companies</strong><small>Pricing, claims and portfolio risk.</small><em>14 pts</em></button>
-          <button type="button" data-group="client" data-id="pensions" data-label="Pension funds" data-cost="14"><span class="draft-option-icon">🏦</span><strong>Pension funds</strong><small>Long-term obligations and longevity.</small><em>14 pts</em></button>
-          <button type="button" data-group="client" data-id="banks" data-label="Banks & financial institutions" data-cost="16"><span class="draft-option-icon">📈</span><strong>Banks &amp; financial institutions</strong><small>Financial risk, capital and scenarios.</small><em>16 pts</em></button>
-          <button type="button" data-group="client" data-id="health" data-label="Healthcare organisations" data-cost="12"><span class="draft-option-icon">🏥</span><strong>Healthcare organisations</strong><small>Costs, uncertainty and population data.</small><em>12 pts</em></button>
-          <button type="button" data-group="client" data-id="climate" data-label="Climate-risk clients" data-cost="18"><span class="draft-option-icon">🌍</span><strong>Climate-risk clients</strong><small>Extreme events and financial exposure.</small><em>18 pts</em></button>
-          <button type="button" data-group="client" data-id="international" data-label="International companies" data-cost="18"><span class="draft-option-icon">🌐</span><strong>International companies</strong><small>Complex risk across several markets.</small><em>18 pts</em></button>
-        </div>
-        <div class="draft-discuss"><strong>Discuss before you click:</strong> What risks would this client expect an actuary to understand?</div>
-        <div class="draft-nav"><span></span><button type="button" class="primary-link draft-next" data-next="2">Confirm client →</button></div>
-      </section>
-
-      <section class="draft-round" data-round="2" aria-labelledby="round2Title" hidden>
-        <div class="draft-round-art"><img src="assets/session1/draft-expertise.svg" alt="An actuarial dashboard showing different areas of expertise."></div>
-        <p class="module-number">ROUND 2 · CHOOSE EXACTLY TWO</p>
-        <h2 id="round2Title">What will your firm specialise in?</h2>
-        <p>You need a clear offer. Choose two areas of expertise that make sense together.</p>
-        <div class="draft-option-grid" id="expertiseChoices">
-          <button type="button" data-group="expertise" data-id="pricing" data-label="Pricing" data-cost="16"><strong>Pricing</strong><small>Estimate sustainable premiums.</small><em>16 pts</em></button>
-          <button type="button" data-group="expertise" data-id="reserving" data-label="Reserving" data-cost="16"><strong>Reserving</strong><small>Estimate future claim obligations.</small><em>16 pts</em></button>
-          <button type="button" data-group="expertise" data-id="pensions" data-label="Pensions & longevity" data-cost="16"><strong>Pensions &amp; longevity</strong><small>Model long-term retirement liabilities.</small><em>16 pts</em></button>
-          <button type="button" data-group="expertise" data-id="risk" data-label="Risk management" data-cost="16"><strong>Risk management</strong><small>Assess severe scenarios and uncertainty.</small><em>16 pts</em></button>
-          <button type="button" data-group="expertise" data-id="data" data-label="Data modelling" data-cost="14"><strong>Data modelling</strong><small>Turn complex data into decision-support models.</small><em>14 pts</em></button>
-          <button type="button" data-group="expertise" data-id="climate" data-label="Climate risk" data-cost="18"><strong>Climate risk</strong><small>Model exposure to extreme events.</small><em>18 pts</em></button>
-          <button type="button" data-group="expertise" data-id="reinsurance" data-label="Reinsurance" data-cost="18"><strong>Reinsurance</strong><small>Analyse risk transfer and protection.</small><em>18 pts</em></button>
-        </div>
-        <div class="draft-discuss"><strong>Discuss:</strong> Why do these two areas belong in the same firm?</div>
-        <div class="draft-nav"><button type="button" class="secondary-btn draft-back" data-back="1">← Back</button><button type="button" class="primary-link draft-next" data-next="3">Confirm expertise →</button></div>
-      </section>
-
-      <section class="draft-round" data-round="3" aria-labelledby="round3Title" hidden>
-        <div class="draft-round-art"><img src="assets/session1/draft-team.svg" alt="A diverse actuarial consultancy team."></div>
-        <p class="module-number">ROUND 3 · HIRE EXACTLY TWO</p>
-        <h2 id="round3Title">Build your core team</h2>
-        <p>Your founders cannot do everything. Buy two additional profiles for your new firm.</p>
-        <div class="draft-option-grid" id="teamChoices">
-          <button type="button" data-group="team" data-id="senior" data-label="Senior actuary" data-cost="22"><strong>Senior actuary</strong><small>Experience, judgement and client credibility.</small><em>22 pts</em></button>
-          <button type="button" data-group="team" data-id="graduates" data-label="Two graduate actuaries" data-cost="16"><strong>Two graduate actuaries</strong><small>Flexible analytical capacity.</small><em>16 pts</em></button>
-          <button type="button" data-group="team" data-id="data" data-label="Data scientist" data-cost="18"><strong>Data scientist</strong><small>Data engineering and predictive methods.</small><em>18 pts</em></button>
-          <button type="button" data-group="team" data-id="economist" data-label="Economist" data-cost="14"><strong>Economist</strong><small>Economic context and scenario thinking.</small><em>14 pts</em></button>
-          <button type="button" data-group="team" data-id="compliance" data-label="Compliance specialist" data-cost="14"><strong>Compliance specialist</strong><small>Governance, regulation and documentation.</small><em>14 pts</em></button>
-          <button type="button" data-group="team" data-id="communication" data-label="Client communication officer" data-cost="12"><strong>Client communication officer</strong><small>Clear explanations for non-specialists.</small><em>12 pts</em></button>
-        </div>
-        <div class="draft-discuss"><strong>Discuss:</strong> What can your chosen people do that the other profiles cannot?</div>
-        <div class="draft-nav"><button type="button" class="secondary-btn draft-back" data-back="2">← Back</button><button type="button" class="primary-link draft-next" data-next="4">Confirm team →</button></div>
-      </section>
-
-      <section class="draft-round" data-round="4" aria-labelledby="round4Title" hidden>
-        <div class="draft-round-art"><img src="assets/session1/draft-tools.svg" alt="A modelling dashboard with scenario analysis, dashboards and stress tests."></div>
-        <p class="module-number">ROUND 4 · CHOOSE EXACTLY TWO</p>
-        <h2 id="round4Title">Invest in your tools</h2>
-        <p>Technology costs money. Choose the two tools your team really needs.</p>
-        <div class="draft-option-grid" id="toolChoices">
-          <button type="button" data-group="tools" data-id="traditional" data-label="Traditional actuarial modelling" data-cost="8"><strong>Traditional actuarial modelling</strong><small>Reliable core modelling environment.</small><em>8 pts</em></button>
-          <button type="button" data-group="tools" data-id="scenario" data-label="Advanced scenario analysis" data-cost="10"><strong>Advanced scenario analysis</strong><small>Compare plausible future outcomes.</small><em>10 pts</em></button>
-          <button type="button" data-group="tools" data-id="ai" data-label="AI-assisted analytics" data-cost="14"><strong>AI-assisted analytics</strong><small>Support pattern detection and analysis.</small><em>14 pts</em></button>
-          <button type="button" data-group="tools" data-id="dashboards" data-label="Interactive dashboards" data-cost="10"><strong>Interactive dashboards</strong><small>Make results easier to explore and explain.</small><em>10 pts</em></button>
-          <button type="button" data-group="tools" data-id="stress" data-label="Stress-testing tools" data-cost="10"><strong>Stress-testing tools</strong><small>Test severe but plausible conditions.</small><em>10 pts</em></button>
-          <button type="button" data-group="tools" data-id="cat" data-label="Catastrophe visualisation" data-cost="14"><strong>Catastrophe visualisation</strong><small>Map exposure to extreme events.</small><em>14 pts</em></button>
-        </div>
-        <div class="draft-discuss"><strong>Budget warning:</strong> expensive is not automatically better. Your choices must fit your client and expertise.</div>
-        <div class="draft-nav"><button type="button" class="secondary-btn draft-back" data-back="3">← Back</button><button type="button" class="primary-link draft-next" data-next="5">Confirm tools →</button></div>
-      </section>
-
-      <section class="draft-round" data-round="5" aria-labelledby="round5Title" hidden>
-        <p class="module-number">ROUND 5 · FREE CHOICE · CHOOSE EXACTLY TWO</p>
-        <h2 id="round5Title">What kind of firm are you building?</h2>
-        <p>These identity choices cost 0 points, but you must be able to prove them in your final presentation.</p>
-        <div class="draft-option-grid identity-grid" id="identityChoices">
-          <button type="button" data-group="identity" data-id="reliable" data-label="Reliable & conservative" data-cost="0"><strong>Reliable &amp; conservative</strong><small>Careful assumptions and robust processes.</small><em>FREE</em></button>
-          <button type="button" data-group="identity" data-id="innovative" data-label="Innovative & data-driven" data-cost="0"><strong>Innovative &amp; data-driven</strong><small>New methods backed by evidence.</small><em>FREE</em></button>
-          <button type="button" data-group="identity" data-id="client" data-label="Client-focused & clear" data-cost="0"><strong>Client-focused &amp; clear</strong><small>Technical work translated into useful advice.</small><em>FREE</em></button>
-          <button type="button" data-group="identity" data-id="specialist" data-label="Specialist & high-level" data-cost="0"><strong>Specialist &amp; high-level</strong><small>Deep expertise in selected areas.</small><em>FREE</em></button>
-          <button type="button" data-group="identity" data-id="international" data-label="International & ambitious" data-cost="0"><strong>International &amp; ambitious</strong><small>Complex clients across markets.</small><em>FREE</em></button>
-          <button type="button" data-group="identity" data-id="agile" data-label="Agile & modern" data-cost="0"><strong>Agile &amp; modern</strong><small>Small team, quick decisions and adaptability.</small><em>FREE</em></button>
-        </div>
-        <div class="draft-discuss"><strong>Discuss:</strong> What concrete behaviour would make a client believe these two words?</div>
-        <div class="draft-nav"><button type="button" class="secondary-btn draft-back" data-back="4">← Back</button><button type="button" class="primary-link draft-next" data-next="6">Review our draft →</button></div>
-      </section>
-
-      <section class="draft-round" data-round="6" aria-labelledby="round6Title" hidden>
-        <p class="module-number">ROUND 6 · BUDGET CHECK</p>
-        <h2 id="round6Title">Does your firm make sense?</h2>
-        <div class="draft-review" id="draftReview"></div>
-        <div class="draft-review-questions">
-          <h3>Before you continue, discuss these three questions:</h3>
-          <ol>
-            <li>Which choice gives your firm its strongest advantage?</li>
-            <li>What did you <strong>not</strong> buy because of the budget?</li>
-            <li>Where is your firm potentially weak?</li>
-          </ol>
-        </div>
-        <div class="draft-nav"><button type="button" class="secondary-btn draft-back" data-back="5">← Change choices</button><button type="button" class="primary-link draft-next" data-next="7">Open the client alert →</button></div>
-      </section>
-
-      <section class="draft-round crisis-round" data-round="7" aria-labelledby="round7Title" hidden>
-        <div class="draft-round-art"><img src="assets/session1/draft-crisis.svg" alt="A client alert dashboard showing an unexpected change in risk."></div>
-        <p class="module-number">ROUND 7 · CLIENT ALERT</p>
-        <h2 id="round7Title">Your first real test</h2>
-        <div id="challengeCard" class="challenge-card"></div>
-        <div class="draft-discuss"><strong>Important:</strong> your challenge is generated by a fixed rule from your client and expertise. It is not random.</div>
-        <div class="draft-nav"><button type="button" class="secondary-btn draft-back" data-back="6">← Back to review</button><button type="button" class="primary-link draft-next" data-next="8">Go to the boardroom →</button></div>
-      </section>
-
-      <section class="draft-round boardroom-round" data-round="8" aria-labelledby="round8Title" hidden>
-        <div class="draft-round-art"><img src="assets/session1/draft-boardroom.svg" alt="A professional boardroom where the new actuarial firm is presenting its proposal."></div>
-        <p class="module-number">FINAL ROUND · BOARDROOM</p>
-        <h2 id="round8Title">Turn your draft into a firm</h2>
-        <p>You have made the technical choices. Now make the firm memorable and prepare to defend it.</p>
-        <div class="boardroom-fields">
-          <label>Firm name<input class="text-input" id="firmName" type="text" maxlength="60" placeholder="e.g. Northbridge Actuarial"></label>
-          <label>One-sentence promise<textarea class="notes-area builder-textarea" id="firmPromise" maxlength="220" placeholder="We help organisations understand uncertainty and make clear, evidence-based decisions."></textarea></label>
-        </div>
-        <div id="firmBrief" class="firm-brief-output" aria-live="polite"></div>
-        <div class="pitch-brief">
-          <p class="module-number">YOUR ORAL PRESENTATION</p>
-          <h3>Every student speaks for approximately 2 minutes.</h3>
-          <div class="pitch-structure">
-            <div><strong>Student 1 · Who we are</strong><span>Firm name, target client and the problem you want to solve.</span></div>
-            <div><strong>Student 2 · What actuaries do</strong><span>Your expertise, risk, data, models and uncertainty.</span></div>
-            <div><strong>Student 3 · How you built the firm</strong><span>Your team, tools, budget choices and trade-offs.</span></div>
-            <div><strong>Student 4 · Why trust you?</strong><span>Your identity, client alert response and competitive advantage.</span></div>
-          </div>
-          <p class="notice"><strong>3-person group?</strong> Student 3 also explains the client alert response. Everyone still speaks for approximately 2 minutes.</p>
-        </div>
-        <div class="draft-actions"><button type="button" class="secondary-btn" id="copyFirmBrief">Copy our firm brief</button><button type="button" class="secondary-btn" id="restartDraft">Start a new firm</button></div>
-      </section>
-
-      <div class="draft-error" id="draftError" role="alert" aria-live="assertive" hidden></div>
-    </div>
+    <section>
+      <div class="progress-panel"><div class="track"><span id="progressFill"></span></div><ol id="progressDots"><li class="active">1<small>Client</small></li><li>2<small>Expertise</small></li><li>3<small>Team</small></li><li>4<small>Tools</small></li><li>5<small>Identity</small></li><li>6<small>Review</small></li><li>7<small>Alert</small></li><li>8<small>Boardroom</small></li></ol></div>
+      <div class="stage-shell" id="gameMount" aria-live="polite"></div>
+    </section>
   </section>
 </main>
-
 <footer class="site-footer"><p><strong>Actuarial English</strong></p><p class="footer-credit">Created by Mrs Lecomte and Mr Lemoine, with the help of Chat GPT</p><p class="privacy"><strong>Privacy &amp; GDPR:</strong> no student account, analytics, advertising or remote database. Learning-tool data is stored locally in this browser. <a href="privacy.html">Privacy details</a> · <a href="accessibility.html">Accessibility</a></p></footer>
-<script src="shared.js"></script><script src="m1-session1-group.js"></script><script defer src="pwa.js"></script>
+<script src="shared.js"></script>
+<script>
+(function(){
+  const $ = s => document.querySelector(s);
+  const $$ = s => [...document.querySelectorAll(s)];
+  const KEY = 'actuarial_group_draft_v2_overhaul';
+  const mount = $('#gameMount');
+  const progressFill = $('#progressFill');
+  const dots = $$('#progressDots li');
+  const soundBtn = $('#soundToggle');
+  let voice = null;
+  let state = load() || {stage:1, soundOn:true, client:null, expertise:[], team:[], tools:[], identity:[], challengeChoice:null, firmName:'', promise:''};
+  let soundOn = state.soundOn !== false;
+
+  const data = {
+    client:[
+      {id:'insurance', label:'Insurance companies', cost:14, icon:'🚗', blurb:'Pricing, claims and portfolio risk.', points:['claims','premiums','portfolio risk']},
+      {id:'pensions', label:'Pension funds', cost:14, icon:'🏦', blurb:'Long-term obligations and longevity.', points:['liabilities','longevity','future obligations']},
+      {id:'banks', label:'Banks & financial institutions', cost:16, icon:'📈', blurb:'Capital, stress and market scenarios.', points:['capital','stress testing','financial risk']},
+      {id:'health', label:'Healthcare organisations', cost:12, icon:'🏥', blurb:'Population costs, demand and uncertainty.', points:['health costs','population data','uncertainty']},
+      {id:'climate', label:'Climate-risk clients', cost:18, icon:'🌍', blurb:'Extreme events and exposure modelling.', points:['exposure','extreme events','catastrophe loss']},
+      {id:'international', label:'International companies', cost:18, icon:'🌐', blurb:'Complex operations across markets.', points:['multi-market risk','scenario planning','complex exposure']}
+    ],
+    expertise:[
+      {id:'pricing', label:'Pricing', cost:16, icon:'💷', blurb:'Estimate sustainable premiums.'},
+      {id:'reserving', label:'Reserving', cost:16, icon:'📚', blurb:'Estimate future claim obligations.'},
+      {id:'pensions', label:'Pensions', cost:16, icon:'👥', blurb:'Long-term liabilities and funding.'},
+      {id:'risk', label:'Risk management', cost:14, icon:'🛡️', blurb:'Identify and compare uncertainties.'},
+      {id:'modelling', label:'Data modelling', cost:14, icon:'🧮', blurb:'Build models from data and assumptions.'},
+      {id:'climate', label:'Climate risk', cost:18, icon:'🌦️', blurb:'Scenario analysis for extreme events.'}
+    ],
+    team:[
+      {id:'senior', label:'Senior actuary', cost:18, icon:'🧠', blurb:'Experience, judgement and quality control.'},
+      {id:'junior', label:'Junior actuary team', cost:14, icon:'📘', blurb:'Analysts who prepare and test the work.'},
+      {id:'datasci', label:'Data scientist', cost:16, icon:'💻', blurb:'Data pipelines and analytical support.'},
+      {id:'economist', label:'Economist', cost:12, icon:'📉', blurb:'Macro context and economic assumptions.'},
+      {id:'compliance', label:'Compliance specialist', cost:14, icon:'⚖️', blurb:'Governance, regulation and documentation.'},
+      {id:'communication', label:'Client communication officer', cost:12, icon:'🗣️', blurb:'Clear explanations for non-specialists.'}
+    ],
+    tools:[
+      {id:'traditional', label:'Traditional actuarial modelling', cost:8, icon:'🧩', blurb:'Reliable core modelling environment.'},
+      {id:'scenario', label:'Advanced scenario analysis', cost:10, icon:'📊', blurb:'Compare plausible future outcomes.'},
+      {id:'ai', label:'AI-assisted analytics', cost:14, icon:'🤖', blurb:'Support pattern detection and analysis.'},
+      {id:'dashboards', label:'Interactive dashboards', cost:10, icon:'🖥️', blurb:'Make results easier to explore and explain.'},
+      {id:'stress', label:'Stress-testing tools', cost:10, icon:'🧪', blurb:'Test severe but plausible conditions.'},
+      {id:'cat', label:'Catastrophe visualisation', cost:14, icon:'🛰️', blurb:'Map exposure to extreme events.'}
+    ],
+    identity:[
+      {id:'reliable', label:'Reliable & conservative', icon:'🧱', blurb:'Careful assumptions and robust processes.'},
+      {id:'innovative', label:'Innovative & data-driven', icon:'🚀', blurb:'New methods backed by evidence.'},
+      {id:'client', label:'Client-focused & clear', icon:'🤝', blurb:'Useful advice for non-specialists.'},
+      {id:'specialist', label:'Specialist & high-level', icon:'🎯', blurb:'Deep expertise in selected areas.'},
+      {id:'international', label:'International & ambitious', icon:'🌍', blurb:'A broad offer across markets.'},
+      {id:'agile', label:'Agile & modern', icon:'⚡', blurb:'Fast decisions and adaptability.'}
+    ]
+  };
+
+  const stageMeta = {
+    1:{time:'09:00', title:'Choose your first target client', subtitle:'Your investors want to know who this new firm is for. Pick one client segment to anchor the whole draft.', img:'assets/session1/group-realistic/hero-meeting.png', icon:'🎯', badges:['Choose one','This decision shapes the alert','Discuss before selecting']},
+    2:{time:'09:08', title:'Build your technical expertise', subtitle:'You cannot promise everything. Choose exactly two areas of expertise that make sense together.', img:'assets/session1/group-realistic/option-desk.png', icon:'📚', badges:['Choose exactly two','Technical offer','Stay strategic']},
+    3:{time:'09:16', title:'Recruit the core team', subtitle:'Your consultancy needs people, not just ideas. Choose the two profiles that will make the biggest difference.', img:'assets/session1/group-realistic/hero-meeting.png', icon:'👥', badges:['Choose exactly two','Human resources','Trade-offs matter']},
+    4:{time:'09:24', title:'Invest in the tools', subtitle:'The board will ask what your firm actually uses to analyse uncertainty. Pick two tools.', img:'assets/session1/group-realistic/tools-lab.png', icon:'🛠️', badges:['Choose exactly two','Technology','Budget pressure']},
+    5:{time:'09:31', title:'Decide what kind of firm you are', subtitle:'These identity choices are free, but you will need to prove them later. Choose two.', img:'assets/session1/group-realistic/strategy-lounge.png', icon:'✨', badges:['Choose exactly two','Free but important','Prepare the pitch']},
+    6:{time:'09:38', title:'War-room review', subtitle:'Check whether your firm is coherent, affordable and convincing before the real test arrives.', img:'assets/session1/group-realistic/strategy-lounge.png', icon:'🧭', badges:['Review','Budget check','Strengths + risks']},
+    7:{time:'09:45', title:'Client alert', subtitle:'A real client problem hits your desk. The challenge is fixed by your choices — not by randomness.', img:'assets/session1/group-realistic/boardroom.png', icon:'🚨', badges:['Deterministic','Make one decision','Consequences']},
+    8:{time:'09:55', title:'Boardroom pitch', subtitle:'Name the firm, generate the board brief and prepare your final presentation.', img:'assets/session1/group-realistic/boardroom.png', icon:'🏛️', badges:['Boardroom','Every student speaks','Copy your brief']}
+  };
+
+  function load(){ try { return JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch(e){ return null; } }
+  function save(){ state.soundOn = soundOn; sessionStorage.setItem(KEY, JSON.stringify(state)); renderHud(); }
+  function reset(){ if(!confirm('Start a completely new firm?')) return; sessionStorage.removeItem(KEY); location.reload(); }
+  $('#restartDraft').addEventListener('click', reset);
+  soundBtn.addEventListener('click', ()=>{ soundOn=!soundOn; updateSound(); save(); });
+  function updateSound(){ soundBtn.textContent = soundOn ? '🔊 Sound on' : '🔈 Sound off'; soundBtn.setAttribute('aria-pressed', String(soundOn)); }
+  updateSound();
+
+  function speak(text){
+    if(!soundOn || !('speechSynthesis' in window)) return;
+    const utter = new SpeechSynthesisUtterance(text);
+    const voices = window.speechSynthesis.getVoices();
+    voice = voice || voices.find(v => /en-GB/i.test(v.lang) || /UK|British/i.test(v.name)) || voices.find(v => /^en/i.test(v.lang));
+    if(voice) utter.voice = voice;
+    utter.lang = (voice && voice.lang) || 'en-GB';
+    utter.rate = 0.95;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utter);
+  }
+  $$('.speak').forEach(btn=> btn.addEventListener('click', ()=> speak(btn.dataset.say)));
+
+  function selectedIds(group){ return state[group] || (group==='client' ? null : []); }
+  function optionBy(group,id){ return data[group].find(x => x.id === id); }
+  function sumCosts(group){
+    const val = state[group];
+    if(!val) return 0;
+    if(Array.isArray(val)) return val.reduce((n,id)=> n + (optionBy(group,id)?.cost || 0), 0);
+    return optionBy(group,val)?.cost || 0;
+  }
+  function totalSpent(){ return sumCosts('client') + sumCosts('expertise') + sumCosts('team') + sumCosts('tools'); }
+  function budgetLeft(){ return 100 - totalSpent(); }
+  function selectionCount(){ return (state.client?1:0)+state.expertise.length+state.team.length+state.tools.length+state.identity.length; }
+  function configCode(){
+    if(!state.client) return '—';
+    const parts = [state.client.slice(0,3), ...state.expertise.map(x=>x.slice(0,3)), ...state.team.map(x=>x.slice(0,3)), ...state.tools.map(x=>x.slice(0,3)), ...state.identity.map(x=>x.slice(0,3))];
+    return parts.join('-').toUpperCase();
+  }
+  function statusInfo(){
+    const left = budgetLeft();
+    if(totalSpent()===0) return ['Planning','status-warning'];
+    if(left < 0) return ['Over budget','status-bad'];
+    if(state.stage < 6) return ['Drafting','status-warning'];
+    return [left <= 10 ? 'High pressure' : 'Board-ready','status-good'];
+  }
+  function renderHud(){
+    $('#budgetLeft').childNodes[0].nodeValue = String(budgetLeft());
+    $('#budgetSpent').textContent = `${totalSpent()} points spent`;
+    $('#budgetBar').style.width = `${Math.min(100, Math.max(0, totalSpent()))}%`;
+    $('#sumClient').textContent = state.client ? optionBy('client',state.client).label : '—';
+    $('#sumExpertise').textContent = state.expertise.length ? state.expertise.map(id=>optionBy('expertise',id).label).join(' + ') : '—';
+    $('#sumTeam').textContent = state.team.length ? state.team.map(id=>optionBy('team',id).label).join(' + ') : '—';
+    $('#sumTools').textContent = state.tools.length ? state.tools.map(id=>optionBy('tools',id).label).join(' + ') : '—';
+    $('#sumIdentity').textContent = state.identity.length ? state.identity.map(id=>optionBy('identity',id).label).join(' + ') : '—';
+    $('#configCode').textContent = `Config code · ${configCode()}`;
+    const [label, cls] = statusInfo();
+    const pill = $('#statusPill');
+    pill.textContent = label; pill.className = `status-pill ${cls}`;
+    dots.forEach((dot, i)=>{ dot.classList.toggle('active', i+1===state.stage); dot.classList.toggle('done', i+1<state.stage); });
+    progressFill.style.width = `${((state.stage-1)/7)*100}%`;
+  }
+
+  function frame(stageNum, inner){
+    const meta = stageMeta[stageNum];
+    return `<article class="stage-card"><div class="stage-head"><div><p class="round-time">${meta.time} · ROUND ${stageNum} OF 8</p><h2>${meta.title}</h2><p>${meta.subtitle}</p><div class="mini-badges">${meta.badges.map(b=>`<span>${b}</span>`).join('')}</div></div><img src="${meta.img}" alt="Illustration for stage ${stageNum}"></div><div class="stage-body"><div class="objective"><div class="icon">${meta.icon}</div><div><strong>Objective</strong><p>${meta.title}</p></div></div>${inner}</div></article>`;
+  }
+
+  function cardHtml(group, item, selected){
+    const extra = item.points ? `<ul>${item.points.map(x=>`<li>${x}</li>`).join('')}</ul>` : '';
+    const cost = item.cost === undefined ? 'FREE' : `${item.cost} pts`;
+    return `<button type="button" class="choice-card ${selected?'selected':''}" data-group="${group}" data-id="${item.id}"><div class="top"><div class="emoji">${item.icon || '•'}</div><span class="cost-pill">${cost}</span></div><h3>${item.label}</h3><p>${item.blurb || ''}</p>${extra}</button>`;
+  }
+
+  function renderStage1(){
+    mount.innerHTML = frame(1, `<div class="notice-box"><strong>Instructions:</strong> Work in groups of <strong>3 or 4</strong>. Discuss every option in English. Use one device per group if possible. The same choices always give the same budget and the same next step on every device.</div><div class="option-grid">${data.client.map(item=>cardHtml('client', item, state.client===item.id)).join('')}</div><div class="decision-row"><div class="selection-meter">Choose <strong>1 client</strong> · Current selection: ${state.client ? optionBy('client',state.client).label : 'none yet'}</div></div><div class="nav-row"><span></span><button type="button" class="primary-link" id="nextBtn" ${state.client ? '' : 'disabled'}>Lock this client →</button></div>`);
+    bindChoices('client',1); $('#nextBtn').onclick=()=>go(2);
+  }
+  function renderStage2(){
+    mount.innerHTML = frame(2, `<div class="notice-box"><strong>Task:</strong> Choose exactly <strong>2 expertise areas</strong>. They should support the client you selected and help your future firm sound credible.</div><div class="option-grid">${data.expertise.map(item=>cardHtml('expertise', item, state.expertise.includes(item.id))).join('')}</div><div class="decision-row"><div class="selection-meter">Choose <strong>2</strong> · Selected: ${state.expertise.length}/2</div><div class="code-badge">Budget left · ${budgetLeft()} pts</div></div><div class="nav-row"><button type="button" class="secondary-btn" id="backBtn">← Back</button><button type="button" class="primary-link" id="nextBtn" ${state.expertise.length===2 ? '' : 'disabled'}>Lock expertise →</button></div>`);
+    bindChoices('expertise',2); $('#backBtn').onclick=()=>go(1); $('#nextBtn').onclick=()=>go(3);
+  }
+  function renderStage3(){
+    mount.innerHTML = frame(3, `<div class="notice-box"><strong>Task:</strong> Choose exactly <strong>2 team profiles</strong>. Think about technical strength, communication and judgement.</div><div class="option-grid">${data.team.map(item=>cardHtml('team', item, state.team.includes(item.id))).join('')}</div><div class="decision-row"><div class="selection-meter">Choose <strong>2</strong> · Selected: ${state.team.length}/2</div><div class="code-badge">Budget left · ${budgetLeft()} pts</div></div><div class="nav-row"><button type="button" class="secondary-btn" id="backBtn">← Back</button><button type="button" class="primary-link" id="nextBtn" ${state.team.length===2 ? '' : 'disabled'}>Lock team →</button></div>`);
+    bindChoices('team',2); $('#backBtn').onclick=()=>go(2); $('#nextBtn').onclick=()=>go(4);
+  }
+  function renderStage4(){
+    mount.innerHTML = frame(4, `<div class="notice-box"><strong>Task:</strong> Choose exactly <strong>2 tools</strong>. If your total cost goes above 100, you will need to revise your strategy at the review stage.</div><div class="option-grid">${data.tools.map(item=>cardHtml('tools', item, state.tools.includes(item.id))).join('')}</div><div class="decision-row"><div class="selection-meter">Choose <strong>2</strong> · Selected: ${state.tools.length}/2</div><div class="code-badge">Live budget · ${budgetLeft()} pts left</div></div><div class="nav-row"><button type="button" class="secondary-btn" id="backBtn">← Back</button><button type="button" class="primary-link" id="nextBtn" ${state.tools.length===2 ? '' : 'disabled'}>Lock tools →</button></div>`);
+    bindChoices('tools',2); $('#backBtn').onclick=()=>go(3); $('#nextBtn').onclick=()=>go(5);
+  }
+  function renderStage5(){
+    mount.innerHTML = frame(5, `<div class="notice-box"><strong>Task:</strong> Choose exactly <strong>2 identity words</strong>. These cost <strong>0 points</strong>, but they must be visible in your final presentation.</div><div class="option-grid">${data.identity.map(item=>cardHtml('identity', item, state.identity.includes(item.id))).join('')}</div><div class="decision-row"><div class="selection-meter">Choose <strong>2</strong> · Selected: ${state.identity.length}/2</div><div class="code-badge">Budget left · ${budgetLeft()} pts</div></div><div class="nav-row"><button type="button" class="secondary-btn" id="backBtn">← Back</button><button type="button" class="primary-link" id="nextBtn" ${state.identity.length===2 ? '' : 'disabled'}>Review the firm →</button></div>`);
+    bindChoices('identity',2); $('#backBtn').onclick=()=>go(4); $('#nextBtn').onclick=()=>go(6);
+  }
+
+  function insights(){
+    const strengths=[], risks=[];
+    if(state.identity.includes('client') || state.team.includes('communication')) strengths.push('You are likely to explain actuarial ideas clearly to non-specialists.');
+    if(state.expertise.includes('modelling') || state.tools.includes('scenario')) strengths.push('Your firm has a strong analytical backbone.');
+    if(state.expertise.includes('climate') && state.client==='climate') strengths.push('Your client and expertise fit each other extremely well.');
+    if(state.team.includes('senior')) strengths.push('A senior actuary adds judgement and credibility.');
+    if(!state.team.includes('communication') && state.identity.includes('client')) risks.push('You claim to be client-focused, but no communication specialist supports that promise.');
+    if(state.client==='climate' && !state.expertise.includes('climate')) risks.push('Climate-risk clients may expect dedicated climate-risk expertise.');
+    if(state.client==='pensions' && !state.expertise.includes('pensions')) risks.push('Pension clients may expect pensions expertise very quickly.');
+    if(budgetLeft() < 0) risks.push('Your total is above 100 points, so the board will reject the current draft.');
+    if(budgetLeft() <= 6 && budgetLeft() >= 0) risks.push('You have almost no spare budget, so the board may see the plan as ambitious or fragile.');
+    if(!state.team.includes('compliance')) risks.push('Without compliance support, regulation and governance may become a weak point.');
+    return {strengths: strengths.length ? strengths : ['Your choices create a focused firm with a clear offer.'], risks: risks.length ? risks : ['No major weakness stands out at this stage.']};
+  }
+  function renderStage6(){
+    const fit = insights();
+    const left = budgetLeft();
+    const status = left < 0 ? '<span class="status-pill status-bad">Over budget</span>' : left <= 10 ? '<span class="status-pill status-warning">Tight budget</span>' : '<span class="status-pill status-good">Balanced budget</span>';
+    mount.innerHTML = frame(6, `<div class="review-grid"><div class="review-box"><p class="module-number" style="margin:0">WAR-ROOM SUMMARY</p><div style="margin-top:10px">${status}</div><div class="summary-list" style="margin-top:14px"><div><strong>Target client</strong><span>${optionBy('client',state.client).label}</span></div><div><strong>Expertise</strong><span>${state.expertise.map(id=>optionBy('expertise',id).label).join(' + ')}</span></div><div><strong>Team</strong><span>${state.team.map(id=>optionBy('team',id).label).join(' + ')}</span></div><div><strong>Tools</strong><span>${state.tools.map(id=>optionBy('tools',id).label).join(' + ')}</span></div><div><strong>Identity</strong><span>${state.identity.map(id=>optionBy('identity',id).label).join(' + ')}</span></div><div><strong>Total spent</strong><span>${totalSpent()} pts</span></div><div><strong>Budget left</strong><span>${left} pts</span></div></div></div><div class="insight-box"><p class="module-number" style="margin:0">BOARD VIEW</p><h3 style="margin-top:10px;color:#102a43">What already looks strong?</h3><ul>${fit.strengths.map(x=>`<li>${x}</li>`).join('')}</ul><h3 style="margin-top:16px;color:#102a43">What could worry investors?</h3><ul>${fit.risks.map(x=>`<li>${x}</li>`).join('')}</ul></div></div><div class="notice-box" style="margin-top:18px"><strong>Discuss before continuing:</strong> What gives your firm a real advantage? What did you deliberately leave out because of the budget? Where might the board challenge you?</div><div class="nav-row"><button type="button" class="secondary-btn" id="backBtn">← Adjust choices</button><button type="button" class="primary-link" id="nextBtn" ${left >= 0 ? '' : 'disabled'}>Open the client alert →</button></div>`);
+    $('#backBtn').onclick=()=>go(5); $('#nextBtn').onclick=()=>go(7);
+  }
+
+  function challenge(){
+    if(state.client==='climate' || state.expertise.includes('climate')) return {title:'Catastrophe-loss alert', intro:'A client reports that severe weather losses have jumped sharply across two regions. They need advice today.', choices:[['Run new climate scenarios, test exposure and explain the uncertainty clearly to the client.', true],['Ignore the new information and keep last year’s assumptions unchanged.', false],['Promise that losses will certainly fall next year.', false]], why:'A climate-risk client expects scenario analysis, updated assumptions and transparent communication.'};
+    if(state.client==='pensions' || state.expertise.includes('pensions')) return {title:'Longevity pressure', intro:'A pension client fears that members may live longer than expected, increasing future obligations.', choices:[['Review longevity assumptions, model future liabilities and discuss the funding impact.', true],['Remove the uncertainty section to reassure the client.', false],['Focus only on office costs instead of future obligations.', false]], why:'Pension work requires a direct link between assumptions, liabilities and long-term cost.'};
+    if(state.client==='insurance' || state.expertise.includes('pricing') || state.expertise.includes('reserving')) return {title:'Claims spike', intro:'A motor-insurance client sees claim costs rising faster than expected and wants a fast recommendation.', choices:[['Analyse claim frequency and severity, review assumptions and assess the effect on premiums or reserves.', true],['Tell the client to wait a year without analysing the trend.', false],['Rewrite the marketing slogan first.', false]], why:'Insurance clients need evidence-based action built on claims data and actuarial judgement.'};
+    if(state.client==='health') return {title:'Healthcare-cost volatility', intro:'A healthcare client notices rising costs and inconsistent data between departments.', choices:[['Clean the data, compare the cost drivers and explain which uncertainties matter most.', true],['Pretend the dataset is perfect and publish a result immediately.', false],['Avoid discussing uncertainty with the client.', false]], why:'Healthcare organisations need both data quality and clear explanation of cost uncertainty.'};
+    if(state.client==='banks') return {title:'Capital-stress request', intro:'A bank wants a rapid stress scenario to understand how an adverse shock could affect its position.', choices:[['Run a stress scenario, document assumptions and explain the possible financial consequences.', true],['Guarantee the exact future outcome without showing assumptions.', false],['Skip scenario work because it is too technical for the client.', false]], why:'Banks and financial institutions expect scenario-based thinking and disciplined assumptions.'};
+    return {title:'Multi-market risk alert', intro:'An international client expands into two new markets and wants an urgent cross-market risk view.', choices:[['Compare scenarios across markets, identify the main uncertainties and explain the trade-offs clearly.', true],['Assume all markets behave in exactly the same way.', false],['Ignore the expansion and discuss only last year’s domestic results.', false]], why:'International work needs comparison, uncertainty management and careful interpretation.'};
+  }
+  function renderStage7(){
+    const c = challenge();
+    mount.innerHTML = frame(7, `<div class="notice-box"><strong>This alert is deterministic:</strong> it comes from your client + expertise choices. If another group makes the same choices on another device, they will receive the same alert and the same correct response.</div><div class="review-box"><p class="module-number" style="margin:0">CLIENT ALERT</p><h3 style="margin-top:10px;color:#102a43">${c.title}</h3><p>${c.intro}</p><div class="challenge-choices">${c.choices.map((choice,i)=>{ let cls='challenge-choice'; if(state.challengeChoice!==null){ if(choice[1]) cls+=' correct'; if(state.challengeChoice===i && !choice[1]) cls+=' wrong'; } return `<button type="button" class="${cls}" data-challenge="${i}" ${state.challengeChoice!==null && c.choices[state.challengeChoice][1] ? 'disabled' : ''}>${choice[0]}</button>`; }).join('')}</div><p style="margin-top:14px;color:#526b80" id="challengeFeedback">${state.challengeChoice!==null ? (c.choices[state.challengeChoice][1] ? c.why : 'Not strong enough. Try again before entering the boardroom.') : 'Choose one group response. A good response must sound actuarial, useful and credible.'}</p></div><div class="nav-row"><button type="button" class="secondary-btn" id="backBtn">← Back to review</button><button type="button" class="primary-link" id="nextBtn" ${state.challengeChoice!==null && c.choices[state.challengeChoice][1] ? '' : 'disabled'}>Prepare the boardroom pitch →</button></div>`);
+    $('#backBtn').onclick=()=>go(6);
+    mount.querySelectorAll('[data-challenge]').forEach(btn => btn.addEventListener('click', ()=>{
+      const i = Number(btn.dataset.challenge); state.challengeChoice = i; save();
+      if(c.choices[i][1]){ renderStage7(); } else { renderStage7(); }
+    }));
+    $('#nextBtn').onclick=()=>go(8);
+  }
+
+  function renderStage8(){
+    const left = budgetLeft();
+    const fit = insights();
+    const clientLabel = optionBy('client',state.client).label;
+    const challengeLabel = challenge().title;
+    mount.innerHTML = frame(8, `<div class="notice-box"><strong>Final task:</strong> name your firm, give it a one-sentence promise, then use the generated brief to prepare your oral presentation. <strong>Every student speaks for approximately 2 minutes.</strong></div><div class="brief-grid"><label class="input-box">Firm name<input id="firmName" class="text-input" type="text" maxlength="60" placeholder="e.g. Northbridge Actuarial" value="${escapeHtml(state.firmName)}"></label><label class="input-box">One-sentence promise<textarea id="firmPromise" class="text-area" maxlength="220" placeholder="We help organisations understand uncertainty and make clear, evidence-based decisions.">${escapeHtml(state.promise)}</textarea></label></div><div class="firm-brief" id="briefBox"><p class="module-number" style="margin:0">BOARDROOM BRIEF</p><h3 style="margin-top:10px;color:#102a43">${escapeHtml(state.firmName || 'Your new firm')}</h3><p>${escapeHtml(state.promise || 'Add a one-sentence promise to make the firm sound memorable and client-focused.')}</p><div class="brief-columns"><div><h4 style="color:#102a43">Firm DNA</h4><ul><li><strong>Target client:</strong> ${clientLabel}</li><li><strong>Expertise:</strong> ${state.expertise.map(id=>optionBy('expertise',id).label).join(' + ')}</li><li><strong>Team:</strong> ${state.team.map(id=>optionBy('team',id).label).join(' + ')}</li><li><strong>Tools:</strong> ${state.tools.map(id=>optionBy('tools',id).label).join(' + ')}</li><li><strong>Identity:</strong> ${state.identity.map(id=>optionBy('identity',id).label).join(' + ')}</li><li><strong>Budget:</strong> ${totalSpent()} / 100 points (${left} left)</li><li><strong>Config code:</strong> ${configCode()}</li></ul></div><div><h4 style="color:#102a43">How to defend the firm</h4><ul><li>Explain why this client needs actuarial support.</li><li>Show how your expertise and tools help you understand risk and uncertainty.</li><li>Justify your budget choices and trade-offs.</li><li>Summarise your response to the <strong>${challengeLabel}</strong>.</li><li>Use at least one strength and one weak point from the review.</li></ul></div></div><div class="student-grid"><div><strong>Student 1 · Who we are</strong><p>Firm name, promise and target client.</p></div><div><strong>Student 2 · What actuaries do</strong><p>Expertise, data, models, uncertainty and risk.</p></div><div><strong>Student 3 · How we built the firm</strong><p>Team, tools, costs and trade-offs.</p></div><div><strong>Student 4 · Why trust us?</strong><p>Identity, challenge response, strengths and weak points.</p></div></div><div class="finish-banner"><strong>Boardroom access unlocked</strong><span>You now have a complete actuarial firm to present. In a 3-person group, Student 3 also explains the client alert response. Everyone still speaks for approximately 2 minutes.</span></div></div><div class="nav-row"><button type="button" class="secondary-btn" id="copyBtn">Copy our firm brief</button><button type="button" class="secondary-btn" id="restartBtn">Start a new firm</button></div>`);
+    $('#firmName').addEventListener('input', e=>{ state.firmName = e.target.value; save(); renderStage8(); });
+    $('#firmPromise').addEventListener('input', e=>{ state.promise = e.target.value; save(); renderStage8(); });
+    $('#copyBtn').onclick = copyBrief;
+    $('#restartBtn').onclick = reset;
+  }
+
+  function copyBrief(){
+    const text = [
+      `Firm name: ${state.firmName || 'Your new firm'}`,
+      `Promise: ${state.promise || ''}`,
+      `Target client: ${optionBy('client',state.client).label}`,
+      `Expertise: ${state.expertise.map(id=>optionBy('expertise',id).label).join(' + ')}`,
+      `Team: ${state.team.map(id=>optionBy('team',id).label).join(' + ')}`,
+      `Tools: ${state.tools.map(id=>optionBy('tools',id).label).join(' + ')}`,
+      `Identity: ${state.identity.map(id=>optionBy('identity',id).label).join(' + ')}`,
+      `Budget: ${totalSpent()} / 100 points (${budgetLeft()} left)`,
+      `Config code: ${configCode()}`,
+      `Client alert: ${challenge().title}`
+    ].join('\n');
+    navigator.clipboard.writeText(text).then(()=> alert('Your firm brief has been copied.'));
+  }
+
+  function bindChoices(group, limit){
+    mount.querySelectorAll(`[data-group="${group}"]`).forEach(btn => btn.addEventListener('click', ()=>toggleChoice(group, btn.dataset.id, limit)));
+  }
+  function toggleChoice(group, id, limit){
+    if(group==='client'){ state.client = id; save(); renderStage1(); return; }
+    const arr = state[group];
+    const idx = arr.indexOf(id);
+    if(idx >= 0) arr.splice(idx,1);
+    else if(arr.length < limit) arr.push(id);
+    save(); render();
+  }
+  function canEnter(stage){
+    if(stage===2) return !!state.client;
+    if(stage===3) return state.expertise.length===2;
+    if(stage===4) return state.team.length===2;
+    if(stage===5) return state.tools.length===2;
+    if(stage===6) return state.identity.length===2;
+    if(stage===7) return budgetLeft() >= 0;
+    if(stage===8) return state.challengeChoice !== null && challenge().choices[state.challengeChoice][1];
+    return true;
+  }
+  function go(stage){ if(canEnter(stage)){ state.stage = stage; save(); render(); window.scrollTo({top:0,behavior:'smooth'}); } }
+  function render(){ renderHud(); switch(state.stage){ case 1: renderStage1(); break; case 2: renderStage2(); break; case 3: renderStage3(); break; case 4: renderStage4(); break; case 5: renderStage5(); break; case 6: renderStage6(); break; case 7: renderStage7(); break; default: renderStage8(); } save(); }
+  function escapeHtml(s){ return String(s || '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
+  render();
+})();
+</script>
+<script defer src="pwa.js"></script>
 </body>
 </html>
