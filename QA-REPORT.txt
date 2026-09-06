@@ -257,3 +257,16 @@ Validation performed:
 - Initial completion overlay verified hidden in Chromium (hidden=true and computed display=none).
 - Final reputation verified at exactly 100/100.
 - All seven mission-map items verified complete after the end-to-end run.
+
+
+R20 INDIVIDUAL FUNCTION AUDIT — 2026-09-06
+- Individual game moved to versioned R20 JS/CSS.
+- Session progression migrates from the legacy R17/R18/R19 key into R20.
+- Double mission-clear activation guarded.
+- Client Meeting rapid double-click guard added.
+- Risk Lab double-click guard + full-tray feedback added.
+- Brief and Boardroom empty-source clicks now give explicit feedback.
+- Speech-synthesis unsupported state now handled explicitly.
+- Modal uses aria-hidden + inert page regions while open.
+- Dynamic action buttons hardened with type=button.
+- Static audit: 0 missing local refs; 0 duplicate static IDs; all JS syntax checks pass.
