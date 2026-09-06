@@ -1,0 +1,62 @@
+INDIVIDUAL ACTIVITY AUDIT — R18
+Target: m1-session1-individual.html / Actuary for a Day
+Date: 2026-09-06
+
+ONLINE CHECK
+- Current live page loads the Northstar 7-mission game with 0/100 reputation at mission 1.
+- Hero image is available online.
+
+BUGS / USABILITY ISSUES FIXED IN R18
+1. CLIENT MEETING CHAT
+   The scrollable chat could leave the newest question partly outside the visible area after several turns.
+   FIX: the chat now jumps immediately to the newest message after each response.
+
+2. MOBILE MISSION ROUTE
+   On narrow screens, missions 6–7 could be outside the currently visible horizontal part of the route.
+   FIX: the active mission is automatically centred after each render and after viewport/orientation changes.
+
+3. TRANSIENT SELECTIONS
+   A selected Brief word or Boardroom replacement could remain selected after navigating away and later returning.
+   FIX: temporary selections are cleared whenever the player changes mission or continues after a cleared mission.
+
+4. SHORT / LANDSCAPE VIEWPORTS
+   The MISSION CLEARED dialog could be taller than a very short viewport.
+   FIX: the dialog now has a safe max-height and internal scrolling, so Continue remains reachable.
+
+5. VERY SMALL MOBILE WIDTHS
+   Mission-map sizing below 360 px has been tightened while keeping inner horizontal navigation available.
+
+6. PAGE-HIDE CLEANUP
+   Speech is cancelled and modal scroll-lock is removed when the page is hidden/unloaded.
+
+CACHE / DEPLOYMENT
+- New versioned files: m1-session1-individual-r18.css and m1-session1-individual-r18.js.
+- Service-worker cache bumped to actuarial-english-2026-09-06-r18-individual-final-audit.
+- R17 session-storage key intentionally preserved so valid in-progress games remain compatible.
+
+BROWSER INTERACTION TEST
+A full Chromium run completed all seven missions using actual button clicks, including intentional wrong answers followed by corrections:
+- Mission 1 Brief: 8/8, +12
+- Mission 2 Pronunciation: 8/8, cumulative 26
+- Mission 3 Cases: 3/3, cumulative 42
+- Mission 4 Risk Lab + assumption shock: cumulative 56
+- Mission 5 Inbox: 5/5, cumulative 70
+- Mission 6 Client Meeting: 4/4, cumulative 85
+- Mission 7 Boardroom: 4/4, final 100/100
+
+Additional interaction tests passed:
+- mission-complete overlay hidden at initial load;
+- double mission-complete activation does not award reputation twice;
+- wrong answers do not lock the player out;
+- Client Meeting remains scrolled to the newest/current message on every turn;
+- temporary Boardroom selection is cleared after navigating away and back;
+- 320 px viewport has no document-level horizontal overflow;
+- active mission 7 is visible in the mobile route after viewport resize;
+- short-height completion dialog remains internally scrollable;
+- final summary shows 100/100, 7/7, BOARDROOM;
+- no duplicate IDs in the dynamic final DOM.
+
+STATIC CHECKS
+- m1-session1-individual-r18.js passes node --check.
+- All six local realistic images referenced by the individual game are present and valid in the full build.
+- The HTML references the R18 CSS/JS filenames.
