@@ -1,0 +1,31 @@
+GROUP ACTIVITY R25 — deterministic parity audit
+
+Primary parity fix:
+- Canonical ordering for expertise, team, tools and identity selections.
+- Same selected set now produces the same sidebar summary, boardroom brief and copied brief even if students click the options in a different order.
+- Budget remains derived only from fixed costs.
+- Challenge remains derived only from client + expertise, with a stable challenge id.
+- A deterministic outcome code combines canonical configuration, points spent and challenge id.
+
+Robustness fixes:
+- Challenge completion is checked dynamically instead of assuming answer index 0.
+- Challenge answer is tied to its challenge id, preventing stale saved answers from unlocking a different challenge.
+- Client/expertise edits invalidate both challenge answer and challenge id.
+- R24 and older saved states migrate to R25.
+- Copy confirmation is visible on the Copy button itself.
+- Service-worker cache bumped to R25.
+
+Verification results:
+- Paired Chromium test: desktop 1365x900 vs mobile 390x844, same selected sets clicked in opposite order: 0 mismatches across 19 checkpoints.
+- Mobile horizontal overflow: 0 px in the paired test.
+- Total complete configurations enumerated: 303,750.
+- Valid under 100-point budget: 234,885.
+- Unique canonical config codes: 234,885 (0 collisions).
+- Unique deterministic outcome tuples (config + points + challenge): 234,885.
+- Reverse-order selection parity failures: 0.
+- First-tool dead ends allowed by the UI: 0.
+- Valid tool pairs blocked by click order: 0.
+- Missing local HTML assets: 0.
+- Missing service-worker assets: 0.
+- Static duplicate IDs: 0.
+- JavaScript syntax errors: 0.

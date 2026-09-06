@@ -1,0 +1,12 @@
+GROUP ACTIVITY FUNCTION AUDIT R26
+Detected and corrected:
+1. Partial/corrupted saved state could advance to a later round without all earlier prerequisites.
+2. A rapid double-click on the same option could select then immediately deselect it.
+3. Web Audio restrictions could throw from sound effects and interrupt a game choice before save/render.
+4. Returning through the browser back-forward cache could leave a closed AudioContext and silently break sound effects.
+5. Boardroom sidebar status could say Board-ready before firm name + promise were completed.
+6. A malformed R25 save prevented recovery from an older valid save.
+7. Restart was not fully protected if sessionStorage removal itself was unavailable.
+8. Progress-strip scrolling and round scrolling now include compatibility fallbacks.
+
+Determinism preserved: option sets are canonicalised; same choices => same displayed order, same budget, same config code, same challenge, same outcome code.
