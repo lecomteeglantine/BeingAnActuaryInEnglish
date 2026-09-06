@@ -1,0 +1,29 @@
+M1 SESSION 1 — ACTUARY FOR A DAY — R16 AUDIT
+Date: 2026-09-06
+
+This package contains the complete site with the audited R16 individual game.
+
+Key files:
+- m1-session1-individual.html
+- m1-session1-individual-r16.js
+- m1-session1-individual-r16.css
+- service-worker.js
+
+Confirmed fixes:
+- stale/corrupt session-state sanitisation
+- reputation cannot drift or be awarded twice
+- completed missions are locked on revisit
+- only the correct pronunciation option is highlighted
+- invalid meeting/slide/lab/inbox/brief data are discarded on load
+- stage progression cannot jump past an unearned mission
+- R16 cache/versioning forces the corrected files to replace older cached builds
+
+Chromium end-to-end DOM run: PASS
+- blank start: 0/100, mission 1, overlay hidden
+- all 7 missions completed
+- wrong-answer retry paths exercised
+- final state: 100/100, 7/7 missions, boardroom access
+- revisit completed mission: no duplicate reward
+- JavaScript runtime errors during test: 0
+
+Direct Chromium navigation to localhost/file URLs is blocked by the execution environment, so the same page/CSS/JS were injected into an allowed Chromium about:blank context for the interactive DOM run. Static local-resource and service-worker checks were performed separately on the actual package files.

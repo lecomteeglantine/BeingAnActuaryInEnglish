@@ -212,3 +212,48 @@ Validation performed:
 - 31 pre-tool configurations that cannot reserve the minimum 18 points are correctly blocked before Round 4.
 - All six deterministic client-alert families are reachable.
 - No Math.random() is used by the group activity.
+
+
+R16 · INDIVIDUAL GAME AUDIT
+- Fixed pronunciation result styling: only the correct stress option is highlighted after success.
+- Added robust session-state sanitisation for all 7 missions.
+- Reputation is recalculated from genuinely earned missions (max 100).
+- Invalid/stale stage numbers are clamped to the highest legitimately unlocked mission.
+- Invalid stale meeting answers, inbox values, duplicate brief terms, lab selections and board-slide values are cleaned.
+- Completed Brief Desk and Boardroom interactions are locked on revisit, preventing points/progress inconsistencies.
+- Completed-mission buttons no longer reopen a zero-reward completion overlay.
+- Wrong client-meeting feedback is now persisted consistently in the current browser session.
+- Service-worker cache bumped to r16-individual-audit.
+
+
+R16 · INDIVIDUAL GAME FINAL AUDIT — 2026-09-06
+-------------------------------------------------
+Live page checked before packaging: m1-session1-individual.html.
+
+Corrections included:
+- Versioned individual assets: m1-session1-individual-r16.js and m1-session1-individual-r16.css.
+- New sessionStorage key to prevent stale state from previous builds contaminating progression.
+- Full state sanitisation for stage number, earned missions, brief terms, pronunciation checks, case progress, Risk Lab inputs, inbox values, meeting transcript and board-slide replacements.
+- Reputation is recalculated only from valid sequentially earned missions; impossible/stale 100-point states are discarded.
+- Pronunciation success styling now highlights only the correct stress pattern.
+- Completed missions cannot award their reputation twice or reopen a zero-reward completion overlay.
+- Completed Brief Desk / Risk Lab / Boardroom controls are locked on revisit so saved points cannot coexist with later-edited invalid answers.
+- Wrong client-meeting feedback is saved consistently in the current tab.
+- Stage access is clamped to the highest legitimately unlocked mission.
+- Service-worker cache bumped to actuarial-english-2026-09-06-r16-individual-audit.
+
+Validation performed:
+- 24 HTML pages present.
+- 0 missing static local href/src resources in the individual-game package.
+- 0 duplicate static IDs on m1-session1-individual.html.
+- All service-worker CORE resources exist.
+- manifest.webmanifest valid.
+- All external JavaScript files pass node --check.
+- All SVG assets parse as XML.
+- All raster images decode successfully.
+- Exact footer credit retained on all 24 HTML pages.
+- Real Chromium DOM interaction test completed by injecting the page into an allowed about:blank context because direct localhost/file navigation is blocked by the environment policy.
+- Chromium test covered: blank start, Mission 1 correct completion, Mission 2 wrong+retry+all correct, Mission 3 all 3 cases, Mission 4 bad tray+correction+wrong shock+correct shock, Mission 5 wrong classification+correction, Mission 6 wrong answer+4 correct answers, Mission 7 wrong slide line+4 correct lines, final overlay, 100/100 reputation, 7/7 missions, revisit of completed mission, and no JavaScript errors.
+- Initial completion overlay verified hidden in Chromium (hidden=true and computed display=none).
+- Final reputation verified at exactly 100/100.
+- All seven mission-map items verified complete after the end-to-end run.
