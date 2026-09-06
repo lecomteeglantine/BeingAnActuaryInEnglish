@@ -1,0 +1,20 @@
+M1 SESSION 1 — ACTUARY FOR A DAY — R17 USABILITY AUDIT
+Date: 2026-09-06
+
+R17 is based on the audited R16 build and adds targeted usability fixes:
+- fixed horizontal page overflow on small mobile screens
+- mobile top navigation now scrolls inside its own bar instead of widening the page
+- mission map no longer forces the game column wider than the viewport
+- mission-cleared dialog now receives keyboard focus and traps Tab on its only action
+- background scrolling is disabled while the mission-cleared dialog is open
+- after Continue/map navigation, focus moves to the new mission heading
+- revisiting a cleared mission now offers “Return to active mission” instead of leaving the user with a disabled dead-end button
+- turning Sound off immediately cancels any speech already playing
+- Restart/page exit cancels speech cleanly
+- new R17 JS/CSS names and service-worker cache force the corrected build after deployment
+
+Core integrity retained from R16:
+- reputation is derived from earned missions and cannot double-award
+- stale/corrupt session state is sanitised
+- no mission can be skipped through stored state
+- all 7 missions retain deterministic correct-answer logic
