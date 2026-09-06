@@ -1,0 +1,19 @@
+GROUP ACTIVITY FUNCTION AUDIT R23
+
+Critical functional fix:
+- Fixed startup order: the saved-state normaliser used the game data before `data` was initialised, which could throw a ReferenceError and leave the game area empty.
+
+Additional robustness fixes:
+- Migrates R22/R21/v4/v3 group progress into R23.
+- Turning sound off immediately cancels speech already playing.
+- Boardroom readiness is an explicit boolean and firm-name attribute escaping is hardened.
+- Navigation now gives visible feedback instead of silently doing nothing when prerequisites are incomplete.
+- Once the deterministic client alert is solved, alert choices are disabled to prevent accidental re-clicks.
+- Added pagehide audio cleanup.
+- Added defensive HUD checks to avoid crashes if UI nodes are unavailable.
+- Service worker cache bumped to R23 and HTML points only to R23 group CSS/JS.
+- No timings reintroduced.
+
+Additional audit fixes:
+- Fixed major horizontal overflow on 320/390/768 px viewports caused by the progress rail forcing the CSS grid wider than the viewport.
+- Fixed service-worker references so R23 group JS/CSS are cached instead of removed R22 files.
