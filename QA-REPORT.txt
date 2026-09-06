@@ -177,3 +177,38 @@ Automated/static checks after fixes:
 
 Limitation:
 - Static, combinatorial and live-URL checks were completed. Full cross-browser device rendering was not emulated in this environment.
+
+
+FINAL ONLINE AUDIT · 2026-09-06 · r15
+-----------------------------------
+Online findings confirmed before packaging:
+- m1-session1-group.html deployed on GitHub Pages still referenced assets/session1/group-realistic/hero-meeting.png -> HTTP 404.
+- m1-day1.html deployed on GitHub Pages also referenced the same missing group-realistic hero -> HTTP 404.
+
+Corrections in this package:
+- Group images renamed/versioned at repository root: group-hero-r15.jpg, group-desk-r15.jpg, group-tools-r15.jpg, group-strategy-r15.jpg, group-boardroom-r15.jpg.
+- m1-session1-group.html and m1-day1.html now reference only the r15 image files.
+- Service-worker cache bumped to actuarial-english-2026-09-06-r15-final-audit and pre-caches the r15 group images.
+- Group sessionStorage key bumped to v4 to prevent stale/corrupt state from previous builds.
+- challengeChoice is range-validated before use; invalid saved values are discarded instead of crashing Round 7.
+- Back-navigation budget logic corrected: Round 3 now checks budget before tools, so a valid existing tool selection does not incorrectly block revising the team.
+- Round 4 now blocks continuation if retained tool choices become over-budget after an upstream revision.
+- Round-entry guards now enforce the same budget rules as the visible buttons.
+- Round transitions scroll to the game/progress area rather than the top of the long page.
+- Boardroom completion now requires a non-empty firm name and one-sentence promise before the final brief can be copied/unlocked.
+
+Validation performed:
+- 24 HTML pages scanned.
+- 0 missing local HTML/CSS references.
+- 0 duplicate static HTML IDs.
+- All external JavaScript files pass node --check.
+- All inline JavaScript blocks pass node --check.
+- manifest.webmanifest parses successfully and all declared icons exist.
+- Every service-worker CORE asset exists.
+- All raster images verify successfully.
+- r15 group images: 5/5 valid JPEG, each 1600x900.
+- 234,885 valid complete firm configurations enumerated.
+- 0 configuration-code collisions across those valid configurations.
+- 31 pre-tool configurations that cannot reserve the minimum 18 points are correctly blocked before Round 4.
+- All six deterministic client-alert families are reachable.
+- No Math.random() is used by the group activity.
