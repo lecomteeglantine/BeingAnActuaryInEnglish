@@ -1,0 +1,15 @@
+GROUP ACTIVITY R21
+- Overhauled the group page to be more playful, more visual, and more immersive.
+- Added six realistic visuals used throughout the page and stage galleries.
+- Added sound effects (selection, success, error, next step, copy) via Web Audio API.
+- Kept speech buttons for useful language and pronunciation.
+- Fixed several functional issues:
+  * removed fragile referrer-based reset logic;
+  * added explicit feedback when too many options are selected;
+  * added explicit feedback when a tool is unaffordable;
+  * protected navigation against rapid double clicks;
+  * fixed live enabling/disabling of the copy button in the boardroom;
+  * ensured stage 8 preview updates live as users type;
+  * added migration from the previous group sessionStorage key;
+  * cancel speech when the tab becomes hidden.
+- Updated service-worker cache name and core asset list.
