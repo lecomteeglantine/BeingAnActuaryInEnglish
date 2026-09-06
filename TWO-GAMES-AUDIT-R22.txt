@@ -1,0 +1,24 @@
+R22 — combined functionality audit
+
+User-requested change:
+- Removed clock/timing information from both activities and from the Session 1 cards.
+- Removed the per-student speaking-time instruction from the group activity while keeping active speaking roles.
+
+Individual game hardening:
+- Removed office clock and all timestamped inbox labels.
+- Removed time-pressure wording.
+- Added migration from R20/R19/R18/R17 session keys.
+- Restart clears current + legacy keys.
+- Audio button handles browsers with no speech or Web Audio support.
+
+Group game hardening:
+- Removed all round clock times and speaking-duration references.
+- Sound-off now stops any active speech immediately.
+- Added aria-pressed to selectable cards.
+- Mobile round-progress bar recentres the active round automatically.
+- Migrates the previous R21 session key.
+
+Service worker updated to R22.
+
+Additional usability fix found during interaction testing:
+- Risk Lab now ignores only a rapid double-click on the same tile; fast legitimate clicks on different tiles are no longer dropped.
