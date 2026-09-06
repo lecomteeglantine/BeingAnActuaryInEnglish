@@ -1,0 +1,11 @@
+INDIVIDUAL ACTIVITY FUNCTIONAL AUDIT — R19
+
+Corrections in this build:
+- Removed implicit progress reset when reopening the game from m1-day1.html. Progress now persists for the browser tab until Restart is pressed.
+- Brief Desk now requires an explicit successful Check brief before Send to manager is enabled.
+- Boardroom now requires an explicit successful Run clarity check before Send to board is enabled.
+- Temporary Client Meeting error feedback is cleared when navigating away, avoiding stale feedback on return.
+- Programmatic scrolling respects prefers-reduced-motion.
+- Added aria-pressed state to word-bank and board replacement selections.
+- Explicit button types added to interactive game controls.
+- Service worker cache bumped to R19 and R19 JS/CSS filenames used to prevent stale R18 assets.

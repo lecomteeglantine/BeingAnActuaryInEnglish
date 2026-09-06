@@ -1,0 +1,18 @@
+R19 INDIVIDUAL FUNCTIONAL AUDIT
+
+Upload ALL files and folders from this ZIP to the ROOT of the BeingAnActuaryInEnglish GitHub repository, replacing existing files when prompted.
+
+Important new files:
+- m1-session1-individual-r19.js
+- m1-session1-individual-r19.css
+- updated m1-session1-individual.html
+- updated service-worker.js
+
+R19 fixes:
+1. Progress is no longer erased merely by returning to Session 1 and reopening the game. Only Restart clears it.
+2. Brief Desk requires an explicit successful Check brief before submission.
+3. Boardroom requires an explicit successful Run clarity check before submission.
+4. Stale Client Meeting error feedback is cleared when navigating away.
+5. Programmatic scrolling respects reduced-motion accessibility settings.
+6. Selected word/replacement controls expose aria-pressed state.
+7. Cache is versioned R19 to force the corrected files to load.
