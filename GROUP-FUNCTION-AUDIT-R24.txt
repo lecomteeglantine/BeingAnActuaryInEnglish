@@ -1,0 +1,23 @@
+GROUP ACTIVITY FUNCTION AUDIT R24
+
+Corrections:
+- Removed the 180 ms navigation lock that could ignore a legitimate fast click on the next round.
+- Added a tool-completion budget guard: a first tool is blocked if it would leave too little budget to buy the second required tool.
+- Added a Revise firm choices button from the final Boardroom instead of forcing a full restart.
+- Improved firm status labels: Review / Alert pending / Alert cleared / Board-ready.
+- Migrates R23 progress into R24.
+- Updated service-worker cache and R24 JS/CSS references.
+- Preserved deterministic challenge/configuration behaviour.
+
+Validation performed:
+- JS syntax check: passed.
+- Full interactive browser flow via in-memory Chromium document: passed with no JavaScript errors.
+- Rapid Next click test: passed after removing the 180 ms lock.
+- Wrong client-alert response followed by correction: passed.
+- Final Boardroom name/promise live preview and Copy activation: passed.
+- Final Boardroom can return to Review without restarting: passed.
+- Mobile layout tested at 320, 390, 768 and 1440 px: no horizontal overflow.
+- Low-budget tool scenario tested at exactly 18 points remaining: expensive first tool is blocked if it would prevent buying the second required tool.
+- Static asset audit: 0 missing local assets, 0 duplicate static IDs, all declared service-worker resources present.
+- Exhaustive deterministic configuration audit: 234,885 valid configurations, 234,885 unique configuration codes, 0 collisions.
+- 31 pre-tool budget dead-ends remain correctly blocked; every allowed first tool now leaves at least one feasible second tool.

@@ -1,0 +1,9 @@
+R24 upload instructions
+=======================
+Upload ALL files and folders from this ZIP to the ROOT of the GitHub repository, preserving folders.
+The group activity now uses:
+- m1-session1-group.html
+- m1-session1-group-r24.js
+- m1-session1-group-r24.css
+- service-worker.js (R24 cache)
+Old R23 JS/CSS files are not required by this release.
