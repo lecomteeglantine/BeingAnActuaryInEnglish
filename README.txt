@@ -49,3 +49,7 @@ GROUP ACTIVITY — THE ACTUARIAL FIRM DRAFT
 - Same choices = same budget, challenge and configuration code on every device.
 - 7 dedicated SVG illustrations and British-English audio support.
 - Final presentation: every student speaks for approximately 2 minutes.
+
+
+GROUP ACTIVITY AUDIT FIX · 2026-09-06
+Upload the complete contents of this ZIP to the repository root. The group activity now uses root-level group-*.jpg files; do not place them in a subfolder. The service worker version has been bumped so the corrected HTML/images replace stale cached copies.

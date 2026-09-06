@@ -95,7 +95,7 @@
       <p class="firm-lead">You are not just ticking options. You are a new actuarial strategy team preparing to launch a consultancy before an investor board arrives. Build a firm with <strong>100 points</strong>, react to a client alert and defend your choices in the boardroom.</p>
       <div class="firm-toolbar"><a class="ghost-link" href="m1-day1.html">← Session 1</a><button class="secondary-btn" type="button" id="soundToggle" aria-pressed="true">🔊 Sound on</button><button class="secondary-btn" type="button" id="restartDraft">↺ Restart firm</button></div>
     </div>
-    <img src="assets/session1/group-realistic/hero-meeting.png" alt="A realistic strategic meeting in an actuarial consultancy.">
+    <img src="group-hero.jpg" alt="A realistic strategic meeting in an actuarial consultancy.">
   </section>
   <section class="mission-strip" aria-label="Game overview">
     <div class="mission-card"><span class="label">Team format</span><span class="value">3 or 4</span><span class="sub">One device per team is recommended</span></div>
@@ -151,14 +151,22 @@
 (function(){
   const $ = s => document.querySelector(s);
   const $$ = s => [...document.querySelectorAll(s)];
-  const KEY = 'actuarial_group_draft_v2_overhaul';
+  const KEY = 'actuarial_group_draft_v3_audit';
+  try {
+    const navEntry = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    const navType = navEntry && navEntry.type;
+    const refPath = document.referrer ? new URL(document.referrer).pathname : '';
+    if(navType === 'navigate' && /\/m1-day1\.html$/.test(refPath)) sessionStorage.removeItem(KEY);
+  } catch(_) {}
   const mount = $('#gameMount');
   const progressFill = $('#progressFill');
   const dots = $$('#progressDots li');
   const soundBtn = $('#soundToggle');
   let voice = null;
-  let state = load() || {stage:1, soundOn:true, client:null, expertise:[], team:[], tools:[], identity:[], challengeChoice:null, firmName:'', promise:''};
-  let soundOn = state.soundOn !== false;
+  let voiceReady = false;
+  const defaultState = () => ({stage:1, soundOn:true, client:null, expertise:[], team:[], tools:[], identity:[], challengeChoice:null, firmName:'', promise:''});
+  let state;
+  let soundOn = true;
 
   const data = {
     client:[
@@ -203,32 +211,70 @@
     ]
   };
 
+  state = normaliseState(load());
+  soundOn = state.soundOn !== false;
+
   const stageMeta = {
-    1:{time:'09:00', title:'Choose your first target client', subtitle:'Your investors want to know who this new firm is for. Pick one client segment to anchor the whole draft.', img:'assets/session1/group-realistic/hero-meeting.png', icon:'🎯', badges:['Choose one','This decision shapes the alert','Discuss before selecting']},
-    2:{time:'09:08', title:'Build your technical expertise', subtitle:'You cannot promise everything. Choose exactly two areas of expertise that make sense together.', img:'assets/session1/group-realistic/option-desk.png', icon:'📚', badges:['Choose exactly two','Technical offer','Stay strategic']},
-    3:{time:'09:16', title:'Recruit the core team', subtitle:'Your consultancy needs people, not just ideas. Choose the two profiles that will make the biggest difference.', img:'assets/session1/group-realistic/hero-meeting.png', icon:'👥', badges:['Choose exactly two','Human resources','Trade-offs matter']},
-    4:{time:'09:24', title:'Invest in the tools', subtitle:'The board will ask what your firm actually uses to analyse uncertainty. Pick two tools.', img:'assets/session1/group-realistic/tools-lab.png', icon:'🛠️', badges:['Choose exactly two','Technology','Budget pressure']},
-    5:{time:'09:31', title:'Decide what kind of firm you are', subtitle:'These identity choices are free, but you will need to prove them later. Choose two.', img:'assets/session1/group-realistic/strategy-lounge.png', icon:'✨', badges:['Choose exactly two','Free but important','Prepare the pitch']},
-    6:{time:'09:38', title:'War-room review', subtitle:'Check whether your firm is coherent, affordable and convincing before the real test arrives.', img:'assets/session1/group-realistic/strategy-lounge.png', icon:'🧭', badges:['Review','Budget check','Strengths + risks']},
-    7:{time:'09:45', title:'Client alert', subtitle:'A real client problem hits your desk. The challenge is fixed by your choices — not by randomness.', img:'assets/session1/group-realistic/boardroom.png', icon:'🚨', badges:['Deterministic','Make one decision','Consequences']},
-    8:{time:'09:55', title:'Boardroom pitch', subtitle:'Name the firm, generate the board brief and prepare your final presentation.', img:'assets/session1/group-realistic/boardroom.png', icon:'🏛️', badges:['Boardroom','Every student speaks','Copy your brief']}
+    1:{time:'09:00', title:'Choose your first target client', subtitle:'Your investors want to know who this new firm is for. Pick one client segment to anchor the whole draft.', img:'group-hero.jpg', icon:'🎯', badges:['Choose one','This decision shapes the alert','Discuss before selecting']},
+    2:{time:'09:08', title:'Build your technical expertise', subtitle:'You cannot promise everything. Choose exactly two areas of expertise that make sense together.', img:'group-desk.jpg', icon:'📚', badges:['Choose exactly two','Technical offer','Stay strategic']},
+    3:{time:'09:16', title:'Recruit the core team', subtitle:'Your consultancy needs people, not just ideas. Choose the two profiles that will make the biggest difference.', img:'group-hero.jpg', icon:'👥', badges:['Choose exactly two','Human resources','Trade-offs matter']},
+    4:{time:'09:24', title:'Invest in the tools', subtitle:'The board will ask what your firm actually uses to analyse uncertainty. Pick two tools.', img:'group-tools.jpg', icon:'🛠️', badges:['Choose exactly two','Technology','Budget pressure']},
+    5:{time:'09:31', title:'Decide what kind of firm you are', subtitle:'These identity choices are free, but you will need to prove them later. Choose two.', img:'group-strategy.jpg', icon:'✨', badges:['Choose exactly two','Free but important','Prepare the pitch']},
+    6:{time:'09:38', title:'War-room review', subtitle:'Check whether your firm is coherent, affordable and convincing before the real test arrives.', img:'group-strategy.jpg', icon:'🧭', badges:['Review','Budget check','Strengths + risks']},
+    7:{time:'09:45', title:'Client alert', subtitle:'A real client problem hits your desk. The challenge is fixed by your choices — not by randomness.', img:'group-boardroom.jpg', icon:'🚨', badges:['Deterministic','Make one decision','Consequences']},
+    8:{time:'09:55', title:'Boardroom pitch', subtitle:'Name the firm, generate the board brief and prepare your final presentation.', img:'group-boardroom.jpg', icon:'🏛️', badges:['Boardroom','Every student speaks','Copy your brief']}
   };
 
   function load(){ try { return JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch(e){ return null; } }
-  function save(){ state.soundOn = soundOn; sessionStorage.setItem(KEY, JSON.stringify(state)); renderHud(); }
+  function normaliseState(raw){
+    const s = {...defaultState(), ...(raw || {})};
+    const valid = (group, ids) => [...new Set(Array.isArray(ids) ? ids : [])].filter(id => data[group].some(x=>x.id===id));
+    const itemCost = (group,id) => data[group].find(x=>x.id===id)?.cost || 0;
+    s.client = data.client.some(x=>x.id===s.client) ? s.client : null;
+    s.expertise = valid('expertise', s.expertise).slice(0,2);
+    s.team = valid('team', s.team).slice(0,2);
+    s.tools = valid('tools', s.tools).slice(0,2);
+    s.identity = valid('identity', s.identity).slice(0,2);
+    s.challengeChoice = Number.isInteger(s.challengeChoice) ? s.challengeChoice : null;
+    s.firmName = String(s.firmName || '').slice(0,60);
+    s.promise = String(s.promise || '').slice(0,220);
+    const spentBeforeTools = (s.client ? itemCost('client',s.client) : 0) + s.expertise.reduce((n,id)=>n+itemCost('expertise',id),0) + s.team.reduce((n,id)=>n+itemCost('team',id),0);
+    const total = spentBeforeTools + s.tools.reduce((n,id)=>n+itemCost('tools',id),0);
+    let maxStage = 1;
+    if(s.client) maxStage = 2;
+    if(s.expertise.length===2) maxStage = 3;
+    if(s.team.length===2 && 100-spentBeforeTools>=18) maxStage = 4;
+    if(s.tools.length===2 && total<=100) maxStage = 5;
+    if(s.identity.length===2 && total<=100) maxStage = 6;
+    if(s.identity.length===2 && total<=100) maxStage = 7;
+    if(s.challengeChoice===0 && s.identity.length===2 && total<=100) maxStage = 8;
+    s.stage = Math.min(maxStage, Math.max(1, Math.min(8, Number(s.stage) || 1)));
+    return s;
+  }
+  function save(){ state.soundOn = soundOn; try{ sessionStorage.setItem(KEY, JSON.stringify(state)); }catch(_){} renderHud(); }
   function reset(){ if(!confirm('Start a completely new firm?')) return; sessionStorage.removeItem(KEY); location.reload(); }
   $('#restartDraft').addEventListener('click', reset);
   soundBtn.addEventListener('click', ()=>{ soundOn=!soundOn; updateSound(); save(); });
   function updateSound(){ soundBtn.textContent = soundOn ? '🔊 Sound on' : '🔈 Sound off'; soundBtn.setAttribute('aria-pressed', String(soundOn)); }
   updateSound();
 
+  function resolveVoice(){
+    if(voiceReady) return voice;
+    const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+    voice = voices.find(v => /en-GB/i.test(v.lang) || /UK|British/i.test(v.name)) || voices.find(v => /^en/i.test(v.lang)) || null;
+    if(voices.length) voiceReady = true;
+    return voice;
+  }
+  if('speechSynthesis' in window){
+    resolveVoice();
+    window.speechSynthesis.addEventListener && window.speechSynthesis.addEventListener('voiceschanged', ()=>{ voiceReady=false; resolveVoice(); }, {once:true});
+  }
   function speak(text){
     if(!soundOn || !('speechSynthesis' in window)) return;
     const utter = new SpeechSynthesisUtterance(text);
-    const voices = window.speechSynthesis.getVoices();
-    voice = voice || voices.find(v => /en-GB/i.test(v.lang) || /UK|British/i.test(v.name)) || voices.find(v => /^en/i.test(v.lang));
-    if(voice) utter.voice = voice;
-    utter.lang = (voice && voice.lang) || 'en-GB';
+    const selected = resolveVoice();
+    if(selected) utter.voice = selected;
+    utter.lang = (selected && selected.lang) || 'en-GB';
     utter.rate = 0.95;
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utter);
@@ -248,8 +294,15 @@
   function selectionCount(){ return (state.client?1:0)+state.expertise.length+state.team.length+state.tools.length+state.identity.length; }
   function configCode(){
     if(!state.client) return '—';
-    const parts = [state.client.slice(0,3), ...state.expertise.map(x=>x.slice(0,3)), ...state.team.map(x=>x.slice(0,3)), ...state.tools.map(x=>x.slice(0,3)), ...state.identity.map(x=>x.slice(0,3))];
-    return parts.join('-').toUpperCase();
+    const codes = {
+      client:{insurance:'INS',pensions:'PEN',banks:'BNK',health:'HLT',climate:'CLM',international:'INT'},
+      expertise:{pricing:'PRI',reserving:'RES',pensions:'PEN',risk:'RSK',modelling:'MOD',climate:'CLM'},
+      team:{senior:'SEN',junior:'JUN',datasci:'DAT',economist:'ECO',compliance:'CMP',communication:'COM'},
+      tools:{traditional:'TRA',scenario:'SCN',ai:'AIA',dashboards:'DSH',stress:'STR',cat:'CAT'},
+      identity:{reliable:'REL',innovative:'INN',client:'CLI',specialist:'SPE',international:'INT',agile:'AGL'}
+    };
+    const part = (group, ids) => [...ids].sort().map(id=>codes[group][id]);
+    return [codes.client[state.client], ...part('expertise',state.expertise), ...part('team',state.team), ...part('tools',state.tools), ...part('identity',state.identity)].join('-');
   }
   function statusInfo(){
     const left = budgetLeft();
@@ -295,11 +348,11 @@
     bindChoices('expertise',2); $('#backBtn').onclick=()=>go(1); $('#nextBtn').onclick=()=>go(3);
   }
   function renderStage3(){
-    mount.innerHTML = frame(3, `<div class="notice-box"><strong>Task:</strong> Choose exactly <strong>2 team profiles</strong>. Think about technical strength, communication and judgement.</div><div class="option-grid">${data.team.map(item=>cardHtml('team', item, state.team.includes(item.id))).join('')}</div><div class="decision-row"><div class="selection-meter">Choose <strong>2</strong> · Selected: ${state.team.length}/2</div><div class="code-badge">Budget left · ${budgetLeft()} pts</div></div><div class="nav-row"><button type="button" class="secondary-btn" id="backBtn">← Back</button><button type="button" class="primary-link" id="nextBtn" ${state.team.length===2 ? '' : 'disabled'}>Lock team →</button></div>`);
+    mount.innerHTML = frame(3, `<div class="notice-box"><strong>Task:</strong> Choose exactly <strong>2 team profiles</strong>. Think about technical strength, communication and judgement.</div><div class="option-grid">${data.team.map(item=>cardHtml('team', item, state.team.includes(item.id))).join('')}</div><div class="decision-row"><div class="selection-meter">Choose <strong>2</strong> · Selected: ${state.team.length}/2</div><div class="code-badge">Budget left · ${budgetLeft()} pts</div></div>${state.team.length===2 && budgetLeft()<18 ? '<div class="notice-box" style="margin-top:16px"><strong>Budget dead-end:</strong> you need at least 18 points left to buy two tools. Revise your team or earlier choices before continuing.</div>' : ''}<div class="nav-row"><button type="button" class="secondary-btn" id="backBtn">← Back</button><button type="button" class="primary-link" id="nextBtn" ${state.team.length===2 && budgetLeft()>=18 ? '' : 'disabled'}>Lock team →</button></div>`);
     bindChoices('team',2); $('#backBtn').onclick=()=>go(2); $('#nextBtn').onclick=()=>go(4);
   }
   function renderStage4(){
-    mount.innerHTML = frame(4, `<div class="notice-box"><strong>Task:</strong> Choose exactly <strong>2 tools</strong>. If your total cost goes above 100, you will need to revise your strategy at the review stage.</div><div class="option-grid">${data.tools.map(item=>cardHtml('tools', item, state.tools.includes(item.id))).join('')}</div><div class="decision-row"><div class="selection-meter">Choose <strong>2</strong> · Selected: ${state.tools.length}/2</div><div class="code-badge">Live budget · ${budgetLeft()} pts left</div></div><div class="nav-row"><button type="button" class="secondary-btn" id="backBtn">← Back</button><button type="button" class="primary-link" id="nextBtn" ${state.tools.length===2 ? '' : 'disabled'}>Lock tools →</button></div>`);
+    mount.innerHTML = frame(4, `<div class="notice-box"><strong>Task:</strong> Choose exactly <strong>2 tools</strong>. Tools that would push the firm over 100 points are automatically locked.</div><div class="option-grid">${data.tools.map(item=>{ const selected=state.tools.includes(item.id); const unaffordable=!selected && budgetLeft()<item.cost; return `<button type="button" class="choice-card ${selected?'selected':''} ${unaffordable?'disabled':''}" data-group="tools" data-id="${item.id}" ${unaffordable?'disabled aria-disabled="true"':''}><div class="top"><div class="emoji">${item.icon}</div><span class="cost-pill">${item.cost} pts</span></div><h3>${item.label}</h3><p>${item.blurb}</p>${unaffordable?'<p style="margin-top:8px;color:#7b2323;font-weight:800">Not enough budget for this tool.</p>':''}</button>`; }).join('')}</div><div class="decision-row"><div class="selection-meter">Choose <strong>2</strong> · Selected: ${state.tools.length}/2</div><div class="code-badge">Live budget · ${budgetLeft()} pts left</div></div><div class="nav-row"><button type="button" class="secondary-btn" id="backBtn">← Back</button><button type="button" class="primary-link" id="nextBtn" ${state.tools.length===2 ? '' : 'disabled'}>Lock tools →</button></div>`);
     bindChoices('tools',2); $('#backBtn').onclick=()=>go(3); $('#nextBtn').onclick=()=>go(5);
   }
   function renderStage5(){
@@ -353,9 +406,17 @@
     const fit = insights();
     const clientLabel = optionBy('client',state.client).label;
     const challengeLabel = challenge().title;
-    mount.innerHTML = frame(8, `<div class="notice-box"><strong>Final task:</strong> name your firm, give it a one-sentence promise, then use the generated brief to prepare your oral presentation. <strong>Every student speaks for approximately 2 minutes.</strong></div><div class="brief-grid"><label class="input-box">Firm name<input id="firmName" class="text-input" type="text" maxlength="60" placeholder="e.g. Northbridge Actuarial" value="${escapeHtml(state.firmName)}"></label><label class="input-box">One-sentence promise<textarea id="firmPromise" class="text-area" maxlength="220" placeholder="We help organisations understand uncertainty and make clear, evidence-based decisions.">${escapeHtml(state.promise)}</textarea></label></div><div class="firm-brief" id="briefBox"><p class="module-number" style="margin:0">BOARDROOM BRIEF</p><h3 style="margin-top:10px;color:#102a43">${escapeHtml(state.firmName || 'Your new firm')}</h3><p>${escapeHtml(state.promise || 'Add a one-sentence promise to make the firm sound memorable and client-focused.')}</p><div class="brief-columns"><div><h4 style="color:#102a43">Firm DNA</h4><ul><li><strong>Target client:</strong> ${clientLabel}</li><li><strong>Expertise:</strong> ${state.expertise.map(id=>optionBy('expertise',id).label).join(' + ')}</li><li><strong>Team:</strong> ${state.team.map(id=>optionBy('team',id).label).join(' + ')}</li><li><strong>Tools:</strong> ${state.tools.map(id=>optionBy('tools',id).label).join(' + ')}</li><li><strong>Identity:</strong> ${state.identity.map(id=>optionBy('identity',id).label).join(' + ')}</li><li><strong>Budget:</strong> ${totalSpent()} / 100 points (${left} left)</li><li><strong>Config code:</strong> ${configCode()}</li></ul></div><div><h4 style="color:#102a43">How to defend the firm</h4><ul><li>Explain why this client needs actuarial support.</li><li>Show how your expertise and tools help you understand risk and uncertainty.</li><li>Justify your budget choices and trade-offs.</li><li>Summarise your response to the <strong>${challengeLabel}</strong>.</li><li>Use at least one strength and one weak point from the review.</li></ul></div></div><div class="student-grid"><div><strong>Student 1 · Who we are</strong><p>Firm name, promise and target client.</p></div><div><strong>Student 2 · What actuaries do</strong><p>Expertise, data, models, uncertainty and risk.</p></div><div><strong>Student 3 · How we built the firm</strong><p>Team, tools, costs and trade-offs.</p></div><div><strong>Student 4 · Why trust us?</strong><p>Identity, challenge response, strengths and weak points.</p></div></div><div class="finish-banner"><strong>Boardroom access unlocked</strong><span>You now have a complete actuarial firm to present. In a 3-person group, Student 3 also explains the client alert response. Everyone still speaks for approximately 2 minutes.</span></div></div><div class="nav-row"><button type="button" class="secondary-btn" id="copyBtn">Copy our firm brief</button><button type="button" class="secondary-btn" id="restartBtn">Start a new firm</button></div>`);
-    $('#firmName').addEventListener('input', e=>{ state.firmName = e.target.value; save(); renderStage8(); });
-    $('#firmPromise').addEventListener('input', e=>{ state.promise = e.target.value; save(); renderStage8(); });
+    mount.innerHTML = frame(8, `<div class="notice-box"><strong>Final task:</strong> name your firm, give it a one-sentence promise, then use the generated brief to prepare your oral presentation. <strong>Every student speaks for approximately 2 minutes.</strong></div><div class="brief-grid"><label class="input-box">Firm name<input id="firmName" class="text-input" type="text" maxlength="60" placeholder="e.g. Northbridge Actuarial" value="${escapeHtml(state.firmName)}"></label><label class="input-box">One-sentence promise<textarea id="firmPromise" class="text-area" maxlength="220" placeholder="We help organisations understand uncertainty and make clear, evidence-based decisions.">${escapeHtml(state.promise)}</textarea></label></div><div class="firm-brief" id="briefBox"><p class="module-number" style="margin:0">BOARDROOM BRIEF</p><h3 id="briefFirmName" style="margin-top:10px;color:#102a43">${escapeHtml(state.firmName || 'Your new firm')}</h3><p id="briefPromiseText">${escapeHtml(state.promise || 'Add a one-sentence promise to make the firm sound memorable and client-focused.')}</p><div class="brief-columns"><div><h4 style="color:#102a43">Firm DNA</h4><ul><li><strong>Target client:</strong> ${clientLabel}</li><li><strong>Expertise:</strong> ${state.expertise.map(id=>optionBy('expertise',id).label).join(' + ')}</li><li><strong>Team:</strong> ${state.team.map(id=>optionBy('team',id).label).join(' + ')}</li><li><strong>Tools:</strong> ${state.tools.map(id=>optionBy('tools',id).label).join(' + ')}</li><li><strong>Identity:</strong> ${state.identity.map(id=>optionBy('identity',id).label).join(' + ')}</li><li><strong>Budget:</strong> ${totalSpent()} / 100 points (${left} left)</li><li><strong>Config code:</strong> ${configCode()}</li></ul></div><div><h4 style="color:#102a43">How to defend the firm</h4><ul><li>Explain why this client needs actuarial support.</li><li>Show how your expertise and tools help you understand risk and uncertainty.</li><li>Justify your budget choices and trade-offs.</li><li>Summarise your response to the <strong>${challengeLabel}</strong>.</li><li>Use at least one strength and one weak point from the review.</li></ul></div></div><div class="student-grid"><div><strong>Student 1 · Who we are</strong><p>Firm name, promise and target client.</p></div><div><strong>Student 2 · What actuaries do</strong><p>Expertise, data, models, uncertainty and risk.</p></div><div><strong>Student 3 · How we built the firm</strong><p>Team, tools, costs and trade-offs.</p></div><div><strong>Student 4 · Why trust us?</strong><p>Identity, challenge response, strengths and weak points.</p></div></div><div class="finish-banner"><strong>Boardroom access unlocked</strong><span>You now have a complete actuarial firm to present. In a 3-person group, Student 3 also explains the client alert response. Everyone still speaks for approximately 2 minutes.</span></div></div><div class="nav-row"><button type="button" class="secondary-btn" id="copyBtn">Copy our firm brief</button><button type="button" class="secondary-btn" id="restartBtn">Start a new firm</button></div>`);
+    $('#firmName').addEventListener('input', e=>{
+      state.firmName = e.target.value;
+      $('#briefFirmName').textContent = state.firmName || 'Your new firm';
+      save();
+    });
+    $('#firmPromise').addEventListener('input', e=>{
+      state.promise = e.target.value;
+      $('#briefPromiseText').textContent = state.promise || 'Add a one-sentence promise to make the firm sound memorable and client-focused.';
+      save();
+    });
     $('#copyBtn').onclick = copyBrief;
     $('#restartBtn').onclick = reset;
   }
@@ -373,18 +434,31 @@
       `Config code: ${configCode()}`,
       `Client alert: ${challenge().title}`
     ].join('\n');
-    navigator.clipboard.writeText(text).then(()=> alert('Your firm brief has been copied.'));
+    const copied = () => alert('Your firm brief has been copied.');
+    const fallback = () => {
+      const ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly',''); ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select();
+      try { const ok = document.execCommand('copy'); if(ok) copied(); else alert('Copy failed. Select the boardroom brief and copy it manually.'); } catch(_) { alert('Copy failed. Select the boardroom brief and copy it manually.'); }
+      ta.remove();
+    };
+    if(navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(copied).catch(fallback); else fallback();
   }
 
   function bindChoices(group, limit){
     mount.querySelectorAll(`[data-group="${group}"]`).forEach(btn => btn.addEventListener('click', ()=>toggleChoice(group, btn.dataset.id, limit)));
   }
   function toggleChoice(group, id, limit){
-    if(group==='client'){ state.client = id; save(); renderStage1(); return; }
+    if(group==='client'){
+      if(state.client !== id) state.challengeChoice = null;
+      state.client = id; save(); renderStage1(); return;
+    }
     const arr = state[group];
     const idx = arr.indexOf(id);
     if(idx >= 0) arr.splice(idx,1);
-    else if(arr.length < limit) arr.push(id);
+    else if(arr.length < limit){
+      if(group==='tools' && budgetLeft() < (optionBy('tools',id)?.cost || 0)) return;
+      arr.push(id);
+    }
+    if(group==='expertise') state.challengeChoice = null;
     save(); render();
   }
   function canEnter(stage){

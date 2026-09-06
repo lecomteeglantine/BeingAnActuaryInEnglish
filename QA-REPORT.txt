@@ -137,3 +137,43 @@ NORTHSTAR INDIVIDUAL GAME OVERHAUL
 - Same choices always produce the same outcomes; no random branching.
 - Session progress stored in sessionStorage only and cleared on a fresh launch from Session 1.
 - Updated M1 Session 1 card to 35–40 min and 7 story-driven missions.
+
+
+=== 2026-09-06 · GROUP ACTIVITY LIVE AUDIT ===
+
+Scope: m1-session1-group.html + Session 1 card + shared PWA/static integrity.
+
+Live findings:
+- Confirmed deployed group hero was still requested from assets/session1/group-realistic/hero-meeting.png and returned HTTP 404.
+- Confirmed Session 1 group-card image used the same obsolete path and returned HTTP 404.
+
+Corrections in this package:
+- Group visuals moved/referenced at repository root with simple ASCII-safe names:
+  group-hero.jpg, group-desk.jpg, group-tools.jpg, group-strategy.jpg, group-boardroom.jpg.
+- Service-worker cache bumped to r14-group-audit and all five group images added to CORE.
+- Boardroom text fields no longer re-render the full stage on every keystroke; focus/cursor are preserved.
+- Client-alert validation is invalidated when client or expertise choices change.
+- Shared-device safety: deliberate navigation from m1-day1.html starts a clean group draft; refresh preserves work.
+- Budget dead-end guard restored: Round 3 requires at least 18 points remaining for the two mandatory tools.
+- Unaffordable tool cards are disabled deterministically, preventing over-budget selection.
+- Configuration code now uses unique group-specific codes and sorts multi-selections, so the same set of choices produces the same code regardless of click order.
+- Persisted session state is sanitised and cannot open an unreachable later stage after partial/corrupt data.
+- Clipboard copy includes a fallback for browsers where the Clipboard API is unavailable/denied.
+- British speech-synthesis voice selection is cached rather than re-scanning the full voice list on each click.
+
+Automated/static checks after fixes:
+- 24 HTML pages scanned.
+- 0 missing local href/src resources.
+- 0 duplicate HTML IDs.
+- 0 missing service-worker CORE resources.
+- manifest.webmanifest parses successfully.
+- all external/top-level JavaScript files pass node --check.
+- group inline JavaScript passes node --check.
+- all five group JPEG files decode successfully at 1600×900.
+- Exhaustive budget logic check: 1,319 pre-tool client/expertise/team states pass the 18-point reserve; 31 are correctly blocked before tools.
+- 234,885 valid full configurations (including identity choices) remain within 100 points; maximum spend = 100, minimum budget left = 0.
+- all 6 deterministic challenge types are reachable.
+- configuration code verified invariant to click order for all tested choice-pair reversals.
+
+Limitation:
+- Static, combinatorial and live-URL checks were completed. Full cross-browser device rendering was not emulated in this environment.
