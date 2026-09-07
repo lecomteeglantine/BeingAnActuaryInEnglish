@@ -1,0 +1,62 @@
+M1 SESSION 2 · THE ACTUARIAL MUSEUM
+MEGA FUNCTIONAL AUDIT R11
+
+Scope
+- m1.html
+- m1-day2.html
+- m1-session2-group.html
+- m1-session2-museum-r11.js / .css
+- Session 2 museum illustrations and audio assets
+
+R11 fixes
+1. Anti-double-click / rerender race hardened
+- Action locks now use unique tokens.
+- An old timer can no longer unlock a newer action that reused the same action key after a rerender.
+- Rapid Final -> Review -> Save -> Review sequences were explicitly tested.
+
+2. Voice feedback hardened
+- If Speech Synthesis is unavailable, “Hear the curator briefing” now gives an explicit message instead of failing silently.
+- Sound effects remain available independently.
+
+3. Sound-state async race hardened
+- A delayed “Sound ON” test can no longer display a stale ON message after the user has already switched sound OFF.
+
+4. Saved-state hardening
+- Boolean fields are now restored strictly instead of accepting truthy strings from malformed/corrupted storage.
+- finalScript and gallery pitch notes are safely length-limited during restore.
+- Legacy saves without pitchEdited information preserve existing non-empty notes rather than risking accidental overwrite.
+- R10 -> R11 migration is supported.
+
+5. Keyboard/accessibility hardening
+- Each answer group now behaves as a proper roving radio group: one Tab stop per question, arrow keys move selection.
+- This avoids forcing keyboard users through all 16 answer buttons with Tab.
+
+6. Pitch clarity consistency
+- Exact role names are now consistent between team setup, Pitch Notebook and final speaker plan.
+- Final instructions explicitly require each gallery section to link its evidence to the wider museum story.
+- Custom gallery notes allow more character room while still enforcing the 30–40 word limit.
+- The final-script “too short” warning now matches the stated 170-word lower target.
+
+Validation completed
+- 4 galleries x 4 decisions = 16 decisions.
+- Exactly one best-scoring option per decision.
+- Correct-option position pattern: ABCD / ABCD / ABCD / ABCD.
+- Maximum score: 32/32.
+- Historical evidence / Actuarial connection / Curatorial strategy / Storytelling language: 8/8 each maximum.
+- No Math.random().
+- All 16 possible featured-exhibit suggested pitch variants tested: 30–40 words.
+- 3-player and 4-player setup paths tested.
+- Final -> Review -> Save -> Review rapid sequence tested.
+- Pitch preservation when reviewing without changes tested.
+- Final script rebuild after changed gallery content tested.
+- 29-word and 41-word gallery notes blocked; 30- and 40-word notes accepted.
+- Timer Start/Reset tested.
+- localStorage unavailable -> warning, then writable again -> recovery tested.
+- Missing Speech Synthesis -> explicit user feedback tested.
+- Malformed boolean storage state sanitised.
+- Responsive opening tested at 320, 360, 560, 860, 1180 and 1440 px without horizontal overflow.
+- 15 SVG assets parse correctly.
+- 7 WAV files open as valid WAV audio.
+- All Session 2 dynamic museum asset references resolve in the package.
+- R11 JavaScript passes node --check.
+- No duplicate HTML IDs.

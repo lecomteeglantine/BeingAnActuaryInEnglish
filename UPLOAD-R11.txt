@@ -1,0 +1,16 @@
+UPLOAD R11 TO GITHUB
+
+1. Unzip this archive.
+2. Upload ALL contents directly to the root of the existing BeingAnActuaryInEnglish repository.
+3. Do NOT upload an enclosing/wrapper folder.
+4. Preserve:
+   assets/session2-museum/
+   assets/session2-museum/audio/
+5. R11 entry points:
+   m1.html
+   m1-day2.html
+   m1-session2-group.html
+6. New game files:
+   m1-session2-museum-r11.js
+   m1-session2-museum-r11.css
+7. If GitHub Pages briefly displays an older version, hard-refresh once after deployment.
