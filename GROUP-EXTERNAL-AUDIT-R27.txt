@@ -1,0 +1,38 @@
+GROUP ACTIVITY EXTERNAL AUDIT R27
+
+EXTERNAL LIVE-PAGE AUDIT
+- Live page exposes realistic hero imagery, a client-meeting image, a boardroom image, a visual moodboard, Sound control, pronunciation/listening buttons, useful-language audio, an 8-round mission flow, deterministic budget and a Boardroom final task.
+
+FUNCTIONAL / USABILITY FIXES
+1. Client Alert no longer reveals the correct answer after a wrong attempt.
+2. Client Alert answer order now varies by challenge but remains deterministic across devices.
+3. Keyboard focus is restored after option rerenders and round transitions.
+4. After a wrong Client Alert answer, focus returns to the chosen answer; after success it moves to the Boardroom CTA.
+5. Round feedback is an explicit live status region.
+6. Added distinct alert and Boardroom fanfare sound effects while retaining browser speech/pronunciation audio.
+7. Six 1672x941 PNG illustrations (~12 MB total) were converted to 1280x720 WebP assets (~0.6 MB total) for substantially faster mobile loading without losing visual richness.
+8. Added reduced-motion safeguards.
+9. Cache/session version moved to R27 with migration from R26.
+
+BROWSER FLOW TEST
+24/24 checks passed in Chromium:
+- round 1 start
+- visual and sound controls present
+- focus retention after rerender
+- rounds 2-8 progression
+- budget validity
+- deterministic varied Client Alert answer order
+- wrong answer does not reveal correct answer
+- correct answer locks alert
+- Boardroom fields and Copy button
+- Board-ready status
+- 390 px and 320 px no horizontal overflow
+- zero JavaScript errors
+
+DETERMINISM / COMBINATORIAL CHECK
+- 234,885 valid firm configurations
+- 234,885 unique configuration codes
+- 234,885 unique deterministic outcomes
+- 0 collisions
+- 31 pre-tool budget dead-ends correctly blocked
+- 6 deterministic challenge families

@@ -1,0 +1,5 @@
+R27 upload instructions
+1. Extract this ZIP.
+2. Upload/replace ALL files and folders at the ROOT of the GitHub repository.
+3. Do not upload the ZIP itself or a wrapper folder.
+4. The group activity uses m1-session1-group-r27.js and m1-session1-group-r27.css.
