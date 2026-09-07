@@ -1,0 +1,25 @@
+M2 SESSION 1 — GLOBAL ACTUARIAL CRISIS ROOM — R34
+
+Functional corrections:
+- Changing an earlier answer during review now clears every later answer in the same mission, preventing stale/incoherent recap data.
+- Removed the pre-answer “Hear the tactful model” reveal; students can only hear their selected wording after choosing.
+- Corrected Back-button wording: later missions now say “Previous mission”, not “Team setup”.
+- Restores keyboard focus to the selected 3/4-player button after the setup rerenders.
+- Clears desktop sticky sidebar inline sizing when the viewport crosses down to tablet/mobile width.
+- Added ResizeObserver-based sticky-position recalculation when the top navigation changes height.
+- Added stronger visible keyboard focus styles.
+- Progress/session migration: R33 and R32 -> R34.
+
+Determinism preserved:
+- No Math.random.
+- Fixed option order and fixed score values.
+- Player count changes roles only, never questions, answer options or scores.
+
+Additional state-integrity fixes:
+- Reload after choosing question 4 no longer auto-completes a mission before “Save mission recap” is pressed.
+- Corrupt answer gaps inside a mission are repaired; later answers after the first missing step are discarded.
+- Resume logic now uses explicitly saved mission recaps, not merely the presence of four selected answers.
+
+Clarity/audio fixes:
+- Final recap speaking plan now matches the exact 3-player / 4-player role names assigned at setup.
+- Client/question speech is cancelled when an answer is selected or the team navigates to another screen, preventing old audio from talking over the next stage.
