@@ -1,0 +1,12 @@
+M2 SESSION 1 GROUP ACTIVITY — R32
+The Global Actuarial Crisis Room
+- Team selector: 3 or 4 players.
+- Four international missions: UK pensions, US health insurance, Canada pricing, Australia/New Zealand catastrophe risk.
+- 16 fixed decisions: Risk, Decision, Tact, Justification.
+- Fixed scoring: 32 points total, no randomness.
+- Same choice on any device = same score, same next options and same feedback.
+- Optional WebAudio sound effects and speechSynthesis client messages.
+- Team Recap Builder visible throughout the game.
+- Final recap generated from the team's actual choices.
+- Final oral task: 2 minutes maximum for the whole team; explain and justify key choices.
+- Diplomatic language integrates passive/hedging/modals/less certain language/clarification strategies from the supplied class materials.
