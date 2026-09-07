@@ -1,0 +1,18 @@
+UPLOAD R37 TO GITHUB
+
+This ZIP is already flat: its website files are directly at the ZIP root. There is NO enclosing project folder.
+
+1. Open the BeingAnActuaryInEnglish GitHub repository.
+2. Upload/replace the contents of this ZIP at the repository ROOT (the same level as index.html).
+3. Keep the folder names assets/, data/ and icons/ exactly as supplied.
+4. Commit the changes.
+5. After GitHub Pages deploys, reload the site once. The R37 service worker uses a new cache key and deletes older caches on activation.
+
+Key active R37 files:
+- m2.html
+- m2-day1.html … m2-day5.html
+- m2-sessions-r37.css
+- m2-session1-group.html
+- m2-session1-group-r37.css
+- m2-session1-group-r37.js
+- service-worker.js

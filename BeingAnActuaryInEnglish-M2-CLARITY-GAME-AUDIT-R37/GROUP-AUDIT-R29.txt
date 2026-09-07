@@ -1,0 +1,43 @@
+GROUP ACTIVITY R29 — PLAYER SELECTOR + FULL FUNCTION AUDIT
+
+LIVE BASE
+- Audited the currently deployed group activity structure before producing R29.
+
+NEW FEATURE
+- Added a required 3-player / 4-player student team-size choice before Round 1.
+- The choice is saved for the current browser session.
+- Students can change 3 ↔ 4 later without losing any actuarial choices, budget, client alert, firm name, or promise.
+- Boardroom speaking roles adapt automatically:
+  * 3 players = 3 balanced speaking roles.
+  * 4 players = 4 separate speaking roles.
+- The copied Boardroom brief now includes the student team size and the matching speaking-role plan.
+- Player count does NOT change the 100-point budget, configuration code, deterministic challenge, or actuarial outcome.
+
+FUNCTIONAL FIXES / SAFEGUARDS
+- R28 and earlier saves migrate automatically. If an old save has no team size, the firm state is preserved and the game simply asks for 3 or 4 before resuming.
+- Round navigation is blocked until a valid player count (3 or 4) is selected.
+- Round 7 explicitly requires the Identity round to be complete.
+- Team-size controls expose selected state with aria-pressed and visible styling.
+- Keyboard focus moves to Round 1 after choosing team size in the setup card; changing team size later keeps focus on the top picker.
+- Existing deterministic state invalidation, budget-dead-end prevention, audio fallbacks, mobile containment, sticky-header correction, save sanitation, and challenge locking are preserved.
+
+BROWSER FLOW TEST
+- Chromium DOM interaction test: 36/36 checks passed.
+- Covered: initial team-size gate; 3-player flow; full Rounds 1→8; rapid repeated click; wrong Client Alert answer then correction; correct answer not revealed; 3-role Boardroom; live firm-name/promise updates; 3→4→3 change without changing budget/config/outcome; reload persistence; R28 migration without player count; mobile widths 320/390/768/901/1024; zero runtime JS errors.
+
+STATIC / PACKAGE QA
+- 24 HTML pages checked.
+- 0 local asset links missing.
+- 0 duplicate static IDs.
+- 65/65 service-worker core assets present.
+- All JS files pass node --check.
+- Group CSS parses with 0 errors.
+- 21 raster images decode successfully.
+
+DETERMINISM / BUDGET QA
+- 303,750 total possible firm combinations enumerated.
+- 234,885 valid ≤100-point configurations.
+- 234,885 unique configuration codes: 0 collisions.
+- 234,885 unique outcome codes: 0 collisions.
+- 31 pre-tool budget dead-end prefixes remain detected/blocked.
+- 0 actuarial-result mismatch between 3-player and 4-player team size: player count changes presentation roles only.

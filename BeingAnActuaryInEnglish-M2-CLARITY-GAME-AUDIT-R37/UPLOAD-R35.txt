@@ -1,0 +1,10 @@
+UPLOAD R35 TO GITHUB
+1. Extract the ZIP.
+2. Upload/replace ALL files and folders at the ROOT of the BeingAnActuaryInEnglish repository.
+3. Do not upload a wrapper folder.
+4. Important R35 files include:
+   - m2.html
+   - m2-day1.html through m2-day5.html
+   - m2-sessions-r35.css
+   - service-worker.js
+5. Keep the existing image assets and m2-session1-group-r34.js/.css files at the repository root.
