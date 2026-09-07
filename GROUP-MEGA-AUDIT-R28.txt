@@ -1,0 +1,15 @@
+GROUP ACTIVITY MEGA FUNCTION AUDIT R28
+
+Functional fixes:
+1. Dynamic sticky offset: the round progress rail and sidebar can no longer hide behind a sticky/wrapped top navigation bar on desktop and tablet-width desktop layouts.
+2. Revision-state invalidation: changing an earlier decision clears downstream selections and the saved Client Alert answer, preventing stale hidden choices from producing history-dependent behaviour.
+3. Corrupted sound preference hardening: soundOn is normalised to a real boolean.
+4. Clipboard fallback: restores keyboard focus after legacy copy, uses explicit selection range for better mobile/Safari compatibility, and cannot leave focus on a removed hidden textarea.
+5. Progress semantics: current/completed rounds now expose aria-current/labels consistently.
+6. Sticky offset recalculates on header resize, viewport resize and BFCache restore.
+7. Long deterministic codes/summary values can wrap instead of forcing horizontal overflow.
+
+Determinism rule retained:
+Same current choices => same canonical selections, same budget, same configuration code, same challenge, same answer order and same outcome code.
+
+No timings were reintroduced.

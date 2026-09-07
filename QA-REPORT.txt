@@ -270,3 +270,20 @@ R20 INDIVIDUAL FUNCTION AUDIT — 2026-09-06
 - Modal uses aria-hidden + inert page regions while open.
 - Dynamic action buttons hardened with type=button.
 - Static audit: 0 missing local refs; 0 duplicate static IDs; all JS syntax checks pass.
+
+R28 GROUP MEGA FUNCTION AUDIT
+- Full Chromium injected-DOM interaction test: rounds 1-8, wrong alert response then correction, boardroom, copy readiness: PASS.
+- Session reload/resume: PASS.
+- Desktop/mobile same-choice parity with reverse click order: PASS.
+- Revision invalidation of downstream stale choices: PASS.
+- Corrupted/legacy save sanitisation: PASS.
+- Double-click protection: PASS.
+- Clipboard fallback focus restoration: PASS.
+- Header/progress sticky overlap at 901/1024/1365 px: PASS.
+- Horizontal overflow at 320/360/390/430/768/900 px: 0 px.
+- 303,750 configurations evaluated; 234,885 valid; 234,885 unique config codes; 234,885 unique outcome codes; 0 collisions.
+- 24 HTML pages: 0 missing local references, 0 static duplicate IDs.
+- Service worker: 65 declared local resources, 0 missing.
+- All JavaScript syntax checks: PASS.
+- All raster/SVG assets decode/parse: PASS.
+- Group timings remain removed.
