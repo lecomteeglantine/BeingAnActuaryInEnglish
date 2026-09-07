@@ -1,0 +1,58 @@
+M1 SESSION 2 · THE ACTUARIAL MUSEUM
+PITCH CLARITY + FUNCTION AUDIT · R10
+
+OBJECTIVE CHECKED
+Students must understand exactly what to do during the group activity and must prepare ONE final team pitch of 2:00 maximum. The pitch must be structured and built progressively during the whole game, not invented at the end.
+
+R10 CORRECTIONS
+1. Pitch timing now mathematically fits the 2-minute maximum.
+- Previous rule: 30–45 words per gallery.
+- Problem: 4 x 45 words + the built-in opening/conclusion could reach about 229 words.
+- R10 rule: 30–40 words per gallery.
+- Result: four notes + the built-in 49-word opening/conclusion = about 169–209 words.
+- At ~125 words/min this remains safely below 2:00 and leaves time for pauses and speaker handovers.
+
+2. Speaking responsibilities are assigned from the start.
+3 students:
+- Head Curator: opening + Gallery I.
+- Historical Evidence Officer: Galleries II + III.
+- Actuarial Story Officer: Gallery IV + conclusion.
+
+4 students:
+- Head Curator: opening + Gallery I.
+- Historical Evidence Officer: Gallery II.
+- Actuarial Relevance Officer: Gallery III.
+- Visitor Experience Designer: Gallery IV + conclusion.
+
+3. Every gallery now tells students exactly what to do.
+- Read the four decisions.
+- Discuss every option and agree on one answer per decision.
+- Review/edit the suggested 30–40 word pitch note.
+- Check: exhibit + evidence + importance + link.
+- Identify the speaker responsible for this section.
+- Save the gallery before moving on.
+
+4. Pitch Notebook strengthened.
+- Each gallery entry shows its assigned speaker.
+- The live word/time display is labelled as the current assembled pitch, not a misleading complete projection.
+- The game shows which speaker owns the current gallery note.
+- Notes outside 30–40 words cannot be saved.
+
+5. Final deliverable remains explicit.
+- ONE team pitch.
+- 2:00 maximum TOTAL, not per student.
+- Every student speaks.
+- Galleries I–IV presented in order.
+- For each gallery: exhibit + historical evidence + significance.
+- At least one Past Perfect / Past Simple historical sequence.
+- Final conclusion on what the history shows about the origins of actuarial science.
+- Students must rehearse once using the 2:00 timer and trim the script if necessary.
+
+FUNCTION CHECKS
+- R10 storage key + R9/R8/... migration retained.
+- Legacy R9 notes of 41–45 words are safely reopened for trimming instead of being falsely treated as complete.
+- All generated pitch suggestions tested across every possible featured exhibit: 32–39 words.
+- Generated final pitch envelope: 169–209 words.
+- JavaScript syntax check: PASS.
+- No randomised scoring or choices introduced.
+- Existing deterministic 3/4-player game logic preserved.

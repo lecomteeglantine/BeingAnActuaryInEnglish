@@ -1,0 +1,9 @@
+UPLOAD R10
+1. Unzip this archive.
+2. Upload all included files/folders directly to the root of the existing GitHub repository.
+3. Keep assets/session2-museum/ and assets/session2-museum/audio/ exactly as supplied.
+4. R10 entry points:
+   - m1.html
+   - m1-day2.html
+   - m1-session2-group.html
+5. Hard-refresh after GitHub Pages deploys if an older cached version appears briefly.
