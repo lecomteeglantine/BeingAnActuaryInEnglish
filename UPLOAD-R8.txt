@@ -1,0 +1,10 @@
+UPLOAD R8
+
+1. Unzip this archive.
+2. Upload all contents directly to the ROOT of the existing GitHub repository.
+3. Replace m1.html, m1-day2.html and m1-session2-group.html.
+4. Add m1-session2-museum-r8.js and m1-session2-museum-r8.css.
+5. Keep assets/session2-museum/ exactly as provided, including audio/.
+6. Do not upload an enclosing wrapper folder.
+
+R8 entry points already reference the R8 JS/CSS files.

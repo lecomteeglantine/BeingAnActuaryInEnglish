@@ -1,0 +1,55 @@
+M1 SESSION 2 · THE ACTUARIAL MUSEUM
+MEGA FUNCTION AUDIT R8
+
+Corrections made in R8
+
+1. Audio event bug fixed
+- gallery-complete.wav is now played when Galleries I–III are actually validated.
+- final.wav remains reserved for Gallery IV / Opening Night.
+- attention.wav is used for entering the museum / starting the team mission.
+- select.wav remains for normal selection interactions.
+- timer.wav remains for the end of the 2-minute practice timer.
+- Sound controls now display an unambiguous state: “Sound: ON” / “Sound: OFF”.
+
+2. Saved-state / Final hardening
+- New R8 storage key with migration from R6 and earlier saves.
+- A Final state is now impossible unless a valid 3- or 4-player team has actually started the game.
+- A Final state is impossible unless all four galleries are genuinely complete.
+- If an old Final save contains one stale / unsaved gallery, the game resumes on the first gallery that genuinely needs revalidation.
+- Deliberate review of an earlier completed gallery is preserved when there is no stale Final state.
+
+3. Rendering hardening
+- The Final view is now explicitly hidden whenever the game has not started, even if corrupted external storage contains a contradictory finalReached flag.
+- render() defensively repairs impossible Final states in memory.
+
+4. Existing stability retained
+- 3 / 4 player parity.
+- 4 galleries × 4 decisions.
+- Deterministic decisions and scoring.
+- Maximum 32 points; 8 points in each category.
+- One unique maximum-scoring answer per decision.
+- Best-answer distribution: ABCD / ABCD / ABCD / ABCD.
+- One required 30–45 word Pitch Notebook note before each gallery can be saved.
+- Suggested notes remain within 30–45 words for every featured exhibit option.
+- Review / edit / restore / re-save behaviour retained.
+- Final pitch remains ONE team pitch, maximum 2:00 total.
+- Timer uses wall-clock time and resets correctly.
+- Local auto-save recovery retained.
+- No Math.random(), crypto.getRandomValues() or performance.now() in game logic.
+- Date.now() is used only by the practice timer.
+
+Validation performed
+- JavaScript syntax: PASS.
+- CSS parse: PASS.
+- Corrected HTML duplicate IDs: 0.
+- Local references checked against a full site tree: 0 missing.
+- 15 SVG museum illustrations: valid.
+- 7 WAV files: valid, non-empty audio.
+- 22 dynamic museum asset references: all present.
+- R6 → R8 save migration state tests: PASS.
+- Corrupted / impossible Final state test: PASS.
+- Stale Final → first incomplete gallery test: PASS.
+- 3-player / 4-player decision-state parity test: PASS.
+
+Note
+The execution environment blocks automated Chromium access to local/file URLs by administrator policy, so this audit does not claim a successful end-to-end browser automation run. Static validation and direct state-machine tests were completed instead.
