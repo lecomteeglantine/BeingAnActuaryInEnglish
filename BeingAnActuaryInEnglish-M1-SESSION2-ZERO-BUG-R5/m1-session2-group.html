@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17384c">
+  <meta name="description" content="M1 group activity: The Actuarial Museum. Curate four exhibits and prepare a two-minute team pitch about the history of actuarial science.">
+  <title>The Actuarial Museum · M1 Session 2</title>
+  <link rel="icon" href="icons/favicon.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="m1-session2-museum-r5.css">
+</head>
+<body class="museum-page">
+<a class="skip-link" href="#museumApp">Skip to the game</a>
+<header class="topbar museum-sitebar">
+  <a class="brand" href="index.html"><span aria-hidden="true" class="brand-mark">📊</span><span><strong>Actuarial English</strong></span></a>
+  <nav aria-label="Game navigation" class="main-nav">
+    <a href="m1-day2.html">← Session 2</a>
+    <a href="m1.html">All M1 sessions</a>
+  </nav>
+</header>
+
+<main id="museumApp" class="museum-shell" tabindex="-1">
+  <section class="museum-hero" aria-labelledby="museumTitle">
+    <div class="museum-hero-copy">
+      <p class="museum-kicker">M1 · SESSION 2 · GROUP ACTIVITY</p>
+      <h1 id="museumTitle">The Actuarial Museum</h1>
+      <p class="museum-tagline">Four exhibits. Two minutes. One story.</p>
+      <p class="museum-lead">Your team has been hired to curate a new museum exhibition about the history of actuarial science. Work on <strong>one device per team</strong>. In each of four galleries, agree on four decisions, then prepare one short speaking note. At the end, use those four notes for <strong>one team pitch of 2 minutes maximum in total</strong>.</p>
+      <div class="museum-badges" aria-label="Activity essentials">
+        <span>👥 3 or 4 students</span><span>🏛️ 4 galleries</span><span>🎤 2-minute team pitch</span><span id="saveBadge">💾 Local auto-save</span>
+      </div>
+      <div class="museum-hero-actions">
+        <button class="museum-btn primary" id="startSetupBtn" type="button">Enter the museum →</button>
+        <button class="museum-btn sound" id="soundToggleHero" type="button" aria-pressed="true">🔊 Sound on</button>
+      </div>
+    </div>
+    <div class="museum-hero-art"><img src="assets/session2-museum/museum-hero.svg" alt="Stylised eighteenth-century museum building labelled The Actuarial Museum."></div>
+  </section>
+
+  <section class="museum-instructions" aria-labelledby="howTitle">
+    <div>
+      <p class="museum-kicker">YOUR MISSION</p>
+      <h2 id="howTitle">Do not just collect facts. Build a story.</h2>
+    </div>
+    <ol class="museum-how-list">
+      <li><strong>Choose your team.</strong> Select 3 or 4 students. The questions and score are identical; only the roles and speaking split change.</li>
+      <li><strong>Complete each gallery.</strong> Discuss all four decisions and select exactly one answer for each.</li>
+      <li><strong>Build the pitch as you play.</strong> Before saving a gallery, review the suggested note, edit it if needed, and keep one 30–45 word note: <em>exhibit → evidence → why it matters → link to the story</em>.</li>
+      <li><strong>Save before moving on.</strong> A gallery is only validated after you click <em>Save gallery</em>. If you later change an answer or pitch note, re-save it.</li>
+      <li><strong>Final deliverable.</strong> Give <strong>ONE pitch of 2:00 maximum for the whole team</strong>, not 2 minutes per student. Every student must speak.</li>
+      <li><strong>Tell a connected story.</strong> Present Galleries I–IV in order and finish by explaining what this history tells us about the origins of actuarial science.</li>
+    </ol>
+  </section>
+
+  <section id="gameStage" class="museum-game-stage" hidden>
+    <aside class="museum-progress-panel" aria-label="Museum progress">
+      <div class="museum-progress-head">
+        <p class="museum-kicker">EXHIBITION MAP</p>
+        <strong id="progressLabel">Setup</strong>
+      </div>
+      <div id="galleryProgress" class="gallery-progress"></div>
+      <div class="museum-score-mini" aria-live="polite">
+        <span>Saved score</span><strong><span id="miniScore">0</span>/32</strong>
+      </div>
+      <button class="museum-btn subtle" id="soundToggle" type="button" aria-pressed="true">🔊 Sound on</button>
+    </aside>
+
+    <section class="museum-main-panel">
+      <div id="setupView" class="museum-view"></div>
+      <div id="galleryView" class="museum-view" hidden></div>
+      <div id="finalView" class="museum-view" hidden></div>
+    </section>
+
+    <aside class="pitch-notebook" aria-labelledby="pitchNotebookTitle">
+      <div class="notebook-head">
+        <p class="museum-kicker">LIVE PITCH BUILDER</p>
+        <h2 id="pitchNotebookTitle">Your 2-minute story</h2>
+        <p>Complete one short speaking note after each gallery. Keep it concise: you are building a spoken story, not an essay.</p>
+      </div>
+      <div id="pitchNotebookEntries" class="pitch-entries"></div>
+      <div class="pitch-meter">
+        <div><span>Projected total words</span><strong id="pitchWords">0</strong></div>
+        <div><span>Estimated time</span><strong id="pitchTime">0:00</strong></div>
+      </div>
+      <p class="pitch-hint" id="pitchHint">The projection includes a short opening and conclusion in addition to your gallery notes.</p>
+    </aside>
+  </section>
+
+  <div class="museum-status" id="museumStatus" aria-live="polite" aria-atomic="true"></div>
+</main>
+
+<footer class="site-footer museum-footer">
+  <p><strong>Actuarial English · M1 Session 2</strong></p>
+  <p class="footer-credit">Created by Mrs Lecomte and Mr Lemoine, with the help of ChatGPT</p>
+  <p class="privacy"><strong>Privacy &amp; GDPR:</strong> progress and pitch notes are stored only in this browser. <a href="privacy.html">Privacy details</a> · <a href="accessibility.html">Accessibility</a></p>
+</footer>
+
+<script src="m1-session2-museum-r5.js"></script>
+<script defer src="pwa-r39.js"></script>
+</body>
+</html>

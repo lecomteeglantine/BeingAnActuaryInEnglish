@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" role="img" aria-labelledby="t d">
+<title id="t">Gallery three: radicals, dissenters and America</title><desc id="d">Stylised vintage museum illustration for an actuarial history learning game.</desc>
+<defs><linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fbf6ea"/><stop offset="1" stop-color="#eadfc7"/></linearGradient><linearGradient id="ink" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#18364a"/><stop offset="1" stop-color="#284e67"/></linearGradient><filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="8" flood-opacity=".18"/></filter></defs>
+<rect width="100%" height="100%" rx="28" fill="url(#paper)"/>
+
+<rect x="65" y="70" width="770" height="350" rx="20" fill="#efe3c9" stroke="#284e67" stroke-width="6"/>
+<g fill="#d8c49d" stroke="#284e67" stroke-width="5"><circle cx="245" cy="200" r="72"/><circle cx="450" cy="180" r="72"/><circle cx="655" cy="205" r="72"/></g>
+<path d="M245 272c-55 12-90 55-95 100h190c-5-45-40-88-95-100zM450 252c-55 12-90 55-95 100h190c-5-45-40-88-95-100zM655 277c-55 12-90 55-95 100h190c-5-45-40-88-95-100z" fill="#284e67" opacity=".92"/>
+<path d="M310 130c45-35 80-35 115-10M515 125c45-28 80-18 110 15" fill="none" stroke="#6f3141" stroke-width="10" stroke-linecap="round"/><path d="M420 112l18 4-10 16M620 135l18 4-10 16" fill="none" stroke="#6f3141" stroke-width="6"/>
+<text x="450" y="470" text-anchor="middle" font-family="Georgia,serif" font-size="30" fill="#18364a">Gallery III · Radicals, Dissenters &amp; America</text>
+</svg>

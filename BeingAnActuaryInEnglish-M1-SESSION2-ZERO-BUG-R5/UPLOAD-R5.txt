@@ -1,0 +1,10 @@
+R5 upload instructions
+
+1. Extract the ZIP.
+2. Upload EVERYTHING inside it to the ROOT of BeingAnActuaryInEnglish.
+3. Preserve the folder path: assets/session2-museum/
+4. Replace existing m1.html, m1-day2.html and m1-session2-group.html.
+5. Add m1-session2-museum-r5.js and m1-session2-museum-r5.css.
+6. Commit the changes and wait for GitHub Pages deployment.
+
+There is NO enclosing folder in the ZIP.

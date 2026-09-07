@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" role="img" aria-labelledby="t d">
+<title id="t">Gallery one: the birth of the profession</title><desc id="d">Stylised vintage museum illustration for an actuarial history learning game.</desc>
+<defs><linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fbf6ea"/><stop offset="1" stop-color="#eadfc7"/></linearGradient><linearGradient id="ink" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#18364a"/><stop offset="1" stop-color="#284e67"/></linearGradient><filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="8" flood-opacity=".18"/></filter></defs>
+<rect width="100%" height="100%" rx="28" fill="url(#paper)"/>
+
+<rect x="70" y="80" width="760" height="330" rx="18" fill="#efe3c9" stroke="#284e67" stroke-width="6"/>
+<rect x="125" y="125" width="230" height="220" rx="8" fill="#fffaf0" stroke="#7c6840" stroke-width="5" filter="url(#shadow)"/>
+<path d="M165 165h150M165 195h130M165 225h145M165 255h110" stroke="#7c6840" stroke-width="8" stroke-linecap="round" opacity=".65"/>
+<circle cx="295" cy="305" r="28" fill="#6f3141"/><path d="M295 286l10 18-10 20-10-20z" fill="#eadfc7"/>
+<rect x="435" y="135" width="250" height="185" rx="10" fill="#284e67"/><text x="560" y="215" text-anchor="middle" font-family="Georgia,serif" font-size="30" fill="#fbf6ea">ACTUARY</text><text x="560" y="255" text-anchor="middle" font-family="Georgia,serif" font-size="19" fill="#d9c18d">TITLE → PROFESSION</text>
+<path d="M380 335c40-50 85-70 135-60" fill="none" stroke="#b69b62" stroke-width="14" stroke-linecap="round"/>
+<path d="M510 269l18 3-10 16" fill="none" stroke="#b69b62" stroke-width="8"/>
+<text x="450" y="465" text-anchor="middle" font-family="Georgia,serif" font-size="32" fill="#18364a">Gallery I · The Birth of a Profession</text>
+</svg>

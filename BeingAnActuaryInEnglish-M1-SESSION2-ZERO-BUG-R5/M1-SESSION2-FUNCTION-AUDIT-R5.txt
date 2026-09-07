@@ -1,0 +1,80 @@
+BeingAnActuaryInEnglish · M1 Session 2 · The Actuarial Museum
+FUNCTIONAL AUDIT R5 · 2026-09-07
+
+SCOPE
+- m1.html Session 2 entry
+- m1-day2.html
+- The Actuarial Museum group game
+- Session 2 museum JS/CSS and 15 SVG illustrations
+- No changes to M2 or other games.
+
+FUNCTIONAL BUGS FIXED IN R5
+1. Anti-double-click lock was global in R4.
+   - A legitimate fast sequence such as Enter museum -> choose 3/4 -> Start Gallery I could have the Start click silently ignored.
+   - Review -> Save could be ignored for the same reason.
+   FIX: action-specific locks. Repeated activation of the same action is blocked, but different consecutive actions never block one another.
+
+2. Practice timer leaked across a restart/review cycle.
+   - Example: practise for 20 seconds, restart museum, complete a new game: the next Final could inherit 1:40 instead of 2:00.
+   FIX: timer state resets silently whenever the team leaves Final for review and whenever the museum is restarted.
+
+3. Rapid double-click on Start/Pause timer could toggle twice and appear not to start.
+   FIX: dedicated timer-action debounce.
+
+4. Rapid double-click on sound controls could toggle twice and return to the original state.
+   FIX: dedicated sound-control debounce.
+
+5. Auto-save recovery bug.
+   - R4 permanently stopped attempting localStorage writes when storage was unavailable at initialisation.
+   FIX: every save retries storage; if storage becomes available again, the badge returns to Local auto-save automatically.
+
+6. Loss-risk when browser storage is unavailable.
+   FIX: browser navigation/reload now triggers the standard unsaved-work warning while a game is in progress and auto-save is unavailable.
+
+7. Small-screen horizontal overflow risk from default <figure> margins in the gallery object strip.
+   FIX: object figures now explicitly use margin:0 and min-width:0. Tested at 320, 360, 560, 768, 1024 and 1440 px.
+
+8. Score wording was ambiguous.
+   - The side score intentionally includes only explicitly saved galleries so students cannot probe answers before validating them.
+   FIX: label changed from Current score to Saved score.
+
+9. Deployment/cache hardening.
+   - Session 2 now loads versioned R5 JS/CSS filenames.
+   - M1 -> Session 2 and Session 2 -> game links include an R5 query marker to reduce stale-cache navigation after GitHub uploads.
+
+10. Final pitch live guidance strengthened.
+   - Final word counter now shows the 160-210 word target.
+   - Long scripts are flagged consistently with the speaking-time warning.
+
+REGRESSION TESTS PASSED
+- Fast setup sequence with no artificial delay: 4 players -> Gallery I opens.
+- 3-player and 4-player modes.
+- Four galleries, four decisions per gallery.
+- Save immediately after the fourth decision.
+- Same decisions -> deterministic result.
+- 16 best answers -> 32/32.
+- Review -> immediate Save works.
+- Custom final pitch survives a review with no content change.
+- Changing an old answer invalidates that gallery; restoring the exact saved answer restores validation.
+- 29-word Pitch Notebook note: Save blocked.
+- 46-word Pitch Notebook note: Save blocked.
+- Suggested notes: all within 30-45 words.
+- Restart after partially used timer -> new Final timer = 2:00.
+- Rapid double-click timer Start -> timer keeps running once, not start+pause.
+- Rapid double-click sound toggle -> one state change only.
+- Save/reload after two galleries -> resumes at Gallery III.
+- Reload with one reviewed/edited gallery -> resumes at first incomplete gallery.
+- Corrupted stored state -> safe reset, no JS crash.
+- Storage initially blocked then recovered -> auto-save becomes writable again.
+- 320/360/560/768/1024/1440 px gallery view -> no horizontal overflow in the R5 museum CSS test.
+- No JavaScript runtime errors in automated interaction tests.
+- JavaScript syntax check passed.
+- CSS brace/parse sanity passed.
+- 15/15 SVG illustrations parse successfully.
+- No duplicate static HTML IDs.
+- No Math.random().
+- Exactly 16 score-2 answers, one maximum-scoring option per decision.
+- Four scoring categories remain balanced at a maximum of 8 points each.
+
+UPLOAD
+Upload the contents of the ZIP to the ROOT of the GitHub repository, preserving the assets/session2-museum/ folder. Replace m1.html, m1-day2.html and m1-session2-group.html. Add m1-session2-museum-r5.js and m1-session2-museum-r5.css. Old R4 JS/CSS files may remain in the repository; R5 no longer references them.
