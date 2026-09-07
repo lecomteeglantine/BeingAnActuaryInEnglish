@@ -1,0 +1,79 @@
+BeingAnActuaryInEnglish · M1 Session 2 · The Actuarial Museum
+FUNCTIONAL + AUDIO AUDIT R6 · 2026-09-07
+
+SCOPE
+- m1.html Session 2 entry
+- m1-day2.html
+- The Actuarial Museum group game
+- Session 2 JS/CSS
+- 15 SVG museum illustrations
+- 7 local WAV sound effects
+- No changes to M2 or unrelated activities.
+
+WHY R6
+R5 displayed “Sound on” but relied on very small WebAudio tones. On normal laptop/phone speakers these could be effectively inaudible, so the control did not reliably match what students experienced.
+
+AUDIO FIXES
+1. Added real local WAV sound assets:
+   - sound-on.wav: immediate test/welcome chime
+   - select.wav: answer/interaction click
+   - save.wav: gallery save confirmation
+   - gallery-complete.wav: gallery/start transition
+   - final.wav: opening-night/final flourish
+   - timer.wav: 2-minute timer completion
+   - attention.wav: reserved attention cue
+2. “Sound on” now controls both SFX and the optional curator voice.
+3. Switching Sound on plays an immediate audible test chime.
+4. Added visible “Test sound” buttons in the hero and in the game sidebar.
+5. If file playback fails, the game falls back to louder WebAudio tones instead of failing silently.
+6. Sound off immediately stops active SFX and cancels speech synthesis.
+7. Audio objects are cleaned up after playback and on page exit to avoid leaks/overlap.
+8. The student instructions explicitly explain how to test sound before starting.
+9. Session 2 page now states that the museum contains audible SFX + optional British-English curator voice.
+
+DEPLOYMENT / STATE HARDENING
+- New versioned files: m1-session2-museum-r6.js / r6.css.
+- M1 -> Session 2 and Session 2 -> game links use ?v=r6 cache markers.
+- New storage key r6 with migration from r5/r4/r3/r2/r1.
+- Existing R5 progress, team size, pitch notes, saved signatures and sound preference are preserved when valid.
+
+FUNCTIONAL REGRESSION CHECKS
+- 3-player and 4-player modes remain identical for decisions/scoring.
+- 4 galleries x 4 decisions = 16 decisions.
+- Exactly one maximum-scoring option per decision.
+- Maximum score = 32/32.
+- Four categories remain balanced at 8/8 maximum each.
+- Best-answer pattern remains ABCD / ABCD / ABCD / ABCD.
+- No Math.random() or random-device branching.
+- 30–45 word Pitch Notebook requirement remains enforced.
+- Final remains inaccessible until all four galleries are genuinely saved and signatures match.
+- Review/edit/restore logic unchanged from R5 stability fix.
+- Final pitch target remains 160–210 words and 2:00 maximum for the whole team.
+- Timer restart/review reset logic retained.
+- Action-specific anti-double-click locks retained.
+- localStorage failure/recovery handling retained.
+- no duplicate static HTML IDs.
+- R6 JS syntax check passed.
+- R6 CSS parse check passed.
+- 15/15 SVG illustrations parse successfully.
+- 7/7 WAV files validated as mono PCM WAV, 22.05 kHz, non-empty.
+- All 22 dynamic Session 2 asset references exist (15 SVG + 7 WAV).
+
+AUDIO LEVEL SANITY
+Generated WAV files use peaks up to ~0.85 full-scale with clearly higher RMS levels than the old WebAudio beeps. Per-effect browser volume is capped between 0.52 and 0.76 to remain audible without being aggressive.
+
+LIMITATION OF THE TEST ENVIRONMENT
+The container Chromium instance is blocked/hangs under the environment’s browser policy, so no claim is made that a full interactive headless-Chromium run completed in this pass. Static, state/invariant, asset, syntax and media-integrity checks all passed.
+
+UPLOAD
+Upload the CONTENTS of this ZIP directly to the ROOT of the GitHub repository, preserving assets/session2-museum/ and its audio/ subfolder.
+Replace:
+- m1.html
+- m1-day2.html
+- m1-session2-group.html
+Add/replace:
+- m1-session2-museum-r6.js
+- m1-session2-museum-r6.css
+- assets/session2-museum/audio/*.wav
+The 15 existing Session 2 SVG files are included so the package is self-contained for this activity.
+Old r5 JS/CSS files may remain in the repository; R6 no longer references them.

@@ -10,7 +10,7 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="m1-session2-museum-r4.css">
+  <link rel="stylesheet" href="m1-session2-museum-r6.css">
 </head>
 <body class="museum-page">
 <a class="skip-link" href="#museumApp">Skip to the game</a>
@@ -30,11 +30,12 @@
       <p class="museum-tagline">Four exhibits. Two minutes. One story.</p>
       <p class="museum-lead">Your team has been hired to curate a new museum exhibition about the history of actuarial science. Work on <strong>one device per team</strong>. In each of four galleries, agree on four decisions, then prepare one short speaking note. At the end, use those four notes for <strong>one team pitch of 2 minutes maximum in total</strong>.</p>
       <div class="museum-badges" aria-label="Activity essentials">
-        <span>👥 3 or 4 students</span><span>🏛️ 4 galleries</span><span>🎤 2-minute team pitch</span><span id="saveBadge">💾 Local auto-save</span>
+        <span>👥 3 or 4 students</span><span>🏛️ 4 galleries</span><span>🎤 2-minute team pitch</span><span>🔔 Audible museum SFX + curator voice</span><span id="saveBadge">💾 Local auto-save</span>
       </div>
       <div class="museum-hero-actions">
         <button class="museum-btn primary" id="startSetupBtn" type="button">Enter the museum →</button>
         <button class="museum-btn sound" id="soundToggleHero" type="button" aria-pressed="true">🔊 Sound on</button>
+        <button class="museum-btn subtle" id="soundTestHero" type="button">🔔 Test sound</button>
       </div>
     </div>
     <div class="museum-hero-art"><img src="assets/session2-museum/museum-hero.svg" alt="Stylised eighteenth-century museum building labelled The Actuarial Museum."></div>
@@ -47,6 +48,7 @@
     </div>
     <ol class="museum-how-list">
       <li><strong>Choose your team.</strong> Select 3 or 4 students. The questions and score are identical; only the roles and speaking split change.</li>
+      <li><strong>Check the audio.</strong> If <em>Sound on</em> is displayed, click <em>Test sound</em>: you should hear a short museum chime. Sound controls the game effects and the optional curator voice.</li>
       <li><strong>Complete each gallery.</strong> Discuss all four decisions and select exactly one answer for each.</li>
       <li><strong>Build the pitch as you play.</strong> Before saving a gallery, review the suggested note, edit it if needed, and keep one 30–45 word note: <em>exhibit → evidence → why it matters → link to the story</em>.</li>
       <li><strong>Save before moving on.</strong> A gallery is only validated after you click <em>Save gallery</em>. If you later change an answer or pitch note, re-save it.</li>
@@ -63,9 +65,10 @@
       </div>
       <div id="galleryProgress" class="gallery-progress"></div>
       <div class="museum-score-mini" aria-live="polite">
-        <span>Current score</span><strong><span id="miniScore">0</span>/32</strong>
+        <span>Saved score</span><strong><span id="miniScore">0</span>/32</strong>
       </div>
       <button class="museum-btn subtle" id="soundToggle" type="button" aria-pressed="true">🔊 Sound on</button>
+      <button class="museum-btn subtle" id="soundTest" type="button">🔔 Test sound</button>
     </aside>
 
     <section class="museum-main-panel">
@@ -98,7 +101,7 @@
   <p class="privacy"><strong>Privacy &amp; GDPR:</strong> progress and pitch notes are stored only in this browser. <a href="privacy.html">Privacy details</a> · <a href="accessibility.html">Accessibility</a></p>
 </footer>
 
-<script src="m1-session2-museum-r4.js"></script>
+<script src="m1-session2-museum-r6.js"></script>
 <script defer src="pwa-r39.js"></script>
 </body>
 </html>

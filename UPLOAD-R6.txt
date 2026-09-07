@@ -1,0 +1,12 @@
+R6 UPLOAD INSTRUCTIONS
+
+1. Unzip this archive.
+2. Upload ALL contents directly to the ROOT of the BeingAnActuaryInEnglish GitHub repository.
+3. Keep the folder structure exactly as supplied, especially:
+   assets/session2-museum/
+   assets/session2-museum/audio/
+4. Replace m1.html, m1-day2.html and m1-session2-group.html.
+5. Add m1-session2-museum-r6.js and m1-session2-museum-r6.css.
+6. Add all WAV files in assets/session2-museum/audio/.
+
+After GitHub Pages updates, open Session 2 and click “Test sound”. You should hear a short museum chime immediately while “Sound on” is displayed.
