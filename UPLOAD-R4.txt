@@ -1,0 +1,7 @@
+UPLOAD R4
+
+1. Open the root of the BeingAnActuaryInEnglish GitHub repository.
+2. Upload every item from this ZIP, preserving assets/session2-museum/.
+3. Replace m1.html, m1-day2.html and m1-session2-group.html when prompted.
+4. Add m1-session2-museum-r4.js and m1-session2-museum-r4.css.
+5. Old r1/r2/r3 museum JS/CSS files may remain; the HTML now loads R4 only.

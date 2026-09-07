@@ -1,0 +1,18 @@
+M1 SESSION 2 · THE ACTUARIAL MUSEUM · R4 ZERO-BUG AUDIT
+
+R4 fixes and hardens:
+- Enforces the stated 30–45 word Pitch Notebook requirement before Save gallery is enabled.
+- Migrates R1/R2/R3 saves; legacy completed galleries with out-of-range pitch notes reopen for revalidation.
+- Keeps a gallery complete only when answers + pitch note exactly match the last saved signature.
+- Any changed answer or note invalidates that gallery until restored or re-saved.
+- Saving always routes to the first genuinely incomplete gallery; no temporary progression gaps.
+- Final screen remains impossible until all four galleries are genuinely valid.
+- localStorage write failures now change the visible save badge to Auto-save unavailable.
+- 3/4-player roles do not alter questions, answer keys or scoring.
+- Deterministic score: 32 maximum, 8 per category, no Math.random().
+- Double-click navigation lock retained.
+- Timer uses a real deadline to avoid background-tab drift.
+- Audio/TTS failures remain non-blocking.
+- Mobile/reduced-motion/overflow protections retained.
+
+UPLOAD: copy all files and the assets/session2-museum folder to the repository root, preserving the assets path.
