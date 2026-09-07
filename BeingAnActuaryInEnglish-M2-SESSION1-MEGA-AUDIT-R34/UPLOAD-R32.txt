@@ -1,0 +1,17 @@
+M2 SESSION 1 — GLOBAL ACTUARIAL CRISIS ROOM — R32
+
+UPLOAD
+1. Extract the ZIP.
+2. Upload/replace ALL files and folders at the ROOT of the GitHub repository.
+3. Do not upload the ZIP itself and do not add a wrapper folder.
+
+NEW/UPDATED FILES
+- m2.html
+- m2-day1.html
+- m2-session1-group.html
+- m2-session1-group-r32.css
+- m2-session1-group-r32.js
+- service-worker.js
+- M2-SESSION1-GROUP-R32.txt
+
+The existing realistic WebP illustrations are reused from the site package.

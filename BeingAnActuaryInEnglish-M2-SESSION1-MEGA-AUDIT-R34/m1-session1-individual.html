@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- R22 combined functionality audit: timings removed -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#102a43">
+<meta name="description" content="Actuary for a Day: a story-driven individual M1 actuarial English game.">
+<title>Actuary for a Day · M1 Session 1</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="m1-session1-individual-r22.css">
+</head>
+<body class="northstar-page">
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="topbar">
+  <a class="brand" href="index.html"><span aria-hidden="true" class="brand-mark">📊</span><span><strong>Actuarial English</strong></span></a>
+  <nav aria-label="Main navigation" class="main-nav"><a href="index.html">Home</a><a href="dictionary.html">Dictionary</a><a href="m1.html" aria-current="page">M1</a><a href="m2.html">M2</a><a href="grammar.html">Grammar</a><a href="pronunciation.html">Pronunciation</a><a href="games.html">Games</a></nav>
+</header>
+<main id="main" class="northstar-main">
+  <section class="northstar-hero">
+    <img src="assets/session1/realistic/hero-office.png" alt="A new recruit entering a modern actuarial consultancy with analytical dashboards.">
+    <div class="hero-shade"></div>
+    <div class="hero-copy">
+      <span class="eyebrow">M1 · SESSION 1 · INDIVIDUAL GAME</span>
+      <h1>Actuary for a Day</h1>
+      <p>First morning at <strong>Northstar Actuarial</strong>. Clear seven departments, earn reputation and reach the boardroom ready for the client presentation.</p>
+      <div class="hero-actions">
+        <button id="soundToggle" class="glass-btn" type="button" aria-pressed="true">🔊 Sound on</button>
+        <button id="resetGame" class="glass-btn" type="button">↺ Restart</button>
+        <a class="glass-btn" href="m1-day1.html">← Session 1</a>
+      </div>
+    </div>
+    <div class="badge-card" aria-label="Northstar player badge">
+      <span class="badge-small">NORTHSTAR ID</span>
+      <strong>NEW RECRUIT</strong>
+      <span id="badgeLevel">Visitor access</span>
+      <div class="badge-meter"><span id="badgeMeter"></span></div>
+      <small><span id="repValue">0</span>/100 reputation</small>
+    </div>
+  </section>
+
+  <section class="ops-bar" aria-label="Current game status">
+    <div><span>ROLE</span><strong>Junior actuary</strong></div>
+    <div><span>LOCATION</span><strong id="officeLocation">Reception</strong></div>
+    <div><span>MISSION</span><strong><span id="missionNumber">1</span>/7</strong></div>
+    <div><span>STATUS</span><strong id="statusText">Badge locked</strong></div>
+  </section>
+
+  <div class="game-layout">
+    <aside class="mission-map" aria-label="Northstar office map">
+      <div class="map-title"><span>Northstar</span><strong>First-morning route</strong></div>
+      <ol id="missionMap">
+        <li data-step="1" class="active"><button type="button"><span>01</span><div><strong>Brief Desk</strong><small>Repair the client file</small></div></button></li>
+        <li data-step="2"><button type="button"><span>02</span><div><strong>Access Gate</strong><small>Pronunciation clearance</small></div></button></li>
+        <li data-step="3"><button type="button"><span>03</span><div><strong>Case Room</strong><small>Triage three clients</small></div></button></li>
+        <li data-step="4"><button type="button"><span>04</span><div><strong>Risk Lab</strong><small>Build the model tray</small></div></button></li>
+        <li data-step="5"><button type="button"><span>05</span><div><strong>Team Inbox</strong><small>Protect the client pack</small></div></button></li>
+        <li data-step="6"><button type="button"><span>06</span><div><strong>Client Meeting</strong><small>Keep the meeting on track</small></div></button></li>
+        <li data-step="7"><button type="button"><span>07</span><div><strong>Boardroom</strong><small>Rescue the final slide</small></div></button></li>
+      </ol>
+      <div class="map-tip"><strong>How this works</strong><p>Complete a mission to unlock the next room. Your progress stays in this browser tab until you press Restart.</p></div>
+    </aside>
+
+    <section class="game-stage" aria-live="polite">
+      <div id="stageMount"></div>
+    </section>
+  </div>
+</main>
+
+<div id="missionOverlay" class="mission-overlay" hidden aria-hidden="true">
+  <div class="clear-card" role="dialog" aria-modal="true" aria-labelledby="clearTitle">
+    <span class="clear-kicker">MISSION CLEARED</span>
+    <h2 id="clearTitle">Nice work.</h2>
+    <p id="clearText"></p>
+    <div class="clear-reward"><span>REPUTATION</span><strong id="clearReward">+0</strong></div>
+    <button id="continueMission" type="button" class="primary-link">Continue →</button>
+  </div>
+</div>
+
+<footer class="site-footer"><p><strong>Actuarial English</strong></p><p class="footer-credit">Created by Mrs Lecomte and Mr Lemoine, with the help of Chat GPT</p><p class="privacy"><strong>Privacy &amp; GDPR:</strong> no student account, analytics, advertising or remote database. Learning-tool data is stored locally in this browser. <a href="privacy.html">Privacy details</a> · <a href="accessibility.html">Accessibility</a></p></footer>
+<script src="shared.js"></script>
+<script src="m1-session1-individual-r22.js"></script>
+<script defer src="pwa.js"></script>
+</body>
+</html>
