@@ -8,8 +8,9 @@
   <title>The Actuarial Museum · M1 Session 2</title>
   <link rel="icon" href="icons/favicon.png">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="m1-session2-museum-r1.css">
+  <link rel="stylesheet" href="m1-session2-museum-r3.css">
 </head>
 <body class="museum-page">
 <a class="skip-link" href="#museumApp">Skip to the game</a>
@@ -27,9 +28,9 @@
       <p class="museum-kicker">M1 · SESSION 2 · GROUP ACTIVITY</p>
       <h1 id="museumTitle">The Actuarial Museum</h1>
       <p class="museum-tagline">Four exhibits. Two minutes. One story.</p>
-      <p class="museum-lead">Your team has been hired to curate a new museum exhibition about the history of actuarial science. You only have room for four major exhibits. Choose carefully, justify every decision, and build your final two-minute pitch as you go.</p>
+      <p class="museum-lead">Your team has been hired to curate a new museum exhibition about the history of actuarial science. Work on <strong>one device per team</strong>. In each of four galleries, agree on four decisions, then prepare one short speaking note. At the end, use those four notes for <strong>one team pitch of 2 minutes maximum in total</strong>.</p>
       <div class="museum-badges" aria-label="Activity essentials">
-        <span>👥 3 or 4 students</span><span>🏛️ 4 galleries</span><span>🎤 2-minute team pitch</span><span>💾 Auto-save</span>
+        <span>👥 3 or 4 students</span><span>🏛️ 4 galleries</span><span>🎤 2-minute team pitch</span><span id="saveBadge">💾 Local auto-save</span>
       </div>
       <div class="museum-hero-actions">
         <button class="museum-btn primary" id="startSetupBtn" type="button">Enter the museum →</button>
@@ -45,10 +46,12 @@
       <h2 id="howTitle">Do not just collect facts. Build a story.</h2>
     </div>
     <ol class="museum-how-list">
-      <li><strong>Debate.</strong> Read all options aloud and agree on one answer as a team.</li>
-      <li><strong>Curate.</strong> Every choice shapes your exhibition and your score.</li>
-      <li><strong>Prepare your pitch.</strong> After each gallery, keep or edit the suggested sentence in your Pitch Notebook.</li>
-      <li><strong>Present.</strong> At the end, every student speaks. The whole team has a maximum of two minutes.</li>
+      <li><strong>Choose your team.</strong> Select 3 or 4 students. The questions and score are identical; only the roles and speaking split change.</li>
+      <li><strong>Complete each gallery.</strong> Discuss all four decisions and select exactly one answer for each.</li>
+      <li><strong>Build the pitch as you play.</strong> Before saving a gallery, write or edit one 30–45 word note: <em>exhibit → evidence → why it matters → link to the story</em>.</li>
+      <li><strong>Save before moving on.</strong> A gallery is only validated after you click <em>Save gallery</em>. If you later change an answer or pitch note, re-save it.</li>
+      <li><strong>Final deliverable.</strong> Give <strong>ONE pitch of 2:00 maximum for the whole team</strong>, not 2 minutes per student. Every student must speak.</li>
+      <li><strong>Tell a connected story.</strong> Present Galleries I–IV in order and finish by explaining what this history tells us about the origins of actuarial science.</li>
     </ol>
   </section>
 
@@ -79,10 +82,10 @@
       </div>
       <div id="pitchNotebookEntries" class="pitch-entries"></div>
       <div class="pitch-meter">
-        <div><span>Draft words</span><strong id="pitchWords">0</strong></div>
+        <div><span>Projected total words</span><strong id="pitchWords">0</strong></div>
         <div><span>Estimated time</span><strong id="pitchTime">0:00</strong></div>
       </div>
-      <p class="pitch-hint" id="pitchHint">Aim for roughly 150–210 words in total.</p>
+      <p class="pitch-hint" id="pitchHint">The projection includes a short opening and conclusion in addition to your gallery notes.</p>
     </aside>
   </section>
 
@@ -91,9 +94,11 @@
 
 <footer class="site-footer museum-footer">
   <p><strong>Actuarial English · M1 Session 2</strong></p>
-  <p class="footer-credit">Created by Mrs Lecomte and Mr Lemoine, with the help of Chat GPT</p>
+  <p class="footer-credit">Created by Mrs Lecomte and Mr Lemoine, with the help of ChatGPT</p>
+  <p class="privacy"><strong>Privacy &amp; GDPR:</strong> progress and pitch notes are stored only in this browser. <a href="privacy.html">Privacy details</a> · <a href="accessibility.html">Accessibility</a></p>
 </footer>
 
-<script src="m1-session2-museum-r1.js"></script>
+<script src="m1-session2-museum-r3.js"></script>
+<script defer src="pwa-r39.js"></script>
 </body>
 </html>

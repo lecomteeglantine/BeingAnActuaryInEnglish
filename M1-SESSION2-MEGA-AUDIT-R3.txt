@@ -1,0 +1,47 @@
+M1 SESSION 2 — THE ACTUARIAL MUSEUM — MEGA AUDIT R3
+
+Scope: m1-day2.html + The Actuarial Museum group game only.
+
+FUNCTIONAL HARDENING
+- New R3 storage key with migration from R2 and R1.
+- A completed gallery is now valid only when both its four decisions AND its Pitch Notebook note still match the last explicitly saved version.
+- Editing a saved Pitch Notebook note now invalidates that gallery immediately and removes its score from the saved-score display until revalidated.
+- Restoring the exact previously saved answer/note automatically restores validation.
+- Stale R2 states are repaired on load; an old Final state with an unsaved note returns to the first truly incomplete gallery.
+- Final cannot display unless all four galleries are genuinely validated.
+- Review-from-Final intent is preserved across repaired/reloaded states, so saving the missing gallery returns the team to Opening Night.
+- Double-click navigation lock retained.
+- LocalStorage access is guarded; if storage is blocked, the game stays playable and clearly reports that auto-save is unavailable.
+- Timer uses an absolute deadline to avoid background-tab drift.
+- Speech synthesis and sound failures remain non-blocking.
+
+INSTRUCTION / PITCH CLARITY
+- Explicit one-device-per-team rule.
+- Explicit five-step workflow in every gallery.
+- Explicit 30–45 word Pitch Notebook target in every gallery.
+- Explicit speaking-note structure: exhibit + evidence + significance + link.
+- Explicit requirement to click Save gallery before moving on.
+- Explicit Final deliverable: ONE team pitch, maximum 2:00 TOTAL, not 2 minutes per student.
+- Every student must speak.
+- Final pitch must: open the exhibition; present Galleries I–IV in order; give evidence and significance; use one historical sequence; conclude with what visitors should remember.
+- Whole-team target: about 160–210 words, leaving time for pauses and speaker handovers.
+- 3-player and 4-player speaking splits clarified.
+- Pitch Notebook meter renamed to “Projected total words” because it includes an allowance for the opening and conclusion.
+
+CONTENT / DETERMINISM CHECKS
+- 3-player roles: 3; 4-player roles: 4.
+- Same historical decisions and scoring for 3 or 4 students.
+- 4 galleries × 4 decisions = 16 decisions.
+- Unique best-supported answer for every decision.
+- Best-answer distribution: ABCD / ABCD / ABCD / ABCD.
+- Maximum score: 32/32.
+- Category maxima: Historical evidence 8; Actuarial connection 8; Curatorial strategy 8; Storytelling language 8.
+- No Math.random() or other random decision generation.
+- Suggested Pitch Notebook notes: 33–44 words across all featured-option branches.
+
+ASSETS / DISPLAY
+- 15 Session 2 SVG illustrations included and parsed successfully.
+- No duplicate static HTML IDs in the corrected Session 2 pages.
+- JavaScript syntax check passed.
+- CSS braces and responsive overflow safeguards checked.
+- Mobile breakpoints, min-width:0, max-width:100%, overflow-wrap and reduced-motion rules retained.
