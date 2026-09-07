@@ -287,3 +287,7 @@ R28 GROUP MEGA FUNCTION AUDIT
 - All JavaScript syntax checks: PASS.
 - All raster/SVG assets decode/parse: PASS.
 - Group timings remain removed.
+
+
+R33 M2 SESSION 1 AUDIT
+Use m2-session1-group-r33.js and m2-session1-group-r33.css. The R32 activity assets were superseded and removed from this package.

@@ -9,3 +9,7 @@ UPLOAD INSTRUCTIONS — R17 INDIVIDUAL USABILITY AUDIT
    - service-worker.js
 4. Keep all assets/data/icons folders at repository root.
 5. Do not put the ZIP itself or an extra containing folder inside the repository.
+
+
+R33 M2 SESSION 1 AUDIT
+Use m2-session1-group-r33.js and m2-session1-group-r33.css. The R32 activity assets were superseded and removed from this package.

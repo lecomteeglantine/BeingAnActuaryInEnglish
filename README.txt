@@ -53,3 +53,7 @@ GROUP ACTIVITY — THE ACTUARIAL FIRM DRAFT
 
 GROUP ACTIVITY AUDIT FIX · 2026-09-06
 Upload the complete contents of this ZIP to the repository root. The group activity now uses root-level group-*.jpg files; do not place them in a subfolder. The service worker version has been bumped so the corrected HTML/images replace stale cached copies.
+
+
+R33 M2 SESSION 1 AUDIT
+Use m2-session1-group-r33.js and m2-session1-group-r33.css. The R32 activity assets were superseded and removed from this package.
