@@ -1,0 +1,34 @@
+M1 SESSION 2 · THE ACTUARIAL MUSEUM
+MEGA AUDIT R7 · visual upgrade + function check
+
+Main corrections in R7
+1) Stronger visual impact from the very beginning
+- Added a new illustrated preview section on m1-day2.html with the four galleries visible immediately.
+- Added a museum artefact strip and a clearer “Final speaking task” box on m1-day2.html.
+- Added a new illustrated preview block on m1-session2-group.html before the instructions.
+- Added a richer illustrated setup screen inside the game: students now see the four galleries and the pitch structure before choosing 3 or 4 players.
+
+2) Clarity improvements
+- Kept the message extremely explicit that the final deliverable is ONE team pitch of 2:00 maximum in total, not 2 minutes per student.
+- Kept the pitch-building structure visible from the start: exhibit → evidence → significance → link.
+- Reinforced the link between the four galleries and the final speaking task.
+
+3) Functional audit / fixes
+- Updated page links from R6 to R7 to prevent stale references.
+- Kept the R6 audio layer and test-sound behaviour.
+- Fixed a CSS selector inconsistency in the mobile sound-control rule.
+- Verified no duplicate HTML ids in the corrected files.
+- Verified JS syntax for m1-session2-museum-r7.js.
+- Verified the corrected files reference the expected local museum assets.
+- Kept the deterministic scoring, notebook logic, save gating, restart, review, and final timer logic.
+
+Files included in this correction ZIP
+- m1.html
+- m1-day2.html
+- m1-session2-group.html
+- m1-session2-museum-r7.js
+- m1-session2-museum-r7.css
+- assets/session2-museum/*
+
+Upload note
+Upload the ZIP contents to the root of the existing GitHub site. Do not keep a wrapper folder.

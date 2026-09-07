@@ -1,0 +1,10 @@
+UPLOAD INSTRUCTIONS · R7
+
+1) Unzip this archive.
+2) Upload all files and folders directly to the root of the existing GitHub project.
+3) Keep the folder structure, especially assets/session2-museum/ and assets/session2-museum/audio/.
+4) The key entry points now use R7 references:
+   - m1.html
+   - m1-day2.html
+   - m1-session2-group.html
+5) After upload, hard-refresh the page if GitHub Pages briefly shows an older cached version.
