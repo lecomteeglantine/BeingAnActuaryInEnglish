@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17384c">
+  <meta name="description" content="M1 group activity: The Actuarial Museum. Curate four exhibits and prepare a two-minute team pitch about the history of actuarial science.">
+  <title>The Actuarial Museum · M1 Session 2</title>
+  <link rel="icon" href="icons/favicon.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="m1-session2-museum-r1.css">
+</head>
+<body class="museum-page">
+<a class="skip-link" href="#museumApp">Skip to the game</a>
+<header class="topbar museum-sitebar">
+  <a class="brand" href="index.html"><span aria-hidden="true" class="brand-mark">📊</span><span><strong>Actuarial English</strong></span></a>
+  <nav aria-label="Game navigation" class="main-nav">
+    <a href="m1-day2.html">← Session 2</a>
+    <a href="m1.html">All M1 sessions</a>
+  </nav>
+</header>
+
+<main id="museumApp" class="museum-shell" tabindex="-1">
+  <section class="museum-hero" aria-labelledby="museumTitle">
+    <div class="museum-hero-copy">
+      <p class="museum-kicker">M1 · SESSION 2 · GROUP ACTIVITY</p>
+      <h1 id="museumTitle">The Actuarial Museum</h1>
+      <p class="museum-tagline">Four exhibits. Two minutes. One story.</p>
+      <p class="museum-lead">Your team has been hired to curate a new museum exhibition about the history of actuarial science. You only have room for four major exhibits. Choose carefully, justify every decision, and build your final two-minute pitch as you go.</p>
+      <div class="museum-badges" aria-label="Activity essentials">
+        <span>👥 3 or 4 students</span><span>🏛️ 4 galleries</span><span>🎤 2-minute team pitch</span><span>💾 Auto-save</span>
+      </div>
+      <div class="museum-hero-actions">
+        <button class="museum-btn primary" id="startSetupBtn" type="button">Enter the museum →</button>
+        <button class="museum-btn sound" id="soundToggleHero" type="button" aria-pressed="true">🔊 Sound on</button>
+      </div>
+    </div>
+    <div class="museum-hero-art"><img src="assets/session2-museum/museum-hero.svg" alt="Stylised eighteenth-century museum building labelled The Actuarial Museum."></div>
+  </section>
+
+  <section class="museum-instructions" aria-labelledby="howTitle">
+    <div>
+      <p class="museum-kicker">YOUR MISSION</p>
+      <h2 id="howTitle">Do not just collect facts. Build a story.</h2>
+    </div>
+    <ol class="museum-how-list">
+      <li><strong>Debate.</strong> Read all options aloud and agree on one answer as a team.</li>
+      <li><strong>Curate.</strong> Every choice shapes your exhibition and your score.</li>
+      <li><strong>Prepare your pitch.</strong> After each gallery, keep or edit the suggested sentence in your Pitch Notebook.</li>
+      <li><strong>Present.</strong> At the end, every student speaks. The whole team has a maximum of two minutes.</li>
+    </ol>
+  </section>
+
+  <section id="gameStage" class="museum-game-stage" hidden>
+    <aside class="museum-progress-panel" aria-label="Museum progress">
+      <div class="museum-progress-head">
+        <p class="museum-kicker">EXHIBITION MAP</p>
+        <strong id="progressLabel">Setup</strong>
+      </div>
+      <div id="galleryProgress" class="gallery-progress"></div>
+      <div class="museum-score-mini" aria-live="polite">
+        <span>Current score</span><strong><span id="miniScore">0</span>/32</strong>
+      </div>
+      <button class="museum-btn subtle" id="soundToggle" type="button" aria-pressed="true">🔊 Sound on</button>
+    </aside>
+
+    <section class="museum-main-panel">
+      <div id="setupView" class="museum-view"></div>
+      <div id="galleryView" class="museum-view" hidden></div>
+      <div id="finalView" class="museum-view" hidden></div>
+    </section>
+
+    <aside class="pitch-notebook" aria-labelledby="pitchNotebookTitle">
+      <div class="notebook-head">
+        <p class="museum-kicker">LIVE PITCH BUILDER</p>
+        <h2 id="pitchNotebookTitle">Your 2-minute story</h2>
+        <p>Complete one short speaking note after each gallery. Keep it concise: you are building a spoken story, not an essay.</p>
+      </div>
+      <div id="pitchNotebookEntries" class="pitch-entries"></div>
+      <div class="pitch-meter">
+        <div><span>Draft words</span><strong id="pitchWords">0</strong></div>
+        <div><span>Estimated time</span><strong id="pitchTime">0:00</strong></div>
+      </div>
+      <p class="pitch-hint" id="pitchHint">Aim for roughly 150–210 words in total.</p>
+    </aside>
+  </section>
+
+  <div class="museum-status" id="museumStatus" aria-live="polite" aria-atomic="true"></div>
+</main>
+
+<footer class="site-footer museum-footer">
+  <p><strong>Actuarial English · M1 Session 2</strong></p>
+  <p class="footer-credit">Created by Mrs Lecomte and Mr Lemoine, with the help of Chat GPT</p>
+</footer>
+
+<script src="m1-session2-museum-r1.js"></script>
+</body>
+</html>
