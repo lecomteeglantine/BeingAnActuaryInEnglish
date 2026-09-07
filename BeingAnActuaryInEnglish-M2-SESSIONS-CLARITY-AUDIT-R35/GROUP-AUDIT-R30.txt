@@ -1,0 +1,10 @@
+GROUP FUNCTION AUDIT R30
+
+Corrections:
+- Added a live feedback region to the initial 3/4-player setup screen, so Sound off / unavailable speech feedback is visible before Round 1.
+- Sound off now immediately closes the current Web Audio context as well as cancelling speech, so no already-started sound effect can continue after muting.
+- Audio availability aria state is cleaned when supported.
+- Session key migrated to R30; R29 and earlier saves remain recoverable.
+- Service-worker cache migrated to R30.
+
+All previous deterministic-budget, challenge, player-role, mobile, accessibility and downstream-state safeguards are retained.

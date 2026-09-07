@@ -1,0 +1,27 @@
+M2 NAVIGATION + SESSION 1 AUDIT — R35
+
+Changes
+- Rebuilt M2 as a clearer illustrated 5-session hub.
+- Session 1 is a prominent clickable card leading to m2-day1.html.
+- Added a visible 5-session pathway switcher to every M2 session page.
+- Added illustrations to the M2 hub and all five session pages.
+- Kept Session 1 activity behind a separate Start button so course navigation and game content do not blur together.
+- Preserved the audited R34 Global Actuarial Crisis Room game engine.
+- Updated service-worker cache and M2 session CSS to R35.
+
+Browser checks
+- M2 hub: 5 clickable session cards.
+- Session 1 link: m2-day1.html.
+- Session 1 page: 5 pathway links, one active session, activity start button present.
+- Responsive widths tested: 320, 390, 768, 1024, 1365 px with no horizontal overflow.
+- Game parity tested simultaneously on desktop 1365px and mobile 390px across all 16 decisions.
+- Same choices produced the same option lists, score, mission progress and recap state at every checkpoint.
+
+Static checks
+- 25 HTML pages.
+- 0 missing local assets.
+- 0 duplicate static IDs.
+- 69/69 service-worker resources present.
+- All JavaScript syntax checks pass.
+- 21 raster images decode successfully.
+- No Math.random(), Date/time, user-agent or device-width branching in game logic; screen width is used only for visual sticky layout.

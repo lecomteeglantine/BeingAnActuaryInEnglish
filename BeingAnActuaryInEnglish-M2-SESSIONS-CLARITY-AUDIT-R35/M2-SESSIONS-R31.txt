@@ -1,0 +1,8 @@
+M2 R31
+- Five clearly visible M2 session cards on m2.html.
+- Five separate session pages m2-day1.html through m2-day5.html.
+- Previous / all sessions / next navigation.
+- Neutral placeholders only; no themes invented.
+- M2 navigation state highlighted.
+- Responsive layout for desktop, tablet and mobile.
+- Service worker cache updated.

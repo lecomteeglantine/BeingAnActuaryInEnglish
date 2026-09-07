@@ -1,0 +1,14 @@
+M2 SESSION 1 — GLOBAL ACTUARIAL CRISIS ROOM — R33
+
+Corrections after full usability audit:
+- review state now survives reload;
+- changing 3/4 players resumes progress instead of forcing Round 1;
+- keyboard focus returns to the selected answer after dynamic rerender;
+- final screen now allows review of Australia/NZ without restarting;
+- final screen allows changing 3/4 players while keeping decisions and score;
+- R32 session state migrates automatically to R33;
+- restart removes R32/R33 activity keys;
+- BFCache/pageshow refreshes Sound toggle from restored state;
+- mobile controls strengthened.
+
+Determinism is unchanged: questions, option order and scores are fixed and device-independent.

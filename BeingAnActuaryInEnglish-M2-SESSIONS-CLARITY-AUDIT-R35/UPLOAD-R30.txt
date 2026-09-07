@@ -1,0 +1,7 @@
+Upload/replace ALL files and folders in this ZIP at the ROOT of the BeingAnActuaryInEnglish repository. Do not upload the ZIP itself or a wrapper folder.
+
+Active group files:
+- m1-session1-group.html
+- m1-session1-group-r30.js
+- m1-session1-group-r30.css
+- service-worker.js

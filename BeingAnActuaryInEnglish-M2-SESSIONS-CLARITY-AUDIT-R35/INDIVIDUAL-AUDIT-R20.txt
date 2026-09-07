@@ -1,0 +1,14 @@
+R20 individual functionality audit
+
+Fixes in this release:
+- Prevents accidental double activation of mission-clear transitions.
+- Prevents rapid double-clicks from skipping Client Meeting questions.
+- Debounces Risk Lab tile toggles and explains when the five-slot tray is full.
+- Adds explicit feedback when clicking a Brief/Boardroom destination before selecting a source item.
+- Handles browsers without speech synthesis by disabling Listen buttons with a clear fallback message.
+- Migrates R17/R18/R19 session progress into the R20 storage key instead of wiping progress.
+- Sanitises persisted Client Meeting error text.
+- Adds robust modal aria/inert state and closes audio/modal state on page hide.
+- Adds type=button to dynamically generated action buttons.
+- Keeps M1 visibly highlighted in the navigation.
+- Service-worker cache bumped to R20 and references the R20 JS/CSS files.
