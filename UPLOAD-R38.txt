@@ -1,0 +1,15 @@
+BEING AN ACTUARY IN ENGLISH — R38
+
+1. Open the ZIP.
+2. Upload ALL its contents to the ROOT of the GitHub repository.
+3. Replace files when GitHub asks.
+4. Keep assets/, data/ and icons/ in their included relative paths.
+5. There is NO enclosing project folder in this ZIP.
+
+Main R38 game files:
+- m2-session1-group.html
+- m2-session1-group-r38.js
+- m2-session1-group-r38.css
+- service-worker.js
+
+The package also includes the full site so it is ready for a complete root upload.

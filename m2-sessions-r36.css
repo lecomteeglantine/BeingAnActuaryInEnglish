@@ -1,0 +1,33 @@
+
+/* M2 R36 — deliberately mirrors the clear M1 session structure */
+.m2-course-row{grid-template-columns:86px minmax(0,1fr) 230px;align-items:stretch;overflow:hidden}
+.m2-course-row .m2-row-copy{min-width:0;padding-right:4px}
+.m2-course-row figure{margin:-22px -22px -22px 0;min-height:150px;overflow:hidden;background:#eaf2f5;border-left:1px solid var(--line)}
+.m2-course-row figure img{display:block;width:100%;height:100%;min-height:150px;object-fit:cover}
+.m2-course-row .status-chip{display:inline-flex;margin-top:8px;padding:5px 9px;border-radius:999px;font-size:.72rem;font-weight:900;letter-spacing:.05em;text-transform:uppercase;background:#eef3f6;color:#607789;border:1px solid var(--line)}
+.m2-course-row.is-live{border-color:#8fcdd1;background:linear-gradient(135deg,#fff,#f1fbfb)}
+.m2-course-row.is-live .status-chip{background:#e7f8ef;color:#22613b;border-color:#9bd2ad}
+.m2-course-row:focus-visible{outline:3px solid rgba(15,159,169,.35);outline-offset:3px}
+.m2-course-row .portal-action{display:inline-flex;margin-top:8px;font-weight:900;color:var(--teal)}
+.m2-one-activity{grid-template-columns:minmax(0,860px);justify-content:center}
+.m2-one-activity .activity-choice-card{width:100%}
+.m2-one-activity .activity-image-wrap{aspect-ratio:16/7}
+.m2-placeholder-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0 26px}
+.m2-placeholder-grid>div{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 8px 20px rgba(16,42,67,.04)}
+.m2-placeholder-grid strong{display:block;color:var(--navy);margin-bottom:5px}
+.m2-placeholder-grid span{color:var(--muted);font-size:.92rem}
+.m2-session-illustration{margin:0 0 30px;border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:var(--shadow);background:#eef5f8}
+.m2-session-illustration img{display:block;width:100%;height:280px;object-fit:cover}
+.m2-session-illustration figcaption{padding:10px 14px;background:#fff;color:var(--muted);font-size:.82rem}
+@media(max-width:850px){
+  .m2-course-row{grid-template-columns:72px minmax(0,1fr) 170px}
+  .m2-course-row figure img{min-height:160px}
+}
+@media(max-width:650px){
+  .m2-course-row{grid-template-columns:58px minmax(0,1fr);padding:16px;gap:13px}
+  .m2-course-row figure{grid-column:1/-1;margin:10px 0 0;border-left:0;border-radius:16px;min-height:0}
+  .m2-course-row figure img{height:180px;min-height:0}
+  .m2-placeholder-grid{grid-template-columns:1fr}
+  .m2-one-activity .activity-image-wrap{aspect-ratio:16/9}
+  .m2-session-illustration img{height:210px}
+}

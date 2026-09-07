@@ -1,0 +1,93 @@
+BeingAnActuaryInEnglish — M2 NAVIGATION + SESSION 1 GAME AUDIT — R37
+Date: 7 September 2026
+
+SCOPE
+- Reworked M2 from the current site/repository state while preserving the complete site package.
+- Target: M2 visual separation as clear as M1, plus a focused reliability audit of “The Global Actuarial Crisis Room”.
+
+M2 NAVIGATION / VISUAL CLARITY
+PASS / CHANGED
+- m2.html now uses five large full-width vertical session zones, numbered 01–05.
+- The whole Session 1 zone is clickable and opens m2-day1.html.
+- Sessions 2–5 remain explicit placeholders; no course content has been invented.
+- Illustrations remain on all five session zones.
+- m2-day1.html contains “← Back to M2”.
+- All m2-day1.html … m2-day5.html pages contain a visible 5-session switcher.
+- The current session is explicitly marked with aria-current="page" and a strong active visual state.
+- Bottom navigation is consistent: Previous / All M2 sessions / Next.
+
+SESSION 1 GAME — TESTED LOGIC
+PASS
+- 3-player and 4-player role sets are distinct, but mission data and scoring are identical.
+- Four fixed missions: UK, USA, Canada, Australia/New Zealand.
+- Four fixed decisions per mission: Risk, Decision, Tact, Justification.
+- No Math.random() in the game.
+- Maximum score is deterministically 32 for both 3-player and 4-player teams.
+- Independent state simulations with identical answers produce identical answer state and score.
+- Save/reload sanitisation preserves valid progress and score.
+- Invalid/gapped saved states are repaired rather than allowing later steps to survive an earlier missing answer.
+- A mission is not treated as completed until “Save mission recap” has actually been used.
+- Final recap is generated directly from stored choices, so changing a choice changes the recap deterministically.
+
+BUG FIXED DURING R37 AUDIT — OLD-DECISION EDITING
+- Reviewing an earlier mission could previously leave later completion flags in a non-sequential state during the same browser session.
+- R37 now invalidates the reviewed mission AND all later mission-completion flags whenever an old decision is changed.
+- Later recorded answers are not randomly regenerated; the team can reconfirm them in order.
+- This prevents progression holes and guarantees that the final recap has been explicitly revalidated after an upstream change.
+
+DOUBLE-CLICK PROTECTION
+PASS / HARDENED
+- Mission-transition actions use one global navigation lock.
+- Lock duration increased to 360 ms.
+- The lock survives DOM re-rendering, so a rapid second click on a newly rendered mission button is ignored.
+- During the lock, mission navigation buttons have pointer-events disabled and the game mount exposes aria-busy="true".
+- An execution test confirmed: two immediate transition calls execute once; a later click after the lock executes normally.
+
+AUDIO
+PASS / GRACEFUL FALLBACK
+- Optional sound remains user-controlled.
+- Speech synthesis cancels previous speech before starting a new utterance.
+- Locale preference remains mission-specific where browser voices permit it.
+- If speech synthesis is unavailable, the written client message remains usable and a warning is shown.
+- Sound is stopped/suspended when switched off or when the page becomes hidden.
+
+MOBILE / OVERFLOW
+PASS — STATIC RESPONSIVE AUDIT
+- Game layout has min-width:0 safeguards on flexible children.
+- Long content uses overflow wrapping.
+- Mission progress has contained horizontal scrolling rather than page-level overflow.
+- Additional <=420 px spacing/font safeguards added.
+- M2 session rows collapse cleanly for tablet/mobile widths.
+- The M2 session switcher can scroll within itself on narrow screens instead of forcing page overflow.
+
+PWA / CACHE
+PASS / UPDATED
+- Service-worker cache key bumped to R37.
+- R37 M2 CSS and game CSS/JS are in the cache manifest.
+- Active cache manifest does not reference R36 M2 assets.
+- Old caches are deleted on activation.
+- HTML, JS, CSS, JSON and manifest requests remain network-first with no-store while online, with cache fallback offline.
+- Every service-worker local cache entry was checked and exists in the package.
+
+CONTENT / DIPLOMATIC LANGUAGE
+PASS / REINFORCED
+- Passive-style issue focus remains included: “The assumptions may need to be reviewed.”
+- Hedging and modals: may / might / could.
+- Clarification: “If I understand you correctly…” / “Just to be clear…”
+- Cautious reporting reinforced: “Apparently…” / “As far as I know…” / “It seems that…”
+- Second conditional model added: “If the assumptions were revised, the estimate could change.”
+- Past framing model added: “We initially assumed…, but the latest data suggested…”
+- Final task remains 2 minutes maximum for the WHOLE team, explaining and justifying key choices.
+
+STATIC PACKAGE QA
+PASS
+- All root JavaScript files pass node --check.
+- 543 local HTML href/src references checked: no missing local files.
+- All service-worker local entries checked: no missing files.
+- Active M2 pages reference R37 assets.
+- m2-day1 … m2-day5 each contains exactly one explicitly active session selector state.
+- M2 hub contains exactly five large session rows.
+
+RESULT
+No reproducible logic/state/static-reference bug remains in the tested R37 paths.
+The package is complete and is intended to be uploaded with its files directly at the GitHub repository root.

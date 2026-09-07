@@ -1,0 +1,7 @@
+M2 SESSION NAVIGATION R35
+- Rebuilt M2 as a clear five-session illustrated hub.
+- Session 1 is a prominent clickable card that opens m2-day1.html.
+- Added a five-session pathway switcher to every M2 session page.
+- Added illustrations to the M2 hub and each session page.
+- Kept M2 Session 1 group game engine unchanged from audited R34; deterministic logic preserved.
+- Updated PWA cache to R35.

@@ -1,0 +1,128 @@
+BEING AN ACTUARY IN ENGLISH — M2 SESSION 1
+GLOBAL ACTUARIAL CRISIS ROOM
+ZERO-BUG AUDIT / CORRECTION R38
+Date: 2026-09-07
+
+SCOPE
+- Live M2 Session 1 page and linked Global Actuarial Crisis Room
+- 3 / 4-player mode
+- deterministic choices, scores, progression and recap
+- back navigation and editing earlier decisions
+- save / reload behaviour
+- rapid double-click / double-tap navigation
+- speech synthesis / sound fallbacks
+- mobile / responsive CSS and horizontal-overflow safeguards
+- PWA cache / service worker
+- local links, HTML IDs and image integrity
+
+LIVE VERSION FINDINGS
+The published game was still loading m2-session1-group-r33.js and r33 CSS.
+The following reproducible or code-level defects were found in that published branch:
+
+1. RAPID DOUBLE-CLICK / DOUBLE-TAP CAN SKIP A TRANSITION
+   R33 directly increments missionIndex on the “Open next client mission” button.
+   There is no navigation lock/debounce guard around the transition.
+
+2. EDITING AN EARLIER DECISION CAN LEAVE LATER STATE INCONSISTENT
+   In R33, selecting a different earlier answer does not invalidate all later mission
+   completions and does not clear dependent later steps in the same mission.
+   This can leave the recap/progress state describing decisions that were made before
+   the earlier choice was changed.
+
+3. RELOAD CAN TREAT A MISSION AS COMPLETED BEFORE “SAVE MISSION RECAP”
+   R33 reconstructs completed missions from whether all four answers are filled.
+   If question 4 has been selected but the explicit recap-save action has not happened,
+   a reload can nevertheless consider that mission complete.
+
+4. RELOAD AFTER EDITING AN OLD MISSION CAN ERASE LATER SAVED ANSWERS
+   R33’s sequential sanitisation discards later-mission answer arrays after the first
+   incomplete mission. This is too destructive during a legitimate revalidation flow.
+
+5. MISLEADING BACK LABEL ON LATER MISSIONS
+   At step 1 of a later mission, the button says “Team setup” even though the code
+   actually returns to the previous mission recap.
+
+6. PWA CACHE CLEAN-UP IS TOO BROAD
+   The published service worker deletes every cache key on the shared GitHub Pages
+   origin except its own cache. Because several projects can live under the same
+   lecomteeglantine.github.io origin, this can remove caches belonging to other sites.
+
+R38 CORRECTIONS
+- New deterministic state key: m2_global_crisis_room_r38.
+- Migration supported from R37/R36/R34/R33/R32 saved states.
+- Navigation transitions now use guardedNav() with a 650 ms lock.
+- Rapid second activation is ignored; aria-busy is set during the transition.
+- Changing an answer clears dependent later steps in the same mission.
+- Changing/reviewing an earlier mission invalidates completion from that mission onward.
+- Later mission answers are preserved during revalidation and reload instead of being erased.
+- Later missions still cannot be marked complete until reconfirmed sequentially.
+- Explicit “Save mission recap” is required for completion; merely filling four answers
+  is no longer treated as completing a mission after reload.
+- Reload preserves a valid in-progress revalidation step.
+- Later-mission back button now says “Previous mission”.
+- Speech is cancelled before navigation/answer changes and when the page is hidden.
+- Selected tactful wording can be replayed; written text remains the fallback if speech
+  synthesis is unavailable.
+- Existing 3/4-player role split retained; group size affects roles only.
+- Same mission data, option order and point values are used for both group sizes.
+- No Math.random() anywhere in the R38 game script.
+- Score remains fixed and deterministic, maximum 32/32 (8 points per category).
+- Final recap remains 2 minutes maximum for the whole team and requires explanation
+  and justification.
+- Full diplomatic language bank retained, including passive focus, hedging, modals,
+  clarification, apparently/as far as I know/seem, second conditional and past framing.
+- R37 clear M2 session navigation retained on m2.html and m2-day1.html.
+- Service-worker cache updated to R38.
+- Service worker now deletes only old caches beginning with “actuarial-english-”.
+  It no longer deletes unrelated cache names on the shared GitHub Pages origin.
+- Network-first behaviour for HTML/JS/CSS/data/manifest retained to reduce stale deployments.
+
+AUTOMATED / STATIC CHECKS PERFORMED
+PASS — JavaScript syntax: m2-session1-group-r38.js
+PASS — JavaScript syntax: service-worker.js
+PASS — JavaScript syntax: pwa.js
+PASS — no Math.random() in R38 game
+PASS — 3-player role set = 3 roles
+PASS — 4-player role set = 4 roles
+PASS — both modes use exactly the same mission order and answer model
+PASS — deterministic maximum score = 32
+PASS — full-completion reload
+PASS — edit-old-mission invalidation
+PASS — later answers preserved during revalidation
+PASS — reload mid-revalidation preserves valid position
+PASS — mission not auto-completed before recap-save
+PASS — corrupt/gapped answer state repaired sequentially
+PASS — invalid answer indexes neutralised
+PASS — rapid two-click test executes one transition only
+PASS — navigation unlocks again after 650 ms
+PASS — m2.html: no duplicate IDs, no missing local references
+PASS — m2-day1.html: no duplicate IDs, no missing local references
+PASS — m2-session1-group.html: no duplicate IDs, no missing local references
+PASS — service-worker CORE: 69/69 local assets present
+PASS — 21 local PNG/JPG/WEBP/ICO images decoded without file errors
+PASS — responsive breakpoints present (1080 / 720 / 480 / 420 px)
+PASS — min-width:0 / overflow-wrap safeguards present
+PASS — touch-action safeguard present
+PASS — navigation lock CSS present
+
+BROWSER-DEPENDENT NOTE
+The environment used for this audit could inspect the live GitHub Pages site and execute
+state-machine / JavaScript tests, but its headless Chromium network access was blocked/timed
+out. Therefore OS/browser-specific speech voice quality and a true pixel-level viewport run
+could not be executed here. The code paths, fallbacks, asset integrity and responsive CSS
+were nevertheless checked statically, and no remaining reproducible state-machine bug was
+found in the scenarios above.
+
+FILES THAT MATTER MOST FOR THIS R38 FIX
+- m2-session1-group.html
+- m2-session1-group-r38.js
+- m2-session1-group-r38.css
+- service-worker.js
+- m2.html
+- m2-day1.html
+- m2-sessions-r37.css
+
+DEPLOYMENT
+Upload the COMPLETE contents of the ZIP to the ROOT of the GitHub repository.
+Do not upload a wrapper folder. Keep the assets/, data/ and icons/ directories as included.
+After GitHub Pages deploys, a normal reload should obtain the new network-first files.

@@ -13,3 +13,6 @@ UPLOAD INSTRUCTIONS — R17 INDIVIDUAL USABILITY AUDIT
 
 R33 M2 SESSION 1 AUDIT
 Use m2-session1-group-r33.js and m2-session1-group-r33.css. The R32 activity assets were superseded and removed from this package.
+
+
+R34 M2 Session 1: m2-session1-group.html now uses m2-session1-group-r34.css/js. Replace all repository files so service-worker.js also updates.

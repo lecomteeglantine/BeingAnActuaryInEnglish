@@ -1,7 +1,8 @@
-const CACHE='actuarial-english-2026-09-07-r33-m2-global-crisis-audit';
+const CACHE_PREFIX='actuarial-english-';
+const CACHE='actuarial-english-2026-09-07-r38-m2-session1-zero-bug-audit';
 const CORE=[
   './','./index.html','./styles.css','./shared.js','./home.js','./dictionary.html','./dictionary.js','./m1.html','./m2.html',
-  './m2-sessions-r31.css','./m1-day1.html','./m1-session1-individual.html','./m1-session1-individual-r22.css','./m1-session1-individual-r22.js','./m1-session1-group.html','./m1-day2.html','./m1-day3.html','./m1-day4.html','./m1-day5.html','./m2-day1.html','./m2-session1-group.html','./m2-session1-group-r33.css','./m2-session1-group-r33.js','./m2-day2.html','./m2-day3.html','./m2-day4.html','./m2-day5.html',
+  './m2-sessions-r37.css','./m1-day1.html','./m1-session1-individual.html','./m1-session1-individual-r22.css','./m1-session1-individual-r22.js','./m1-session1-group.html','./m1-day2.html','./m1-day3.html','./m1-day4.html','./m1-day5.html','./m2-day1.html','./m2-session1-group.html','./m2-session1-group-r38.css','./m2-session1-group-r38.js','./m2-day2.html','./m2-day3.html','./m2-day4.html','./m2-day5.html',
   './grammar.html','./pronunciation.html','./games.html','./games.js','./flashcards.html','./flashcards.js','./notebook.html','./notebook.js','./privacy.html','./accessibility.html','./404.html',
   './data/vocabulary.js','./manifest.webmanifest','./icons/favicon.png','./icons/apple-touch-icon.png','./icons/icon-192.png','./icons/icon-512.png',
   './assets/session1/individual-hero.svg','./assets/session1/security-gate.svg','./assets/session1/case-files.svg','./assets/session1/risk-lab.svg','./assets/session1/realistic/hero-office.png','./assets/session1/realistic/brief-desk.png','./assets/session1/realistic/case-files.png','./assets/session1/realistic/risk-lab.png','./assets/session1/realistic/client-meeting.png','./assets/session1/realistic/boardroom.png','./assets/session1/draft-room.svg','./assets/session1/draft-clients.svg','./assets/session1/draft-expertise.svg','./assets/session1/draft-team.svg','./assets/session1/draft-tools.svg','./assets/session1/draft-crisis.svg','./assets/session1/draft-boardroom.svg','./m1-session1-group-r30.css','./m1-session1-group-r30.js','./group-office-r27.webp','./group-client-meeting-r27.webp','./group-case-files-r27.webp','./group-analytics-r27.webp','./group-boardroom-r27.webp','./group-risk-lab-r27.webp'
@@ -18,7 +19,7 @@ self.addEventListener('install',event=>{
 self.addEventListener('activate',event=>{
   event.waitUntil(
     caches.keys()
-      .then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key))))
+      .then(keys=>Promise.all(keys.filter(key=>key.startsWith(CACHE_PREFIX) && key!==CACHE).map(key=>caches.delete(key))))
       .then(()=>self.clients.claim())
   );
 });
