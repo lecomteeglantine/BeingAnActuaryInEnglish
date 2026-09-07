@@ -1,0 +1,15 @@
+R36 — M2 navigation clarity + Session 1 game hardening
+
+NAVIGATION
+- M2 hub now deliberately mirrors M1: five full-width, vertically separated, numbered session cards.
+- Each card opens one dedicated session page.
+- Session 1 is visually marked Available now and includes an illustration.
+- m2-day1.html now mirrors the M1 session-page pattern: session hero, Back to M2, one clearly separated activity card, bottom Previous / All M2 sessions / Next navigation.
+- Sessions 2–5 use the same session-page pattern.
+
+GAME
+- Preserves fully deterministic questions, options and scoring.
+- No Math.random(), time-based branching, browser-based branching or viewport-based answer logic.
+- Added explicit anti-double-submit protection on Start, Back, Next, Mission Complete, Review and Final Review navigation.
+- SessionStorage migrates from R34/R33/R32 to R36.
+- Added extra overflow hardening for long text and mobile layouts.

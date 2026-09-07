@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#102a43">
+  <meta name="description" content="The Actuarial Firm Draft: an immersive strategy game for M1 students.">
+  <title>The Actuarial Firm Draft · M1 Session 1</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/favicon.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="m1-session1-group-r30.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="topbar">
+  <a class="brand" href="index.html"><span aria-hidden="true" class="brand-mark">📊</span><span><strong>Actuarial English</strong></span></a>
+  <nav aria-label="Main navigation" class="main-nav"><a href="index.html">Home</a><a href="dictionary.html">Dictionary</a><a href="m1.html" class="is-current">M1</a><a href="m2.html">M2</a><a href="grammar.html">Grammar</a><a href="pronunciation.html">Pronunciation</a><a href="games.html">Games</a><a href="notebook.html">Notebook</a></nav>
+</header>
+<main class="firm-main" id="main">
+  <section class="firm-hero">
+    <div>
+      <span class="firm-kicker">M1 · Session 1 · Group activity</span>
+      <h1>The Actuarial Firm Draft</h1>
+      <p class="firm-lead">You are not just ticking options. You are a new actuarial strategy team preparing to launch a consultancy before an investor board arrives. Build a firm with <strong>100 points</strong>, react to a client alert, and defend your choices in the boardroom.</p>
+      <div class="firm-toolbar">
+        <a class="secondary-btn" href="m1-day1.html">← Session 1</a>
+        <button type="button" class="secondary-btn" id="soundToggle" aria-pressed="true">🔊 Sound on</button>
+        <button type="button" class="secondary-btn" id="restartDraft">↺ Restart firm</button>
+      </div>
+    </div>
+    <div class="hero-collage" aria-label="Visual overview of the actuarial firm game">
+      <figure class="tall"><img src="group-office-r27.webp" alt="A realistic actuarial consultancy office"><figcaption>Your team enters Northstar-style actuarial consultancy space.</figcaption></figure>
+      <figure class="small"><img src="group-client-meeting-r27.webp" alt="A realistic client meeting in an actuarial office"><figcaption>Client-facing communication matters.</figcaption></figure>
+      <figure class="small"><img src="group-boardroom-r27.webp" alt="A realistic boardroom presentation with analytics"><figcaption>The investor board will challenge every choice.</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="mission-strip" aria-label="Game overview">
+    <div class="mission-card team-format-card"><span class="label">Student team size</span><div class="player-picker" role="group" aria-label="Choose the number of students in your team"><button type="button" class="player-count-btn" data-player-count="3" aria-pressed="false">3 players</button><button type="button" class="player-count-btn" data-player-count="4" aria-pressed="false">4 players</button></div><span class="sub" id="teamFormatSub">Choose 3 or 4 players before starting</span></div>
+    <div class="mission-card"><span class="label">Budget</span><span class="value">100 points</span><span class="sub">Fixed costs, no random scoring</span></div>
+    <div class="mission-card"><span class="label">Final task</span><span class="value">Boardroom pitch</span><span class="sub">Every student takes an active speaking role</span></div>
+    <div class="mission-card"><span class="label">Important</span><span class="value">Same choices = same result</span><span class="sub">Same budget, same challenge, same page on every device</span></div>
+  </section>
+
+  <section class="firm-layout">
+    <aside class="firm-sidebar" aria-label="Game dashboard">
+      <div class="panel dark">
+        <p class="module-number" style="color:#d9eef0;margin:0">MISSION CONTROL</p>
+        <div id="budgetLeft" class="budget-left">100<small>points left</small></div>
+        <div class="budget-track"><span id="budgetBar"></span></div>
+        <p id="budgetSpent" style="margin:0;color:#d9eef0">0 points spent</p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-grid">
+          <div class="code-badge" id="configCode">Config code · —</div>
+          <div class="code-badge" id="selectionsMade">0 decisions made</div>
+          <div class="code-badge" id="currentStageCard">Round 1 / 8</div>
+          <div id="statusPill" class="status-pill status-warning">Planning</div>
+        </div>
+        <div class="quick-list">
+          <div><strong>Students</strong><span id="sumPlayers">—</span></div><div><strong>Client</strong><span id="sumClient">—</span></div>
+          <div><strong>Expertise</strong><span id="sumExpertise">—</span></div>
+          <div><strong>Team</strong><span id="sumTeam">—</span></div>
+          <div><strong>Tools</strong><span id="sumTools">—</span></div>
+          <div><strong>Identity</strong><span id="sumIdentity">—</span></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <p class="module-number" style="margin:0">USEFUL LANGUAGE</p>
+        <div class="phrase"><button type="button" class="mini-btn speak" data-say="I think this client fits our firm best.">🔊</button><span>I think this client fits our firm best.</span></div>
+        <div class="phrase"><button type="button" class="mini-btn speak" data-say="The trade-off is that we cannot afford everything.">🔊</button><span>The trade-off is that we cannot afford everything.</span></div>
+        <div class="phrase"><button type="button" class="mini-btn speak" data-say="This option strengthens our actuarial offer.">🔊</button><span>This option strengthens our actuarial offer.</span></div>
+        <div class="phrase"><button type="button" class="mini-btn speak" data-say="We chose this because it helps us manage risk more clearly.">🔊</button><span>We chose this because it helps us manage risk more clearly.</span></div>
+      </div>
+
+      <div class="panel">
+        <p class="module-number" style="margin:0">QUICK PRONUNCIATION</p>
+        <div class="phrase"><button type="button" class="mini-btn speak" data-say="actuary">🔊</button><span>actuary</span></div>
+        <div class="phrase"><button type="button" class="mini-btn speak" data-say="actuarial">🔊</button><span>actuarial</span></div>
+        <div class="phrase"><button type="button" class="mini-btn speak" data-say="uncertainty">🔊</button><span>uncertainty</span></div>
+        <div class="phrase"><button type="button" class="mini-btn speak" data-say="liability">🔊</button><span>liability</span></div>
+      </div>
+
+      <div class="panel">
+        <p class="module-number" style="margin:0">VISUAL MOODBOARD</p>
+        <div class="mood-grid" style="margin-top:12px">
+          <figure class="mood-card"><img src="group-case-files-r27.webp" alt="Actuarial case files"><figcaption>Client cases, files and evidence.</figcaption></figure>
+          <figure class="mood-card"><img src="group-risk-lab-r27.webp" alt="Actuarial risk laboratory"><figcaption>Risk lab, scenarios and dashboards.</figcaption></figure>
+        </div>
+      </div>
+    </aside>
+
+    <section>
+      <div class="progress-panel"><div class="track"><span id="progressFill"></span></div><ol id="progressDots"><li class="active">1<small>Client</small></li><li>2<small>Expertise</small></li><li>3<small>Team</small></li><li>4<small>Tools</small></li><li>5<small>Identity</small></li><li>6<small>Review</small></li><li>7<small>Alert</small></li><li>8<small>Boardroom</small></li></ol></div>
+      <div class="stage-shell" id="gameMount" aria-live="polite"></div>
+    </section>
+  </section>
+</main>
+<footer class="site-footer"><p><strong>Actuarial English</strong></p><p class="footer-credit">Created by Mrs Lecomte and Mr Lemoine, with the help of Chat GPT</p><p class="privacy"><strong>Privacy &amp; GDPR:</strong> no student account, analytics, advertising or remote database. Learning-tool data is stored locally in this browser. <a href="privacy.html">Privacy details</a> · <a href="accessibility.html">Accessibility</a></p></footer>
+<script src="shared.js"></script>
+<script src="m1-session1-group-r30.js"></script>
+<script defer src="pwa.js"></script>
+</body>
+</html>

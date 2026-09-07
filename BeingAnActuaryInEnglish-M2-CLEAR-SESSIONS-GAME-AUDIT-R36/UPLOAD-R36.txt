@@ -1,0 +1,1 @@
+Extract the ZIP and upload/replace all files and folders at the ROOT of the GitHub repository. Do not upload a wrapper folder.
