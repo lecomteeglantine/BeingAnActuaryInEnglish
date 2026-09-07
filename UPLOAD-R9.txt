@@ -1,0 +1,7 @@
+UPLOAD R9
+1. Unzip the archive.
+2. Upload ALL contents directly to the root of BeingAnActuaryInEnglish.
+3. Keep assets/session2-museum/ and its audio/ subfolder intact.
+4. Replace the existing m1.html, m1-day2.html and m1-session2-group.html.
+5. Add m1-session2-museum-r9.js and m1-session2-museum-r9.css.
+6. After GitHub Pages deploys, a normal refresh should load R9; the ?v=r9 asset URLs also force fresh Session 2 visuals/audio.

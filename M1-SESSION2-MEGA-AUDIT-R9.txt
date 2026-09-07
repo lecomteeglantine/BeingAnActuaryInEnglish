@@ -1,0 +1,76 @@
+M1 SESSION 2 · THE ACTUARIAL MUSEUM
+MEGA FUNCTIONAL AUDIT · R9
+
+SCOPE
+- m1.html
+- m1-day2.html
+- m1-session2-group.html
+- m1-session2-museum-r9.js
+- m1-session2-museum-r9.css
+- assets/session2-museum/ (15 SVG + 7 WAV)
+
+REAL BUGS FIXED IN R9
+1. Stale anti-double-click locks after a full rerender
+   R8 could still swallow a legitimate repeated action on a newly-rendered control,
+   e.g. Final -> Review -> Save -> Review again very quickly.
+   R9 clears obsolete DOM locks at every full render while keeping the sound/timer
+   guards that do not rerender the interface.
+
+2. Parseable but invalid current save masking a valid older save
+   R8 fell back to legacy data only when the current JSON could not be parsed.
+   If the current key contained parseable but structurally invalid data, a still-valid
+   R8/R6 save could be ignored and the team could appear to lose progress.
+   R9 now selects the first VALID state across R9 and all legacy keys.
+
+3. Wrong completion sound after revalidating an earlier gallery
+   R8 chose the Final sound from the gallery number. Revalidating Gallery I/II/III after
+   a Final review could reopen Opening Night while playing a normal gallery-complete sound.
+   R9 chooses the sound from the actual result: if all four galleries are complete, the
+   Final sound is played regardless of which gallery was just revalidated.
+
+4. Static asset cache hardening
+   Session 2 SVG and WAV references now carry ?v=r9. This prevents an existing browser /
+   service-worker cache from silently displaying an older illustration or audio file after
+   a GitHub update while keeping the physical asset filenames unchanged.
+
+ROBUSTNESS TESTS PASSED
+- Fresh start, 3-player and 4-player flows.
+- Same decisions at 3 vs 4 players -> same score and same pitch content.
+- Arbitrary identical decision path at 3 vs 4 players -> identical 3/32 score in test.
+- Perfect deterministic path -> 32/32.
+- 4 galleries x 4 decisions x 4 options = 64 fixed options.
+- No Math.random / randomised scoring or progression.
+- Four scoring categories; maximum 8 points in each category, 32 overall.
+- All automatically suggested pitch notes, including weak-choice scaffolds, remain within
+  the required 30-45 word window.
+- 29 words / too-short note blocked; 46 words / too-long note blocked; 30 words accepted.
+- Partial progress survives reload and resumes at the correct next gallery with the same saved score.
+- Parseable-invalid R9 save + valid legacy save -> valid legacy progress recovered.
+- Malformed JSON current save + valid legacy save -> valid legacy progress recovered.
+- finalReached=true with started=false -> Final correctly blocked.
+- A saved gallery with an invalid short pitch -> gallery correctly becomes incomplete and is reopened.
+- Final -> Review -> Save -> immediate Review works; no stale lock.
+- Custom final pitch survives a no-change review.
+- Editing an old gallery invalidates it until its saved state is restored/revalidated.
+- Keyboard arrow navigation selects radio-style options correctly.
+- Sound OFF persists through reload; Test sound disables correctly while muted.
+- Gallery I-III validation -> gallery-complete.wav; Opening Night -> final.wav.
+- Timer start/pause/reset checked; rapid double click does not immediately cancel the timer.
+- Restart clears score/progress and keeps the user's sound preference.
+- No horizontal overflow at 320, 360, 560, 860, 1180 or 1440 px in gallery or Final views.
+- No duplicate IDs in the three corrected HTML pages.
+- All touched-page local references resolve against the full site overlay.
+- 15/15 SVG files parse correctly.
+- 7/7 WAV files have valid playable WAV headers and non-empty audio data.
+- JavaScript passes node --check.
+- CSS parses without syntax errors.
+
+CONTENT CROSS-CHECK
+The game's core historical claims and Past Simple / Past Perfect material were cross-checked
+against the Session 2 worksheet used to build the activity. No unsupported replacement facts
+were introduced in R9.
+
+DEPLOYMENT
+Upload the contents of this ZIP directly to the ROOT of the existing GitHub repository.
+Keep assets/session2-museum/ and assets/session2-museum/audio/ exactly as supplied.
+There is no enclosing wrapper folder in the ZIP.
