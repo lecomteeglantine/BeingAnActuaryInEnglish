@@ -1,0 +1,19 @@
+BeingAnActuaryInEnglish — M2 Session 1 — R39 mega audit
+
+Main fixes
+- R38 game assets retained and version-bumped to R39.
+- Review mode is now non-destructive: opening Review no longer invalidates completed missions.
+- Completion is invalidated only when an answer actually changes.
+- Completed missions reopen on their recap screen instead of forcing needless decision reconfirmation.
+- If a review makes no change and all four missions remain complete, Continue returns directly to the final recap.
+- Final recap readiness is based on actual completed missions, not just missionIndex.
+- aria-current now uses aria-current="step" instead of an empty attribute.
+- gameMount no longer acts as a giant live region; feedback remains announced through the dedicated role=status element.
+- PWA cache bumped to R39 and references current m2-sessions-r37.css + m2-session1-group-r39.css/js.
+- PWA install is atomic (cache.addAll) so a broken/missing core asset cannot silently create a partial offline cache.
+- Cache cleanup is limited to actuarial-english-* caches, protecting other GitHub Pages apps on the same origin.
+- Added service-worker-r39.js and pwa-r39.js to force a clean service-worker upgrade even when the old R33 worker is still active.
+- Legacy service-worker.js and pwa.js are also updated for compatibility.
+- Double-click navigation lock retained (650 ms).
+- Deterministic scoring retained: no Math.random(), max score 32.
+- 3/4-player choice changes roles only.

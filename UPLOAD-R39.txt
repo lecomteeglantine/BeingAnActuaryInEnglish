@@ -1,0 +1,10 @@
+R39 upload instructions
+
+1. Unzip the ZIP.
+2. Upload ALL contents directly to the ROOT of the BeingAnActuaryInEnglish GitHub repository.
+3. Replace existing files when GitHub asks.
+4. Do not upload the enclosing extracted folder.
+5. service-worker-r39.js and pwa-r39.js are new files and must be uploaded.
+6. service-worker.js and pwa.js must also replace the older files.
+
+The R39 PWA bootstrap deliberately uses a new filename so browsers controlled by the old R33 service worker can upgrade cleanly.
