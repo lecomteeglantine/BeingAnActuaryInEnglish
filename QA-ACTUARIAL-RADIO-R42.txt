@@ -1,0 +1,38 @@
+ACTUARIAL RADIO — R42 QA REPORT
+===============================
+Date: 2026-09-09
+
+LIVE-SITE FINDING BEFORE CORRECTION
+- The publicly served M2 Day 1 page exposed only the GROUP ACTIVITY card during the external audit; the Individual Actuarial Radio card was not present in the served page inspected.
+
+CORRECTIONS APPLIED
+- M2 Day 1 restored to a two-card activity grid: Individual Actuarial Radio + existing Group Crisis Room.
+- British-English word-stress answer for “underwriting” corrected to primary stress on the first syllable.
+- R42 cache namespace and service-worker registration.
+- R42 saved-progress key and defensive saved-state sanitisation.
+- Final countdown race/double-transition guard.
+
+STATIC / ASSET QA
+- JavaScript syntax: PASS (node --check)
+- Service-worker syntax: PASS (node --check)
+- Audio files present: 42/42
+- Audio references in game JavaScript: 42/42 resolved
+- MP3 decode via ffprobe/ffmpeg: 42/42 PASS
+- Silent/empty MP3 detection: 0 silent files
+- SVG illustrations: 7/7 valid XML
+- Illustration references: 7/7 resolved
+- Duplicate static HTML IDs: none
+- Active HTML/service-worker references to old R41 JS/CSS/SW: none
+- Individual Activity link present in corrected m2-day1.html: PASS
+- Group Activity content preserved in corrected m2-day1.html: PASS
+
+PRONUNCIATION CONTENT CHECKS
+- actuarial: main stress on the “air” syllable — confirmed.
+- mortality: main stress on second syllable — confirmed.
+- probability: main stress on “bil” — confirmed.
+- underwriting (noun, UK): main stress on first syllable — corrected.
+- severity: main stress on second syllable — confirmed.
+- longevity: main stress on second syllable — confirmed.
+
+ENVIRONMENT NOTE
+- Full Chromium navigation from the local container is blocked by an administrator URL policy in this execution environment, so browser automation could not be used as an additional end-to-end layer. The game logic, assets, references, syntax, state protections and live-page integration were therefore checked with the external served-page inspection plus local static/decoder tests.

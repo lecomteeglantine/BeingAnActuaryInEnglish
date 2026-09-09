@@ -1,0 +1,30 @@
+ACTUARIAL RADIO — R42 CORRECTIVE PACKAGE
+=========================================
+
+Upload the CONTENTS of this ZIP directly to the ROOT of the GitHub repository.
+Do not upload the enclosing folder.
+Keep the existing site files that are not included in this corrective package.
+
+Main corrected files:
+- m2-day1.html
+- m2-session1-radio.html
+- m2-session1-radio-r42.css
+- m2-session1-radio-r42.js
+- pwa.js
+- pwa-r39.js
+- service-worker-r42.js
+- assets/m2-radio-r41/ (42 MP3 + 7 SVG illustrations)
+
+Important R42 fixes:
+1. Restores the Individual Activity card next to the Group Activity on M2 Session 1.
+2. Corrects British-English main stress for the noun “underwriting”: first syllable (UN-der-writ-ing), with secondary stress later in the word.
+3. New R42 JS/CSS/service-worker references to defeat stale R41 browser caches.
+4. New R42 saved-state key, so an old R41 session cannot resume with obsolete answer logic.
+5. Saved-state validation/clamping to prevent malformed localStorage data from crashing mission rendering.
+6. Final 60-second challenge protected against stale delayed callbacks / duplicate timeout transitions.
+7. The radio link from m2-day1.html includes ?v=42 as an additional navigation cache-buster.
+
+After GitHub Pages finishes publishing, open:
+- m2-day1.html
+- then Actuarial Radio
+and hard-refresh once if the browser had the previous site open.
