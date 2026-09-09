@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#102a43">
+  <meta name="description" content="Actuarial Radio: an individual M2 listening game for British-English actuarial pronunciation and word stress.">
+  <title>Actuarial Radio · M2 Session 1</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/favicon.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="m2-session1-radio-r41.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="topbar">
+  <a class="brand" href="index.html"><span aria-hidden="true" class="brand-mark">📊</span><span><strong>Actuarial English</strong></span></a>
+  <nav aria-label="Main navigation" class="main-nav">
+    <a href="index.html">Home</a><a href="dictionary.html">Dictionary</a><a href="m1.html">M1</a><a href="m2.html" class="is-current" aria-current="page">M2</a><a href="grammar.html">Grammar</a><a href="pronunciation.html">Pronunciation</a><a href="games.html">Games</a><a href="notebook.html">Notebook</a>
+  </nav>
+</header>
+<main class="radio-main" id="main">
+  <section class="radio-hero">
+    <div class="radio-hero-copy">
+      <span class="radio-kicker">M2 · Session 1 · Individual activity · 🎧 Headphones recommended</span>
+      <h1>Actuarial Radio</h1>
+      <p class="radio-subtitle">Save the broadcast.</p>
+      <p class="radio-lead">Actuarial Radio International goes live soon — but the studio has been sabotaged. Recover lost recordings, repair word stress, decode noisy transmissions and reconnect the adverts before the final countdown.</p>
+      <div class="radio-toolbar">
+        <a class="secondary-btn" href="m2-day1.html">← Session 1</a>
+        <button type="button" class="secondary-btn" id="soundToggle" aria-pressed="true">🔊 Sound on</button>
+        <button type="button" class="secondary-btn" id="restartGame">↺ Restart</button>
+      </div>
+    </div>
+    <figure class="radio-hero-art"><img src="assets/m2-radio-r41/radio-studio-r41.svg" alt="Illustrated Actuarial Radio International studio with microphones, mixing desk, risk charts and an on-air sign"><figcaption>Actuarial Radio International · London control room</figcaption></figure>
+  </section>
+
+  <section class="radio-brief" aria-labelledby="missionBriefTitle">
+    <div class="brief-icon" aria-hidden="true">🎙️</div>
+    <div>
+      <p class="module-number">YOUR MISSION</p>
+      <h2 id="missionBriefTitle">Get the station back on air.</h2>
+      <ol class="radio-rules">
+        <li><strong>Listen first.</strong> Every challenge is built around real audio files — no reading aloud and no microphone access.</li>
+        <li><strong>Repair six studio systems.</strong> Lost files, stress, calls, interference, adverts and the final live countdown.</li>
+        <li><strong>Protect your three studio fuses.</strong> Wrong answers cost a fuse, but emergency backup power prevents a dead end.</li>
+        <li><strong>Use headphones.</strong> British-English pronunciation, word stress and listening discrimination are the whole point.</li>
+      </ol>
+      <button type="button" class="radio-start" id="startGame">Enter the control room →</button>
+    </div>
+  </section>
+
+  <section class="radio-game-shell" id="gameShell" hidden aria-label="Actuarial Radio game">
+    <aside class="radio-dashboard" aria-label="Broadcast dashboard">
+      <div class="dash-panel dark">
+        <p class="dash-label">BROADCAST RESTORED</p>
+        <div class="restore-number"><strong id="restorePercent">0%</strong><span id="restoreStatus">OFF AIR</span></div>
+        <div class="restore-track"><span id="restoreBar"></span></div>
+      </div>
+      <div class="dash-panel">
+        <p class="dash-label">STUDIO FUSES</p>
+        <div class="lives" id="lives" aria-label="3 studio fuses remaining">🎧 🎧 🎧</div>
+        <p class="dash-small">A mistake blows one fuse. Backup power restores two if you run out, so the game never blocks.</p>
+      </div>
+      <div class="dash-panel">
+        <p class="dash-label">ACCURACY</p>
+        <div class="accuracy"><strong id="accuracyValue">—</strong><span id="answerCount">0 answers</span></div>
+      </div>
+      <div class="dash-panel">
+        <p class="dash-label">BADGES</p>
+        <div class="badge-shelf" id="badgeShelf"><span class="empty-badge">No badges yet</span></div>
+      </div>
+      <div class="dash-panel mini-bank">
+        <p class="dash-label">LISTENING TOOLKIT</p>
+        <ul><li>Replay audio whenever you need.</li><li>Listen for the stressed syllable, not the spelling.</li><li>In a sentence, focus on the key actuarial word.</li><li>Static? Listen for consonant shape + stressed vowel.</li></ul>
+      </div>
+    </aside>
+
+    <section class="radio-stage-column">
+      <nav class="radio-progress" aria-label="Game missions">
+        <div class="progress-line"><span id="progressFill"></span></div>
+        <ol id="missionDots">
+          <li class="active"><b>1</b><span>Lost files</span></li><li><b>2</b><span>Word stress</span></li><li><b>3</b><span>Calls</span></li><li><b>4</b><span>Interference</span></li><li><b>5</b><span>Adverts</span></li><li><b>6</b><span>Live final</span></li>
+        </ol>
+      </nav>
+      <div id="gameMount"></div>
+    </section>
+  </section>
+  <p class="sr-only" id="liveRegion" aria-live="polite"></p>
+</main>
+<footer class="site-footer"><p><strong>Actuarial English</strong></p><p class="footer-credit">Created by Mrs Lecomte and Mr Lemoine, with the help of Chat GPT</p><p class="privacy"><strong>Privacy &amp; GDPR:</strong> no student account, analytics, advertising or remote database. Learning-tool data is stored locally in this browser. <a href="privacy.html">Privacy details</a> · <a href="accessibility.html">Accessibility</a></p></footer>
+<script src="shared.js"></script>
+<script src="m2-session1-radio-r41.js"></script>
+<script defer src="pwa.js"></script>
+</body>
+</html>

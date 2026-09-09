@@ -1,0 +1,31 @@
+BEING AN ACTUARY IN ENGLISH — M2 SESSION 1
+ACTUARIAL RADIO · SAVE THE BROADCAST
+R41 · 2026-09-09
+
+UPLOAD
+1. Unzip this archive.
+2. Upload ALL contents to the ROOT of the BeingAnActuaryInEnglish GitHub repository.
+3. Preserve the assets/m2-radio-r41/ folder structure.
+4. Replace existing files when GitHub asks (m2-day1.html, pwa.js, pwa-r39.js).
+5. Add the new files and folders.
+6. Wait for GitHub Pages to deploy, then hard-refresh the M2 Session 1 page once.
+
+WHAT CHANGES
+- m2-day1.html now shows TWO side-by-side activities:
+  • Individual: ACTUARIAL RADIO — Save the Broadcast
+  • Group: THE GLOBAL ACTUARIAL CRISIS ROOM (content preserved)
+- New individual game: m2-session1-radio.html
+- New game CSS + JS: m2-session1-radio-r41.css / m2-session1-radio-r41.js
+- 6 dedicated illustrated SVG scenes.
+- 42 local MP3 files: British-English vocabulary, natural sentences, noisy/clean transmissions, advert clips and sound effects.
+- Updated PWA registration and new service worker cache version R41 so the new page/assets are not hidden by an older cached deployment.
+
+GAME DESIGN
+Mission 1 — Lost Audio Files
+Mission 2 — Fix the Word Stress
+Mission 3 — Who's Calling?
+Mission 4 — Signal Interference
+Mission 5 — The Wrong Adverts
+Final — 60 Seconds to Air
+
+No microphone access. No read-aloud task. No external TTS dependency. No analytics or remote database.

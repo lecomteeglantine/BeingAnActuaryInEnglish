@@ -1,0 +1,32 @@
+ACTUARIAL RADIO R41 — QA REPORT
+2026-09-09
+
+CHECKS PASSED
+✓ m2-day1.html contains exactly two activity cards.
+✓ The previous m2-one-activity single-card layout class was removed.
+✓ The existing Global Actuarial Crisis Room card text/link are preserved.
+✓ New Individual Activity links to m2-session1-radio.html.
+✓ JavaScript syntax check passed (Node.js).
+✓ Service-worker JavaScript syntax check passed.
+✓ CSS opening/closing brace count matches.
+✓ No duplicate HTML IDs detected in the two modified/new pages.
+✓ All 42 MP3 files parse successfully with ffprobe.
+✓ All audio files have non-zero duration.
+✓ Every MP3 filename referenced by the game exists locally.
+✓ All six SVG illustration files parse as SVG/XML.
+✓ No SpeechRecognition, getUserMedia or speechSynthesis dependency in the game.
+✓ Learning audio is always user-triggered; sound-effects toggle does not disable the learning clips.
+✓ Wrong answers cannot create a dead end: emergency backup power restores studio fuses.
+✓ Final countdown can be retried without losing previous mission progress.
+✓ PWA cache version bumped to R41 and new audio/illustration assets are included.
+✓ Responsive layouts included for tablet/mobile breakpoints.
+✓ Keyboard focus remains compatible with the site's existing accessibility CSS.
+
+AUDIO BANK
+- British-English eSpeak voice rendered to local MP3 files for reproducible playback.
+- Word files + sentence files + deliberately degraded static transmissions.
+- Clean versions unlock after noisy-signal answers.
+- Local success/error/phone/static/tick/jingle/on-air sound effects.
+
+NOTE
+A full live external deployment audit should be run after GitHub Pages serves the uploaded R41 files, because service-worker behaviour and GitHub Pages caching can only be verified against the deployed URL.
