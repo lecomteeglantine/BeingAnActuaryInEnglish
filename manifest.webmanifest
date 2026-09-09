@@ -1,21 +1,27 @@
 {
-  "name": "Actuarial English",
-  "short_name": "Actuarial English",
+  "name": "Public Health English – M1",
+  "short_name": "PH English",
   "start_url": "./",
-  "scope": "./",
   "display": "standalone",
-  "background_color": "#f5f8fb",
-  "theme_color": "#102a43",
+  "background_color": "#f4f8f7",
+  "theme_color": "#116466",
+  "description": "Public Health English vocabulary and communication practice for M1 students.",
   "icons": [
     {
-      "src": "icons/icon-192.png",
+      "src": "icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icons/icon-512.png",
+      "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
+  ],
+  "id": "./",
+  "scope": "./",
+  "lang": "en-GB",
+  "categories": [
+    "education"
   ]
 }
