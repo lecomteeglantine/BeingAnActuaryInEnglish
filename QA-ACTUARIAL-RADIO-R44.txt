@@ -1,0 +1,36 @@
+ACTUARIAL RADIO R44 QA
+Date: 2026-09-09
+
+PUBLIC AUDIT GOAL
+- Add more illustrations to the radio activity page and remove remaining functional bugs.
+
+VISUAL IMPROVEMENTS
+PASS - added illustrated station-map preview section with 6 mission cards
+PASS - added richer visual strips inside missions 1, 2, 4, 5 and 6
+PASS - added caller roster visuals in mission 3
+PASS - replaced advert emoji-only cards with 4 illustrated poster thumbnails
+PASS - updated M2 Day 1 card to mention the richer illustrated version and bumped link to ?v=44
+
+FUNCTIONAL CHECKS
+PASS - JavaScript syntax check passed (m2-session1-radio-r44.js)
+PASS - Chromium automated walkthrough completed from Mission 1 to ON AIR
+PASS - start button guarded against rapid double click
+PASS - final countdown launch guarded against double start
+PASS - prior audio stops when moving to the next challenge
+PASS - final last-answer race condition remains fixed
+PASS - backup fuses path remains functional
+PASS - sound-effects toggle does not block learning audio
+PASS - save/load key updated to actuarial-radio-r44-state
+
+ASSET INTEGRITY
+PASS - audio references in JS: 42
+PASS - MP3 files present in assets folder: 42
+PASS - missing audio references: 0
+PASS - SVG illustration files: 11
+PASS - invalid SVG files: 0
+PASS - duplicate HTML IDs in m2-session1-radio.html: 0
+
+NOTES
+- New cache/service-worker version: R44
+- New radio asset folder: assets/m2-radio-r44/
+- Extra illustrated assets added: poster-life-r44.svg, poster-flood-r44.svg, poster-motor-r44.svg, poster-pension-r44.svg

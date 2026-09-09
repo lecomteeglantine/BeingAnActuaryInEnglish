@@ -1,0 +1,24 @@
+UPLOAD INSTRUCTIONS — ACTUARIAL RADIO R44
+
+1. Unzip this archive.
+2. Upload every file and folder directly to the repository root.
+3. Preserve the folder structure under assets/m2-radio-r44/.
+4. Commit and wait for GitHub Pages to rebuild.
+5. Hard-refresh the browser once online (Ctrl+F5 / Cmd+Shift+R) if you still see an older cached version.
+
+Important
+- Do NOT upload the enclosing ZIP folder itself.
+- This package bumps the radio game to R44 and uses a fresh assets/m2-radio-r44/ folder.
+- pwa.js and pwa-r39.js both register service-worker-r44.js.
+
+Included main files
+- m2-session1-radio.html
+- m2-session1-radio-r44.css
+- m2-session1-radio-r44.js
+- m2-day1.html
+- pwa.js
+- pwa-r39.js
+- service-worker-r44.js
+- assets/m2-radio-r44/ (42 MP3 + 11 SVG)
+- QA-ACTUARIAL-RADIO-R44.txt
+- SHA256-R44.txt
