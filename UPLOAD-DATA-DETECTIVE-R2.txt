@@ -1,0 +1,9 @@
+UPLOAD — DATA DETECTIVE R2
+
+Upload these two HTML files to the ROOT of the BeingAnActuaryInEnglish repository:
+- m1-day3.html
+- m1-session3-individual.html
+
+The QA file is for you only; it does not need to be uploaded.
+
+Nothing else is required. The game is self-contained apart from the site's existing styles.css and icons. No service worker or global stylesheet is replaced.

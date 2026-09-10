@@ -1,0 +1,29 @@
+DATA DETECTIVE · M1 SESSION 3 · R2 — QA
+
+Scope
+- New individual activity only.
+- No global CSS, service worker, PWA file, M1 Session 1 or Session 2 file is changed.
+
+Content
+- 6 case files / 35 interactive questions.
+- A2–B1 instructions: Look → Choose → Check → Next.
+- Trend vocabulary: rise/fall, peak, fluctuate, level off, recover.
+- Past Simple graph language + by/to/from.
+- Misleading graphs: truncated/narrow axes, missing labels, cherry-picking, missing source/full period.
+- Actuarial context: claims received vs processed.
+
+Functional QA
+PASS - JavaScript syntax check.
+PASS - automated Chromium walkthrough of all 35 questions.
+PASS - all 6 case transitions.
+PASS - wrong-answer retry path.
+PASS - final CASE CLOSED screen.
+PASS - local progress persistence.
+PASS - corrupted/oversized saved question index clamped safely.
+PASS - deterministic correct-answer positions alternate A/B/C/D across the 35 questions.
+PASS - mobile viewport 390 px: 0 px horizontal overflow.
+PASS - no external game assets required.
+PASS - no service-worker changes.
+
+Estimated student time
+- About 15–20 minutes at A2–B1 pace.
