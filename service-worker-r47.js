@@ -1,6 +1,4 @@
-/* R47 emergency compatibility worker at the legacy R39 URL.
-   Current pages still register service-worker-r39.js; replacing this exact file
-   ensures already-deployed pages update to a cache-free worker. */
+/* R47 cache-free service worker. */
 'use strict';
 self.addEventListener('install', event => event.waitUntil(self.skipWaiting()));
 self.addEventListener('activate', event => {
@@ -10,4 +8,4 @@ self.addEventListener('activate', event => {
     await self.clients.claim();
   })());
 });
-/* Deliberately no fetch handler: all resources come directly from GitHub Pages. */
+/* Deliberately no fetch handler. */

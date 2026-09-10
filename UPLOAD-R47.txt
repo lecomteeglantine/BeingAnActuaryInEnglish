@@ -1,0 +1,27 @@
+BEING AN ACTUARY IN ENGLISH — R47 STYLE + CACHE RECOVERY
+
+ROOT CAUSE CONFIRMED
+The current repository has the correct Actuarial English styles.css again, but
+current pwa.js and pwa-r39.js still register service-worker-r39.js. Browsers that
+have the older site state can therefore remain stuck on a stale/mixed global
+stylesheet. The screenshot symptom is exactly this: the M1-specific game CSS
+loads, while the shared header/nav/skip-link CSS is stale.
+
+UPLOAD ALL FIVE FUNCTIONAL FILES TO THE REPOSITORY ROOT, REPLACING EXISTING FILES:
+- styles.css
+- pwa.js
+- pwa-r39.js
+- service-worker-r39.js
+- service-worker-r47.js
+
+WHY service-worker-r39.js IS INCLUDED
+Existing pages currently register that exact filename. Replacing it makes old
+clients receive a cache-clearing, pass-through worker even before they receive
+the new pwa.js.
+
+R47 also changes styles.css to styles.css?v=47 at runtime, defeating ordinary
+browser HTTP cache as well as service-worker cache.
+
+DO NOT REPLACE OR DELETE ANY M1 GAME FILE.
+This package deliberately does not contain m1-session1-individual.html,
+m1-session1-individual-r22.css, its JS, or its images.

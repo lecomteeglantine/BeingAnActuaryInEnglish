@@ -1,57 +1,55 @@
-/* R46 emergency stability fix: replace the global caching service worker with
-   a pass-through worker and clear stale Actuarial English caches. */
+/* R47 global style/cache recovery. */
 (() => {
   'use strict';
+  const VERSION = '47';
+  const RELOAD_FLAG = 'actuarial-r47-reloaded';
+
+  // Force the shared stylesheet through a fresh URL even if the browser has
+  // cached an older styles.css response outside the service-worker cache.
+  document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+    try {
+      const url = new URL(link.href, location.href);
+      if (/\/styles\.css$/.test(url.pathname)) {
+        url.searchParams.set('v', VERSION);
+        if (link.href !== url.href) link.href = url.href;
+      }
+    } catch (_) {}
+  });
+
   if (!('serviceWorker' in navigator)) return;
 
-  const RELOAD_FLAG = 'actuarial-r46-cache-reset-reloaded';
-
-  async function clearActuarialCaches() {
+  async function clearCaches() {
     if (!('caches' in window)) return;
     const keys = await caches.keys();
-    await Promise.all(
-      keys
-        .filter(key => key.startsWith('actuarial-english-'))
-        .map(key => caches.delete(key))
-    );
+    await Promise.all(keys.filter(k => k.startsWith('actuarial-english-')).map(k => caches.delete(k)));
   }
 
   function reloadOnce() {
     try {
       if (sessionStorage.getItem(RELOAD_FLAG)) return;
       sessionStorage.setItem(RELOAD_FLAG, '1');
-    } catch (_) {
-      // If sessionStorage is unavailable, still avoid forcing repeated reloads.
-      return;
-    }
-    window.location.reload();
+    } catch (_) { return; }
+    location.reload();
   }
 
   window.addEventListener('load', async () => {
     try {
-      await clearActuarialCaches();
-
-      let controllerChanged = false;
+      await clearCaches();
+      let changed = false;
       navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (controllerChanged) return;
-        controllerChanged = true;
+        if (changed) return;
+        changed = true;
         reloadOnce();
       });
-
-      const reg = await navigator.serviceWorker.register('./service-worker-r46.js', {
-        scope: './',
-        updateViaCache: 'none'
+      const reg = await navigator.serviceWorker.register('./service-worker-r47.js', {
+        scope: './', updateViaCache: 'none'
       });
       await reg.update().catch(() => {});
-
-      // If R46 already controls this page, the stale cache has been removed.
-      // Reload once so stylesheets/images are fetched directly from GitHub Pages.
-      const controller = navigator.serviceWorker.controller;
-      if (controller && /service-worker-r46\.js(?:$|\?)/.test(controller.scriptURL)) {
+      if (navigator.serviceWorker.controller && /service-worker-r47\.js(?:$|\?)/.test(navigator.serviceWorker.controller.scriptURL)) {
         reloadOnce();
       }
     } catch (err) {
-      console.warn('R46 service-worker reset failed:', err);
+      console.warn('R47 recovery failed:', err);
     }
   });
 })();

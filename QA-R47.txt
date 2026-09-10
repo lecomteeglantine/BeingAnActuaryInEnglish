@@ -1,0 +1,27 @@
+BEING AN ACTUARY IN ENGLISH — R47 QA
+Date: 2026-09-10
+
+PUBLIC STATE CHECK
+PASS - current repository styles.css contains the correct Actuarial English global styles
+PASS - .skip-link is hidden off-screen unless focused
+PASS - .topbar uses the white sticky Actuarial English header
+PASS - .main-nav styles anchor links as navigation pills rather than raw underlined links
+ISSUE - public pwa.js still registers service-worker-r39.js
+ISSUE - public pwa-r39.js still registers service-worker-r39.js
+
+R47 FIX
+PASS - styles.css restored from the last known-good Actuarial English stylesheet
+PASS - legacy service-worker-r39.js replaced by cache-clearing pass-through worker
+PASS - new service-worker-r47.js is cache-clearing and has no fetch interception
+PASS - pwa.js and pwa-r39.js register R47 and force styles.css?v=47
+PASS - all actuarial-english-* Cache Storage entries are cleared
+PASS - one-time reload guard prevents reload loops
+PASS - no M1 game HTML/CSS/JS/assets included or modified
+
+STATIC VALIDATION
+PASS - pwa.js JavaScript syntax
+PASS - pwa-r39.js JavaScript syntax
+PASS - service-worker-r39.js JavaScript syntax
+PASS - service-worker-r47.js JavaScript syntax
+PASS - styles.css braces balanced
+PASS - tinycss2 parsed styles.css with 0 stylesheet errors
