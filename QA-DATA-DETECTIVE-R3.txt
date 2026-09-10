@@ -1,0 +1,35 @@
+DATA DETECTIVE · M1 SESSION 3 · R3 QA
+Date: 2026-09-10
+
+SCOPE
+Only M1 Session 3 files are changed. No global stylesheet, service worker, M1 Session 1 or Session 2 file is included.
+
+FIXES
+PASS - correct answers are saved immediately, before the student clicks Next
+PASS - refreshing after a correct answer no longer makes the student repeat that question
+PASS - Next button guarded against rapid double clicks
+PASS - Open next file button guarded against rapid double clicks
+PASS - saved-state types and ranges are normalised safely
+PASS - corrupted/invalid local state cannot auto-complete or crash the game
+PASS - Restart does not show a confirmation when there is no progress to lose
+PASS - feedback is announced with a polite live region
+PASS - cache-buster/version bumped from R2 to R3
+
+AUTOMATED FUNCTION TEST
+PASS - 35/35 questions completed in Chromium
+PASS - all 6 case transitions completed
+PASS - wrong answer -> retry path works
+PASS - immediate save after correct answer works
+PASS - score reaches 35/35
+PASS - final state reaches CASE CLOSED / 100%
+PASS - corrupt saved state falls back safely
+PASS - mobile width 390px: game content has no horizontal overflow
+PASS - JavaScript syntax check passed
+
+CONTENT CHECK
+PASS - 6 + 6 + 5 + 5 + 5 + 8 = 35 questions
+PASS - trend vocabulary, Past Simple, by/to/from, axes, labels, sources, cherry-picking and claims dashboard remain intact
+PASS - answer-position rotation remains deterministic
+
+RESULT
+No remaining functional bug was detected in the R3 test suite.

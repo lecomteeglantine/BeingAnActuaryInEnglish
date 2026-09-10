@@ -1,0 +1,9 @@
+UPLOAD — M1 SESSION 3 DATA DETECTIVE R3
+
+Upload these TWO functional files directly to the root of the BeingAnActuaryInEnglish repository, replacing the existing versions:
+- m1-day3.html
+- m1-session3-individual.html
+
+QA-DATA-DETECTIVE-R3.txt is only a test report and does not need to be uploaded.
+
+This correction is deliberately targeted: it does NOT include styles.css, pwa files, service workers, Session 1 or Session 2 files.

@@ -8,7 +8,7 @@
 <title>Data Detective · M1 Session 3</title>
 <link rel="icon" href="icons/favicon.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<link rel="stylesheet" href="styles.css?v=s3r2">
+<link rel="stylesheet" href="styles.css?v=s3r3">
 <style>
 :root{--dd-navy:#102a43;--dd-teal:#0b7285;--dd-blue:#2d7ea7;--dd-red:#c83b4d;--dd-gold:#f2c14e;--dd-bg:#f3f7fa;--dd-line:#d7e3ea;--dd-green:#24834c;--dd-muted:#587184;--dd-shadow:0 16px 42px rgba(16,42,67,.12)}
 *{box-sizing:border-box}.dd-main{max-width:1280px;margin:0 auto;padding:28px 24px 72px}.dd-hero{position:relative;overflow:hidden;border-radius:32px;background:linear-gradient(135deg,#091d30 0%,#102a43 45%,#0b7285 100%);color:#fff;min-height:410px;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;box-shadow:var(--dd-shadow)}.dd-hero-copy{padding:48px;position:relative;z-index:2}.dd-kicker{font-size:.76rem;font-weight:950;letter-spacing:.13em;text-transform:uppercase;color:#8ee4e9}.dd-hero h1{font-size:clamp(3.2rem,7vw,6rem);line-height:.88;letter-spacing:-.06em;margin:10px 0 12px}.dd-tagline{font-size:clamp(1.45rem,3vw,2.2rem);font-weight:950;color:#ffd875;margin:0 0 12px}.dd-lead{font-size:1.06rem;line-height:1.6;color:#d9e8ef;max-width:620px}.dd-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.dd-btn,.dd-link{border:0;border-radius:13px;padding:12px 16px;font:850 1rem/1.1 inherit;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px}.dd-btn.primary{background:#fff;color:#102a43}.dd-btn.primary:hover{background:#eaf6f8}.dd-btn.ghost,.dd-link{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.22);color:#fff}.dd-btn:focus-visible,.dd-link:focus-visible,.answer-btn:focus-visible{outline:3px solid #ffd875;outline-offset:3px}.dd-hero-art{padding:25px;min-width:0}.detective-board{position:relative;aspect-ratio:4/3;border-radius:26px;background:#f7f3e8;box-shadow:0 16px 40px rgba(0,0,0,.22);transform:rotate(1deg);overflow:hidden;border:8px solid #caa56a}.pin{position:absolute;width:16px;height:16px;border-radius:50%;background:#c83b4d;box-shadow:0 2px 4px rgba(0,0,0,.3)}.pin.p1{left:12%;top:12%}.pin.p2{right:16%;top:13%}.pin.p3{left:18%;bottom:14%}.paper{position:absolute;background:#fff;border-radius:6px;box-shadow:0 5px 12px rgba(0,0,0,.15);padding:12px}.paper.chart{left:8%;top:10%;width:57%;height:48%;transform:rotate(-3deg)}.paper.note{right:7%;top:18%;width:30%;height:30%;transform:rotate(4deg);font-weight:900;color:#102a43}.paper.file{left:24%;bottom:8%;width:66%;height:33%;transform:rotate(2deg);background:#fff9dc}.red-string{position:absolute;height:3px;background:#c83b4d;transform-origin:left center;opacity:.75}.red-string.s1{left:14%;top:16%;width:62%;transform:rotate(20deg)}.red-string.s2{left:23%;bottom:18%;width:61%;transform:rotate(-26deg)}.mini-chart{width:100%;height:100%}.mini-chart path{fill:none;stroke:#0b7285;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}.mini-chart line{stroke:#cfdbe1;stroke-width:2}.mini-chart circle{fill:#f2c14e;stroke:#102a43;stroke-width:2}.note .big{font-size:2.7rem;display:block}.file strong{display:block;font-size:1.05rem}.file span{display:block;margin-top:6px;color:#526b80;font-size:.84rem}.stamp{position:absolute;right:10px;bottom:8px;border:3px solid #c83b4d;color:#c83b4d;padding:5px 8px;border-radius:8px;font-weight:950;transform:rotate(-8deg);font-size:.78rem}
@@ -43,7 +43,7 @@
 <script>
 (()=>{
 'use strict';
-const KEY='data-detective-m1-s3-r2';
+const KEY='data-detective-m1-s3-r3';
 const counts=[6,6,5,5,5,8];
 const totalQuestions=counts.reduce((a,b)=>a+b,0);
 const missionMeta=[
@@ -62,7 +62,20 @@ const $=s=>document.querySelector(s);
 const els={start:$('#startBtn'),sound:$('#soundBtn'),reset:$('#resetBtn'),shell:$('#gameShell'),mount:$('#gameMount'),progress:$('#progressText'),bar:$('#progressBar'),caseText:$('#caseText'),score:$('#scoreText'),mistakes:$('#mistakeText'),cases:[...document.querySelectorAll('#caseList li')]};
 function safeGet(){try{return localStorage.getItem(KEY)}catch(e){return null}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
-function load(){try{const v=JSON.parse(safeGet());if(!v||!Number.isInteger(v.mission)||!Number.isInteger(v.q))return stateDefault();const mission=Math.min(5,Math.max(0,v.mission));return {...stateDefault(),...v,mission,q:Math.min(counts[mission],Math.max(0,v.q)),score:Math.min(totalQuestions,Math.max(0,Number(v.score)||0)),mistakes:Math.max(0,Math.floor(Number(v.mistakes)||0)),completed:Array.isArray(v.completed)&&v.completed.length===6?v.completed.map(Boolean):Array(6).fill(false)}}catch(e){return stateDefault()}}
+function load(){
+ try{
+  const v=JSON.parse(safeGet());
+  if(!v||typeof v!=='object'||!Number.isInteger(v.mission)||!Number.isInteger(v.q))return stateDefault();
+  const mission=Math.min(5,Math.max(0,v.mission));
+  const q=Math.min(counts[mission],Math.max(0,v.q));
+  const score=Math.min(totalQuestions,Math.max(0,Math.floor(Number(v.score)||0)));
+  const mistakes=Math.max(0,Math.floor(Number(v.mistakes)||0));
+  const completed=Array.isArray(v.completed)&&v.completed.length===6?v.completed.map(Boolean):Array(6).fill(false);
+  for(let i=0;i<mission;i++)completed[i]=true;
+  if(q>=counts[mission])completed[mission]=true;
+  return {started:v.started===true,mission,q,score,mistakes,completed,sound:v.sound!==false,finished:v.finished===true};
+ }catch(e){return stateDefault()}
+}
 function beep(ok=true){if(!state.sound)return;try{const A=window.AudioContext||window.webkitAudioContext;if(!A)return;const c=new A(),o=c.createOscillator(),g=c.createGain();o.frequency.value=ok?660:190;o.type=ok?'sine':'square';g.gain.setValueAtTime(.045,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.16);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.17);o.onended=()=>c.close()}catch(e){}}
 function updateHUD(){const completedBefore=counts.slice(0,state.mission).reduce((a,b)=>a+b,0);const done=Math.min(totalQuestions,completedBefore+Math.min(state.q,counts[state.mission]||0));const pct=state.finished?100:Math.round(done/totalQuestions*100);els.progress.textContent=pct+'%';els.bar.style.width=pct+'%';els.caseText.textContent=state.finished?'Case closed':`File ${state.mission+1}/6`;els.score.textContent=`${state.score}/${totalQuestions}`;els.mistakes.textContent=`${state.mistakes} ${state.mistakes===1?'mistake':'mistakes'}`;els.cases.forEach((x,i)=>{x.classList.toggle('done',state.completed[i]||state.finished);x.classList.toggle('active',!state.finished&&i===state.mission)});els.sound.textContent=state.sound?'🔊 Sound on':'🔇 Sound off';els.sound.setAttribute('aria-pressed',String(state.sound));if(state.started&&!state.finished)els.start.textContent='Continue the case →';if(state.finished)els.start.textContent='View case result →'}
 function lineChart(data,{yMin=0,yMax=null,label='Data',second=null,xLabels=null}={}){const W=520,H=230,p={l:48,r:18,t:25,b:38};const all=second?data.concat(second):data;const max=yMax??Math.max(...all)*1.08;const min=yMin;const x=i=>p.l+i*(W-p.l-p.r)/(data.length-1);const y=v=>p.t+(max-v)*(H-p.t-p.b)/(max-min||1);const pts=a=>a.map((v,i)=>`${x(i)},${y(v)}`).join(' ');let grid='';for(let i=0;i<5;i++){const yy=p.t+i*(H-p.t-p.b)/4;const val=max-i*(max-min)/4;grid+=`<line class="grid" x1="${p.l}" y1="${yy}" x2="${W-p.r}" y2="${yy}"/><text x="${p.l-8}" y="${yy+4}" text-anchor="end">${Math.round(val)}</text>`}let labs='';const labels=xLabels||data.map((_,i)=>String(i+1));labels.forEach((v,i)=>labs+=`<text x="${x(i)}" y="${H-10}" text-anchor="middle">${v}</text>`);return `<svg class="graph-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${label}">${grid}<line class="axis" x1="${p.l}" y1="${p.t}" x2="${p.l}" y2="${H-p.b}"/><line class="axis" x1="${p.l}" y1="${H-p.b}" x2="${W-p.r}" y2="${H-p.b}"/>${labs}<polyline class="line1" points="${pts(data)}"/>${data.map((v,i)=>`<circle class="dot1" cx="${x(i)}" cy="${y(v)}" r="4"/>`).join('')}${second?`<polyline class="line2" points="${pts(second)}"/>${second.map((v,i)=>`<circle class="dot2" cx="${x(i)}" cy="${y(v)}" r="4"/>`).join('')}`:''}</svg>`}
@@ -121,12 +134,40 @@ const all=[trendQs,grammarQs,axisQs,cherryQs,claimsQs,finalQs];
 function frame(body){const m=missionMeta[state.mission];return `<article class="dd-stage"><header class="stage-head"><div><p class="dd-kicker" style="color:#0b7285">${m[1]}</p><h2>${m[2]}</h2><p>${m[3]}</p></div><div class="case-badge" aria-hidden="true">${m[0]}</div></header><div class="stage-body">${body}</div></article>`}
 function optionOrder(n,answer){const base=[0,1,2,3].slice(0,n).filter(i=>i!==answer);const globalQ=counts.slice(0,state.mission).reduce((a,b)=>a+b,0)+state.q;const target=globalQ%n;base.splice(target,0,answer);return base}
 function render(){updateHUD();if(state.finished){renderFinal();return}const qs=all[state.mission];if(state.q>=qs.length){renderClear();return}const item=qs[state.q];const instruction=state.mission===0?'Look at the graph.':state.mission===1?'Fix the sentence.':state.mission===2?'Compare the graphs.':state.mission===3?'Find what is hidden.':state.mission===4?'Read the dashboard.':'One quick check.';const order=optionOrder(item.o.length,item.a);els.mount.innerHTML=frame(`<div class="one-line"><span aria-hidden="true">👉</span><strong>${instruction}</strong><span>Choose one answer.</span></div><p class="q-count">Question ${state.q+1} of ${qs.length}</p><h3 class="question">${item.q}</h3><div class="visual-box">${item.v}</div><div class="option-grid">${order.map((orig,pos)=>`<button class="answer-btn" type="button" data-answer="${orig}"><span>${String.fromCharCode(65+pos)}.</span> ${item.o[orig]}</button>`).join('')}</div><div class="feedback" id="feedback">Choose an answer.</div><div id="nextMount"></div>`);bindAnswers(item)}
-function bindAnswers(item){const buttons=[...els.mount.querySelectorAll('[data-answer]')],fb=$('#feedback'),next=$('#nextMount');buttons.forEach(btn=>btn.addEventListener('click',()=>{if(btn.disabled||locked)return;const i=Number(btn.dataset.answer);if(i===item.a){locked=true;btn.classList.add('correct');buttons.forEach(b=>b.disabled=true);beep(true);fb.className='feedback good';fb.innerHTML='✅ '+item.f;next.innerHTML='<div class="next-row"><button class="next-btn" type="button">Next →</button></div>';next.querySelector('button').addEventListener('click',()=>{if(!locked)return;state.score=Math.min(totalQuestions,state.score+1);state.q++;locked=false;save();render();scrollGame()})}else{btn.classList.add('wrong');btn.disabled=true;state.mistakes++;save();updateHUD();beep(false);fb.className='feedback bad';fb.textContent='Not this one. Try again.'}}))}
-function renderClear(){const m=state.mission;const names=['Trend Scanner','Past Simple Repair','Axis Trap','Cherry-Pick Hunt','Claims Desk','Board Audit'];const icons=['📈','🧰','⚠️','✂️','📋','🔎'];if(!state.completed[m]){state.completed[m]=true;save()}els.mount.innerHTML=frame(`<div class="case-clear"><div class="seal">${m===5?'🏆':'✅'}</div><h3>${m===5?'Final audit complete!':'File closed'}</h3><p>${m===5?'You checked the full board presentation.':`${names[m]} is complete.`}</p><div class="evidence-row"><span>${icons[m]} ${names[m]}</span><span>Evidence: ${state.score}/${totalQuestions}</span></div><button class="next-btn" id="caseNext" type="button">${m===5?'See my result →':'Open next file →'}</button></div>`);$('#caseNext').addEventListener('click',()=>{if(m===5){state.finished=true;save();renderFinal();return}state.mission++;state.q=0;save();render();scrollGame()});updateHUD()}
+function bindAnswers(item){
+ const buttons=[...els.mount.querySelectorAll('[data-answer]')],fb=$('#feedback'),next=$('#nextMount');
+ fb.setAttribute('role','status');fb.setAttribute('aria-live','polite');
+ buttons.forEach(btn=>btn.addEventListener('click',()=>{
+  if(btn.disabled||locked)return;
+  const i=Number(btn.dataset.answer);
+  if(i===item.a){
+   locked=true;btn.classList.add('correct');buttons.forEach(b=>b.disabled=true);beep(true);
+   state.score=Math.min(totalQuestions,state.score+1);state.q++;save();updateHUD();
+   fb.className='feedback good';fb.innerHTML='✅ '+item.f;
+   next.innerHTML='<div class="next-row"><button class="next-btn" type="button">Next →</button></div>';
+   const nextBtn=next.querySelector('button');
+   nextBtn.addEventListener('click',()=>{if(nextBtn.disabled)return;nextBtn.disabled=true;locked=false;render();scrollGame()});
+  }else{
+   btn.classList.add('wrong');btn.disabled=true;state.mistakes++;save();updateHUD();beep(false);fb.className='feedback bad';fb.textContent='Not this one. Try again.';
+  }
+ }))
+}
+function renderClear(){
+ const m=state.mission;const names=['Trend Scanner','Past Simple Repair','Axis Trap','Cherry-Pick Hunt','Claims Desk','Board Audit'];const icons=['📈','🧰','⚠️','✂️','📋','🔎'];
+ if(!state.completed[m]){state.completed[m]=true;save()}
+ els.mount.innerHTML=frame(`<div class="case-clear"><div class="seal">${m===5?'🏆':'✅'}</div><h3>${m===5?'Final audit complete!':'File closed'}</h3><p>${m===5?'You checked the full board presentation.':`${names[m]} is complete.`}</p><div class="evidence-row"><span>${icons[m]} ${names[m]}</span><span>Evidence: ${state.score}/${totalQuestions}</span></div><button class="next-btn" id="caseNext" type="button">${m===5?'See my result →':'Open next file →'}</button></div>`);
+ const caseNext=$('#caseNext');
+ caseNext.addEventListener('click',()=>{
+  if(caseNext.disabled)return;caseNext.disabled=true;
+  if(m===5){state.finished=true;save();renderFinal();return}
+  state.mission++;state.q=0;save();render();scrollGame()
+ });
+ updateHUD()
+}
 function renderFinal(){const attempts=totalQuestions+state.mistakes;const pct=Math.round(totalQuestions/Math.max(1,attempts)*100);const label=pct>=90?'GRAPH GUARDIAN':pct>=75?'DATA DETECTIVE':'CASE SOLVER';els.mount.innerHTML=`<article class="dd-stage"><div class="stage-body"><div class="final-card"><div class="detective-seal">CASE CLOSED</div><h3>${label}</h3><p>You finished all 6 files.</p><div class="final-score">Accuracy: ${pct}% · ${state.mistakes} ${state.mistakes===1?'mistake':'mistakes'}</div><div class="evidence-row"><span>📈 Trends</span><span>🧰 Past Simple</span><span>⚠️ Axes</span><span>✂️ Cherry-picking</span><span>📋 Claims</span></div><button class="dd-btn primary" id="replayBtn" type="button">Play again</button></div></div></article>`;state.finished=true;save();updateHUD();$('#replayBtn').addEventListener('click',reset)}
 function scrollGame(){setTimeout(()=>els.mount.scrollIntoView({behavior:'smooth',block:'start'}),20)}
 function start(){if(startLocked)return;startLocked=true;state.started=true;els.shell.hidden=false;save();render();scrollGame();setTimeout(()=>{startLocked=false},180)}
-function reset(){if(!confirm('Restart Data Detective from Case 1?'))return;state=stateDefault();locked=false;startLocked=false;try{localStorage.removeItem(KEY)}catch(e){}els.shell.hidden=true;els.start.textContent='Start the case →';updateHUD();window.scrollTo({top:0,behavior:'smooth'})}
+function reset(){const hasProgress=state.started&&(state.mission>0||state.q>0||state.score>0||state.mistakes>0||state.finished);if(hasProgress&&!confirm('Restart Data Detective from Case 1?'))return;state=stateDefault();locked=false;startLocked=false;try{localStorage.removeItem(KEY)}catch(e){}els.shell.hidden=true;els.start.textContent='Start the case →';updateHUD();window.scrollTo({top:0,behavior:'smooth'})}
 els.start.addEventListener('click',start);els.sound.addEventListener('click',()=>{state.sound=!state.sound;save();updateHUD();if(state.sound)beep(true)});els.reset.addEventListener('click',reset);updateHUD();if(state.started){els.shell.hidden=false;render()}
 })();
 </script>
