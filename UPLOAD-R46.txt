@@ -1,0 +1,27 @@
+BEING AN ACTUARY IN ENGLISH — R46 GLOBAL CACHE RESET
+
+WHY THIS FIX EXISTS
+The previous Actuarial Radio R44 package registered service-worker-r44.js for the
+whole site. That worker cached shared files such as styles.css and M1 pages. A
+browser could therefore display a stale/mixed stylesheet even though the M1 files
+in the GitHub repository were correct.
+
+UPLOAD
+1. Unzip this ZIP.
+2. Upload these THREE functional files directly to the ROOT of the repository:
+   - pwa.js
+   - pwa-r39.js
+   - service-worker-r46.js
+3. Replace pwa.js and pwa-r39.js when GitHub asks.
+4. Commit and wait for GitHub Pages deployment.
+5. Open any page of the site. R46 clears the old Actuarial-English caches and
+   reloads once automatically.
+
+DO NOT CHANGE OR DELETE
+- m1-session1-individual.html
+- m1-session1-individual-r22.css
+- styles.css
+- any M1 game asset
+
+R46 deliberately does not intercept fetch requests. This removes the source of
+stale/mixed CSS while leaving the course pages and games untouched.
