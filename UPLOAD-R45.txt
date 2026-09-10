@@ -1,0 +1,14 @@
+ACTUARIAL RADIO R45 — SELF-CONTAINED FIX
+
+Upload ONLY these two HTML files to the repository root, replacing the existing files:
+- m2-session1-radio.html
+- m2-day1.html
+
+The radio page is now self-contained:
+- all 42 MP3 audio files are embedded directly in m2-session1-radio.html
+- all 11 SVG illustrations are embedded directly in m2-session1-radio.html
+- the activity-specific CSS and JavaScript are embedded directly in m2-session1-radio.html
+- no new assets folder is required for this activity
+- no radio-specific CSS or JS file is required
+
+This avoids broken GitHub Pages asset paths and cache mismatches.

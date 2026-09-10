@@ -1,0 +1,30 @@
+ACTUARIAL RADIO R45 — SELF-CONTAINED EMERGENCY FIX
+Date: 2026-09-09
+
+CAUSE FIXED
+- R44 depended on a new assets/m2-radio-r44 folder. On the public deployment those assets were not being served correctly, producing broken illustration placeholders.
+- R45 removes that dependency entirely.
+
+R45 ARCHITECTURE
+PASS - 42 MP3 files embedded directly in m2-session1-radio.html
+PASS - 11 SVG illustrations embedded directly in m2-session1-radio.html
+PASS - activity CSS embedded directly in m2-session1-radio.html
+PASS - activity JavaScript embedded directly in m2-session1-radio.html
+PASS - no radio-specific external asset folder required
+
+FUNCTIONAL TESTS
+PASS - Chromium full automated route: Mission 1 -> Mission 2 -> Mission 3 -> Mission 4 -> Mission 5 -> 60-second final -> ON AIR
+PASS - all four illustrated advert posters render as embedded data images
+PASS - six mission preview illustrations render as embedded data images
+PASS - start and final double-click guards preserved
+PASS - final timer race fix preserved
+PASS - mobile viewport 390x844 without meaningful horizontal overflow
+PASS - desktop render visually checked at 1440x1000
+PASS - inline JavaScript syntax check passed
+
+UPLOAD
+Replace only:
+- m2-session1-radio.html
+- m2-day1.html
+
+No assets folder is needed for R45.
