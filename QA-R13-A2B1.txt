@@ -1,0 +1,12 @@
+R13 A2/B1 QA
+
+PASS - m1-session2-simple-a2b1-r13.js syntax valid
+PASS - setup simplified to one short choice: 3 or 4 students
+PASS - role names simplified to Student 1 / Student 2 / Student 3 / Student 4
+PASS - gallery instructions reduced to 3 short actions
+PASS - curator briefings simplified for all four rooms
+PASS - audio briefing interception uses the same short A2/B1 instruction
+PASS - pitch note instruction simplified: keep the game-generated note
+PASS - final task reduced to 3 short steps
+PASS - dynamic re-render test passed in Chromium
+PASS - existing R11 game engine, score, choices, timer, audio and save logic are untouched
