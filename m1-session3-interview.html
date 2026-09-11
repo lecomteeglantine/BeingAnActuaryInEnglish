@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f3558">
+<meta name="description" content="The Actuary Interview Challenge: a 3–4 student group activity practising Present Perfect and Past Simple through an actuarial recruitment interview.">
+<title>The Actuary Interview Challenge · M1 Session 3</title>
+<link rel="icon" href="icons/favicon.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="m1-session3-interview.css">
+</head>
+<body class="interview-page">
+<a class="skip-link" href="#interviewApp">Skip to the game</a>
+<header class="topbar interview-sitebar"><a class="brand" href="index.html"><span aria-hidden="true" class="brand-mark">📊</span><span><strong>Actuarial English</strong></span></a><nav aria-label="Game navigation" class="main-nav"><a href="m1-day3.html">← Session 3</a><a href="m1.html">All M1 sessions</a></nav></header>
+<main id="interviewApp" class="interview-shell" tabindex="-1">
+<section class="interview-hero" aria-labelledby="gameTitle">
+<div class="hero-copy"><p class="eyebrow">M1 · SESSION 3 · GROUP ACTIVITY</p><h1 id="gameTitle">The Actuary Interview Challenge</h1><p class="tagline">Ask. Follow up. Decide.</p><p class="hero-lead">Your team is recruiting an actuary. Use the right tense, run the interview and make a clear hiring decision.</p><div class="hero-badges"><span>👥 3 or 4 students</span><span>🗣️ English only</span><span>⏱️ 20–25 min</span><span>🎤 2-min pitch</span></div><div class="hero-actions"><button class="interview-btn primary" id="heroStart" type="button">Start →</button><button class="interview-btn ghost" id="resetBtn" type="button">↺ Restart</button></div></div>
+<div class="hero-art"><img src="assets/session3-interview/interview-hero.jpg" alt="A professional interview panel speaking with an actuarial candidate in a modern office."></div>
+</section>
+<section class="quick-rules" aria-labelledby="rulesTitle"><div><p class="eyebrow">HOW TO PLAY</p><h2 id="rulesTitle">Six steps. Keep it simple.</h2></div><ol><li><strong>Choose</strong> 3 or 4 players.</li><li><strong>Read</strong> the candidate file.</li><li><strong>Build</strong> your questions.</li><li><strong>Interview</strong> the candidate.</li><li><strong>Decide</strong>: hire or don't hire.</li><li><strong>Pitch</strong> your decision in 2 minutes.</li></ol></section>
+<section id="gameArea" class="game-area" hidden>
+<aside class="progress-panel" aria-label="Game progress"><div><p class="eyebrow">INTERVIEW FILE</p><strong id="stepLabel">Team setup</strong></div><div id="progressSteps" class="progress-steps"></div><div class="readiness"><span>Interview readiness</span><strong id="readinessScore">0%</strong><div class="readiness-track"><i id="readinessBar"></i></div></div></aside>
+<section class="game-panel"><div id="screen" class="screen"></div></section>
+<aside class="pitch-panel" aria-labelledby="pitchTitle"><p class="eyebrow">LIVE PITCH BUILDER</p><h2 id="pitchTitle">Your final decision</h2><div id="pitchNotes" class="pitch-notes"></div><div class="pitch-stats"><span><b id="wordCount">0</b> words</span><span>≈ <b id="timeEstimate">0:00</b></span></div><p class="small-note">Keep notes short. You are preparing a spoken pitch, not an essay.</p></aside>
+</section>
+<div class="status" id="status" aria-live="polite" aria-atomic="true"></div>
+</main>
+<footer class="site-footer interview-footer"><p><strong>Actuarial English · M1 Session 3</strong></p><p class="footer-credit">Created by Mrs Lecomte and Mr Lemoine, with the help of Chat GPT</p><p class="privacy"><strong>Privacy &amp; GDPR:</strong> progress and notes stay only in this browser. <a href="privacy.html">Privacy details</a> · <a href="accessibility.html">Accessibility</a></p></footer>
+<script src="m1-session3-interview.js"></script><script defer src="pwa-r39.js"></script>
+</body></html>
