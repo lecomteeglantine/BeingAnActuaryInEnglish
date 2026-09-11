@@ -1,7 +1,7 @@
 (() => {
 'use strict';
-const STORAGE_KEY='being-an-actuary-m1-session3-interview-r3';
-const LEGACY_KEYS=['being-an-actuary-m1-session3-interview-r2'];
+const STORAGE_KEY='being-an-actuary-m1-session3-interview-r4';
+const LEGACY_KEYS=['being-an-actuary-m1-session3-interview-r3','being-an-actuary-m1-session3-interview-r2'];
 const steps=['Team','Profile','Grammar','Questions','Interview','Decision','Pitch'];
 const roles={
   3:[
@@ -49,13 +49,16 @@ const qbank=[
 const emptyState=()=>({step:0,players:null,grammarAnswers:{},questions:[],roundsDone:[],decision:'',strength1:'',strength2:'',concern:'',pitchDraft:'',timer:120,running:false});
 let state=emptyState();
 let timerId=null;
+let timerDeadline=0;
 const $=s=>document.querySelector(s);
 const screen=$('#screen'),gameArea=$('#gameArea'),status=$('#status');
 function esc(s=''){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
 function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({...state,running:false}));}catch(e){}}
 function load(){
   try{
-    const raw=localStorage.getItem(STORAGE_KEY); if(!raw)return;
+    let raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw){for(const k of LEGACY_KEYS){raw=localStorage.getItem(k);if(raw)break;}}
+    if(!raw)return;
     const x=JSON.parse(raw);
     state={...emptyState(),...x,running:false};
     state.step=Number.isInteger(state.step)?Math.max(0,Math.min(6,state.step)):0;
@@ -90,7 +93,13 @@ function load(){
   }catch(e){state=emptyState();}
 }
 function toast(msg){status.textContent=msg;status.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>status.classList.remove('show'),2600);}
-function selectedQuestions(){return state.questions.map(id=>qbank.find(q=>q.id===id)).filter(Boolean);}
+function selectedQuestions(){
+  const pp=qbank.filter(q=>q.good&&q.type==='pp'&&state.questions.includes(q.id));
+  const ps=qbank.filter(q=>q.good&&q.type==='ps'&&state.questions.includes(q.id));
+  const ordered=[];
+  for(let i=0;i<Math.max(pp.length,ps.length);i++){if(pp[i])ordered.push(pp[i]);if(ps[i])ordered.push(ps[i]);}
+  return ordered;
+}
 function progress(){
   const cur=Math.min(state.step,6);
   $('#stepLabel').textContent=steps[cur]||'Complete';
@@ -131,15 +140,15 @@ function back(){state.step=Math.max(0,state.step-1);render();}
 function actions(nextLabel='Continue →',disabled=false){return `<div class="screen-actions">${state.step>0?'<button class="interview-btn ghost" id="backBtn" type="button">← Back</button>':''}<button class="interview-btn primary" id="nextBtn" type="button" ${disabled?'disabled':''}>${nextLabel}</button></div>`;}
 function bindNav(onNext){$('#backBtn')?.addEventListener('click',back);$('#nextBtn')?.addEventListener('click',onNext||next);}
 function render(){
-  clearInterval(timerId); state.running=false; gameArea.hidden=false; update();
+  clearInterval(timerId); timerDeadline=0; state.running=false; gameArea.hidden=false; update();
   if(state.step===0)renderTeam(); else if(state.step===1)renderProfile(); else if(state.step===2)renderGrammar(); else if(state.step===3)renderQuestions(); else if(state.step===4)renderInterview(); else if(state.step===5)renderDecision(); else renderPitch();
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   window.scrollTo({top:Math.max(0,gameArea.offsetTop-80),behavior:reduce?'auto':'smooth'});
 }
 function renderTeam(){
-  screen.innerHTML=`<p class="eyebrow">STEP 1 · TEAM</p><h2>Choose your team</h2><p class="screen-lead">Choose <strong>3 or 4 players</strong>. Roles appear automatically.</p><div class="choice-grid"><button class="player-choice ${state.players===3?'selected':''}" data-p="3" type="button"><span class="big-num">3</span><h3>3 players</h3><p>Lead · Experience · Candidate + notes</p></button><button class="player-choice ${state.players===4?'selected':''}" data-p="4" type="button"><span class="big-num">4</span><h3>4 players</h3><p>Lead · Experience · Follow-up · Candidate</p></button></div><div id="rolesWrap"></div>${actions('Read the candidate file →',!state.players)}`;
+  screen.innerHTML=`<p class="eyebrow">STEP 1 · TEAM</p><h2>Choose your team</h2><p class="screen-lead">Choose <strong>3 or 4 players</strong>. Roles appear automatically.</p><div class="choice-grid"><button class="player-choice ${state.players===3?'selected':''}" data-p="3" type="button" aria-pressed="${state.players===3?'true':'false'}"><span class="big-num">3</span><h3>3 players</h3><p>Lead · Experience · Candidate + notes</p></button><button class="player-choice ${state.players===4?'selected':''}" data-p="4" type="button" aria-pressed="${state.players===4?'true':'false'}"><span class="big-num">4</span><h3>4 players</h3><p>Lead · Experience · Follow-up · Candidate</p></button></div><div id="rolesWrap"></div>${actions('Read the candidate file →',!state.players)}`;
   const showRoles=()=>{$('#rolesWrap').innerHTML=state.players?`<div class="role-list">${roles[state.players].map(r=>`<div class="role-card"><span class="role-icon">${r[2]}</span><div><strong>${esc(r[0])}</strong><small>${esc(r[1])}</small></div></div>`).join('')}</div>`:'';$('#nextBtn').disabled=!state.players;};
-  document.querySelectorAll('[data-p]').forEach(b=>b.addEventListener('click',()=>{const chosen=+b.dataset.p;if(state.players!==chosen){state.players=chosen;clearAfterTeamChange();}document.querySelectorAll('[data-p]').forEach(x=>x.classList.toggle('selected',+x.dataset.p===state.players));showRoles();update();}));showRoles();bindNav();
+  document.querySelectorAll('[data-p]').forEach(b=>b.addEventListener('click',()=>{const chosen=+b.dataset.p;if(state.players!==chosen){state.players=chosen;clearAfterTeamChange();}document.querySelectorAll('[data-p]').forEach(x=>{const on=+x.dataset.p===state.players;x.classList.toggle('selected',on);x.setAttribute('aria-pressed',on?'true':'false');});showRoles();update();}));showRoles();bindNav();
 }
 function renderProfile(){
   screen.innerHTML=`<p class="eyebrow">STEP 2 · CANDIDATE FILE</p><h2>Meet Lerato</h2><p class="screen-lead">Read the six facts. Keep Yashna's video in mind: exams, setbacks, resilience and experience.</p><div class="video-link-card"><img src="session3-yashna-video-still.jpg" alt="Still image of the speaker from the Session 3 video."><div><p class="eyebrow">VIDEO LINK</p><h3>What can experience teach an actuary?</h3><p>Use that idea when you evaluate this fictional candidate.</p></div></div><article class="candidate-card"><div class="candidate-head"><div><p class="eyebrow" style="color:#bfe4ff">FICTIONAL CANDIDATE</p><h3>${candidate.name}</h3><p>${candidate.role}</p></div><div class="candidate-avatar">LM</div></div><div class="candidate-body">${candidate.facts.map(f=>`<div class="candidate-fact"><span>${esc(f[0])}</span><strong>${esc(f[1])}</strong></div>`).join('')}</div></article><div class="grammar-strip"><div class="grammar-box ps"><strong>Past Simple</strong>Finished past: <em>in 2022, in 2024, when…</em></div><div class="grammar-box pp"><strong>Present Perfect</strong>Experience up to now: <em>ever, so far, since…</em></div></div>${actions('Quick grammar check →')}`;bindNav();
@@ -151,7 +160,7 @@ function renderGrammar(){
 }
 function renderQuestions(){
   const selected=state.questions,pp=selected.filter(id=>qbank.find(q=>q.id===id)?.type==='pp').length,ps=selected.filter(id=>qbank.find(q=>q.id===id)?.type==='ps').length;
-  screen.innerHTML=`<p class="eyebrow">STEP 4 · QUESTIONS</p><h2>Choose 6 questions</h2><p class="screen-lead">Choose <strong>3 green</strong> experience questions and <strong>3 blue</strong> past-detail questions. Some cards are grammar traps.</p><div class="question-help"><div class="pp-help"><strong>Present Perfect</strong><br>experience up to now</div><div class="ps-help"><strong>Past Simple</strong><br>finished past details</div></div><p class="counter">Present Perfect: ${pp}/3 · Past Simple: ${ps}/3</p><div class="question-bank">${qbank.map(q=>`<button type="button" class="question-card ${selected.includes(q.id)?'selected':''}" data-qid="${q.id}"><span class="type ${q.type}">${q.type==='pp'?'PRESENT PERFECT':'PAST SIMPLE'}</span><p>${esc(q.text)}</p></button>`).join('')}</div>${actions('Run the interview →',pp!==3||ps!==3)}`;
+  screen.innerHTML=`<p class="eyebrow">STEP 4 · QUESTIONS</p><h2>Choose 6 questions</h2><p class="screen-lead">Choose <strong>3 green</strong> experience questions and <strong>3 blue</strong> past-detail questions. Some cards are grammar traps.</p><div class="question-help"><div class="pp-help"><strong>Present Perfect</strong><br>experience up to now</div><div class="ps-help"><strong>Past Simple</strong><br>finished past details</div></div><p class="counter">Present Perfect: ${pp}/3 · Past Simple: ${ps}/3</p><div class="question-bank">${qbank.map(q=>`<button type="button" class="question-card ${selected.includes(q.id)?'selected':''}" data-qid="${q.id}" aria-pressed="${selected.includes(q.id)?'true':'false'}"><span class="type ${q.type}">${q.type==='pp'?'PRESENT PERFECT':'PAST SIMPLE'}</span><p>${esc(q.text)}</p></button>`).join('')}</div>${actions('Run the interview →',pp!==3||ps!==3)}`;
   document.querySelectorAll('[data-qid]').forEach(b=>b.addEventListener('click',()=>{
     const q=qbank.find(x=>x.id===b.dataset.qid); if(!q)return;
     if(!q.good){b.classList.add('trap');setTimeout(()=>b.classList.remove('trap'),650);toast(`Grammar trap. ${q.fix}`);return;}
@@ -175,7 +184,7 @@ function renderInterview(){
   document.querySelectorAll('.reveal-btn').forEach(b=>b.addEventListener('click',()=>{const i=+b.dataset.ri;if(i!==state.roundsDone.length||state.roundsDone.includes(i))return;state.roundsDone.push(i);toast('Evidence added to your notes.');save();renderInterview();update();}));bindNav();
 }
 function renderDecision(){
-  screen.innerHTML=`<p class="eyebrow">STEP 6 · DECISION</p><h2>Hire or don't hire?</h2><p class="screen-lead">Choose one option. Add <strong>2 strengths</strong> and <strong>1 concern</strong> from the interview.</p><div class="decision-grid"><button type="button" class="decision-card hire ${state.decision==='hire'?'selected':''}" data-d="hire"><h3>✅ HIRE</h3><p>The evidence is strong enough.</p></button><button type="button" class="decision-card nohire ${state.decision==='nohire'?'selected':''}" data-d="nohire"><h3>❌ DON'T HIRE</h3><p>Important gaps remain.</p></button></div><div class="evidence-fields"><label>Strength 1<textarea id="s1" placeholder="She has worked on…">${esc(state.strength1)}</textarea></label><label>Strength 2<textarea id="s2" placeholder="She has learned…">${esc(state.strength2)}</textarea></label><label>One concern<textarea id="concern" placeholder="She hasn't… yet.">${esc(state.concern)}</textarea></label></div>${actions('Build the 2-minute pitch →',!state.decision||!state.strength1.trim()||!state.strength2.trim()||!state.concern.trim())}`;
+  screen.innerHTML=`<p class="eyebrow">STEP 6 · DECISION</p><h2>Hire or don't hire?</h2><p class="screen-lead">Choose one option. Add <strong>2 strengths</strong> and <strong>1 concern</strong> from the interview.</p><div class="decision-grid"><button type="button" class="decision-card hire ${state.decision==='hire'?'selected':''}" data-d="hire" aria-pressed="${state.decision==='hire'?'true':'false'}"><h3>✅ HIRE</h3><p>The evidence is strong enough.</p></button><button type="button" class="decision-card nohire ${state.decision==='nohire'?'selected':''}" data-d="nohire" aria-pressed="${state.decision==='nohire'?'true':'false'}"><h3>❌ DON'T HIRE</h3><p>Important gaps remain.</p></button></div><div class="evidence-fields"><label>Strength 1<textarea id="s1" maxlength="240" placeholder="She has worked on…">${esc(state.strength1)}</textarea></label><label>Strength 2<textarea id="s2" maxlength="240" placeholder="She has learned…">${esc(state.strength2)}</textarea></label><label>One concern<textarea id="concern" maxlength="240" placeholder="She hasn't… yet.">${esc(state.concern)}</textarea></label></div>${actions('Build the 2-minute pitch →',!state.decision||!state.strength1.trim()||!state.strength2.trim()||!state.concern.trim())}`;
   document.querySelectorAll('[data-d]').forEach(b=>b.addEventListener('click',()=>{state.decision=b.dataset.d;state.pitchDraft='';save();renderDecision();update();}));
   ['s1','s2','concern'].forEach(id=>$('#'+id).addEventListener('input',e=>{if(id==='s1')state.strength1=e.target.value;if(id==='s2')state.strength2=e.target.value;if(id==='concern')state.concern=e.target.value;state.pitchDraft='';$('#nextBtn').disabled=!state.decision||!state.strength1.trim()||!state.strength2.trim()||!state.concern.trim();update();}));bindNav();
 }
@@ -193,21 +202,28 @@ After discussing the evidence, we have decided to ${dec}. The main reason is tha
 function renderPitch(){
   if(!state.pitchDraft)state.pitchDraft=defaultPitch();
   const order=state.players===4?['Player 1: introduce + open the recommendation','Player 2: give finished past details','Player 3: give experience up to now','Player 4: strengths, concern and decision']:['Player 1: introduce + past details','Player 2: experience + strengths','Player 3: concern + decision'];
-  screen.innerHTML=`<p class="eyebrow">FINAL · 2-MINUTE TEAM PITCH</p><h2>Present your decision</h2><p class="screen-lead">Every student speaks. Aim for 120–180 words and stop at 2:00.</p><div class="final-grid"><div><label for="finalScript"><strong>Your team script</strong></label><textarea id="finalScript" class="final-script">${esc(state.pitchDraft)}</textarea></div><div class="timer-card"><p class="eyebrow" style="color:#bfe4ff">PRACTICE TIMER</p><div id="timerDisplay" class="time">${fmt(state.timer)}</div><div class="timer-actions"><button type="button" class="interview-btn" id="timerStart">${state.timer===0?'Restart':'Start'}</button><button type="button" class="interview-btn" id="timerReset">Reset</button></div><div class="speaking-order"><strong>Speaking order</strong><ol>${order.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div></div></div><div class="grammar-strip"><div class="grammar-box ps"><strong>Past Simple</strong><em>completed, started, failed, retook…</em></div><div class="grammar-box pp"><strong>Present Perfect</strong><em>has worked, has taken, has learned…</em></div></div><div class="screen-actions"><button class="interview-btn ghost" id="backBtn" type="button">← Back</button><button class="interview-btn success" id="copyBtn" type="button">Copy pitch</button></div>`;
+  screen.innerHTML=`<p class="eyebrow">FINAL · 2-MINUTE TEAM PITCH</p><h2>Present your decision</h2><p class="screen-lead">Every student speaks. Aim for 120–180 words and stop at 2:00.</p><div class="final-grid"><div><label for="finalScript"><strong>Your team script</strong></label><textarea id="finalScript" class="final-script" maxlength="2200">${esc(state.pitchDraft)}</textarea></div><div class="timer-card"><p class="eyebrow" style="color:#bfe4ff">PRACTICE TIMER</p><div id="timerDisplay" class="time">${fmt(state.timer)}</div><div class="timer-actions"><button type="button" class="interview-btn" id="timerStart">${state.timer===0?'Restart':'Start'}</button><button type="button" class="interview-btn" id="timerReset">Reset</button></div><div class="speaking-order"><strong>Speaking order</strong><ol>${order.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div></div></div><div class="grammar-strip"><div class="grammar-box ps"><strong>Past Simple</strong><em>completed, started, failed, retook…</em></div><div class="grammar-box pp"><strong>Present Perfect</strong><em>has worked, has taken, has learned…</em></div></div><div class="screen-actions"><button class="interview-btn ghost" id="backBtn" type="button">← Back</button><button class="interview-btn success" id="copyBtn" type="button">Copy pitch</button></div>`;
   $('#finalScript').addEventListener('input',e=>{state.pitchDraft=e.target.value;update();});
   $('#backBtn').addEventListener('click',back);
-  $('#copyBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('#finalScript').value);toast('Pitch copied.');}catch(e){$('#finalScript').focus();$('#finalScript').select();toast('Select and copy your pitch.');}});
+  $('#copyBtn').addEventListener('click',async()=>{const box=$('#finalScript');try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(box.value);toast('Pitch copied.');}else{throw new Error('clipboard unavailable');}}catch(e){box.focus();box.select();try{document.execCommand('copy');toast('Pitch copied.');}catch(_){toast('Select and copy your pitch.');}}});
   $('#timerStart').addEventListener('click',toggleTimer); $('#timerReset').addEventListener('click',resetTimer); update();
 }
 function fmt(n){return `${Math.floor(n/60)}:${String(n%60).padStart(2,'0')}`;}
+function syncTimer(){
+  if(!state.running||!timerDeadline)return;
+  state.timer=Math.max(0,Math.ceil((timerDeadline-Date.now())/1000));
+  const d=$('#timerDisplay');if(d)d.textContent=fmt(state.timer);
+  if(state.timer===0){clearInterval(timerId);timerId=null;timerDeadline=0;state.running=false;const btn=$('#timerStart');if(btn)btn.textContent='Restart';toast('Time! Finish your final sentence.');}
+  save();
+}
 function toggleTimer(){
   const btn=$('#timerStart'); if(!btn)return;
-  if(state.running){clearInterval(timerId);state.running=false;btn.textContent='Resume';save();return;}
-  if(state.timer<=0){state.timer=120;$('#timerDisplay').textContent='2:00';}
-  state.running=true;btn.textContent='Pause';
-  timerId=setInterval(()=>{state.timer=Math.max(0,state.timer-1);const d=$('#timerDisplay');if(d)d.textContent=fmt(state.timer);if(state.timer===0){clearInterval(timerId);state.running=false;btn.textContent='Restart';toast('Time! Finish your final sentence.');}save();},1000);
+  if(state.running){syncTimer();clearInterval(timerId);timerId=null;timerDeadline=0;state.running=false;btn.textContent='Resume';save();return;}
+  if(state.timer<=0){state.timer=120;const d=$('#timerDisplay');if(d)d.textContent='2:00';}
+  state.running=true;timerDeadline=Date.now()+state.timer*1000;btn.textContent='Pause';
+  clearInterval(timerId);timerId=setInterval(syncTimer,250);syncTimer();
 }
-function resetTimer(){clearInterval(timerId);state.running=false;state.timer=120;$('#timerDisplay').textContent='2:00';$('#timerStart').textContent='Start';save();}
+function resetTimer(){clearInterval(timerId);timerId=null;timerDeadline=0;state.running=false;state.timer=120;const d=$('#timerDisplay');if(d)d.textContent='2:00';const b=$('#timerStart');if(b)b.textContent='Start';save();}
 function reset(){if(!confirm('Restart the interview challenge and clear this team\'s progress?'))return;clearInterval(timerId);try{localStorage.removeItem(STORAGE_KEY);LEGACY_KEYS.forEach(k=>localStorage.removeItem(k));}catch(e){}state=emptyState();gameArea.hidden=true;update();window.scrollTo({top:0,behavior:'smooth'});}
-$('#heroStart').addEventListener('click',startGame); $('#resetBtn').addEventListener('click',reset); load(); if(state.players||state.step>0){gameArea.hidden=false;render();}else update();
+$('#heroStart').addEventListener('click',startGame); $('#resetBtn').addEventListener('click',reset); load(); if(state.players||state.step>0){$('#heroStart').textContent='Continue →';gameArea.hidden=false;render();}else update();
 })();
