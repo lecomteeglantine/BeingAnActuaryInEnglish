@@ -4,3 +4,20 @@
 @media(max-width:800px){.interview-shell{padding:12px 10px 40px}.interview-hero{grid-template-columns:1fr}.hero-art{min-height:260px;order:-1}.hero-copy{padding:26px 22px}.quick-rules{grid-template-columns:1fr;padding:20px}.quick-rules ol{grid-template-columns:repeat(2,minmax(0,1fr))}.game-panel{padding:16px;min-height:unset}.choice-grid,.question-bank,.decision-grid,.final-grid{grid-template-columns:1fr}.candidate-body{grid-template-columns:1fr}.candidate-fact:nth-child(odd){border-right:0}.video-link-card{grid-template-columns:1fr}.video-link-card img{height:210px}.evidence-fields{grid-template-columns:1fr}.grammar-strip{grid-template-columns:1fr}.pitch-notes{grid-template-columns:1fr}.progress-steps{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:480px){.quick-rules ol{grid-template-columns:1fr}.interview-btn{width:100%}.hero-actions,.screen-actions{display:grid;grid-template-columns:1fr}.progress-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+/* R2 clarity + stability */
+.quick-rules ol{grid-template-columns:repeat(5,minmax(0,1fr));padding-left:0;list-style:none;counter-reset:rule}
+.quick-rules li{counter-increment:rule;display:flex;gap:8px;align-items:flex-start;font-weight:750}
+.quick-rules li::before{content:counter(rule);display:grid;place-items:center;flex:0 0 26px;width:26px;height:26px;border-radius:50%;background:var(--green);color:#fff;font-weight:900}
+.question-card.trap{animation:trapShake .22s linear 2;border-color:#dd695f;background:#fff6f5}
+@keyframes trapShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.question-help{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 14px}
+.question-help div{padding:10px 12px;border-radius:12px;border:1px solid var(--line);font-size:.9rem;line-height:1.35}
+.question-help .pp-help{background:var(--mint)}
+.question-help .ps-help{background:var(--sky)}
+.interview-round.locked{opacity:.58}
+.interview-round.locked .reveal-btn{cursor:not-allowed}
+.round-type{display:inline-block;margin-left:7px;padding:4px 8px;border-radius:999px;font-size:.7rem;font-weight:900}
+.round-type.pp{background:#dff5e8;color:#17623d}.round-type.ps{background:#e2f2ff;color:#145982}
+@media(max-width:1100px){.quick-rules ol{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:800px){.quick-rules ol{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.quick-rules ol{grid-template-columns:1fr}}
