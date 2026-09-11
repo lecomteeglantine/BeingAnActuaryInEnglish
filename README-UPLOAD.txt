@@ -1,22 +1,22 @@
-M1 DAY 4 — GROUP ACTIVITY R4
+M1 DAY 4 — GROUP ACTIVITY R5
 
-Upload ALL files from this ZIP to the ROOT of the BeingAnActuaryInEnglish repository.
-There is NO enclosing folder.
+Upload these files directly to the ROOT of the BeingAnActuaryInEnglish repository.
+Replace the two existing HTML files when GitHub asks.
 
-Replace:
+Files:
 - m1-day4.html
 - m1-day4-global-team-risk-room.html
+- day4-hero-r5.jpg
+- day4-m1-r5.jpg
+- day4-m2-r5.jpg
+- day4-m3-r5.jpg
+- day4-m4-r5.jpg
 
-Add:
-- day4-video-still.jpg  (local fallback image from the course video)
-
-R4 changes:
-- real photographic visuals restored: hero + one different photo per mission;
-- local real-photo fallback if a remote image cannot load;
-- instructions reduced to OPEN -> SPEAK -> CHOOSE;
-- correct-answer order: A / B / C / A;
-- deterministic scoring preserved;
-- 3-player and 4-player modes preserved;
-- merged 3-player Risk + Client prompt separated clearly;
-- role lock, choices, scoring, mission progression, final briefing and timer re-tested;
-- no global site files are replaced.
+R5 fixes:
+- separate local fallback image for every mission (no repeated/broken visual if remote images fail)
+- final briefing now reflects the team's actual Mission 4 choice
+- stronger guard before final briefing
+- clearer 3-player Risk + Client card
+- role-card accessibility state and live ready counter
+- cache-busting link from Session 4 to the R5 game
+- tested 3-player and 4-player flows, low-score/high-score routes, mobile width and timer
