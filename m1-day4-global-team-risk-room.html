@@ -42,7 +42,7 @@
 <section class="rr-hero">
   <div class="rr-hero-grid">
     <div><div class="rr-kicker">M1 · GROUP ACTIVITY</div><h1>Global Team<br>Risk Room</h1><p>4 missions. 4 team decisions. 1 final briefing.</p><div class="rr-topline"><span class="pill">👥 3–4 players</span><span class="pill">⭐ 4 missions</span><span class="pill">🗣 Everyone speaks</span><span class="pill">⏱ 2-minute briefing</span></div></div>
-    <div class="hero-photo"><img src="https://images.unsplash.com/photo-1758691737217-77302c5f988f?auto=format&fit=crop&w=1200&q=82" alt="Global team communication" onerror="this.onerror=null;this.src='day4-hero-r5.jpg';this.alt='Speaker discussing global teamwork'"><div class="hero-photo-label">Your team. Your decisions. Your briefing.</div></div>
+    <div class="hero-photo"><img src="day4-hero-r6.jpg" alt="Speaker discussing global teamwork" width="854" height="480" loading="eager" decoding="async"><div class="hero-photo-label">Your team. Your decisions. Your briefing.</div></div>
   </div>
 </section>
 
@@ -95,22 +95,22 @@ const missions=[
    {text:'The model, report, meeting and review process all need further consideration.',delta:[0,-10,-2],feedback:'Too many equal ideas. The client may not know what matters most.',summary:'present all points with equal prominence',key:'EVERYTHING'}]}
 ];
 const $=s=>document.querySelector(s);const $$=s=>Array.from(document.querySelectorAll(s));
-let size=0,current=0,scores={trust:50,clarity:50,adapt:50},choices=[],stars=0,timerId=null,timerSeconds=120;
-$$('.choice-btn').forEach(btn=>btn.addEventListener('click',()=>{size=Number(btn.dataset.size);$$('.choice-btn').forEach(b=>b.classList.toggle('selected',b===btn));$('#startBtn').disabled=false;}));
-$('#startBtn').addEventListener('click',()=>{$('#setup').classList.add('hidden');$('#playArea').classList.remove('hidden');renderMission();window.scrollTo({top:0,behavior:'smooth'});});
+let size=0,current=0,scores={trust:50,clarity:50,adapt:50},choices=[],stars=0,timerId=null,timerSeconds=120,answered=false,advancing=false;
+$$('.choice-btn').forEach(btn=>{btn.setAttribute('aria-pressed','false');btn.addEventListener('click',()=>{size=Number(btn.dataset.size);$$('.choice-btn').forEach(b=>{const selected=b===btn;b.classList.toggle('selected',selected);b.setAttribute('aria-pressed',String(selected));});$('#startBtn').disabled=false;});});
+$('#startBtn').addEventListener('click',()=>{if(size!==3&&size!==4)return;$('#startBtn').disabled=true;$('#setup').classList.add('hidden');$('#playArea').classList.remove('hidden');renderMission();window.scrollTo({top:0,behavior:'smooth'});});
 function roleEntries(m){if(size===3)return [['data',m.roles.data],['comm',m.roles.comm],['riskclient',['Risk + Client','Risk: '+m.roles.risk[1]+'<br>Client: '+m.roles.client[1]]]];return [['data',m.roles.data],['comm',m.roles.comm],['risk',m.roles.risk],['client',m.roles.client]];}
 function sceneVisual(n){
  const scenes=[
-  {src:'https://images.unsplash.com/photo-1758691737217-77302c5f988f?auto=format&fit=crop&w=1200&q=82',fallback:'day4-m1-r5.jpg',alt:'Colleagues collaborating around a desk',cap:'Mission 1 · Make space for every voice'},
-  {src:'https://images.unsplash.com/photo-1788333886341-1e34341ff134?auto=format&fit=crop&w=1200&q=82',fallback:'day4-m2-r5.jpg',alt:'Colleagues reviewing a task board in an office',cap:'Mission 2 · One deadline, one shared reference'},
-  {src:'https://images.unsplash.com/photo-1758691736407-02406d18df6c?auto=format&fit=crop&w=1200&q=82',fallback:'day4-m3-r5.jpg',alt:'Professional presenting data and charts to colleagues',cap:'Mission 3 · Challenge the model with evidence'},
-  {src:'https://images.unsplash.com/photo-1758691736764-2a88e313b1f2?auto=format&fit=crop&w=1200&q=82',fallback:'day4-m4-r5.jpg',alt:'Professional presenting to colleagues in a meeting',cap:'Mission 4 · Make the key message stand out'}
+  {src:'day4-m1-r6.jpg',alt:'Speaker discussing global teamwork',cap:'Mission 1 · Make space for every voice'},
+  {src:'day4-m2-r6.jpg',alt:'Speaker explaining a global-team communication issue',cap:'Mission 2 · One deadline, one shared reference'},
+  {src:'day4-m3-r6.jpg',alt:'Speaker discussing evidence and disagreement in global teams',cap:'Mission 3 · Challenge the model with evidence'},
+  {src:'day4-m4-r6.jpg',alt:'Speaker explaining clear communication in global teams',cap:'Mission 4 · Make the key message stand out'}
  ];
  const x=scenes[n];
- return `<figure class="photo-scene"><img src="${x.src}" alt="${x.alt}" loading="lazy" decoding="async" data-fallback="${x.fallback}" onerror="this.onerror=null;this.src=this.dataset.fallback;this.alt='Video still about global teamwork'"><figcaption class="photo-caption">${x.cap}</figcaption></figure>`;
+ return `<figure class="photo-scene"><img src="${x.src}" alt="${x.alt}" width="854" height="480" loading="eager" decoding="async"><figcaption class="photo-caption">${x.cap}</figcaption></figure>`;
 }
 function renderTrack(){const el=$('#missionTrack');el.innerHTML=missions.map((_,i)=>`<span class="track-dot ${i<current?'done':i===current?'current':''}">${i<current?'✓':i+1}</span>`).join('');}
-function renderMission(){const m=missions[current];$('#missionLabel').textContent=`Mission ${current+1} / 4`;renderTrack();const roles=roleEntries(m);$('#missionPanel').innerHTML=`
+function renderMission(){answered=false;advancing=false;const m=missions[current];$('#missionLabel').textContent=`Mission ${current+1} / 4`;renderTrack();const roles=roleEntries(m);$('#missionPanel').innerHTML=`
 <div class="mission-head"><div class="mission-num">${current+1}</div><div><div class="mission-title-row"><h2>${m.icon} ${m.title}</h2><span class="mission-chip">${m.tag}</span></div></div></div>
 <div class="scene"><div class="scene-box"><div class="scenario-label">SCENARIO</div><p class="scenario-text">${m.story}</p><div class="goal"><strong>Your task:</strong> ${m.goal}</div></div><div class="scene-visual">${sceneVisual(current)}</div></div>
 <div class="play-rule"><strong>1</strong> Open <span>→</span><strong>2</strong> Speak <span>→</span><strong>3</strong> Choose</div>
@@ -121,9 +121,9 @@ function renderMission(){const m=missions[current];$('#missionLabel').textConten
 <div id="feedbackBox"></div><div class="rr-actions"><button type="button" id="nextBtn" class="primary hidden">${current===3?'Build our briefing →':'Next mission →'}</button></div>`;
  let opened=new Set();$$('.role-btn').forEach(b=>b.addEventListener('click',()=>{b.classList.add('opened');b.setAttribute('aria-expanded','true');opened.add(b.dataset.role);$('#rolesCount').textContent=`${opened.size} / ${roles.length} ready`;if(opened.size===roles.length){$$('.option-btn').forEach(o=>{o.disabled=false;o.classList.remove('locked')});const u=$('#unlockBox');u.classList.add('ready');u.textContent='✅ Choose A, B or C.';}}));
  $$('.option-btn').forEach(b=>b.addEventListener('click',()=>selectOption(Number(b.dataset.option))));
- $('#nextBtn').addEventListener('click',()=>{if(current<3){current++;renderMission();$('#missionPanel').scrollIntoView({behavior:'smooth',block:'start'});}else{showFinal();}});
+ $('#nextBtn').addEventListener('click',e=>{if(advancing)return;advancing=true;e.currentTarget.disabled=true;if(current<3){current++;renderMission();$('#missionPanel').scrollIntoView({behavior:'smooth',block:'start'});}else{showFinal();}});
 }
-function selectOption(i){const m=missions[current],o=m.options[i],isBest=i===m.best;$$('.option-btn').forEach((b,idx)=>{b.disabled=true;b.classList.remove('chosen');if(idx===i)b.classList.add('chosen')});scores.trust=clamp(scores.trust+o.delta[0]);scores.clarity=clamp(scores.clarity+o.delta[1]);scores.adapt=clamp(scores.adapt+o.delta[2]);choices[current]=i;if(isBest)stars++;updateHud();$('#feedbackBox').innerHTML=`<div class="feedback ${isBest?'good':''}"><strong>${isBest?'⭐ Strong team move!':'🧭 Check the trade-off'}</strong>${o.feedback}<div class="score-change"><span class="score-pill">🤝 Trust ${fmt(o.delta[0])}</span><span class="score-pill">💡 Clarity ${fmt(o.delta[1])}</span><span class="score-pill">🧭 Adaptability ${fmt(o.delta[2])}</span>${isBest?'<span class="score-pill">⭐ +1 star</span>':''}</div></div>`;$('#nextBtn').classList.remove('hidden');}
+function selectOption(i){const m=missions[current];if(answered||!Number.isInteger(i)||i<0||i>=m.options.length)return;answered=true;const o=m.options[i],isBest=i===m.best;$$('.option-btn').forEach((b,idx)=>{b.disabled=true;b.classList.remove('chosen');if(idx===i)b.classList.add('chosen')});scores.trust=clamp(scores.trust+o.delta[0]);scores.clarity=clamp(scores.clarity+o.delta[1]);scores.adapt=clamp(scores.adapt+o.delta[2]);choices[current]=i;if(isBest)stars++;updateHud();$('#feedbackBox').innerHTML=`<div class="feedback ${isBest?'good':''}"><strong>${isBest?'⭐ Strong team move!':'🧭 Check the trade-off'}</strong>${o.feedback}<div class="score-change"><span class="score-pill">🤝 Trust ${fmt(o.delta[0])}</span><span class="score-pill">💡 Clarity ${fmt(o.delta[1])}</span><span class="score-pill">🧭 Adaptability ${fmt(o.delta[2])}</span>${isBest?'<span class="score-pill">⭐ +1 star</span>':''}</div></div>`;$('#nextBtn').classList.remove('hidden');}
 function clamp(v){return Math.max(0,Math.min(100,v))}function fmt(v){return v>0?`+${v}`:`${v}`}
 function updateHud(){$('#trustScore').textContent=scores.trust;$('#clarityScore').textContent=scores.clarity;$('#adaptScore').textContent=scores.adapt;$('#starScore').textContent=`${stars} / 4`;}
 function showFinal(){if(!missions.every((_,idx)=>Number.isInteger(choices[idx])))return;if(timerId){clearInterval(timerId);timerId=null;}timerSeconds=120;$('#playArea').classList.add('hidden');$('#finalPanel').classList.remove('hidden');const selected=missions.map((m,idx)=>m.options[choices[idx]]);const total=Math.round((scores.trust+scores.clarity+scores.adapt)/3);const parts=size===4?[`Player 1: meeting rule + why it helps.`,`Player 2: deadline rule + why it helps.`,`Player 3: model-challenge rule + why it helps.`,`Player 4: client message + final priority.`]:[`Player 1: meeting rule + why it helps.`,`Player 2: deadline rule + model-challenge rule.`,`Player 3: client message + final priority.`];$('#finalPanel').innerHTML=`
