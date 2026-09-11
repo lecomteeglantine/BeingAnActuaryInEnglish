@@ -12,6 +12,12 @@
   <link rel="stylesheet" href="styles.css">
   <style>
     .day4-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:1rem;margin-top:1rem}.day4-card{position:relative;overflow:hidden;border:1px solid #d8e6f3;border-radius:22px;background:#fff;padding:1.25rem;box-shadow:0 16px 36px rgba(16,42,67,.08)}.day4-card.group-card{background:linear-gradient(145deg,#f2fbff 0%,#fff 58%,#f5fff7 100%)}.day4-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.4rem .75rem;border-radius:999px;background:#0b7285;color:#fff;font-weight:850;font-size:.82rem}.day4-card h2{margin:.75rem 0 .45rem;font-size:clamp(1.35rem,2vw,1.85rem)}.day4-meta{display:flex;flex-wrap:wrap;gap:.45rem;margin:.8rem 0 1rem}.day4-meta span{padding:.35rem .65rem;border-radius:999px;background:#eaf4fb;color:#153e5c;font-weight:800;font-size:.85rem}.day4-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin:1rem 0}.day4-step{padding:.75rem;border-radius:14px;background:#f7fafc;border:1px solid #e6edf3;text-align:center;font-weight:800;color:#334e68}.day4-step b{display:block;color:#0b7285;font-size:1.05rem}.day4-visual{display:grid;place-items:center;min-height:180px;border-radius:18px;background:linear-gradient(135deg,#eaf1f7,#dfeaf2);margin-bottom:1rem;padding:1rem}.day4-screen{width:min(96%,520px);background:#fff;border:1px solid #cbd8e3;border-radius:14px;box-shadow:0 14px 30px rgba(16,42,67,.15);overflow:hidden}.screen-head{display:flex;align-items:center;gap:.35rem;padding:.55rem .7rem;background:#eef3f7;border-bottom:1px solid #dce8f2}.screen-head i{width:8px;height:8px;border-radius:50%;background:#ff6b6b}.screen-head i:nth-child(2){background:#ffd43b}.screen-head i:nth-child(3){background:#69db7c}.screen-head b{margin-left:auto;font-size:.68rem;letter-spacing:.08em;color:#526a7d}.screen-body{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;padding:.85rem}.screen-panel{padding:.75rem;border-radius:10px;background:#f7f9fb;border:1px solid #e1e9ef}.screen-panel small{display:block;color:#6b7f91;font-weight:800}.screen-panel strong{display:block;font-size:1.35rem;margin:.15rem 0;color:#16324f}.screen-panel span{font-size:.78rem;color:#2b8a3e;font-weight:850}.screen-alert{grid-column:1/-1;padding:.6rem .75rem;border-radius:10px;background:#fff5f5;border:1px solid #ffc9c9;color:#c92a2a;font-weight:850}.day4-cta{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.85rem 1.05rem;border-radius:12px;background:#0b7285;color:#fff;text-decoration:none;font-weight:950;box-shadow:0 8px 18px rgba(11,114,133,.18)}.day4-note{padding:1rem;border-radius:18px;background:#fff8db;border:1px solid #f5d76e;color:#513c06}.day4-note ul{padding-left:1.2rem;margin-bottom:0}.mission-preview{display:grid;grid-template-columns:repeat(2,1fr);gap:.55rem;margin-top:.9rem}.mission-preview span{padding:.55rem;border-radius:12px;background:#f8fbfd;border:1px solid #e6edf3;font-weight:800;font-size:.88rem}.ready-line{margin:.8rem 0 0;color:#2b8a3e;font-weight:850}@media(max-width:760px){.day4-grid{grid-template-columns:1fr}.day4-steps{grid-template-columns:1fr}.mission-preview{grid-template-columns:1fr}}
+
+    .day4-photo{position:relative;min-height:260px;border-radius:18px;overflow:hidden;background:#102a43;margin-bottom:1rem;box-shadow:0 14px 30px rgba(16,42,67,.16)}
+    .day4-photo img{width:100%;height:100%;min-height:260px;display:block;object-fit:cover;object-position:center}
+    .day4-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(10,35,55,.82) 100%);pointer-events:none}
+    .day4-photo-tag{position:absolute;left:1rem;right:1rem;bottom:.9rem;z-index:1;color:#fff;font-weight:900;font-size:1rem;text-shadow:0 2px 8px rgba(0,0,0,.35)}
+    @media(max-width:760px){.day4-photo,.day4-photo img{min-height:210px}}
   </style>
 </head>
 <body>
@@ -23,13 +29,13 @@
     <p class="module-number">GROUP ACTIVITY</p>
     <div class="day4-grid">
       <article class="day4-card group-card">
-        <div class="day4-visual" aria-hidden="true"><div class="day4-screen"><div class="screen-head"><i></i><i></i><i></i><b>GLOBAL TEAM DASHBOARD</b></div><div class="screen-body"><div class="screen-panel"><small>TRUST</small><strong>72</strong><span>stable</span></div><div class="screen-panel"><small>CLARITY</small><strong>68</strong><span>needs action</span></div><div class="screen-alert">MISSION 01 · TEAM DECISION REQUIRED</div></div></div></div>
+        <div class="day4-photo"><img src="https://images.unsplash.com/photo-1758691737217-77302c5f988f?auto=format&fit=crop&w=1200&q=82" alt="Colleagues discussing a project in a modern office" onerror="this.onerror=null;this.src='day4-video-still.jpg'"><div class="day4-photo-tag">4 team problems → 4 decisions → 1 final briefing</div></div>
         <span class="day4-badge">🎯 3–4 players · one device</span>
         <h2>Global Team Risk Room</h2>
-        <p>Solve <strong>4 short team problems</strong>. Then give one final briefing.</p>
-        <div class="day4-steps"><div class="day4-step"><b>1</b>Open one card each</div><div class="day4-step"><b>2</b>Say your answer</div><div class="day4-step"><b>3</b>Choose A, B or C together</div></div>
+        <p>Solve <strong>4 quick team problems</strong>. Then give a 2-minute briefing.</p>
+        <div class="day4-steps"><div class="day4-step"><b>1</b>Open</div><div class="day4-step"><b>2</b>Speak</div><div class="day4-step"><b>3</b>Choose</div></div>
         <div class="mission-preview"><span>🤐 Silent meeting</span><span>⏰ Deadline shock</span><span>🚨 Model challenge</span><span>🎙️ Client briefing</span></div>
-        <p class="ready-line">Repeat ×4 → <strong>2-minute team briefing</strong>.</p>
+        <p class="ready-line">That’s it: <strong>open → speak → choose</strong>. Repeat ×4.</p>
         <div class="day4-meta"><span>👥 3–4 players</span><span>📱 one device</span><span>⭐ 4 missions</span></div>
         <a class="day4-cta" href="m1-day4-global-team-risk-room.html">Start the team game →</a>
       </article>

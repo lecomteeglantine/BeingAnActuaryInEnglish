@@ -7,6 +7,7 @@
 <title>Global Team Risk Room · M1 Actuarial English</title>
 <link rel="icon" href="icons/favicon.png">
 <link rel="stylesheet" href="styles.css">
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1758691737217-77302c5f988f?auto=format&fit=crop&w=1200&q=82">
 <style>
 :root{--ink:#16324f;--muted:#58728b;--line:#dce8f2;--teal:#0b7285;--green:#2f9e44;--orange:#e67700;--violet:#7048e8;--red:#c92a2a;--blue:#1971c2;--yellow:#fcc419;--paper:#f5f9fc;--card:#fff}
 *{box-sizing:border-box}.rr-app{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}.rr-wrap{max-width:1120px;margin:0 auto;padding:1rem}.hidden{display:none!important}
@@ -22,6 +23,17 @@
 @media(max-width:850px){.rr-hero-grid,.scene,.final-grid{grid-template-columns:1fr}.hero-screen{min-height:180px}.roles-grid{grid-template-columns:repeat(2,1fr)}.role-btn.merged{grid-column:span 1}.hud{position:static;grid-template-columns:1fr}.setup-strip,.challenge-grid{grid-template-columns:1fr}.player-choice{grid-template-columns:1fr}}
 @media(max-width:520px){.rr-wrap{padding:.5rem}.screen-grid{grid-template-columns:1fr 1fr}.screen-grid>div:last-child{grid-column:span 2}.deadline-row{grid-template-columns:1fr}.chart-area{grid-template-columns:1fr}.play-rule{justify-content:flex-start;font-size:.88rem}.rr-panel{padding:.85rem;border-radius:18px}.roles-grid{grid-template-columns:1fr}.mission-head{grid-template-columns:1fr}.hud-left{display:grid;grid-template-columns:1fr 1fr}.metric{min-width:0}.mission-track{justify-content:flex-start}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+.photo-scene{position:relative;width:100%;height:100%;min-height:230px;margin:0;overflow:hidden;background:#e9f1f6}
+.photo-scene img{width:100%;height:100%;min-height:230px;display:block;object-fit:cover;object-position:center}
+.photo-scene::after{content:"";position:absolute;inset:auto 0 0;height:46%;background:linear-gradient(transparent,rgba(9,33,53,.78));pointer-events:none}
+.photo-caption{position:absolute;left:.85rem;right:.85rem;bottom:.72rem;z-index:2;color:#fff;font-weight:900;font-size:.88rem;line-height:1.25;text-shadow:0 2px 9px rgba(0,0,0,.5)}
+.hero-photo{position:relative;min-height:230px;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.24);box-shadow:0 16px 34px rgba(0,0,0,.18);background:#102a43}
+.hero-photo img{width:100%;height:230px;display:block;object-fit:cover;object-position:center}
+.hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.68));pointer-events:none}
+.hero-photo-label{position:absolute;left:1rem;right:1rem;bottom:.85rem;z-index:2;color:#fff;font-weight:950;font-size:1rem;line-height:1.25;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+.scene-visual{padding:0!important}
+@media(max-width:760px){.photo-scene,.photo-scene img{min-height:200px}.hero-photo,.hero-photo img{height:205px;min-height:205px}}
 </style>
 </head>
 <body>
@@ -31,7 +43,7 @@
 <section class="rr-hero">
   <div class="rr-hero-grid">
     <div><div class="rr-kicker">M1 · GROUP ACTIVITY</div><h1>Global Team<br>Risk Room</h1><p>4 missions. 4 team decisions. 1 final briefing.</p><div class="rr-topline"><span class="pill">👥 3–4 players</span><span class="pill">⭐ 4 missions</span><span class="pill">🗣 Everyone speaks</span><span class="pill">⏱ 2-minute briefing</span></div></div>
-    <div class="hero-screen" aria-hidden="true"><div class="screen-bar"><i></i><i></i><i></i><span>TEAM DASHBOARD</span></div><div class="screen-grid"><div><b>TRUST</b><strong>72</strong><span class="meter"><i style="width:72%"></i></span></div><div><b>CLARITY</b><strong>68</strong><span class="meter"><i style="width:68%"></i></span></div><div><b>ADAPTABILITY</b><strong>75</strong><span class="meter"><i style="width:75%"></i></span></div></div><div class="screen-note">MISSION 01 · TEAM DECISION REQUIRED</div></div>
+    <div class="hero-photo"><img src="https://images.unsplash.com/photo-1758691737217-77302c5f988f?auto=format&fit=crop&w=1200&q=82" alt="International colleagues working together" onerror="this.onerror=null;this.src='day4-video-still.jpg'"><div class="hero-photo-label">Your team. Your decisions. Your briefing.</div></div>
   </div>
 </section>
 
@@ -39,9 +51,9 @@
   <h2>Choose 3 or 4 players</h2>
   <p class="rr-sub"><strong>One device per group.</strong></p>
   <div class="setup-strip" aria-label="How to play">
-    <div class="setup-step"><span class="n">1</span><div><b>Open one card each</b></div></div>
-    <div class="setup-step"><span class="n">2</span><div><b>Say your answer</b></div></div>
-    <div class="setup-step"><span class="n">3</span><div><b>Choose A, B or C together</b></div></div>
+    <div class="setup-step"><span class="n">1</span><div><b>Open</b></div></div>
+    <div class="setup-step"><span class="n">2</span><div><b>Speak</b></div></div>
+    <div class="setup-step"><span class="n">3</span><div><b>Choose A, B or C</b></div></div>
   </div>
   <p class="quick-rule">Repeat ×4 → give a <strong>2-minute team briefing</strong>.</p>
   <div class="player-choice" role="group" aria-label="Choose number of players">
@@ -87,27 +99,28 @@ const $=s=>document.querySelector(s);const $$=s=>Array.from(document.querySelect
 let size=0,current=0,scores={trust:50,clarity:50,adapt:50},choices=[],stars=0,timerId=null,timerSeconds=120;
 $$('.choice-btn').forEach(btn=>btn.addEventListener('click',()=>{size=Number(btn.dataset.size);$$('.choice-btn').forEach(b=>b.classList.toggle('selected',b===btn));$('#startBtn').disabled=false;}));
 $('#startBtn').addEventListener('click',()=>{$('#setup').classList.add('hidden');$('#playArea').classList.remove('hidden');renderMission();window.scrollTo({top:0,behavior:'smooth'});});
-function roleEntries(m){if(size===3)return [['data',m.roles.data],['comm',m.roles.comm],['riskclient',['Risk + Client',m.roles.risk[1]+' '+m.roles.client[1]]]];return [['data',m.roles.data],['comm',m.roles.comm],['risk',m.roles.risk],['client',m.roles.client]];}
+function roleEntries(m){if(size===3)return [['data',m.roles.data],['comm',m.roles.comm],['riskclient',['Risk + Client',m.roles.risk[1]+' / '+m.roles.client[1]]]];return [['data',m.roles.data],['comm',m.roles.comm],['risk',m.roles.risk],['client',m.roles.client]];}
 function sceneVisual(n){
  const scenes=[
- `<div class="mock-window meeting-ui"><div class="mock-top"><span></span><span></span><span></span><b>TEAM MEETING</b></div><div class="meeting-grid"><div class="person-tile active"><div class="avatar">AM</div><b>Alex</b><small>speaking</small></div><div class="person-tile active"><div class="avatar">SK</div><b>Sam</b><small>speaking</small></div><div class="person-tile quiet"><div class="avatar">JL</div><b>Jamie</b><small>muted</small></div><div class="person-tile"><div class="avatar">RP</div><b>Riley</b><small>listening</small></div></div><div class="status-line"><span>2 voices dominate</span><strong>1 concern unheard</strong></div></div>`,
- `<div class="mock-window calendar-ui"><div class="mock-top"><span></span><span></span><span></span><b>DELIVERY PLAN</b></div><div class="deadline-row"><div><small>PARIS</small><strong>FRI 17:00</strong></div><div><small>SINGAPORE</small><strong>FRI 23:00</strong></div><div class="alert"><small>LONDON CLIENT</small><strong>FRI 09:00</strong></div></div><div class="timeline"><i></i><i></i><i></i></div><div class="status-line"><span>Same word: “Friday”</span><strong>Different deadlines</strong></div></div>`,
- `<div class="mock-window model-ui"><div class="mock-top"><span></span><span></span><span></span><b>FORECAST MODEL</b></div><div class="chart-area"><div class="bars"><i style="height:42%"></i><i style="height:58%"></i><i style="height:72%"></i><i class="warn" style="height:94%"></i><i style="height:66%"></i></div><div class="flag-card"><small>ASSUMPTION</small><strong>Growth rate</strong><em>⚠ flagged</em></div></div><div class="status-line"><span>Junior concern</span><strong>Evidence needed</strong></div></div>`,
- `<div class="mock-window briefing-ui"><div class="mock-top"><span></span><span></span><span></span><b>CLIENT BRIEFING</b></div><div class="client-message">We need to revise the <strong>MODEL</strong>, not the <span>REPORT</span>.</div><div class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="status-line"><span>Key correction</span><strong>Make it audible</strong></div></div>`
+  {src:'https://images.unsplash.com/photo-1758691737217-77302c5f988f?auto=format&fit=crop&w=1200&q=82',alt:'Colleagues collaborating around a desk',cap:'Mission 1 · Make space for every voice'},
+  {src:'https://images.unsplash.com/photo-1788333886341-1e34341ff134?auto=format&fit=crop&w=1200&q=82',alt:'Colleagues reviewing a task board in an office',cap:'Mission 2 · One deadline, one shared reference'},
+  {src:'https://images.unsplash.com/photo-1758691736407-02406d18df6c?auto=format&fit=crop&w=1200&q=82',alt:'Professional presenting data and charts to colleagues',cap:'Mission 3 · Challenge the model with evidence'},
+  {src:'https://images.unsplash.com/photo-1758691736764-2a88e313b1f2?auto=format&fit=crop&w=1200&q=82',alt:'Professional presenting to colleagues in a meeting',cap:'Mission 4 · Make the key message stand out'}
  ];
- return scenes[n];
+ const x=scenes[n];
+ return `<figure class="photo-scene"><img src="${x.src}" alt="${x.alt}" loading="lazy" onerror="this.onerror=null;this.src='day4-video-still.jpg'"><figcaption class="photo-caption">${x.cap}</figcaption></figure>`;
 }
 function renderTrack(){const el=$('#missionTrack');el.innerHTML=missions.map((_,i)=>`<span class="track-dot ${i<current?'done':i===current?'current':''}">${i<current?'✓':i+1}</span>`).join('');}
 function renderMission(){const m=missions[current];$('#missionLabel').textContent=`Mission ${current+1} / 4`;renderTrack();const roles=roleEntries(m);$('#missionPanel').innerHTML=`
 <div class="mission-head"><div class="mission-num">${current+1}</div><div><div class="mission-title-row"><h2>${m.icon} ${m.title}</h2><span class="mission-chip">${m.tag}</span></div></div></div>
 <div class="scene"><div class="scene-box"><div class="scenario-label">SCENARIO</div><p class="scenario-text">${m.story}</p><div class="goal"><strong>Your task:</strong> ${m.goal}</div></div><div class="scene-visual">${sceneVisual(current)}</div></div>
-<div class="play-rule"><strong>1</strong> Open one card each <span>→</span><strong>2</strong> Say your answer <span>→</span><strong>3</strong> Choose together</div>
+<div class="play-rule"><strong>1</strong> Open <span>→</span><strong>2</strong> Speak <span>→</span><strong>3</strong> Choose</div>
 <div class="roles-title"><h3>Open your card</h3><span class="tiny" id="rolesCount">0 / ${roles.length} ready</span></div>
-<div class="roles-grid">${roles.map(([k,v],i)=>`<button type="button" class="role-btn${size===3&&k==='riskclient'?' merged':''}" data-role="${k}"><span class="role-name">Player ${i+1} · ${v[0]}</span><span class="tap">Open card</span><span class="role-prompt">${v[1]}</span></button>`).join('')}</div>
-<div id="unlockBox" class="unlock">🔒 Open every card first.</div>
+<div class="roles-grid">${roles.map(([k,v],i)=>`<button type="button" class="role-btn${size===3&&k==='riskclient'?' merged':''}" data-role="${k}"><span class="role-name">Player ${i+1} · ${v[0]}</span><span class="tap">Open</span><span class="role-prompt">${v[1]}</span></button>`).join('')}</div>
+<div id="unlockBox" class="unlock">🔒 Open all cards.</div>
 <h3 class="choose-title">Choose A, B or C together</h3><div class="options">${m.options.map((o,i)=>`<button type="button" class="option-btn locked" data-option="${i}" disabled><span class="option-letter">${String.fromCharCode(65+i)}</span><span>${o.text}</span></button>`).join('')}</div>
 <div id="feedbackBox"></div><div class="rr-actions"><button type="button" id="nextBtn" class="primary hidden">${current===3?'Build our briefing →':'Next mission →'}</button></div>`;
- let opened=new Set();$$('.role-btn').forEach(b=>b.addEventListener('click',()=>{b.classList.add('opened');opened.add(b.dataset.role);$('#rolesCount').textContent=`${opened.size} / ${roles.length} ready`;if(opened.size===roles.length){$$('.option-btn').forEach(o=>{o.disabled=false;o.classList.remove('locked')});const u=$('#unlockBox');u.classList.add('ready');u.textContent='✅ Choose A, B or C together.';}}));
+ let opened=new Set();$$('.role-btn').forEach(b=>b.addEventListener('click',()=>{b.classList.add('opened');opened.add(b.dataset.role);$('#rolesCount').textContent=`${opened.size} / ${roles.length} ready`;if(opened.size===roles.length){$$('.option-btn').forEach(o=>{o.disabled=false;o.classList.remove('locked')});const u=$('#unlockBox');u.classList.add('ready');u.textContent='✅ Choose A, B or C.';}}));
  $$('.option-btn').forEach(b=>b.addEventListener('click',()=>selectOption(Number(b.dataset.option))));
  $('#nextBtn').addEventListener('click',()=>{if(current<3){current++;renderMission();$('#missionPanel').scrollIntoView({behavior:'smooth',block:'start'});}else{showFinal();}});
 }
