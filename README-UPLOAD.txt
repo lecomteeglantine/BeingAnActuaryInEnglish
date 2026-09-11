@@ -1,22 +1,19 @@
-M1 DAY 4 — GROUP ACTIVITY PATCH
+M1 DAY 4 — GLOBAL TEAM RISK ROOM R2
 
-Files included:
+Upload these files to the ROOT of the BeingAnActuaryInEnglish GitHub repository:
 - m1-day4.html
 - m1-day4-global-team-risk-room.html
 
-UPLOAD
-1. Open the root of the BeingAnActuaryInEnglish GitHub repository.
-2. Upload BOTH files from this ZIP directly to the repository root.
-3. Replace m1-day4.html when GitHub asks.
-4. Do not upload an enclosing folder.
+Replace the existing files with these versions.
 
-The activity is self-contained: illustrations are inline SVG and no external image files are required.
-It uses the site's existing styles.css, shared.js and pwa-r39.js only where already present.
-
-Game design:
-- Choose 3 or 4 players.
-- Four deterministic missions.
-- Every player must reveal and answer a role prompt before the group can choose.
-- Same choices always give the same scores on every device.
-- Final 2-minute whole-group briefing with sentence-stress challenge.
-- No account, analytics or remote storage.
+R2 changes:
+- much shorter, clearer instructions
+- more playful mission flow and star system
+- 4 different mission illustrations
+- clearer role cards and automatic unlock message
+- deterministic scoring: same choice = same result on every device
+- explicit 3-player / 4-player flow
+- safer final-briefing guard (cannot open before all 4 choices exist)
+- button type attributes added to avoid accidental form submission
+- mobile layout retained
+- 2-minute final group briefing retained
