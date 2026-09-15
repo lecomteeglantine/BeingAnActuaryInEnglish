@@ -1,7 +1,7 @@
 (() => {
 'use strict';
-const STORAGE_KEY='being-an-actuary-m1-session3-interview-r4';
-const LEGACY_KEYS=['being-an-actuary-m1-session3-interview-r3','being-an-actuary-m1-session3-interview-r2'];
+const STORAGE_KEY='being-an-actuary-m1-session3-interview-r5';
+const LEGACY_KEYS=['being-an-actuary-m1-session3-interview-r4','being-an-actuary-m1-session3-interview-r3','being-an-actuary-m1-session3-interview-r2'];
 const steps=['Team','Profile','Grammar','Questions','Interview','Decision','Pitch'];
 const roles={
   3:[
@@ -224,6 +224,6 @@ function toggleTimer(){
   clearInterval(timerId);timerId=setInterval(syncTimer,250);syncTimer();
 }
 function resetTimer(){clearInterval(timerId);timerId=null;timerDeadline=0;state.running=false;state.timer=120;const d=$('#timerDisplay');if(d)d.textContent='2:00';const b=$('#timerStart');if(b)b.textContent='Start';save();}
-function reset(){if(!confirm('Restart the interview challenge and clear this team\'s progress?'))return;clearInterval(timerId);try{localStorage.removeItem(STORAGE_KEY);LEGACY_KEYS.forEach(k=>localStorage.removeItem(k));}catch(e){}state=emptyState();gameArea.hidden=true;update();window.scrollTo({top:0,behavior:'smooth'});}
+function reset(){if(!confirm('Restart the interview challenge and clear this team\'s progress?'))return;clearInterval(timerId);timerId=null;timerDeadline=0;try{localStorage.removeItem(STORAGE_KEY);LEGACY_KEYS.forEach(k=>localStorage.removeItem(k));}catch(e){}state=emptyState();gameArea.hidden=true;$('#heroStart').textContent='Start →';progress();pitchNotes();status.classList.remove('show');status.textContent='';const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});}
 $('#heroStart').addEventListener('click',startGame); $('#resetBtn').addEventListener('click',reset); load(); if(state.players||state.step>0){$('#heroStart').textContent='Continue →';gameArea.hidden=false;render();}else update();
 })();

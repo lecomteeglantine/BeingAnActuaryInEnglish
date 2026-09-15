@@ -28,3 +28,6 @@
 @media(max-width:600px){.hero-badges{gap:6px}.hero-badges span{font-size:.72rem;padding:7px 9px}.round-top{align-items:flex-start;flex-direction:column}.speaker-badge{align-self:flex-start}}
 /* Keep the main illustration visible on phones even if the site's global CSS hides .hero-art. */
 @media(max-width:900px){.interview-page .interview-hero .hero-art{display:block!important}}
+
+/* R5 stability: [hidden] must beat .game-area{display:grid}. */
+.game-area[hidden]{display:none!important}
