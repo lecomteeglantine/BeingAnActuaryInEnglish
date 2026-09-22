@@ -1,22 +1,14 @@
-M1 DAY 4 — GROUP ACTIVITY R5
+M1 · 15 SESSIONS PATCH
 
-Upload these files directly to the ROOT of the BeingAnActuaryInEnglish repository.
-Replace the two existing HTML files when GitHub asks.
+Upload m1.html to the ROOT of the GitHub repository:
+lecomteeglantine/BeingAnActuaryInEnglish
 
-Files:
-- m1-day4.html
-- m1-day4-global-team-risk-room.html
-- day4-hero-r5.jpg
-- day4-m1-r5.jpg
-- day4-m2-r5.jpg
-- day4-m3-r5.jpg
-- day4-m4-r5.jpg
+Replace the existing m1.html file.
+No other existing file needs to be removed or changed.
 
-R5 fixes:
-- separate local fallback image for every mission (no repeated/broken visual if remote images fail)
-- final briefing now reflects the team's actual Mission 4 choice
-- stronger guard before final briefing
-- clearer 3-player Risk + Client card
-- role-card accessibility state and live ready counter
-- cache-busting link from Session 4 to the R5 game
-- tested 3-player and 4-player flows, low-score/high-score routes, mobile width and timer
+What changes:
+- M1 hub now displays 15 sessions.
+- Sessions 1–5 keep working links.
+- Session 4 title now matches its actual page content.
+- Sessions 6–15 are visible as Coming soon cards with no broken links.
+- Header, footer, navigation, styles and existing site structure are preserved.
