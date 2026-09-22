@@ -1,0 +1,39 @@
+SESSION 5 · THE REGISTER CONTROL ROOM · QA REPORT
+
+STRUCTURE
+- M1 index: exactly 15 session cards (01–15).
+- Session 5 activated as “Professional email register”.
+- Session 5 landing page links to the group game.
+- Game: 9 missions / 18 decision screens.
+- Every decision has exactly 3 options.
+
+DETERMINISM / DEVICE PARITY
+- No Math.random(), date/time branching, shuffled options or device-dependent branching.
+- Team size changes role allocation only.
+- Every option has a hard-coded score and feedback.
+- Scoring values are restricted to 0 / 1 / 3.
+- Maximum score: 54.
+- Progression is sequential: after any choice, Continue loads the same next decision.
+- Therefore the same choice sequence produces the same screens and score on every device.
+
+GROUP MODE
+- 3 players: Audience + Relationship combined; Action; Risk.
+- 4 players: Audience; Relationship; Action; Risk.
+- No “read it out loud” instruction.
+- Core instructions: Review → Discuss → Agree → Choose.
+
+VISUALS
+- Every mission screen contains an illustration.
+- Illustrations are inline SVG embedded in the HTML.
+- No remote image dependency.
+- Responsive layouts included for tablet and mobile breakpoints.
+- Reduced-motion preference supported.
+
+TECHNICAL CHECKS
+- JavaScript syntax: node --check PASS.
+- Duplicate HTML IDs: none in the three HTML files.
+- Decision data audit: PASS (18 decisions, 3 options each, valid fixed scores only).
+- M1 session count: PASS (15).
+
+DEPLOYMENT
+Upload the files in this ZIP directly to the repository root. Do not upload an enclosing folder.
