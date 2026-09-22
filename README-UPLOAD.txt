@@ -1,26 +1,17 @@
-SESSION 5 · REGISTER CONTROL ROOM · GITHUB PATCH
+BEING AN ACTUARY IN ENGLISH — M1 SESSION 5 — AUDITED FIX
 
-Upload these files to the ROOT of the BeingAnActuaryInEnglish repository and replace files with the same names:
-
+Upload these THREE HTML files directly to the ROOT of the GitHub repository:
 - m1.html
 - m1-day5.html
 - m1-day5-register-control-room.html
 
-Do NOT upload the enclosing folder.
+Replace the existing m1.html and m1-day5.html when GitHub asks.
+Do not put the files inside a new folder.
 
-What this patch does
---------------------
-- Keeps the M1 page at 15 sessions.
-- Activates Session 5: Professional email register.
-- Adds The Register Control Room group game.
-- Students choose 3 or 4 players. Team size changes role allocation only.
-- 18 fixed decisions across 8 missions + the final mission.
-- No randomisation: identical choice = identical feedback, next screen and points on every device.
-- Fixed scoring: best fit +3, acceptable but imperfect +1, poor fit 0.
-- All mission illustrations are embedded in the game file (no remote image dependency).
-- Responsive design for phone/tablet/desktop.
-- Restart from zero is available on the final screen.
+Why all three?
+The live repository currently contains the new game file, but the public M1 page and Session 5 page are still the old versions. Uploading all three keeps the index, landing page and game aligned.
 
-Content basis
--------------
-Built from the supplied B2+/C1 worksheet on formal/informal language in professional emails: register continuum; reader/relationship/action/risk; tactful requests; clarity and concision; adapting the same facts to different audiences.
+After GitHub Pages rebuilds, open:
+https://lecomteeglantine.github.io/BeingAnActuaryInEnglish/m1-day5.html
+
+If an old page is briefly cached, use a hard refresh once (Ctrl+F5 on Windows).
