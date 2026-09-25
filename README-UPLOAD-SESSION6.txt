@@ -1,3 +1,5 @@
+Session 6 update R2: more realistic illustrations and minor presentation fixes.
+
 M1 SESSION 6 · THE ACTUARY'S IMPOSSIBLE INBOX · R1
 
 UPLOAD
