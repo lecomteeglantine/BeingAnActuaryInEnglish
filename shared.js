@@ -1,6 +1,5 @@
 (function(){
   'use strict';
-
   const storage = {
     get(key, fallback='') { try { const v=localStorage.getItem(key); return v===null?fallback:v; } catch (_) { return fallback; } },
     set(key, value) { try { localStorage.setItem(key,value); return true; } catch (_) { return false; } },
@@ -8,9 +7,18 @@
     json(key, fallback) { try { const v=localStorage.getItem(key); return v===null?fallback:JSON.parse(v); } catch (_) { return fallback; } }
   };
   window.actuarialStorage=storage;
-
   const nav=document.querySelector('.main-nav');
   if(nav){
+    // Keep English Refresher available everywhere without having to duplicate
+    // the navigation change across every course and activity page.
+    if(!nav.querySelector('a[href="refresher.html"]')){
+      const link=document.createElement('a');
+      link.href='refresher.html';
+      link.textContent='English Refresher';
+      const m2=nav.querySelector('a[href="m2.html"]');
+      if(m2) m2.insertAdjacentElement('afterend',link);
+      else nav.appendChild(link);
+    }
     const page=location.pathname.split('/').pop()||'index.html';
     const section=page.startsWith('m1-')?'m1.html':page.startsWith('m2-')?'m2.html':page;
     nav.querySelectorAll('a').forEach(a=>{
@@ -19,7 +27,6 @@
       else if(href===section){ a.classList.add('active'); a.setAttribute('aria-current','location'); }
     });
   }
-
   // Fast, dependable browser speech. Prefer an on-device British voice, then
   // another on-device English voice. Remote/cloud voices are deliberately not
   // selected explicitly because they can take many seconds to start on some
@@ -27,14 +34,12 @@
   const synth=('speechSynthesis' in window)?window.speechSynthesis:null;
   let cachedVoice=null;
   let voiceList=[];
-
   function selectFastEnglishVoice(voices){
     return voices.find(v=>v.localService && /^en-GB$/i.test(v.lang)) ||
            voices.find(v=>v.localService && /^en-GB/i.test(v.lang)) ||
            voices.find(v=>v.localService && /^en(?:-|_)/i.test(v.lang)) ||
            voices.find(v=>v.localService && /^en/i.test(v.lang)) || null;
   }
-
   function refreshVoices(){
     if(!synth) return null;
     const voices=synth.getVoices();
@@ -49,7 +54,6 @@
     refreshVoices();
     if(typeof synth.addEventListener==='function') synth.addEventListener('voiceschanged',refreshVoices);
     else synth.onvoiceschanged=refreshVoices;
-
     // Voice discovery is requested before the click handler that actually speaks.
     // This keeps Listen buttons responsive without playing unwanted audio.
     let primed=false;
@@ -65,7 +69,6 @@
     document.addEventListener('pointerdown',prime,{once:true,capture:true,passive:true});
     document.addEventListener('keydown',prime,{once:true,capture:true});
   }
-
   window.prepareSpeech=refreshVoices;
   window.stopSpeech=function(){
     if(!synth) return;
@@ -80,7 +83,6 @@
     const hadSpeech=synth.speaking || synth.pending;
     if(hadSpeech){ try{synth.cancel();}catch(_){} }
     if(synth.paused){ try{synth.resume();}catch(_){} }
-
     const makeUtterance=(withVoice=true)=>{
       const u=new SpeechSynthesisUtterance(value);
       u.lang='en-GB';
@@ -90,7 +92,6 @@
       u.volume=1;
       return u;
     };
-
     let retried=false;
     const speak=(withVoice=true)=>{
       const utterance=makeUtterance(withVoice);
@@ -109,14 +110,12 @@
         return false;
       }
     };
-
     // Chromium may swallow a new utterance if it is queued in the same task as
     // cancel(). Only interrupted speech gets the tiny delay; a normal first click
     // still starts immediately.
     if(hadSpeech) setTimeout(()=>speak(true),25); else speak(true);
     return true;
   };
-
   const state=storage.json('actuarial_access',{});
   function apply(){
     document.body.classList.toggle('large-text',!!state.large);
@@ -124,7 +123,6 @@
     document.body.classList.toggle('reduced-motion',!!state.motion);
   }
   apply();
-
   const wrap=document.createElement('div');
   wrap.className='access-toolbar';
   wrap.innerHTML='<button class="access-toggle" type="button" aria-label="Accessibility options" aria-expanded="false" aria-controls="accessibility-panel">♿</button><div class="access-panel" id="accessibility-panel" hidden><strong>Accessibility</strong><label>Large text <input type="checkbox" data-a="large"></label><label>High contrast <input type="checkbox" data-a="contrast"></label><label>Reduce motion <input type="checkbox" data-a="motion"></label></div>';
