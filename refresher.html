@@ -17,7 +17,9 @@
 .refresher-card p{color:var(--muted);margin:8px 0 18px}
 .refresher-icon{font-size:2rem}
 .refresher-status{display:inline-flex;border-radius:999px;background:var(--soft);padding:6px 10px;color:var(--teal);font-size:.78rem;font-weight:900;letter-spacing:.04em}
-@media(max-width:700px){.refresher-grid{grid-template-columns:1fr}.refresher-card{padding:20px}}
+.refresher-link{display:inline-flex;align-items:center;gap:.4rem;padding:.72rem .9rem;border-radius:12px;background:var(--teal);color:#fff;font-weight:900;text-decoration:none}.refresher-link:hover,.refresher-link:focus-visible{background:#075f59;color:#fff;outline:3px solid rgba(8,127,112,.18)}
+.session-one{background:linear-gradient(135deg,#f3fbf9,#f4f9fd);border-color:#c9e3df}.session-one .refresher-icon{display:block;margin:0 0 .3rem}.session-one p{max-width:58ch}
+@media(max-width:700px){.refresher-grid{grid-template-columns:1fr}.refresher-card{padding:20px}.refresher-link{width:100%;justify-content:center}}
 </style>
 </head>
 <body>
@@ -42,92 +44,34 @@
       <p>Work through the refresher programme session by session. Each session will have its own focused activities and practice.</p>
     </div>
     <div class="refresher-grid">
-      <article class="refresher-card">
+      <article class="refresher-card session-one">
         <span class="refresher-status">SESSION 1</span>
-        <h2>Session 1</h2>
-        <p>Content to be defined.</p>
+        <span class="refresher-icon" aria-hidden="true">🌦️ 📊</span>
+        <h2>How’s the Weather?</h2>
+        <p>After the worksheet, work in a team of 2, 3 or 4. Manage a live weather-risk emergency, make simple actuarial decisions and build your final mini recap as you progress.</p>
+        <a class="refresher-link" href="refresher-session1-weather-risk.html">Start Weather Risk Rescue Mission →</a>
       </article>
-      <article class="refresher-card">
-        <span class="refresher-status">SESSION 2</span>
-        <h2>Session 2</h2>
-        <p>Content to be defined.</p>
-      </article>
-      <article class="refresher-card">
-        <span class="refresher-status">SESSION 3</span>
-        <h2>Session 3</h2>
-        <p>Content to be defined.</p>
-      </article>
-      <article class="refresher-card">
-        <span class="refresher-status">SESSION 4</span>
-        <h2>Session 4</h2>
-        <p>Content to be defined.</p>
-      </article>
-      <article class="refresher-card">
-        <span class="refresher-status">SESSION 5</span>
-        <h2>Session 5</h2>
-        <p>Content to be defined.</p>
-      </article>
-      <article class="refresher-card">
-        <span class="refresher-status">SESSION 6</span>
-        <h2>Session 6</h2>
-        <p>Content to be defined.</p>
-      </article>
-      <article class="refresher-card">
-        <span class="refresher-status">SESSION 7</span>
-        <h2>Session 7</h2>
-        <p>Content to be defined.</p>
-      </article>
-      <article class="refresher-card">
-        <span class="refresher-status">SESSION 8</span>
-        <h2>Session 8</h2>
-        <p>Content to be defined.</p>
-      </article>
-      <article class="refresher-card">
-        <span class="refresher-status">SESSION 9</span>
-        <h2>Session 9</h2>
-        <p>Content to be defined.</p>
-      </article>
-      <article class="refresher-card">
-        <span class="refresher-status">SESSION 10</span>
-        <h2>Session 10</h2>
-        <p>Content to be defined.</p>
-      </article>
-      <article class="refresher-card">
-        <span class="refresher-status">SESSION 11</span>
-        <h2>Session 11</h2>
-        <p>Content to be defined.</p>
-      </article>
-      <article class="refresher-card">
-        <span class="refresher-status">SESSION 12</span>
-        <h2>Session 12</h2>
-        <p>Content to be defined.</p>
-      </article>
-      <article class="refresher-card">
-        <span class="refresher-status">SESSION 13</span>
-        <h2>Session 13</h2>
-        <p>Content to be defined.</p>
-      </article>
-      <article class="refresher-card">
-        <span class="refresher-status">SESSION 14</span>
-        <h2>Session 14</h2>
-        <p>Content to be defined.</p>
-      </article>
-      <article class="refresher-card">
-        <span class="refresher-status">SESSION 15</span>
-        <h2>Session 15</h2>
-        <p>Content to be defined.</p>
-      </article>
-      <article class="refresher-card">
-        <span class="refresher-status">SESSION 16</span>
-        <h2>Session 16</h2>
-        <p>Content to be defined.</p>
-      </article>
+      <article class="refresher-card"><span class="refresher-status">SESSION 2</span><h2>Session 2</h2><p>Content to be defined.</p></article>
+      <article class="refresher-card"><span class="refresher-status">SESSION 3</span><h2>Session 3</h2><p>Content to be defined.</p></article>
+      <article class="refresher-card"><span class="refresher-status">SESSION 4</span><h2>Session 4</h2><p>Content to be defined.</p></article>
+      <article class="refresher-card"><span class="refresher-status">SESSION 5</span><h2>Session 5</h2><p>Content to be defined.</p></article>
+      <article class="refresher-card"><span class="refresher-status">SESSION 6</span><h2>Session 6</h2><p>Content to be defined.</p></article>
+      <article class="refresher-card"><span class="refresher-status">SESSION 7</span><h2>Session 7</h2><p>Content to be defined.</p></article>
+      <article class="refresher-card"><span class="refresher-status">SESSION 8</span><h2>Session 8</h2><p>Content to be defined.</p></article>
+      <article class="refresher-card"><span class="refresher-status">SESSION 9</span><h2>Session 9</h2><p>Content to be defined.</p></article>
+      <article class="refresher-card"><span class="refresher-status">SESSION 10</span><h2>Session 10</h2><p>Content to be defined.</p></article>
+      <article class="refresher-card"><span class="refresher-status">SESSION 11</span><h2>Session 11</h2><p>Content to be defined.</p></article>
+      <article class="refresher-card"><span class="refresher-status">SESSION 12</span><h2>Session 12</h2><p>Content to be defined.</p></article>
+      <article class="refresher-card"><span class="refresher-status">SESSION 13</span><h2>Session 13</h2><p>Content to be defined.</p></article>
+      <article class="refresher-card"><span class="refresher-status">SESSION 14</span><h2>Session 14</h2><p>Content to be defined.</p></article>
+      <article class="refresher-card"><span class="refresher-status">SESSION 15</span><h2>Session 15</h2><p>Content to be defined.</p></article>
+      <article class="refresher-card"><span class="refresher-status">SESSION 16</span><h2>Session 16</h2><p>Content to be defined.</p></article>
     </div>
   </section>
 </main>
 <footer class="site-footer">
   <p><strong>Actuarial English</strong></p>
-  <p class="footer-credit">Created by Mrs Lecomte and Mr Lemoine, with the help of Chat GPT</p>
+  <p class="footer-credit">Created by Mrs Lecomte and Mr Lemoine, with the help of ChatGPT</p>
   <p class="privacy"><strong>Privacy &amp; GDPR:</strong> no student account, analytics, advertising or remote database. Learning-tool data is stored locally in this browser. <a href="privacy.html">Privacy details</a> · <a href="accessibility.html">Accessibility</a></p>
 </footer>
 <script src="shared.js"></script><script defer src="pwa-r39.js"></script>
