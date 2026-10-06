@@ -1,0 +1,1 @@
+document.addEventListener('click',e=>{const current=e.target.closest('[data-timer]');if(!current)return;document.querySelectorAll('[data-timer]').forEach(btn=>{if(btn!==current)btn.disabled=false})},true);
