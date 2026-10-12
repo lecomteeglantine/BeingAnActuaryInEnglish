@@ -81,6 +81,11 @@ try{
  await page.locator('#studioNav button').nth(5).click();
  await page.locator('#studioContent details').evaluate(el=>el.open=true);
  assert.equal(await page.locator('#studioContent details').evaluate(el=>el.open),false,'model accessible before writing');
+ assert.equal(await page.locator('#studioContent button').filter({hasText:'Start 20-minute practice timer'}).count(),1);
+ await page.locator('#studioContent button').filter({hasText:'Start 20-minute practice timer'}).click();
+ assert.match(await page.locator('#studioContent').innerText(),/Time remaining:/);
+ await page.locator('#studioContent button').filter({hasText:'Stop timer'}).click();
+ assert.match(await page.locator('#studioContent').innerText(),/Timer paused/);
  await page.locator('#studioContent textarea').fill('A practice text preserved across sessions.');
  await page.locator('#studioContent details').evaluate(el=>el.open=true);
  assert.equal(await page.locator('#studioContent details').evaluate(el=>el.open),true,'model not accessible after writing');
