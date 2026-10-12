@@ -78,6 +78,13 @@ const path = require('node:path');
     await page.locator('#submitRead').click();
     assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('actuarial-reading-b2-v1')).records.at(-1).points),20,'internal answer key');
 
+    // Inference choices must never allow more than two selections.
+    await page.locator('#restartRead').click();
+    await page.evaluate(()=>{
+      const inputs=[...document.querySelectorAll('input[name="c0"]')];
+      inputs.slice(0,3).forEach(el=>{el.checked=true;el.dispatchEvent(new Event('change',{bubbles:true}))});
+      if(inputs.filter(el=>el.checked).length!==2)throw new Error('More than two inference choices allowed');
+    });
     // Test partial inference credit: one correct and one wrong option = 1 / 2.
     await page.locator('#restartRead').click();
     await page.evaluate(t=>{
