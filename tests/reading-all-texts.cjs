@@ -46,7 +46,7 @@ async function run(browserType, width, height) {
       },t);
       assert.match(await page.locator('#answerStatus').innerText(),/18\/18/,'answer count, text '+index);
       await page.locator('#submitRead').evaluate(el=>el.click());
-      assert.match(await page.locator('#results').innerText(),/Result: 20\/20/,'grading, text '+index);
+      assert.match(await page.locator('#results').innerText(),/Answers checked/,'feedback, text '+index);assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('actuarial-reading-b2-v1')).records.at(-1).points),20,'internal grading, text '+index);
       assert.equal(await page.locator('.read-feedback-slot .read-feedback').count(),18,'feedback count, text '+index);
       checked++;
     }
