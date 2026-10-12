@@ -3,6 +3,25 @@ async function test(engine,viewport){
 const browser=await engine.launch();const page=await browser.newPage({viewport});const errors=[];page.on('pageerror',x=>errors.push(x.message));
 try{
  await page.goto('file://'+path.resolve('writing.html'));
+ assert.equal(await page.locator('#arcLevel option').count(),4);
+ assert.equal(await page.locator('#arcActivity option').count(),5);
+ for(const level of ['A2','B1','B2','C1']){
+   await page.locator('#arcLevel').selectOption(level);
+   for(const type of ['sentence','thesis','puzzle','compare','spot']){
+     await page.locator('#arcActivity').selectOption(type);
+     assert.equal(await page.locator('#arcTask input[type=radio]').count(),3);
+     await page.locator('#arcCheck').click();
+     assert.match(await page.locator('#arcFeedback').innerText(),/choose an answer/i);
+     await page.locator('#arcTask input[type=radio]').first().check();
+     await page.locator('#arcCheck').click();
+     assert.match(await page.locator('#arcFeedback').innerText(),/Correct|Not quite/);
+     await page.locator('#arcTask input[type=radio]').nth(1).check();
+     assert.match(await page.locator('#arcFeedback').innerText(),/Answer changed/);
+   }
+ }
+ assert.equal(await page.locator('#arcProfile .arc-profile-item').count(),5);
+ await page.reload();
+ assert.equal(await page.locator('#arcProfile .arc-profile-item').count(),5);
  assert.equal(await page.locator('#pathLevels button').count(),4,'four progressive writing levels');
  for(let level=0;level<4;level++){
   await page.locator('#pathLevels button').nth(level).click();
