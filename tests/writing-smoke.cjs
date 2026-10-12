@@ -28,6 +28,19 @@ try{
  assert.match(await page.locator('#builderDraft').inputValue(),/stage 3/);
  await page.locator('#builderNavigation button').nth(0).click();
  assert.match(await page.locator('#builderDraft').inputValue(),/stage 0/);
+ assert.equal(await page.locator('#studioNav button').count(),6);
+ for(let n=0;n<5;n++){
+   await page.locator('#studioNav button').nth(n).click();
+   assert.equal(await page.locator('#studioContent fieldset').count(),3);
+   for(let q=0;q<3;q++)await page.locator('#studioContent fieldset').nth(q).locator('input').first().check();
+   await page.locator('#studioContent button').last().click();
+   assert.equal(await page.locator('#studioContent .studio-feedback:not([hidden])').count(),3);
+ }
+ await page.locator('#studioNav button').nth(5).click();
+ await page.locator('#studioContent textarea').fill('A practice text preserved across sessions.');
+ await page.reload();
+ await page.locator('#studioNav button').nth(5).click();
+ assert.match(await page.locator('#studioContent textarea').inputValue(),/preserved across sessions/);
  assert.equal(await page.locator('#criterionSelect option').count(),5);
  assert.equal(await page.locator('.cefr-levels > div').count(),4,'four CEFR level descriptions expected');
  assert.deepEqual(await page.locator('.cefr-levels strong').allTextContents(),['A2 · Building sentences','B1 · Connecting ideas','B2 · Developing an argument','C1 · Refining your position']);
