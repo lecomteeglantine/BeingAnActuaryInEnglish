@@ -4,6 +4,7 @@ on:
     paths:
       - 'reading.html'
       - 'tests/reading-smoke.cjs'
+      - 'tests/reading-all-texts.cjs'
       - '.github/workflows/reading-browser-check.yml'
   workflow_dispatch:
 jobs:
@@ -16,5 +17,6 @@ jobs:
         with:
           node-version: '22'
       - run: npm install --no-save playwright@1.56.1
-      - run: npx playwright install --with-deps chromium
+      - run: npx playwright install --with-deps chromium webkit
       - run: node tests/reading-smoke.cjs
+      - run: node tests/reading-all-texts.cjs
