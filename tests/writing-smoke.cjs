@@ -6,12 +6,12 @@ try{
  assert.equal(await page.locator('#pathLevels button').count(),4,'four progressive writing levels');
  for(let level=0;level<4;level++){
   await page.locator('#pathLevels button').nth(level).click();
-  assert.equal(await page.locator('#pathPractice fieldset').count(),2);
+  assert.equal(await page.locator('#pathPractice fieldset').count(),7);
   await page.locator('#pathCheck').click();
   assert.match(await page.locator('#pathResult').innerText(),/Choose an answer/);
-  for(let q=0;q<2;q++)await page.locator('input[name="pathq'+q+'"]').first().check();
+  for(let q=0;q<7;q++)await page.locator('input[name="pathq'+q+'"]').first().check();
   await page.locator('#pathCheck').click();
-  assert.equal(await page.locator('.path-explanation:not([hidden])').count(),2);
+  assert.equal(await page.locator('.path-explanation:not([hidden])').count(),7);
  }
  assert.equal(await page.locator('#criterionSelect option').count(),5);
  assert.equal(await page.locator('.cefr-levels > div').count(),4,'four CEFR level descriptions expected');
