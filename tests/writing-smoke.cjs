@@ -3,6 +3,22 @@ async function test(engine,viewport){
 const browser=await engine.launch();const page=await browser.newPage({viewport});const errors=[];page.on('pageerror',x=>errors.push(x.message));
 try{
  await page.goto('file://'+path.resolve('writing.html'));
+ assert.equal(await page.locator('.writing-start-grid a').count(),4);
+ assert.equal(await page.locator('#coachCriteria .coach-criterion').count(),5);
+ await page.locator('#coachFirst').fill('A first draft for the first exercise.');
+ await page.locator('#coachRevised').fill('An improved draft for the first exercise.');
+ await page.locator('#coachCriteria input').first().check();
+ await page.locator('#coachLevel').selectOption('C1');
+ assert.equal(await page.locator('#coachFirst').inputValue(),'');
+ await page.locator('#coachFirst').fill('A separate C1 first draft.');
+ await page.locator('#coachLevel').selectOption('A2');
+ assert.match(await page.locator('#coachFirst').inputValue(),/first exercise/);
+ assert.match(await page.locator('#coachRevised').inputValue(),/improved draft/);
+ assert.equal(await page.locator('#coachCriteria input').first().isChecked(),true);
+ await page.reload();
+ assert.match(await page.locator('#coachFirst').inputValue(),/first exercise/);
+ await page.locator('#goWrite').click();
+ assert.equal(await page.locator('#studioNav button').nth(5).getAttribute('aria-selected'),'true');
  assert.equal(await page.locator('#arcLevel option').count(),4);
  assert.equal(await page.locator('#arcActivity option').count(),5);
  for(const level of ['A2','B1','B2','C1']){
