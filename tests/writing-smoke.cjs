@@ -3,6 +3,16 @@ async function test(engine,viewport){
 const browser=await engine.launch();const page=await browser.newPage({viewport});const errors=[];page.on('pageerror',x=>errors.push(x.message));
 try{
  await page.goto('file://'+path.resolve('writing.html'));
+ if(viewport.width<=650){
+  assert.equal(await page.locator('#skillArc').isVisible(),true,'practice should be active in focused mobile mode');
+  assert.equal(await page.locator('#writingCoach').isVisible(),false,'mobile mode should focus on one learning area');
+  await page.locator('.writing-start-grid a').nth(3).click();
+  assert.equal(await page.locator('#writingCoach').isVisible(),true,'Review should be visible when selected');
+  assert.equal(await page.locator('#skillArc').isVisible(),false,'other activities should be hidden in focus mode');
+  await page.locator('#writingViewToggle').click();
+  assert.equal(await page.locator('#skillArc').isVisible(),true,'all activities toggle restores every activity');
+ }
+
  assert.equal(await page.locator('.writing-start-grid a').count(),4);
  assert.equal(await page.locator('#coachCriteria .coach-criterion').count(),5);
  await page.locator('#coachFirst').fill('A first draft for the first exercise.');
