@@ -1,0 +1,20 @@
+name: Reading Trainer browser checks
+on:
+  push:
+    paths:
+      - 'reading.html'
+      - 'tests/reading-smoke.cjs'
+      - '.github/workflows/reading-browser-check.yml'
+  workflow_dispatch:
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save playwright@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - run: node tests/reading-smoke.cjs
