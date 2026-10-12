@@ -13,6 +13,21 @@ try{
   await page.locator('#pathCheck').click();
   assert.equal(await page.locator('.path-explanation:not([hidden])').count(),7);
  }
+ assert.equal(await page.locator('#builderNavigation button').count(),4);
+ for(let stage=0;stage<4;stage++){
+  await page.locator('#builderNavigation button').nth(stage).click();
+  await page.locator('#builderCheck').click();
+  assert.match(await page.locator('#builderFeedback').innerText(),/select an option/);
+  await page.locator('input[name="builderChoice"]').first().check();
+  await page.locator('#builderCheck').click();
+  assert.match(await page.locator('#builderFeedback').innerText(),/Correct|Try again/);
+  await page.locator('#builderDraft').fill('Sentence written for stage '+stage+'.');
+ }
+ await page.reload();
+ await page.locator('#builderNavigation button').nth(3).click();
+ assert.match(await page.locator('#builderDraft').inputValue(),/stage 3/);
+ await page.locator('#builderNavigation button').nth(0).click();
+ assert.match(await page.locator('#builderDraft').inputValue(),/stage 0/);
  assert.equal(await page.locator('#criterionSelect option').count(),5);
  assert.equal(await page.locator('.cefr-levels > div').count(),4,'four CEFR level descriptions expected');
  assert.deepEqual(await page.locator('.cefr-levels strong').allTextContents(),['A2 · Building sentences','B1 · Connecting ideas','B2 · Developing an argument','C1 · Refining your position']);
