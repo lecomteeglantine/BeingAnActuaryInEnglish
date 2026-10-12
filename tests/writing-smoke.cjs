@@ -19,6 +19,11 @@ try{
  assert.equal(await page.locator('.path-explanation:not([hidden])').count(),7);
  await page.locator('input[name="pathq0"]').nth(1).check();
  assert.equal(await page.locator('.path-explanation:not([hidden])').count(),6,'CEFR feedback must reset after changed answer');
+ await page.locator('#mission').selectOption('0');
+ await page.locator('#quiz input').first().check();
+ await page.locator('#checkQuiz').click();
+ await page.locator('#quiz input').nth(1).check();
+ assert.match(await page.locator('#quizFeedback').innerText(),/Answer changed/,'mini-quiz feedback must reset');
  assert.equal(await page.locator('#builderNavigation button').count(),4);
  for(let stage=0;stage<4;stage++){
   await page.locator('#builderNavigation button').nth(stage).click();
@@ -30,6 +35,11 @@ try{
   await page.locator('#builderDraft').fill('Sentence written for stage '+stage+'.');
  }
  await page.reload();
+ await page.locator('#builderNavigation button').first().click();
+ await page.locator('#builderExercise input').first().check();
+ await page.locator('#builderCheck').click();
+ await page.locator('#builderExercise input').nth(1).check();
+ assert.match(await page.locator('#builderFeedback').innerText(),/Answer changed/,'builder feedback must reset');
  await page.locator('#builderNavigation button').nth(3).click();
  assert.match(await page.locator('#builderDraft').inputValue(),/stage 3/);
  await page.locator('#builderNavigation button').nth(0).click();
