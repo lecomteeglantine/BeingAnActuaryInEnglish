@@ -343,7 +343,7 @@ const levels=['A2','B1','B2','C1'];
 const current=levels.find(l=>!['sentence','thesis','puzzle','compare','spot'].every(t=>record[l+':'+t]?.confident))||'C1';
 $('writingNextStep').textContent=vals.length?('Suggested next practice: '+need.skill+' · '+current+'. Your practice responses guide this suggestion, not a grade.'):'Start at A2 with short sentences, then move gradually towards C1.';
 $('writingContinue').textContent='Continue · '+current+' →';
-$('writingContinue').addEventListener('click',()=>{$('arcLevel').value=current;$('arcActivity').value=need.type;$('arcLevel').dispatchEvent(new Event('change'))},{once:true})}
-recommend();$('arcCheck').addEventListener('click',()=>setTimeout(recommend,0));
+$('writingContinue').dataset.level=current;$('writingContinue').dataset.type=need.type}
+$('writingContinue').addEventListener('click',()=>{const b=$('writingContinue');$('arcLevel').value=b.dataset.level||'A2';$('arcActivity').value=b.dataset.type||'sentence';$('arcLevel').dispatchEvent(new Event('change'))});recommend();$('arcCheck').addEventListener('click',()=>setTimeout(recommend,0));
 if(window.matchMedia){matchMedia(query).addEventListener('change',apply)}apply();
 })();</script></body></html>
