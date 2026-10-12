@@ -19,6 +19,15 @@
       if(m2) m2.insertAdjacentElement('afterend',link);
       else nav.appendChild(link);
     }
+    // Reading is available in the main menu on every page.
+    if(!nav.querySelector('a[href="reading.html"]')){
+      const link=document.createElement('a');
+      link.href='reading.html';
+      link.textContent='Reading';
+      const grammar=nav.querySelector('a[href="grammar.html"]');
+      if(grammar) grammar.insertAdjacentElement('beforebegin',link);
+      else nav.appendChild(link);
+    }
     const page=location.pathname.split('/').pop()||'index.html';
     const section=page.startsWith('m1-')?'m1.html':page.startsWith('m2-')?'m2.html':page;
     nav.querySelectorAll('a').forEach(a=>{
