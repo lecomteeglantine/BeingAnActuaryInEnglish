@@ -55,8 +55,21 @@ async function run(browserType, width, height) {
       assert.equal(await page.locator('.read-article').isVisible(),true);
       await page.locator('#viewQuestions').click();
       assert.equal(await page.locator('.read-questions').isVisible(),true);
-      const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
-      if(overflow>2){const offenders=await page.evaluate(()=>[...document.querySelectorAll('body *')].filter(el=>{const r=el.getBoundingClientRect(),style=getComputedStyle(el);return style.display!=='none'&&style.visibility!=='hidden'&&r.width>0&&(r.right>innerWidth+2||r.left< -2)}).map(el=>({tag:el.tagName,cls:String(el.className).slice(0,85),id:el.id,right:Math.round(el.getBoundingClientRect().right),width:Math.round(el.getBoundingClientRect().width)})).slice(0,25));console.error('Mobile overflow offenders:',JSON.stringify(offenders))}assert.ok(overflow<=2,'horizontal mobile overflow: '+overflow+' px');
+      const viewportCheck=await page.evaluate(()=>{
+        const scrolling=document.scrollingElement||document.documentElement;
+        const original=scrolling.scrollLeft;
+        scrolling.scrollLeft=1000;
+        const canScroll=Math.abs(scrolling.scrollLeft-original);
+        scrolling.scrollLeft=original;
+        const offenders=[...document.querySelectorAll('body *')].filter(el=>{
+          const r=el.getBoundingClientRect(),style=getComputedStyle(el);
+          return style.display!=='none'&&style.visibility!=='hidden'&&style.position!=='fixed'&&r.width>0&&r.right>innerWidth+2&&r.left<innerWidth;
+        }).map(el=>({tag:el.tagName,id:el.id,cls:String(el.className).slice(0,80),right:Math.round(el.getBoundingClientRect().right)}));
+        return {reportedOverflow:document.documentElement.scrollWidth-innerWidth,canScroll,offenders:offenders.slice(0,15)};
+      });
+      console.log('Mobile layout probe',browserType.name(),JSON.stringify(viewportCheck));
+      assert.equal(viewportCheck.offenders.length,0,'visible mobile elements exceed the viewport');
+      assert.ok(viewportCheck.canScroll<=2,'actual mobile horizontal scrolling: '+viewportCheck.canScroll+'px');
     }
     assert.deepEqual(errors,[],'browser JavaScript errors');
     console.log('PASS '+browserType.name()+' '+width+'x'+height+': '+checked+' texts graded 20/20');
