@@ -3,9 +3,19 @@ async function test(engine,viewport){
 const browser=await engine.launch();const page=await browser.newPage({viewport});const errors=[];page.on('pageerror',x=>errors.push(x.message));
 try{
  await page.goto('file://'+path.resolve('writing.html'));
+ assert.equal(await page.locator('#pathLevels button').count(),4,'four progressive writing levels');
+ for(let level=0;level<4;level++){
+  await page.locator('#pathLevels button').nth(level).click();
+  assert.equal(await page.locator('#pathPractice fieldset').count(),2);
+  await page.locator('#pathCheck').click();
+  assert.match(await page.locator('#pathResult').innerText(),/Choose an answer/);
+  for(let q=0;q<2;q++)await page.locator('input[name="pathq'+q+'"]').first().check();
+  await page.locator('#pathCheck').click();
+  assert.equal(await page.locator('.path-explanation:not([hidden])').count(),2);
+ }
  assert.equal(await page.locator('#criterionSelect option').count(),5);
- assert.equal(await page.locator('.cefr-levels > div').count(),6,'six CEFR level descriptions expected');
- assert.deepEqual(await page.locator('.cefr-levels strong').allTextContents(),['A1 · First steps','A2 · Building sentences','B1 · Connecting ideas','B2 · Developing an argument','C1 · Refining your position','C2 · Writing with subtlety']);
+ assert.equal(await page.locator('.cefr-levels > div').count(),4,'four CEFR level descriptions expected');
+ assert.deepEqual(await page.locator('.cefr-levels strong').allTextContents(),['A2 · Building sentences','B1 · Connecting ideas','B2 · Developing an argument','C1 · Refining your position']);
  assert.equal(await page.locator('#draft').isVisible(),true);
  assert.equal(await page.locator('#introDraft').isVisible(),true);
  for(let i=0;i<5;i++){await page.locator('#criterionSelect').selectOption(String(i));assert.equal(await page.locator('#criterionExercises fieldset').count(),3);
