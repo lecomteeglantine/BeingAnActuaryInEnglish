@@ -36,8 +36,19 @@ try{
    await page.locator('#studioContent button').last().click();
    assert.equal(await page.locator('#studioContent .studio-feedback:not([hidden])').count(),3);
  }
+ // Feedback must be cleared when a checked answer is changed.
+ await page.locator('#studioNav button').nth(0).click();
+ for(let q=0;q<3;q++)await page.locator('#studioContent fieldset').nth(q).locator('input').first().check();
+ await page.locator('#studioContent button').last().click();
+ assert.equal(await page.locator('#studioContent .studio-feedback:not([hidden])').count(),3);
+ await page.locator('#studioContent fieldset').first().locator('input').nth(1).check();
+ assert.equal(await page.locator('#studioContent .studio-feedback:not([hidden])').count(),2,'stale feedback not hidden');
  await page.locator('#studioNav button').nth(5).click();
+ await page.locator('#studioContent details').evaluate(el=>el.open=true);
+ assert.equal(await page.locator('#studioContent details').evaluate(el=>el.open),false,'model accessible before writing');
  await page.locator('#studioContent textarea').fill('A practice text preserved across sessions.');
+ await page.locator('#studioContent details').evaluate(el=>el.open=true);
+ assert.equal(await page.locator('#studioContent details').evaluate(el=>el.open),true,'model not accessible after writing');
  await page.reload();
  await page.locator('#studioNav button').nth(5).click();
  assert.match(await page.locator('#studioContent textarea').inputValue(),/preserved across sessions/);
