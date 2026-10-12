@@ -56,7 +56,18 @@
 .topbar .main-nav a{flex:0 1 auto;max-width:100%;font-size:.88rem}
 }
 @media(prefers-reduced-motion:reduce){.writing-wrap *{transition:none!important;animation:none!important}}
-</style><style>.path-levels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.55rem;margin:1rem 0}.path-levels button{min-width:0;white-space:normal;background:#f0f7f8;color:#20566b;border:1px solid #b8d8df}.path-levels button[aria-current="step"]{background:#186d7c;color:white}.path-levels button[data-done="true"]:after{content:" ✓";font-weight:800}.path-lesson{background:#eef9f5;border-left:4px solid #279b91;border-radius:.7rem;padding:1rem;margin:1rem 0}.path-lesson li{margin:.4rem 0}.path-example{background:white;border:1px solid #cce0e8;padding:.8rem;border-radius:.65rem;line-height:1.65}.path-question{border:1px solid #d7e4ea;border-radius:.7rem;margin:.65rem 0;padding:.75rem;min-width:0}.path-question legend{font-weight:700}.path-question label{display:flex;align-items:flex-start;gap:.5rem;padding:.55rem;border-radius:.5rem;cursor:pointer;font-weight:400}.path-question label:has(input:checked){background:#e4f6ef}.path-question input{width:18px;height:18px;flex:none}.path-explanation{padding:.6rem;background:#f5f2ff;border-radius:.5rem;margin-top:.45rem}.path-next-step{color:#265f69;font-weight:650}@media(max-width:560px){.path-levels{grid-template-columns:repeat(2,minmax(0,1fr))}.path-levels button{min-height:50px}.path-question{padding:.55rem}#writingPath .writing-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}#writingPath .writing-actions button{padding:.6rem .3rem;font-size:.91rem}}@media(max-width:350px){#writingPath .writing-actions{grid-template-columns:1fr}}</style></head><body>
+</style><style>.path-levels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.55rem;margin:1rem 0}.path-levels button{min-width:0;white-space:normal;background:#f0f7f8;color:#20566b;border:1px solid #b8d8df}.path-levels button[aria-current="step"]{background:#186d7c;color:white}.path-levels button[data-done="true"]:after{content:" ✓";font-weight:800}.path-lesson{background:#eef9f5;border-left:4px solid #279b91;border-radius:.7rem;padding:1rem;margin:1rem 0}.path-lesson li{margin:.4rem 0}.path-example{background:white;border:1px solid #cce0e8;padding:.8rem;border-radius:.65rem;line-height:1.65}.path-question{border:1px solid #d7e4ea;border-radius:.7rem;margin:.65rem 0;padding:.75rem;min-width:0}.path-question legend{font-weight:700}.path-question label{display:flex;align-items:flex-start;gap:.5rem;padding:.55rem;border-radius:.5rem;cursor:pointer;font-weight:400}.path-question label:has(input:checked){background:#e4f6ef}.path-question input{width:18px;height:18px;flex:none}.path-explanation{padding:.6rem;background:#f5f2ff;border-radius:.5rem;margin-top:.45rem}.path-next-step{color:#265f69;font-weight:650}@media(max-width:560px){.path-levels{grid-template-columns:repeat(2,minmax(0,1fr))}.path-levels button{min-height:50px}.path-question{padding:.55rem}#writingPath .writing-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}#writingPath .writing-actions button{padding:.6rem .3rem;font-size:.91rem}}@media(max-width:350px){#writingPath .writing-actions{grid-template-columns:1fr}}</style><style>
+#guidedBuilder{border-top:5px solid #2b9f99}#guidedBuilder .builder-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.55rem;margin:1rem 0}
+#guidedBuilder .builder-steps button{min-width:0;padding:.7rem .35rem;background:#eff8f6;color:#145b68;border:1px solid #a8cfcf;white-space:normal}
+#guidedBuilder .builder-steps button[aria-current=step]{background:#145e70;color:#fff}
+#guidedBuilder fieldset{border:1px solid #d5e5e8;border-radius:.8rem;min-width:0;margin:.8rem 0;padding:.85rem}
+#guidedBuilder legend{font-weight:700}#guidedBuilder .builder-option{display:flex;gap:.6rem;align-items:flex-start;cursor:pointer;padding:.65rem;border-radius:.5rem;min-height:44px}
+#guidedBuilder .builder-option:has(input:checked){background:#e6f6f1}#guidedBuilder input[type=radio]{flex:none;margin-top:.25rem}
+#guidedBuilder textarea{min-height:140px;font-size:16px}#guidedBuilder .writing-prompt{line-height:1.7}
+#guidedBuilder .writing-example{white-space:pre-wrap;margin-top:.6rem}
+@media(max-width:600px){#guidedBuilder .builder-steps{grid-template-columns:repeat(2,minmax(0,1fr))}#guidedBuilder .writing-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}#guidedBuilder .writing-actions button{width:100%;min-width:0}}
+@media(max-width:350px){#guidedBuilder .writing-actions{grid-template-columns:1fr}}
+</style></head><body>
 <a href="#main" class="skip-link">Skip to main content</a>
 <header class="topbar"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">📊</span><span><strong>Actuarial English</strong></span></a>
 <nav aria-label="Main navigation" class="main-nav"><a href="index.html">Home</a><a href="dictionary.html">Dictionary</a><a href="m1.html">M1</a><a href="m2.html">M2</a><a href="reading.html">Reading</a><a href="writing.html" aria-current="page" class="writing-nav-current">Writing</a><a href="grammar.html">Grammar</a><a href="pronunciation.html">Pronunciation</a><a href="games.html">Games</a></nav></header>
@@ -73,7 +84,19 @@
 <button type="button" id="criterionCheck">Check my answers</button>
 <p id="criterionResult" role="status" aria-live="polite"></p>
 </section>
-<section class="writing-card" id="introductionWorkshop">
+<section class="writing-card" id="guidedBuilder">
+<span class="writing-step">FROM PRACTICE TO INDEPENDENT WRITING</span>
+<h2>🧩 Build an introduction — four guided steps</h2>
+<p>Work on a fresh practice topic: <strong>Should cities invest more in public transport than in new roads?</strong> Start with the context, then develop the debate, thesis and essay direction. Every short exercise checks itself; your own sentences are saved without being graded.</p>
+<div class="builder-steps" id="builderNavigation" aria-label="Introduction building stages"></div>
+<div id="builderLesson" class="writing-prompt" aria-live="polite"></div>
+<div id="builderExercise" class="writing-quiz"></div>
+<button type="button" id="builderCheck">Check exercise</button>
+<p id="builderFeedback" class="writing-status" role="status" aria-live="polite"></p>
+<label for="builderDraft">Your sentence for this step</label><textarea id="builderDraft" spellcheck="true" placeholder="Write your own sentence here…"></textarea>
+<div class="writing-actions"><button type="button" id="builderPrevious" class="secondary">← Previous</button><button type="button" id="builderNext">Next step →</button></div>
+<details><summary>Review the four parts together</summary><div id="builderCombined" class="writing-example"></div></details>
+</section><section class="writing-card" id="introductionWorkshop">
 <h2>🧪 Introduction workshop</h2><p><strong>Practice topic:</strong> Should universities make financial literacy a compulsory subject?</p>
 <p>Write an introduction to an opinion essay. Present the issue, both sides, your position and the direction of your argument. The workshop helps you respect the format, but <strong>it does not automatically grade your free writing</strong>.</p>
 <textarea id="introDraft" aria-label="Your opinion essay introduction" spellcheck="true" placeholder="Start with the wider context…"></textarea>
@@ -180,4 +203,24 @@ $('pathCheck').addEventListener('click',()=>{const a=levels[i],groups=[...$('pat
 $('pathPrev').addEventListener('click',()=>{if(i>0){i--;render();$('writingPath').scrollIntoView({block:'start'})}});
 $('pathNext').addEventListener('click',()=>{if(i<levels.length-1){i++;render();$('writingPath').scrollIntoView({block:'start'})}});
 render();
-})();</script></body></html>
+})();</script><script>
+(()=>{'use strict';
+const stages=[
+{name:'Context',goal:'Set the scene without stating your thesis too early.',instruction:'A good opening explains why the issue matters. Avoid universal statements such as “Since the beginning of time”.',task:'Choose the most useful context sentence.',choices:['Public transport is good and bad.','Growing cities must decide how to use limited transport budgets.','Everyone always uses roads in the same way.'],correct:1,explanation:'Option B provides a concrete policy context and prepares the reader for a meaningful debate.'},
+{name:'Debate',goal:'Present two credible competing views.',instruction:'Show why reasonable people might disagree. Avoid caricaturing either position.',task:'Which sentence presents a fair debate?',choices:['Supporters of new roads are all irresponsible.','There is no possible disagreement about transport.','Public transport may reduce congestion, whereas new roads can improve access for drivers and deliveries.'],correct:2,explanation:'Option C offers plausible priorities on both sides without taking an extreme position.'},
+{name:'Thesis',goal:'State your position while acknowledging the trade-off.',instruction:'At B2 and C1, a defensible thesis is more precise than “I agree”. Use although or provided that when appropriate.',task:'Choose the strongest thesis.',choices:['Although road maintenance remains necessary, I favour prioritising reliable public transport in densely populated areas.','Cities should always ban all roads immediately.','I have many ideas about transport.'],correct:0,explanation:'Option A takes a clear, qualified position and recognises a practical limitation.'},
+{name:'Direction',goal:'Signal the ideas your argument will develop.',instruction:'Preview relevant reasons briefly. Your introduction should not already contain the full body argument.',task:'Which sentence provides a purposeful outline?',choices:['My essay is going to be an essay.','The argument will focus on access, environmental effects and the practical limits of funding.','This is definitely the end of the discussion.'],correct:1,explanation:'Option B previews three connected dimensions of the argument.'}
+];
+const $=id=>document.getElementById(id),storeKey='actuarial-writing-guided-v1';let step=0;
+function load(){try{let x=JSON.parse(localStorage.getItem(storeKey)||'{}');return x&&typeof x==='object'&&!Array.isArray(x)?x:{}}catch{return {}}}
+function save(d){try{localStorage.setItem(storeKey,JSON.stringify(d));return true}catch{return false}}
+function combined(){const d=load();$('builderCombined').textContent=stages.map((x,i)=>d['draft'+i]||'['+x.name+': write your sentence]').join('\n\n')}
+function render(){const d=load();$('builderNavigation').replaceChildren();stages.forEach((x,i)=>{let b=document.createElement('button');b.type='button';b.textContent=(i+1)+'. '+x.name;if(i===step)b.setAttribute('aria-current','step');b.addEventListener('click',()=>{step=i;render()});$('builderNavigation').appendChild(b)});
+const st=stages[step];$('builderLesson').textContent=st.goal+' '+st.instruction;const root=$('builderExercise');root.replaceChildren();const field=document.createElement('fieldset'),legend=document.createElement('legend');legend.textContent=st.task;field.appendChild(legend);st.choices.forEach((v,i)=>{const label=document.createElement('label'),input=document.createElement('input');label.className='builder-option';input.type='radio';input.name='builderChoice';input.value=String(i);label.append(input,document.createTextNode(String.fromCharCode(65+i)+'. '+v));field.appendChild(label)});root.appendChild(field);$('builderFeedback').textContent='Choose one option, then check your answer.';$('builderDraft').value=typeof d['draft'+step]==='string'?d['draft'+step]:'';$('builderPrevious').disabled=step===0;$('builderNext').disabled=step===3;combined()}
+$('builderCheck').addEventListener('click',()=>{const selected=document.querySelector('input[name=builderChoice]:checked');if(!selected){$('builderFeedback').textContent='Please select an option first.';return}const st=stages[step],correct=Number(selected.value)===st.correct;$('builderFeedback').textContent=(correct?'Correct! ':'Try again. ')+st.explanation});
+$('builderDraft').addEventListener('input',()=>{const d=load();d['draft'+step]=$('builderDraft').value;save(d);combined()});
+$('builderPrevious').addEventListener('click',()=>{if(step>0){step--;render()}});
+$('builderNext').addEventListener('click',()=>{if(step<3){step++;render()}});
+render();
+})();
+</script></body></html>
