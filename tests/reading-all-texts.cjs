@@ -56,7 +56,7 @@ async function run(browserType, width, height) {
       await page.locator('#viewQuestions').click();
       assert.equal(await page.locator('.read-questions').isVisible(),true);
       const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
-      assert.ok(overflow<=2,'horizontal mobile overflow: '+overflow+' px');
+      if(overflow>2){const offenders=await page.evaluate(()=>[...document.querySelectorAll('body *')].filter(el=>{const r=el.getBoundingClientRect(),style=getComputedStyle(el);return style.display!=='none'&&style.visibility!=='hidden'&&r.width>0&&(r.right>innerWidth+2||r.left< -2)}).map(el=>({tag:el.tagName,cls:String(el.className).slice(0,85),id:el.id,right:Math.round(el.getBoundingClientRect().right),width:Math.round(el.getBoundingClientRect().width)})).slice(0,25));console.error('Mobile overflow offenders:',JSON.stringify(offenders))}assert.ok(overflow<=2,'horizontal mobile overflow: '+overflow+' px');
     }
     assert.deepEqual(errors,[],'browser JavaScript errors');
     console.log('PASS '+browserType.name()+' '+width+'x'+height+': '+checked+' texts graded 20/20');
