@@ -11,7 +11,7 @@ const path = require('node:path');
     await page.goto('file://' + path.resolve('reading.html'));
     await page.locator('#diagnosticQuestions input').first().check();
     await page.locator('#diagnosticCheck').click();
-    await page.waitForFunction(() => document.querySelector('#diagnosticResult')?.textContent.includes('Diagnostic:'));
+    await page.waitForFunction(() => document.querySelector('#diagnosticResult')?.textContent.includes('Diagnostic complete'));
     await page.locator('#rmModuleSelect').selectOption('3');
     assert.equal(await page.locator('#module-4').isVisible(),true);
     await page.locator('#readShowExam').click();
@@ -24,8 +24,8 @@ const path = require('node:path');
     if(viewport.width<=800) await page.locator('#viewQuestions').click();
     assert.equal(await page.locator('input[name=f0]').first().isChecked(),true,'draft was not restored');
     await page.locator('#submitRead').click();
-    await page.waitForFunction(() => document.querySelector('#results')?.textContent.includes('Result:'));
-    assert.match(await page.locator('#results').innerText(), /\d+\/20/);
+    await page.waitForFunction(() => document.querySelector('#results')?.textContent.includes('Answers checked'));
+    assert.match(await page.locator('#results').innerText(), /Answers checked/);
     await page.locator('#mode').selectOption('exam');
     assert.equal(await page.locator('#challenge option').count(),3);
     if(viewport.width<=800) await page.locator('#viewQuestions').click();
@@ -73,7 +73,7 @@ const path = require('node:path');
       t.critical.forEach((q,i)=>q[2].forEach(v=>choose('c'+i,v,true)));
     },key);
     await page.locator('#submitRead').click();
-    assert.match(await page.locator('#results').innerText(),/Result: 20\/20/,'perfect score');
+    assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('actuarial-reading-b2-v1')).records.at(-1).points),20,'internal answer key');
 
     // Test partial inference credit: one correct and one wrong option = 1 / 2.
     await page.locator('#restartRead').click();
@@ -87,7 +87,7 @@ const path = require('node:path');
       choose('c0',correct);choose('c0',wrong);
     },key);
     await page.locator('#submitRead').click();
-    assert.match(await page.locator('#readQuestions [data-q="c0"] .read-feedback-slot').innerText(),/1\/2 points/);
+    assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('actuarial-reading-b2-v1')).records.at(-1).parts[3]),1,'partial inference credit');
 
     // An expired 45-minute exam must be submitted after reload.
     await page.locator('#mode').selectOption('exam');
@@ -100,7 +100,7 @@ const path = require('node:path');
     },examIndex);
     await page.reload();
     if(viewport.width<=800) await page.locator('#readShowExam').click();
-    assert.match(await page.locator('#results').innerText(),/Result: \d+\/20/,'expired exam was not submitted');
+    assert.match(await page.locator('#results').innerText(),/Answers checked/,'expired exam was not submitted');
     assert.equal(await page.locator('#submitRead').isDisabled(),true,'exam still editable');
 
     assert.deepEqual(errors,[], 'uncaught browser errors');
