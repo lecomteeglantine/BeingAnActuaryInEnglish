@@ -37,6 +37,8 @@ const path = require('node:path');
     assert.equal(await page.locator('#mode').inputValue(),'exam');
     assert.equal(await page.locator('input[name=f0]').first().isChecked(),true);
     assert.equal(await page.locator('#challenge option').count(),3);
+    assert.equal(await page.locator('#saveEvidence').isDisabled(),true,'evidence save must be disabled in restored mock exam');
+    assert.equal(await page.locator('#clearEvidence').isDisabled(),true,'evidence clear must be disabled in restored mock exam');
     if(viewport.width<=800){
       await page.locator('#viewQuestions').click();
       assert.equal(await page.locator('.read-questions').isVisible(),true);
