@@ -13,6 +13,12 @@ try{
   await page.locator('#pathCheck').click();
   assert.equal(await page.locator('.path-explanation:not([hidden])').count(),7);
  }
+ await page.locator('#pathLevels button').first().click();
+ for(let q=0;q<7;q++)await page.locator('input[name="pathq'+q+'"]').first().check();
+ await page.locator('#pathCheck').click();
+ assert.equal(await page.locator('.path-explanation:not([hidden])').count(),7);
+ await page.locator('input[name="pathq0"]').nth(1).check();
+ assert.equal(await page.locator('.path-explanation:not([hidden])').count(),6,'CEFR feedback must reset after changed answer');
  assert.equal(await page.locator('#builderNavigation button').count(),4);
  for(let stage=0;stage<4;stage++){
   await page.locator('#builderNavigation button').nth(stage).click();
@@ -60,6 +66,12 @@ try{
  for(let i=0;i<5;i++){await page.locator('#criterionSelect').selectOption(String(i));assert.equal(await page.locator('#criterionExercises fieldset').count(),3);
  for(let q=0;q<3;q++){await page.locator('input[name="criteria-'+q+'"]').first().check()}
  await page.locator('#criterionCheck').click();assert.equal(await page.locator('.criterion-feedback:not([hidden])').count(),3)}
+ await page.locator('#criterionSelect').selectOption('0');
+ for(let q=0;q<3;q++)await page.locator('input[name="criteria-'+q+'"]').first().check();
+ await page.locator('#criterionCheck').click();
+ assert.equal(await page.locator('.criterion-feedback:not([hidden])').count(),3);
+ await page.locator('input[name="criteria-0"]').nth(1).check();
+ assert.equal(await page.locator('.criterion-feedback:not([hidden])').count(),2,'rubric feedback must reset after changed answer');
  assert.equal(await page.locator('#mission option').count(),6);
  await page.locator('#introDraft').fill('A practice paragraph that will be saved safely on this device.');
  await page.reload();assert.match(await page.locator('#introDraft').inputValue(),/saved safely/);
