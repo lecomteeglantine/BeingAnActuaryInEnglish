@@ -19,6 +19,43 @@
 #introductionWorkshop textarea{min-height:190px}#introWordFeedback{font-weight:600}
 @media(max-width:800px){#examPrep .exam-structure{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:360px){#examPrep .exam-structure{grid-template-columns:minmax(0,1fr)}}
+</style><style>
+/* Friendly, responsive CEFR guidance */
+.writing-wrap{--warm-ink:#17465b;overflow-wrap:anywhere}
+.writing-hero{background:linear-gradient(120deg,#e6faf4 0%,#edf4ff 58%,#fff0df 100%);border:1px solid #c4e1df;box-shadow:0 12px 28px rgba(38,95,112,.07)}
+.writing-hero:before{content:"✦  ✧";display:block;color:#bc803d;letter-spacing:.65rem;font-size:1.1rem}
+.writing-card{box-shadow:0 5px 18px rgba(25,83,102,.055);border-radius:1.15rem}
+.cefr-guide{border-top:5px solid #45a89c;background:linear-gradient(155deg,#f6fffb,#fff 60%)}
+.cefr-guide h2{font-size:clamp(1.25rem,2.5vw,1.6rem)}
+.cefr-levels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;margin:1rem 0}
+.cefr-levels>div{min-width:0;border:1px solid #d3e7e6;border-radius:.9rem;padding:.9rem;background:#fff}
+.cefr-levels>div:nth-child(3n+2){background:#f6f4ff;border-color:#dfdef2}
+.cefr-levels>div:nth-child(3n){background:#fff8ed;border-color:#eedfc9}
+.cefr-levels strong{color:#14596a}.cefr-levels p{margin:.35rem 0 0;line-height:1.6}
+.writing-card select,.writing-card textarea{min-width:0;scroll-margin-top:1rem}
+.writing-card textarea:focus,.writing-card select:focus{outline:3px solid #9bd7d0;outline-offset:1px}
+.writing-card button:focus-visible{outline:3px solid #db9c52;outline-offset:3px}
+#introWordFeedback{background:#f1f7f8}#criterionExercises label{min-height:44px;cursor:pointer}
+@media(max-width:800px){
+.cefr-levels{grid-template-columns:repeat(2,minmax(0,1fr))}
+.writing-wrap,.writing-grid,.writing-card{min-width:0;max-width:100%;box-sizing:border-box}
+.writing-card .writing-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+.writing-card .writing-actions button{min-width:0;width:100%;white-space:normal}
+#draft,#introDraft{width:100%;max-width:100%;font-size:16px;line-height:1.75;min-height:250px}
+#criterionExercises fieldset{min-width:0}
+#criterionExercises label span{overflow-wrap:anywhere}
+}
+@media(max-width:440px){
+.cefr-levels{grid-template-columns:minmax(0,1fr)}
+.writing-wrap{padding:.55rem}
+.writing-hero{padding:1.05rem}
+.writing-card{padding:.85rem;border-radius:.95rem}
+.writing-card .writing-actions{grid-template-columns:minmax(0,1fr)}
+#examPrep .exam-structure{grid-template-columns:repeat(2,minmax(0,1fr))}
+.topbar .main-nav{max-width:100%;overflow-wrap:anywhere}
+.topbar .main-nav a{flex:0 1 auto;max-width:100%;font-size:.88rem}
+}
+@media(prefers-reduced-motion:reduce){.writing-wrap *{transition:none!important;animation:none!important}}
 </style></head><body>
 <a href="#main" class="skip-link">Skip to main content</a>
 <header class="topbar"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">📊</span><span><strong>Actuarial English</strong></span></a>
@@ -28,7 +65,7 @@
 <section class="writing-card" id="examPrep" aria-labelledby="examPrepTitle">
 <p class="writing-step">OPINION ESSAY INTRODUCTION · EXAM PREPARATION</p>
 <h2 id="examPrepTitle">🎯 Learn the method — practise the assessment criteria</h2>
-<p>In the writing assessment, you will produce a <strong>100–120-word introduction</strong>. Your introduction should <strong>set the context, introduce the debate, state a clear position and outline the main arguments</strong>. You will be assessed on five equally weighted criteria. The practice topics below are different from the assessment topic.</p>
+<p>In the writing assessment, you will produce a <strong>100–120-word introduction</strong>. Your introduction should <strong>set the context, introduce the debate, state a clear position and outline the main arguments</strong>. Use the five assessment criteria as a guide to improve your writing, rather than focusing on a mark. The practice topics below are different from the assessment topic.</p>
 <div class="exam-structure"><div><strong>1. Context</strong><span>Introduce the issue and why it matters.</span></div><div><strong>2. Debate</strong><span>Show the competing perspectives fairly.</span></div><div><strong>3. Thesis</strong><span>State your position precisely.</span></div><div><strong>4. Direction</strong><span>Briefly signal the arguments to follow.</span></div></div>
 <label for="criterionSelect">Choose a criterion to practise</label><select id="criterionSelect" aria-label="Choose writing assessment criterion"></select>
 <div id="criterionLesson" class="writing-prompt" aria-live="polite"></div>
@@ -44,10 +81,22 @@
 <div class="writing-actions"><button type="button" id="introReview">Check the structure</button><button type="button" id="introCopy" class="secondary">Copy introduction</button><button type="button" id="introClear" class="secondary">Clear introduction</button></div>
 <div id="introReviewResult" class="writing-status" role="status" aria-live="polite"></div>
 <details><summary>Show an example after writing</summary><p class="writing-example">Financial decisions increasingly shape young adults’ lives, from managing monthly expenses to understanding student loans. Some people therefore believe that universities should provide compulsory financial literacy lessons, while others argue that degree programmes are already overcrowded and that students should be free to choose. Although additional teaching would require time and resources, I believe a short, practical course would benefit most students. It could help them avoid common financial mistakes and make more informed decisions at the beginning of their careers. This essay will first consider the value of these skills before examining how universities could introduce the subject without placing an excessive burden on their existing programmes.</p></details>
+</section><section class="writing-card cefr-guide" id="cefrGuide">
+<span class="writing-step">YOUR CEFR LEARNING JOURNEY</span>
+<h2>🌱 From getting started to confident argumentation</h2>
+<p>These levels describe <strong>writing skills you can practise</strong>. They are not grades or scores. The exam rubric also describes C1 and C2 performance, so you can aim higher than B2.</p>
+<div class="cefr-levels">
+<div><strong>A1 · First steps</strong><p>Write simple, relevant statements and make your basic opinion understandable.</p></div>
+<div><strong>A2 · Building sentences</strong><p>Introduce a topic and give a simple opinion using familiar vocabulary and basic links.</p></div>
+<div><strong>B1 · Connecting ideas</strong><p>Present the issue, acknowledge the debate and write a connected paragraph.</p></div>
+<div><strong>B2 · Developing an argument</strong><p>Present both sides, a clear thesis and the arguments to follow, using varied and generally accurate English.</p></div>
+<div><strong>C1 · Refining your position</strong><p>Frame the tension thoughtfully, use precise vocabulary and distinguish evidence from uncertainty.</p></div>
+<div><strong>C2 · Writing with subtlety</strong><p>Create a compelling, highly coherent introduction with economical wording and sustained nuance.</p></div>
+</div><p class="writing-muted">Choose a task at a level that helps you progress. You can revisit any activity as often as you like.</p>
 </section><div class="writing-grid"><div>
 <section class="writing-card"><h2>🧭 Choose your writing mission</h2><label for="mission">Writing activity</label><select id="mission"></select><p id="missionGoal" class="writing-muted"></p><div class="writing-prompt" id="missionPrompt"></div></section>
 <section class="writing-card"><h2>🧱 Build your response</h2><p class="writing-muted">Follow the suggested structure. Expand each idea into a clear sentence or paragraph.</p><ol id="missionSteps"></ol><details><summary>Useful language and model response</summary><p id="missionPhrases"></p><div class="writing-example" id="missionModel"></div></details></section>
-<section class="writing-card writing-quiz"><h2>🔎 Spot the better sentence</h2><p class="writing-muted">Choose the more appropriate option for this professional context. The feedback is automatic.</p><div id="quiz"></div><button type="button" id="checkQuiz">Check my choices</button><p class="writing-status" id="quizFeedback" role="status" aria-live="polite"></p></section>
+<section class="writing-card writing-quiz"><h2>🔎 Spot the better sentence</h2><p class="writing-muted">Choose the more appropriate option for this professional context. You receive immediate explanations, not a grade.</p><div id="quiz"></div><button type="button" id="checkQuiz">Check my choices</button><p class="writing-status" id="quizFeedback" role="status" aria-live="polite"></p></section>
 </div><div>
 <section class="writing-card"><h2>📝 Your writing space</h2><p class="writing-muted">Your draft is saved automatically in this browser for each activity. Nothing is sent to a server.</p><label for="draft">Write your text in British English</label><textarea id="draft" spellcheck="true" placeholder="Write your response here…"></textarea><p id="draftStatus" class="writing-muted" aria-live="polite">Ready to write.</p><div class="writing-actions"><button id="copyDraft" type="button">Copy draft</button><button id="downloadDraft" class="secondary" type="button">Download .txt</button><button id="clearDraft" class="secondary" type="button">Start again</button></div></section>
 <section class="writing-card"><h2>✅ Self-editing checklist</h2><p class="writing-muted">Use this checklist before sharing your work. It is a reflection tool, not automatic grading of your free writing.</p><div id="checklist" class="writing-checklist"></div><p id="checkStatus" class="writing-status" aria-live="polite"></p></section>
