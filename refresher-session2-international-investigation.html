@@ -37,7 +37,7 @@ a{color:#0a5a8a}.sr{position:absolute;left:-9999px}
 <script>
 
 "use strict";
-const KEY="actuary-hotline-v4-new-page";
+const KEY="actuary-hotline-v5-audited";
 const offices=[
 {city:"London",icon:"🇬🇧",department:"Pricing",photo:"https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1100&q=85",person:"Oliver",intro:"Our team reviews premiums every six months. This week, we are analysing a new customer dataset.",clue:"The inflation assumption has changed. Pricing needs a clear explanation.",tasks:[
 {prompt:"Find the routine",hint:"Ask how often something happens.",options:["How often do you review premiums?","Are you reviewing premiums right now?","Is the office open?"],correct:0,feedback:"The pricing team reviews premiums twice a year.",why:"How often + do asks about a routine."},
@@ -58,14 +58,15 @@ const roles4=["Lead Actuary","Data Analyst","Model Reviewer","Communication Offi
 const $=id=>document.getElementById(id);
 const safe=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let s={size:0,names:[],screen:0,answers:[],notes:[],decision:null};
-try{let v=JSON.parse(localStorage.getItem(KEY)||"null");if(v&&[2,3,4].includes(v.size)&&Array.isArray(v.names)&&v.names.length===v.size&&Number.isInteger(v.screen)&&v.screen>=0&&v.screen<=4&&Array.isArray(v.answers)&&Array.isArray(v.notes))s={...s,...v};}catch(e){}
+try{let v=JSON.parse(localStorage.getItem(KEY)||"null");if(v&&[2,3,4].includes(v.size)&&Array.isArray(v.names)&&v.names.length===v.size&&Number.isInteger(v.screen)&&v.screen>=0&&v.screen<=4&&Array.isArray(v.answers)&&Array.isArray(v.notes)&&v.notes.length===v.size&&v.answers.length<=3&&v.answers.every((a,i)=>Array.isArray(a)&&a.length<=2&&a.every(n=>Number.isInteger(n)&&n>=0&&n<=2)))s={...s,...v};}catch(e){}
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(s));}catch(e){}}
 function role(i){return s.size===2?["Lead Actuary + Communication Officer","Data Analyst + Model Reviewer"][i]:s.size===3?["Lead Actuary","Data Analyst + Communication Officer","Model Reviewer"][i]:roles4[i];}
 function pips(){return [0,1,2,3,4].map((n)=>'<span class="person" style="background:'+(n<=s.screen?"#d6edf9":"#e8eef2")+'">'+["Briefing","London","Dublin","Toronto","Decision"][n]+'</span>').join(" ");}
 function notesPanel(){
  $("progress").firstElementChild.style.width=(s.screen/4*100)+"%";
  $("team").innerHTML='<div class="people" style="margin:13px 0">'+pips()+'</div>'+(s.size?'<p class="small"><strong>'+s.size+' players</strong></p>'+s.names.map((n,i)=>'<div class="note"><strong>'+safe(n)+' — '+safe(role(i))+'</strong></div>').join(""):"");
- $("notes").innerHTML=s.screen?offices.slice(0,Math.min(s.screen,3)).map((o,i)=>'<div class="note"><strong>'+o.icon+' '+o.city+' — clue unlocked</strong>'+safe(o.clue)+'</div>').join(""):'<p class="small sub">Your clues will appear here after each call.</p>';
+ const unlocked=s.screen>=4?3:Math.max(0,s.screen-1)+(s.screen>=1&&s.screen<=3&&(s.answers[s.screen-1]||[]).length===2?1:0);
+ $("notes").innerHTML=unlocked?offices.slice(0,unlocked).map((o,i)=>'<div class="note"><strong>'+o.icon+' '+o.city+' — clue unlocked</strong>'+safe(o.clue)+'</div>').join(""):'<p class="small sub">Your clues will appear here after each call.</p>';
 }
 function shell(html){$("stage").innerHTML=html;notesPanel();}
 function setup(){
@@ -82,15 +83,15 @@ $("next").onclick=()=>{s.answers[idx].push(a);persist();render();};
 });
 }else{shell('<p class="kicker">'+o.icon+' '+safe(o.city)+' · Call complete</p><h2>Clue unlocked!</h2><p class="good">'+safe(o.clue)+'</p><h3>✍️ Update your 1-minute recap</h3><p class="sub">Each student MUST write <strong>one personal sentence</strong> before continuing. Use “I asked…”, “We discovered…” or “We checked…”. You will use it when presenting to your teacher.</p><div id="write"></div><div class="rrow"><button class="primary" id="advance">Save notes · '+(idx===2?"Make a team decision":"Next call")+' →</button></div>');
 $("write").innerHTML=s.names.map((name,i)=>'<label for="n'+i+'"><strong>'+safe(name)+'</strong> · '+safe(role(i))+'</label><input id="n'+i+'" type="text" maxlength="210" placeholder="We discovered that..." value="'+safe(s.notes[i]?.[idx]||"")+'">').join("");
-$("advance").onclick=()=>{const vals=s.names.map((_,i)=>$("n"+i).value.trim());if(vals.some(x=>!x)){alert("Each student needs one short recap sentence before continuing.");return;}vals.forEach((v,i)=>s.notes[i][idx]=v);s.screen++;persist();render();};
+$("advance").onclick=()=>{const vals=s.names.map((_,i)=>$("n"+i).value.trim());if(vals.some(x=>!x)){alert("Each student must write one short recap sentence before continuing.");return;}vals.forEach((v,i)=>s.notes[i][idx]=v);s.screen++;persist();render();};
 }}
 function decision(){shell('<p class="kicker">Final mission · Decision room</p><h2>Can we release the report?</h2><img class="photo" src="https://images.unsplash.com/photo-1497366858526-0766cadbe8fa?auto=format&fit=crop&w=1100&q=85" alt="Realistic modern conference room for the final risk decision"><p class="sub">London changed an assumption. Dublin is still validating claims data. Toronto needs an update for management.</p><div class="guide"><strong>Your task:</strong> Discuss all three options. Choose one action and prepare to explain why to your English teacher.</div><h3>Choose the safest action</h3><div class="choices">'+decisions.map((d,i)=>'<button class="option" data-d="'+i+'"><strong>'+safe(d.title)+'</strong><span class="small" style="display:block;font-weight:normal;margin-top:5px">'+safe(d.info)+'</span></button>').join("")+'</div><div id="result"></div>');
 document.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{let v=+b.dataset.d;s.decision=v;persist();document.querySelectorAll("[data-d]").forEach(b=>b.disabled=true);$("result").innerHTML='<p class="'+(v===2?"good":"bad")+'">'+(v===2?"Good decision: verify before release.":"Risky decision. The data still need validation.")+' The team should document the changed assumption and update managers.</p><button id="end" class="primary">Prepare individual recaps →</button>';$("end").onclick=()=>{s.screen=4;persist();recaps();};});}
 function recaps(){shell('<p class="kicker">Final task · 1 minute per student</p><h2>🎤 Present your recap to your teacher</h2><img class="photo" src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1100&q=85" alt="Realistic professionals delivering a presentation"><div class="teacher-note">INDIVIDUAL ORAL: Every student speaks for approximately ONE MINUTE directly to your English teacher.</div><p class="sub">Use the notes you wrote after the three calls. Complete your decision sentence. Explain your own contribution using full sentences; do not read the whole card.</p><div id="cards"></div><div class="rrow"><button class="primary" id="print">Print speaking cards</button><button id="restart">Restart</button></div>');
 $("cards").innerHTML=s.names.map((name,i)=>'<div class="rec"><h3>'+safe(name)+' · '+safe(role(i))+'</h3><p><strong>1. My role:</strong> My role was '+safe(role(i))+'.</p><p><strong>2. London:</strong> '+safe(s.notes[i]?.[0]||"")+'</p><p><strong>3. Dublin:</strong> '+safe(s.notes[i]?.[1]||"")+'</p><p><strong>4. Toronto:</strong> '+safe(s.notes[i]?.[2]||"")+'</p><label for="final'+i+'"><strong>5. Our decision and reason:</strong></label><input id="final'+i+'" type="text" maxlength="220" value="'+safe(s.notes[i]?.[3]||"")+'" placeholder="We decided to wait for validation because..."><p class="small sub">Finish with: “I learnt that asking clear questions helps us…”</p></div>').join("");
-s.names.forEach((_,i)=>$("final"+i).oninput=e=>{s.notes[i][3]=e.target.value;persist()});$("print").onclick=()=>window.print();$("restart").onclick=()=>{if(confirm("Clear your progress and restart?")){localStorage.removeItem(KEY);location.reload();}};
+s.names.forEach((_,i)=>$("final"+i).oninput=e=>{s.notes[i][3]=e.target.value;persist()});$("print").onclick=()=>{if(s.names.some((_,i)=>!String(s.notes[i]?.[3]||"").trim())){alert("Complete the decision sentence for every student before printing.");return;}window.print();};$("restart").onclick=()=>{if(confirm("Clear your progress and restart?")){localStorage.removeItem(KEY);location.reload();}};
 }
-function render(){if(s.screen===0)setup();else if(s.screen>=1&&s.screen<=3)call();else if(s.decision===null)decision();else recaps();notesPanel();}
+function render(){if(s.screen===0)setup();else if(s.screen>=1&&s.screen<=3)call();else if(s.screen===4&&s.decision===null)decision();else if(s.screen===4)recaps();else setup();notesPanel();}
 render();
 $("showBriefing").onclick=()=>{if(s.screen===0){setup();return;}if(confirm("Return to the briefing? This restarts the game and clears saved answers and notes.")){s={size:0,names:[],screen:0,answers:[],notes:[],decision:null};persist();render();}};
 
