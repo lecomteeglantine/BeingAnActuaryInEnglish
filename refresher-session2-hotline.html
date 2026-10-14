@@ -31,13 +31,13 @@ a{color:#0a5a8a}.sr{position:absolute;left:-9999px}
 <header class="topbar"><a class="brand" href="index.html">📊 Actuarial English</a><nav class="main-nav" aria-label="Main navigation"><a href="refresher.html">← English Refresher</a><a href="games.html">Games</a></nav></header>
 <main id="main" class="hotline">
 <div class="head"><div class="eyebrow">SESSION 2 · TEAM INVESTIGATION</div><h1>☎️ The International Actuarial Hotline</h1><p>Three offices. One report. Ask questions, collect clues, and present your own 1-minute recap to your English teacher.</p></div>
-<div class="hgrid"><section id="stage" class="panel" aria-live="polite"></section>
+<section class="panel" aria-label="Mission introduction" style="margin-bottom:16px"><h2>Before you start: what is this game?</h2><p><strong>You are junior actuaries at Northstar Insurance.</strong> Management needs a risk report tomorrow, but the figures do not agree. London changed a pricing assumption, Dublin is checking unusual data, and Toronto is waiting for confirmation.</p><p><strong>Your mission:</strong> Call the three offices, choose useful questions, collect evidence, then decide whether the report is ready.</p><p><strong>During the game:</strong> Everyone writes one recap sentence after each call. <strong>At the end, each student presents a one-minute oral recap directly to the English teacher.</strong></p><button type="button" id="showBriefing">Read the complete instructions / Restart</button></section><div class="hgrid"><section id="stage" class="panel" aria-live="polite"></section>
 <aside class="panel"><h2>📒 Your live mission notes</h2><p class="sub small">Each student writes one note after every call to prepare their individual 1-minute oral presentation to the teacher.</p><div id="progress" class="progress" aria-label="Mission progress"><div></div></div><div id="team"></div><div id="notes"></div></aside></div></main>
 <footer class="site-footer"><p>Created by Mrs Lecomte and Mr Lemoine, with the help of ChatGPT</p></footer>
 <script>
 
 "use strict";
-const KEY="actuary-hotline-v2";
+const KEY="actuary-hotline-v3";
 const offices=[
 {city:"London",icon:"🇬🇧",department:"Pricing",photo:"https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1100&q=85",person:"Oliver",intro:"Our team reviews premiums every six months. This week, we are analysing a new customer dataset.",clue:"The inflation assumption has changed. Pricing needs a clear explanation.",tasks:[
 {prompt:"Find the routine",hint:"Ask how often something happens.",options:["How often do you review premiums?","Are you reviewing premiums right now?","Is the office open?"],correct:0,feedback:"The pricing team reviews premiums twice a year.",why:"How often + do asks about a routine."},
@@ -92,5 +92,6 @@ s.names.forEach((_,i)=>$("final"+i).oninput=e=>{s.notes[i][3]=e.target.value;per
 }
 function render(){if(s.screen===0)setup();else if(s.screen>=1&&s.screen<=3)call();else if(s.decision===null)decision();else recaps();notesPanel();}
 render();
+$("showBriefing").onclick=()=>{if(s.screen===0){setup();return;}if(confirm("Return to the briefing? This restarts the game and clears saved answers and notes.")){s={size:0,names:[],screen:0,answers:[],notes:[],decision:null};persist();render();}};
 
 </script></body></html>
