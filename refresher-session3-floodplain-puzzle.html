@@ -194,10 +194,29 @@ const choices=[
 renderInto('<div class="puzzle-tag">STAGE 5 OF 6 · REPORT TO YOUR MANAGER</div><h2>✍️ Make a responsible recommendation</h2><p class="puzzle-lead">Your team has enough information to <strong>identify a priority for further investigation</strong>, but not enough to set a premium or predict a claim. What should the manager do next?</p><div class="puzzle-choice-row">'+choices.map((c,i)=>'<button type="button" class="puzzle-choice" data-decision="'+i+'" aria-pressed="'+(s.decision===i)+'">'+esc(c)+'</button>').join("")+'</div><p id="decision-feedback" class="puzzle-small">'+(s.decision===1?"✓ Good professional judgement.":"")+'</p><div class="puzzle-hint"><strong>Useful speaking phrases:</strong> “According to the map …” · “Area A appears more exposed than …” · “We should check … before we conclude …”.</div>'+actions("← Correct the report","Prepare my oral recap →"));
 document.querySelectorAll("[data-decision]").forEach(b=>b.onclick=()=>{s.decision=Number(b.dataset.decision);save();document.querySelectorAll("[data-decision]").forEach(t=>t.setAttribute("aria-pressed",String(t===b)));$("decision-feedback").textContent=s.decision===1?"✓ Good professional judgement. The evidence supports a follow-up check, not an immediate pricing decision.":"This goes beyond what the map can prove. Choose a careful next step.";report();});wireNavigation();}
 function roleFor(i){return roles.filter((_,k)=>k%s.size===i).map(r=>r.title).join(" + ");}
+function myEvidence(i){return roles.filter((_,k)=>k%s.size===i).map(r=>r.sentence).join(" ");}
 function oral(){
 if(!Array.isArray(s.oral))s.oral=[];
-renderInto('<div class="puzzle-print-head"><h1>The Floodplain Puzzle · Individual oral recaps</h1></div><div class="puzzle-tag">STAGE 6 OF 6 · INDIVIDUAL SPEAKING</div><h2>🎤 One minute each, directly to your teacher</h2><p class="puzzle-lead">The investigation is complete. <strong>Every student speaks individually for about one minute.</strong> Use your own words; do not read the whole team report aloud. You can print your speaking notes.</p><div class="puzzle-hint"><strong>Structure for your minute:</strong> (1) My role; (2) One location fact; (3) One comparison; (4) One uncertainty; (5) Our recommendation. Use at least <strong>two comparatives</strong> and <strong>two location expressions</strong>.</div>'+s.names.map((name,i)=>'<section class="puzzle-oral"><h3>'+esc(name)+' · '+esc(roleFor(i))+'</h3><p><strong>My role:</strong> I investigated '+esc(roleFor(i).toLowerCase())+'.</p><p><strong>Where:</strong> Riverbend is near the river. Hilltop is farther inland and on higher ground.</p><p><strong>Compare:</strong> Riverbend is closer to the river than Hilltop. There are more buildings inside the mapped extent in Riverbend than in Mill Quarter.</p><p><strong>Be careful:</strong> Red symbols show buildings, not a guaranteed flood or insurance claim.</p><p><strong>Recommendation:</strong> Our team would check updated maps and property data before estimating losses.</p><div class="puzzle-field"><label for="oral-'+i+'">My own sentence (say what YOU discovered)</label><textarea id="oral-'+i+'" maxlength="420" placeholder="I discovered that...">'+esc(s.oral[i]||"")+'</textarea></div></section>').join("")+'<p class="puzzle-small">Your writing is stored only in this browser. To present, take turns while your teacher listens. The print button uses your current notes.</p><div class="puzzle-screen-actions">'+button("← Recommendation","puzzle-prev",false)+button("Print individual speaking cards","puzzle-print",true)+button("Restart the whole mission","puzzle-restart",false)+'</div>');
-s.names.forEach((_,i)=>{$("oral-"+i).oninput=e=>{s.oral[i]=e.target.value;save();};});
+const cards=s.names.map((name,i)=>{
+return '<section class="puzzle-oral"><h3>'+esc(name)+' · '+esc(roleFor(i))+'</h3>'+
+'<p><strong>My assigned evidence:</strong> '+esc(myEvidence(i))+'</p>'+
+'<p><strong>Team conclusion:</strong> Riverbend may be more exposed than Hilltop under this modelled scenario. We need updated flood maps and property data before estimating losses.</p>'+
+'<div class="puzzle-field"><label for="oral-'+i+'"><strong>My own finding</strong> — what did YOU contribute?</label>'+
+'<textarea id="oral-'+i+'" maxlength="420" placeholder="In my role, I found that...">'+esc(s.oral[i]||"")+'</textarea>'+
+'<div class="puzzle-print-note" id="print-oral-'+i+'">'+esc(s.oral[i]||"")+'</div></div></section>';
+}).join("");
+renderInto('<div class="puzzle-print-head"><h1>The Floodplain Puzzle · Individual oral recaps</h1></div>'+
+'<div class="puzzle-tag">STAGE 6 OF 6 · INDIVIDUAL SPEAKING</div>'+
+'<h2>🎤 One minute each, directly to your teacher</h2>'+
+'<p class="puzzle-lead">The investigation is complete. Each student speaks <strong>individually for about one minute</strong>, explaining their own evidence and the team decision. Speak naturally; do not read a script word for word.</p>'+
+'<div class="puzzle-hint"><strong>One-minute plan:</strong> (1) My role (2) Where the area is (3) Two comparisons (4) One uncertainty (5) The recommended next check. Use at least two location phrases.</div>'+
+cards+'<p class="puzzle-small">The key facts are given to help you. Write one personal finding, then explain the rest in your own words. You can print the cards for your teacher. Notes stay on this device.</p>'+
+'<div class="puzzle-screen-actions">'+button("← Team recommendation","puzzle-prev",false)+button("Print individual speaking cards","puzzle-print",true)+button("Restart the whole mission","puzzle-restart",false)+'</div>');
+s.names.forEach((_,i)=>{$("oral-"+i).oninput=e=>{
+s.oral[i]=e.target.value;
+$("print-oral-"+i).textContent=e.target.value;
+save();
+};});
 $("puzzle-prev").onclick=()=>{s.step=5;save();render();};
 $("puzzle-print").onclick=()=>window.print();
 $("puzzle-restart").onclick=()=>{if(confirm("Restart the whole puzzle and clear local notes?")){s=fresh();save();render();}};
