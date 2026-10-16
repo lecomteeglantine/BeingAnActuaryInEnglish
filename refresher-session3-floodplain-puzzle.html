@@ -228,6 +228,8 @@ $("puzzle-restart").onclick=()=>{if(confirm("Restart the whole puzzle and clear 
 }
 function render(){if(!s.size||s.step===0)setup();else if(s.step===1)clues();else if(s.step===2)mapStep();else if(s.step===3)compare();else if(s.step===4)trap();else if(s.step===5)decision();else oral();report();
 const reset=$("puzzle-reset-all");if(reset)reset.onclick=()=>{if(confirm("Start a new team? This clears saved answers and speaking notes on this device.")){s=fresh();save();render();}};
+const title=$("puzzle-stage").querySelector?.("h2");
+if(title&&typeof title.focus==="function"){title.tabIndex=-1;title.focus();}
 }
 render();
 })();
