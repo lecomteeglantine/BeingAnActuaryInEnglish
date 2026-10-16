@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#102a43">
+<meta name="description" content="The Floodplain Puzzle, a progressive A2-B1 group mission for actuarial English: collaborate, interpret a map, compare exposure and present your findings.">
+<title>The Floodplain Puzzle · English Refresher Session 3</title>
+<link rel="stylesheet" href="styles.css"><link rel="icon" href="icons/favicon.png">
+<style>
+:root{--deep:#143954;--sea:#116a81;--mint:#e7f4f2;--terracotta:#bb673d;--line:#ccdde4}
+*{box-sizing:border-box}body{background:#f1f6f9;color:#17324d;font-family:Arial,sans-serif}
+.puzzle-main{max-width:1180px;margin:auto;padding:22px 20px 76px}
+.puzzle-top{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(250px,.7fr);align-items:stretch;gap:0;overflow:hidden;border-radius:23px;background:#153d58;color:#fff;margin:10px 0 22px;box-shadow:0 12px 32px #17324d1a}
+.puzzle-intro{padding:clamp(22px,4vw,42px)}.puzzle-intro h1{font-size:clamp(2rem,4.2vw,3.2rem);letter-spacing:-.035em;line-height:1.05;color:#fff;margin:8px 0}
+.puzzle-intro p{color:#e5f5f7;line-height:1.6;max-width:66ch}
+.puzzle-eyebrow{color:#b6ede3;font-weight:900;font-size:.86rem;letter-spacing:.09em;text-transform:uppercase}
+.puzzle-hero-img{min-height:260px;position:relative;background:linear-gradient(135deg,#597d6b,#5b9cb0);overflow:hidden}
+.puzzle-hero-img img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover}
+.puzzle-hero-img span{position:absolute;right:12px;bottom:12px;background:#143954eb;color:#fff;border-radius:7px;padding:7px 10px;font-size:.75rem}
+.puzzle-back{color:white;text-decoration:underline;text-underline-offset:4px;font-weight:800}
+.puzzle-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.puzzle-meta span{border-radius:999px;border:1px solid #80adaf;padding:7px 11px;font-size:.84rem;font-weight:800}
+.puzzle-layout{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(270px,.88fr);gap:18px;align-items:start}
+.puzzle-panel{background:#fff;border:1px solid var(--line);border-radius:19px;padding:clamp(17px,3vw,27px);box-shadow:0 5px 22px #17324d0d;min-width:0}
+.puzzle-panel h2{font-size:1.55rem;color:var(--deep);margin:6px 0 12px}.puzzle-panel h3{font-size:1.13rem;color:#164f6c;margin:14px 0 8px}
+.puzzle-side{position:sticky;top:96px}.puzzle-side h2{font-size:1.3rem;margin:4px 0 8px}.puzzle-side p{line-height:1.55}
+.puzzle-progress{height:11px;border-radius:20px;background:#e5eef3;overflow:hidden;margin:16px 0 4px}
+.puzzle-progress>div{height:100%;width:0%;transition:width .18s;background:#118276}
+.puzzle-progress-text{font-weight:750;color:#45677a;font-size:.88rem;margin:0 0 14px}
+.puzzle-report-item{border-top:1px solid #e0e9ee;padding:12px 0;line-height:1.45;font-size:.94rem}
+.puzzle-report-item strong{display:block;color:#156480;margin-bottom:4px}.puzzle-report-item p{margin:0}
+.puzzle-small{color:#587188;font-size:.91rem}.puzzle-lead{font-size:1.06rem;line-height:1.58;color:#3e5f75}
+.puzzle-field{margin:14px 0}.puzzle-field label{font-weight:750;display:block;margin-bottom:7px}
+.puzzle-field select,.puzzle-field input,.puzzle-field textarea{border:1px solid #a6bdca;border-radius:10px;padding:12px;max-width:100%;width:100%;font:inherit;background:#fff;color:#17324d}
+.puzzle-field textarea{min-height:78px;resize:vertical;line-height:1.45}
+.puzzle-choice-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:13px 0 20px}
+.puzzle-choice{display:block;width:100%;text-align:left;border:2px solid #c5d8e2;background:#f9fcfd;color:#173b57;border-radius:12px;padding:13px;font:inherit;font-weight:750;cursor:pointer;min-height:79px}
+.puzzle-choice:hover{background:#eaf5f8}.puzzle-choice:focus-visible,.puzzle-btn:focus-visible,.puzzle-field input:focus-visible,.puzzle-field select:focus-visible,.puzzle-field textarea:focus-visible{outline:3px solid #f0ad65;outline-offset:2px}
+.puzzle-choice[aria-pressed=true]{background:#e0f3f0;border-color:#157669}
+.puzzle-btn{display:inline-block;font:inherit;font-weight:850;cursor:pointer;border-radius:12px;padding:12px 17px;border:2px solid #145c79;background:#fff;color:#145c79;margin:4px 5px 4px 0}
+.puzzle-btn.primary{background:#146c83;color:white}.puzzle-btn.primary:hover{background:#104d65}
+.puzzle-btn:disabled{cursor:not-allowed;opacity:.48}
+.puzzle-reveal{display:none;background:#eef7f6;border:1px solid #bddbd3;border-radius:12px;padding:13px;margin:12px 0;line-height:1.5}
+.puzzle-reveal.shown{display:block}
+.puzzle-feedback{border-radius:11px;padding:14px;border:1px solid #a5cfc1;background:#e9f7ef;color:#22583c;line-height:1.5;margin:12px 0}
+.puzzle-feedback.warn{border-color:#dfbeaa;background:#fff3eb;color:#8a451d}
+.puzzle-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0}
+.puzzle-clue{border:1px solid #d0dfe5;background:#fcfdfd;border-radius:14px;padding:16px;min-width:0}
+.puzzle-clue h3{margin:0 0 6px;font-size:1.06rem}.puzzle-clue p{margin:6px 0;color:#3d5969}.puzzle-clue small{color:#556c7b}
+.puzzle-clue button{min-height:43px;margin-top:7px}.puzzle-clue-note{border-left:3px solid #c57b53;padding-left:10px}
+.puzzle-map{margin:15px 0;border:1px solid #c5d5dd;background:#f4f9f5;border-radius:15px;padding:10px}
+.puzzle-map svg{width:100%;display:block;max-height:360px}
+.puzzle-map figcaption{font-size:.84rem;color:#4a6576;padding:8px 3px 2px}
+.puzzle-data{overflow-x:auto}.puzzle-data table{width:100%;border-collapse:collapse;min-width:360px;font-size:.91rem;margin:10px 0}
+.puzzle-data th,.puzzle-data td{border:1px solid #d3e2e8;padding:9px;text-align:left}.puzzle-data th{background:#e8f3f7;color:#164665}.puzzle-data tr:nth-child(even){background:#f7fafb}
+.puzzle-photo{display:grid;grid-template-columns:155px 1fr;gap:13px;background:#f5fafb;border-radius:12px;padding:12px;align-items:center;margin:14px 0}
+.puzzle-photo img{width:155px;height:110px;object-fit:cover;border-radius:9px;background:#a1b4b0}
+.puzzle-photo p{margin:0;color:#4c6677}.puzzle-photo a{text-decoration:underline;color:#145e7b}
+.puzzle-oral{background:#f5f9fc;border:1px solid #d5e4ed;border-radius:12px;padding:17px;margin:14px 0}
+.puzzle-oral h3{margin:0 0 8px}
+.puzzle-oral .puzzle-field{margin:9px 0}
+.puzzle-hint{background:#eef6fb;border-left:4px solid #2d7796;padding:12px 14px;border-radius:7px;margin:14px 0;font-size:.96rem}
+.puzzle-steps{padding-left:22px;color:#37566a}.puzzle-steps li{margin:6px 0}
+.puzzle-tag{display:inline-block;border-radius:30px;background:#e4f0f5;color:#24546b;padding:4px 9px;font-weight:800;font-size:.8rem}
+.puzzle-screen-actions{margin-top:20px;display:flex;flex-wrap:wrap;gap:8px}
+.puzzle-prompt{font-size:1.06rem;font-weight:800;margin:22px 0 8px;color:#173d57}
+.puzzle-line{border-top:1px solid #dce7ec;margin:18px 0}
+.puzzle-print-head{display:none}
+@media(max-width:820px){.puzzle-top{grid-template-columns:1fr}.puzzle-hero-img{min-height:185px}.puzzle-layout{grid-template-columns:1fr}.puzzle-side{position:static}.puzzle-choice-row{grid-template-columns:1fr}.puzzle-choice{min-height:unset}.puzzle-cards{grid-template-columns:1fr}.puzzle-photo{grid-template-columns:1fr}.puzzle-photo img{width:100%;height:190px}}
+@media print{.topbar,.puzzle-top,.puzzle-side,.puzzle-screen-actions,.puzzle-photo,.puzzle-btn,.puzzle-map,.site-footer{display:none!important}.puzzle-layout{display:block}.puzzle-panel{box-shadow:none;border:0}.puzzle-oral{break-inside:avoid}.puzzle-print-head{display:block}textarea,input{border:none!important;padding:3px!important}.puzzle-main{padding:0}}
+@media(prefers-reduced-motion:reduce){.puzzle-progress>div{transition:none}}
+</style>
+</head><body>
+<a class="skip-link" href="#puzzle-stage">Skip to mission</a>
+<header class="topbar"><a class="brand" href="index.html"><span aria-hidden="true" class="brand-mark">📊</span><span><strong>Actuarial English</strong></span></a><nav class="main-nav" aria-label="Main navigation"><a href="refresher.html">← English Refresher</a><a href="refresher-session3-risk-exposure.html">Session 3 review</a></nav></header>
+<main class="puzzle-main">
+<section class="puzzle-top"><div class="puzzle-intro">
+<div class="puzzle-eyebrow">SESSION 3 · GROUP MISSION · A2/B1</div>
+<h1>🧩 The Floodplain Puzzle</h1>
+<p>Four missing pieces. Three neighbourhoods. One responsible risk report. Share your clues, investigate the map and explain what the evidence really means.</p>
+<div class="puzzle-meta"><span>👥 2, 3 or 4 students</span><span>⏱️ About 20–25 minutes</span><span>🎤 One-minute oral recap each</span></div>
+<p><a class="puzzle-back" href="refresher-session3-risk-exposure.html">← Back to Session 3</a></p></div>
+<div class="puzzle-hero-img"><img src="https://www.fraunhofer.de/en/press/research-news/2024/december-2024/simulation-software-boosts-climate-resilience-in-buildings/jcr%3Acontent/contentPar/sectioncomponent/sectionParsys/textwithinlinedimage/imageComponent1/image.img.jpg/1733310896437/emi-rescentric.jpg" alt="Real aerial photograph of flooded buildings beside a swollen river, illustrating why floodplain exposure matters" loading="lazy"><span>Real flood photograph · illustrative only · © Fraunhofer</span></div>
+</section>
+<div class="puzzle-layout"><section id="puzzle-stage" class="puzzle-panel" aria-live="polite"></section>
+<aside class="puzzle-panel puzzle-side" aria-label="Live investigation report"><h2>📋 Your live investigation report</h2><p class="puzzle-small">This report grows as your team solves the puzzle. Your findings are based only on the fictional case data.</p>
+<div class="puzzle-progress"><div id="puzzle-progress"></div></div><p class="puzzle-progress-text" id="puzzle-progress-text">Not started</p><div id="puzzle-brief"></div></aside></div>
+</main>
+<footer class="site-footer"><p><strong>Actuarial English</strong></p><p class="footer-credit">Created by Mrs Lecomte and Mr Lemoine, with the help of ChatGPT</p><p class="privacy">All game progress stays on this device. No account or personal information is sent to a server. <a href="privacy.html">Privacy details</a></p></footer>
+<script src="shared.js"></script>
+<script>
+"use strict";
+(function(){
+const KEY="floodplain-puzzle-session3-v1";
+const $=id=>document.getElementById(id);
+const esc=v=>String(v==null?"":v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const roles=[
+{title:"Map Reader",emoji:"🗺️",label:"Map distances",body:"Riverbend (A) is 0.3 km from the river. Hilltop (B) is 2.1 km away. Mill Quarter (C) is 0.5 km away. The river runs through the western part of the town.",sentence:"Riverbend is closer to the river than Hilltop."},
+{title:"Property Analyst",emoji:"🏘️",label:"Building counts",body:"Total buildings / buildings inside the mapped flood extent: Riverbend A = 140 / 95; Hilltop B = 85 / 7; Mill Quarter C = 110 / 60. These are model-based exposure counts, not claims.",sentence:"Riverbend has more buildings within the mapped extent than Mill Quarter."},
+{title:"Terrain Scout",emoji:"🌳",label:"Landscape information",body:"Riverbend and Mill Quarter are low-lying areas. Hilltop is on higher ground. Ground level alone does not tell us how deep a future flood could be.",sentence:"Hilltop is on higher ground than Riverbend."},
+{title:"Evidence Checker",emoji:"🔎",label:"Map legend and uncertainty",body:"RED shapes = building footprints. BLUE shading = modelled flood extent. The model was made last year. It cannot tell us that a building has flooded or will make an insurance claim.",sentence:"We need updated maps and property details before estimating potential losses."}
+];
+const zones=[
+{code:"A",name:"Riverbend",meters:"0.3 km",total:140,exposed:95},
+{code:"B",name:"Hilltop",meters:"2.1 km",total:85,exposed:7},
+{code:"C",name:"Mill Quarter",meters:"0.5 km",total:110,exposed:60}
+];
+const challenges=[
+{q:"Which neighbourhood has the greatest NUMBER of buildings inside the mapped flood extent?",choices:["Hilltop: 7","Mill Quarter: 60","Riverbend: 95"],answer:2,explain:"Exactly: 95 buildings in Riverbend, 60 in Mill Quarter and 7 in Hilltop. These are modelled exposure counts, not actual flood losses.",report:"Riverbend has the greatest modelled exposed-building count (95)."},
+{q:"Which comparison uses correct English and accurate map distances?",choices:["Riverbend is closer to the river than Hilltop.","Riverbend is more closer to the river than Hilltop.","Hilltop is closer to the river than Riverbend."],answer:0,explain:"Correct: closer to … than. Riverbend is 0.3 km away; Hilltop is 2.1 km away.",report:"Riverbend is closer to the river than Hilltop (0.3 km versus 2.1 km)."},
+{q:"Choose the BEST evidence-based conclusion.",choices:["All red buildings will certainly flood.","The river caused exactly 95 insurance claims.","Riverbend may be more exposed than Hilltop under this mapped scenario."],answer:2,explain:"Yes. 'May' and 'under this mapped scenario' avoid claiming that future damage is certain.",report:"Riverbend may be more exposed than Hilltop according to the mapped scenario."}
+];
+const fresh=()=>({size:0,names:[],step:0,clues:[],map:[],answers:[],trap:null,decision:null,oral:[]});
+let s=fresh();
+try{const saved=JSON.parse(localStorage.getItem(KEY)||"null");if(saved&&typeof saved==="object"&&Number.isInteger(saved.step)&&saved.step>=0&&saved.step<=6&&[0,2,3,4].includes(saved.size)){s=Object.assign(fresh(),saved);}}catch(_){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(s));}catch(_){}}
+function renderInto(markup){$("puzzle-stage").innerHTML=markup;}
+function button(label,id,primary){return '<button type="button" class="puzzle-btn'+(primary?' primary':'')+'" id="'+id+'">'+esc(label)+'</button>';}
+function actions(backLabel,forwardLabel,forwardDisabled){return '<div class="puzzle-screen-actions">'+(backLabel?button(backLabel,"puzzle-prev",false):"")+button(forwardLabel,"puzzle-next",true)+'</div>';}
+function wireNavigation(){const back=$("puzzle-prev"),next=$("puzzle-next");if(back)back.onclick=()=>{s.step=Math.max(0,s.step-1);save();render();};if(next)next.onclick=()=>advance();}
+function advance(){if(s.step===1){if(s.clues.length!==4){alert("Open all four clue files before continuing.");return;}}
+if(s.step===2){if(s.map.length!==3||s.map.some((a,i)=>a!==[2,0,1][i])){alert("Match all three clues to their correct neighbourhoods before continuing.");return;}}
+if(s.step===3){if(s.answers.length!==3||s.answers.some((n,i)=>n!==challenges[i].answer)){alert("Complete all three investigation questions correctly before continuing.");return;}}
+if(s.step===4&&s.trap!==1){alert("Check the map legend and choose the responsible conclusion.");return;}
+if(s.step===5&&s.decision!==1){alert("Choose an evidence-based recommendation to complete the investigation.");return;}
+if(s.step===6){window.print();return;}
+s.step=Math.min(6,s.step+1);save();render();}
+function owners(){return roles.map((_,i)=>i%s.size);}
+function report(){const items=[];
+if(s.size)items.push(["Team",s.names.map(esc).join(" · ")]);
+if(s.clues.length===4)items.push(["Evidence collected","The four files cover distances, building counts, terrain and map limitations."]);
+if(s.map.length===3&&s.map.every((v,i)=>v===[2,0,1][i]))items.push(["Map reconstructed","Riverbend (A): closest to the river. Hilltop (B): highest ground. Mill Quarter (C): 60 buildings inside the modelled extent."]);
+s.answers.forEach((a,i)=>{if(a===challenges[i].answer)items.push(["Comparison "+(i+1),challenges[i].report]);});
+if(s.trap===1)items.push(["Legend check","Red means buildings; blue shows modelled flood extent. Neither proves past or future claims."]);
+if(s.decision===1)items.push(["Recommendation","Prioritise further checks in Riverbend; verify current maps, buildings and potential loss information before pricing."]);
+if(s.step===6)items.push(["Presentation","Each student prepares an individual one-minute oral recap using the shared evidence."]);
+$("puzzle-brief").innerHTML=items.map(([h,v])=>'<div class="puzzle-report-item"><strong>'+h+'</strong><p>'+v+'</p></div>').join("");
+$("puzzle-progress").style.width=Math.round(s.step/6*100)+"%";
+$("puzzle-progress-text").textContent=s.step?"Mission stage "+s.step+" of 6":"Ready for the briefing";
+}
+function mapFigure(){
+return '<figure class="puzzle-map"><svg viewBox="0 0 660 325" role="img" aria-labelledby="mapTitle mapDesc"><title id="mapTitle">Illustrative schematic map of a fictional riverside town</title><desc id="mapDesc">The broad blue river runs from north to south west of centre. Riverbend A lies near its western bank, Hilltop B farther east on higher ground, and Mill Quarter C southeast of Riverbend. Pale blue hatched zones indicate the modelled flood extent; red rectangular symbols represent building footprints, not hazard severity.</desc><defs><pattern id="floodhatch" patternUnits="userSpaceOnUse" width="10" height="10" patternTransform="rotate(45)"><path d="M0 0V10" stroke="#80cbe6" stroke-width="4"/></pattern></defs><rect width="660" height="325" rx="12" fill="#eaf2e4"/><path d="M 240 -20 C 370 40 300 90 345 135 C 395 190 245 230 300 345" fill="none" stroke="#b4e2ee" stroke-width="125"/><path d="M 240 -20 C 370 40 300 90 345 135 C 395 190 245 230 300 345" fill="none" stroke="url(#floodhatch)" stroke-width="106"/><path d="M 240 -20 C 370 40 300 90 345 135 C 395 190 245 230 300 345" fill="none" stroke="#2f92be" stroke-width="29"/><path d="M25 262 L628 82 M 450 0 L 485 322" fill="none" stroke="#c3cdbf" stroke-width="8"/><path d="M25 262 L628 82 M 450 0 L 485 322" fill="none" stroke="white" stroke-width="3"/><g fill="#c96d62" stroke="#9f4f43" stroke-width="1"><rect x="92" y="75" width="18" height="15"/><rect x="135" y="105" width="21" height="16"/><rect x="164" y="70" width="17" height="16"/><rect x="99" y="148" width="20" height="19"/><rect x="166" y="160" width="20" height="17"/><rect x="496" y="78" width="19" height="17"/><rect x="543" y="106" width="24" height="18"/><rect x="559" y="65" width="20" height="17"/><rect x="495" y="144" width="21" height="19"/><rect x="429" y="223" width="20" height="18"/><rect x="467" y="268" width="24" height="19"/><rect x="382" y="266" width="19" height="19"/><rect x="421" y="286" width="19" height="16"/></g><g font-family="Arial,sans-serif"><rect x="40" y="18" rx="10" width="165" height="38" fill="#fff" stroke="#8ab3b0"/><text x="55" y="43" fill="#244b5a" font-size="19" font-weight="700">A · Riverbend</text><rect x="475" y="15" rx="10" width="166" height="38" fill="#fff" stroke="#8ab3b0"/><text x="490" y="41" fill="#244b5a" font-size="19" font-weight="700">B · Hilltop</text><rect x="402" y="179" rx="10" width="240" height="38" fill="#fff" stroke="#8ab3b0"/><text x="415" y="204" fill="#244b5a" font-size="19" font-weight="700">C · Mill Quarter</text><text x="22" y="303" fill="#366574" font-size="14">N ↑ · schematic map, not to scale</text></g></svg><figcaption><strong>Fictional teaching map.</strong> Blue = modelled flood extent; red = buildings. It illustrates locations, not exact counts. Use the clue files for accurate figures.</figcaption></figure>';
+}
+function setup(){
+const html='<div class="puzzle-tag">STAGE 0 · BRIEFING</div><h2>Welcome, junior actuaries!</h2><p class="puzzle-lead">Your manager has an incomplete report about a fictional town called Fairhaven. Four specialists hold different clues. Share the information to identify which areas need further investigation.</p><div class="puzzle-photo"><img src="https://e3.365dm.com/23/01/800x600/skynews-tewkesbury-gloucestershire_6025265.jpg" alt="Real aerial photograph of a riverside English town affected by floods" loading="lazy"><p>Real flood photograph for context. <strong>Fairhaven and its neighbourhood data are fictional.</strong> The photograph is not a map of Fairhaven. <a href="https://news.sky.com/story/flood-damage-in-britain-would-be-reduced-if-world-hits-climate-pledges-study-suggests-12827796" target="_blank" rel="noopener noreferrer">Photo context: Sky News</a>.</p></div><h3>How the mission works</h3><ol class="puzzle-steps"><li>Choose 2, 3 or 4 students and enter first names or nicknames.</li><li>Each student reads their assigned secret clue files, then explains them aloud to the group.</li><li>Match map clues, compare exposed buildings and challenge an incorrect conclusion.</li><li>Watch your group report grow. At the end, each student speaks for one minute to the teacher.</li></ol><div class="puzzle-field"><label for="team-size">How many students?</label><select id="team-size"><option value="">Choose a team size</option><option value="2">2 students</option><option value="3">3 students</option><option value="4">4 students</option></select></div><div id="name-fields"></div>'+button("Start the mission →","start-team",true);
+renderInto(html);
+$("team-size").value=s.size||"";
+const sizes=$("team-size");
+function showNames(){const n=Number(sizes.value);$("name-fields").innerHTML=n?Array.from({length:n},(_,i)=>'<div class="puzzle-field"><label for="student-'+i+'">Student '+(i+1)+'</label><input id="student-'+i+'" type="text" maxlength="35" autocomplete="off" placeholder="First name or nickname" value="'+esc(s.names[i]||"")+'"></div>').join(""):"";}
+sizes.onchange=showNames;showNames();
+$("start-team").onclick=()=>{const size=Number(sizes.value);if(![2,3,4].includes(size)){alert("Please select 2, 3 or 4 students.");return;}const names=Array.from({length:size},(_,i)=>$("student-"+i).value.trim());if(names.some(n=>!n)){alert("Please enter a name or nickname for every student.");return;}s=fresh();s.size=size;s.names=names;s.step=1;save();render();};
+}
+function clues(){
+const ownersList=owners();
+renderInto('<div class="puzzle-tag">STAGE 1 OF 6 · INFORMATION GAP</div><h2>🔐 Unlock your clue files</h2><p class="puzzle-lead">Everyone has different information. <strong>Do not read out the whole card:</strong> explain the key facts in your own English, then listen to your teammates. On a shared device, tap your card to open it.</p><div class="puzzle-hint">Team of '+s.size+': '+roles.map((r,i)=>'<strong>'+esc(s.names[ownersList[i]])+'</strong> → '+esc(r.title)).join(" · ")+'</div><div class="puzzle-cards">'+roles.map((r,i)=>'<article class="puzzle-clue"><span class="puzzle-tag">FILE '+String.fromCharCode(65+i)+'</span><h3>'+r.emoji+' '+esc(r.title)+'</h3><p class="puzzle-small">Assigned to: <strong>'+esc(s.names[ownersList[i]])+'</strong></p><button type="button" class="puzzle-btn" id="clue-'+i+'" aria-expanded="'+s.clues.includes(i)+'" aria-controls="clue-text-'+i+'">'+(s.clues.includes(i)?"Hide clue":"Open clue")+'</button><div id="clue-text-'+i+'" class="puzzle-reveal'+(s.clues.includes(i)?" shown":"")+'"><p><strong>'+esc(r.label)+':</strong> '+esc(r.body)+'</p><p class="puzzle-clue-note"><strong>Say this:</strong> '+esc(r.sentence)+'</p></div></article>').join("")+'</div><p class="puzzle-small">All four clue files must be opened before moving on. For a team of 2 or 3, one or more people own two clues.</p>'+actions("← Briefing","I shared my clues →"));
+roles.forEach((r,i)=>{$("clue-"+i).onclick=()=>{const el=$("clue-text-"+i),buttonEl=$("clue-"+i);const opening=!el.classList.contains("shown");el.classList.toggle("shown",opening);buttonEl.setAttribute("aria-expanded",String(opening));buttonEl.textContent=opening?"Hide clue":"Open clue";if(opening&&!s.clues.includes(i)){s.clues.push(i);save();report();}};});wireNavigation();}
+function mapStep(){
+const questions=[
+{q:"Which area is the closest to the river?",choices:["Hilltop (B)","Mill Quarter (C)","Riverbend (A)"],answer:2},
+{q:"Which area is on the highest ground?",choices:["Hilltop (B)","Riverbend (A)","Mill Quarter (C)"],answer:0},
+{q:"Which area has 60 buildings inside the modelled flood extent?",choices:["Riverbend (A)","Mill Quarter (C)","Hilltop (B)"],answer:1}
+];
+renderInto('<div class="puzzle-tag">STAGE 2 OF 6 · RECONSTRUCT THE MAP</div><h2>🗺️ Put the information together</h2><p class="puzzle-lead">Use clues A, B and C to answer. Notice that the map itself does not contain the precise counts.</p>'+mapFigure()+questions.map((q,i)=>'<p class="puzzle-prompt">'+(i+1)+'. '+q.q+'</p><div class="puzzle-choice-row">'+q.choices.map((c,j)=>'<button type="button" class="puzzle-choice" data-map="'+i+'" data-option="'+j+'" aria-pressed="'+(s.map[i]===j)+'">'+esc(c)+'</button>').join("")+'</div><p class="puzzle-small" id="map-feedback-'+i+'"></p>').join("")+actions("← Clue files","Check the next stage →"));
+document.querySelectorAll("[data-map]").forEach(b=>b.onclick=()=>{const i=Number(b.dataset.map),v=Number(b.dataset.option);s.map[i]=v;save();document.querySelectorAll('[data-map="'+i+'"]').forEach(t=>t.setAttribute("aria-pressed",String(t===b)));$("map-feedback-"+i).textContent=v===questions[i].answer?"✓ Correct.":"Try again: refer to the clue files.";report();});wireNavigation();}
+function compare(){
+renderInto('<div class="puzzle-tag">STAGE 3 OF 6 · ANALYSE THE EVIDENCE</div><h2>📊 Compare the neighbourhoods</h2><p class="puzzle-lead">The property analyst reveals the figures. Make three comparisons. Use <strong>higher than</strong>, <strong>closer to … than</strong> and <strong>more exposed than</strong> correctly.</p><div class="puzzle-data"><table><thead><tr><th>Area</th><th>Distance to river</th><th>All buildings</th><th>Within modelled extent</th></tr></thead><tbody>'+zones.map(z=>'<tr><th>'+z.code+' · '+z.name+'</th><td>'+z.meters+'</td><td>'+z.total+'</td><td><strong>'+z.exposed+'</strong></td></tr>').join("")+'</tbody></table></div><p class="puzzle-hint">Modelled building exposure ≠ probability of flooding ≠ actual claims. Counts from one map are not a financial loss estimate.</p>'+challenges.map((c,i)=>'<p class="puzzle-prompt">'+(i+1)+'. '+esc(c.q)+'</p><div class="puzzle-choice-row">'+c.choices.map((option,j)=>'<button type="button" class="puzzle-choice" data-challenge="'+i+'" data-option="'+j+'" aria-pressed="'+(s.answers[i]===j)+'">'+esc(option)+'</button>').join("")+'</div><p class="puzzle-result puzzle-small" id="explain-'+i+'">'+(s.answers[i]===c.answer?esc(c.explain):"")+'</p>').join("")+actions("← Map reconstruction","Inspect the suspicious report →"));
+document.querySelectorAll("[data-challenge]").forEach(b=>b.onclick=()=>{const i=Number(b.dataset.challenge),v=Number(b.dataset.option);s.answers[i]=v;save();document.querySelectorAll('[data-challenge="'+i+'"]').forEach(t=>t.setAttribute("aria-pressed",String(t===b)));$("explain-"+i).textContent=v===challenges[i].answer?"✓ "+challenges[i].explain:"Not yet. Compare the values and wording, then try again.";report();});wireNavigation();}
+function trap(){
+const choices=[
+"We have proved that 95 Riverbend homes made flood claims.",
+"The red marks are building symbols and the blue shading is a modelled extent. The map does not establish future losses.",
+"Every red building is inside the blue flooded area."
+];
+renderInto('<div class="puzzle-tag">STAGE 4 OF 6 · SPOT THE MISTAKE</div><h2>⚠️ The misleading map legend</h2><p class="puzzle-lead">A draft report says: <strong>“All red buildings are high-risk and Riverbend will definitely suffer 95 flood claims.”</strong> Is this supported by the evidence?</p><div class="puzzle-photo"><img src="https://prod-bafuadminch-hcms-sdweb.imgix.net/2025/09/30/795fdde1-b428-4d42-baed-6621398b787f.jpg?auto=format&amp;w=1000" alt="Real aerial photograph of floodwater in a Swiss riverside settlement" loading="lazy"><p><strong>Think like an evidence checker.</strong> A real flood photograph is not proof of the situation in Fairhaven. Likewise, a colour on the fictional map must be interpreted using its legend. <a href="https://www.bafu.admin.ch/fr/projet-crues-extremes-en-suisse-exch" target="_blank" rel="noopener noreferrer">Photograph context: Swiss Federal Office for the Environment</a>.</p></div><p class="puzzle-prompt">Choose the statement that should replace the draft report.</p><div class="puzzle-choice-row">'+choices.map((c,i)=>'<button type="button" class="puzzle-choice" data-trap="'+i+'" aria-pressed="'+(s.trap===i)+'">'+esc(c)+'</button>').join("")+'</div><p id="trap-feedback" class="puzzle-small">'+(s.trap===1?"✓ Excellent. Never confuse symbols, modelled extent, and real claims.":"")+'</p>'+actions("← Evidence analysis","Write your recommendation →"));
+document.querySelectorAll("[data-trap]").forEach(b=>b.onclick=()=>{s.trap=Number(b.dataset.trap);save();document.querySelectorAll("[data-trap]").forEach(t=>t.setAttribute("aria-pressed",String(t===b)));$("trap-feedback").textContent=s.trap===1?"✓ Excellent. Never confuse symbols, modelled extent, and real claims.":"Not supported by the legend. Try again.";report();});wireNavigation();}
+function decision(){
+const choices=[
+"Set every premium in Riverbend higher immediately, without more data.",
+"Prioritise Riverbend for updated map and property checks, then assess losses using more evidence.",
+"Stop investigating because the model shows where every flood will happen."
+];
+renderInto('<div class="puzzle-tag">STAGE 5 OF 6 · REPORT TO YOUR MANAGER</div><h2>✍️ Make a responsible recommendation</h2><p class="puzzle-lead">Your team has enough information to <strong>identify a priority for further investigation</strong>, but not enough to set a premium or predict a claim. What should the manager do next?</p><div class="puzzle-choice-row">'+choices.map((c,i)=>'<button type="button" class="puzzle-choice" data-decision="'+i+'" aria-pressed="'+(s.decision===i)+'">'+esc(c)+'</button>').join("")+'</div><p id="decision-feedback" class="puzzle-small">'+(s.decision===1?"✓ Good professional judgement.":"")+'</p><div class="puzzle-hint"><strong>Useful speaking phrases:</strong> “According to the map …” · “Area A appears more exposed than …” · “We should check … before we conclude …”.</div>'+actions("← Correct the report","Prepare my oral recap →"));
+document.querySelectorAll("[data-decision]").forEach(b=>b.onclick=()=>{s.decision=Number(b.dataset.decision);save();document.querySelectorAll("[data-decision]").forEach(t=>t.setAttribute("aria-pressed",String(t===b)));$("decision-feedback").textContent=s.decision===1?"✓ Good professional judgement. The evidence supports a follow-up check, not an immediate pricing decision.":"This goes beyond what the map can prove. Choose a careful next step.";report();});wireNavigation();}
+function roleFor(i){return roles.filter((_,k)=>k%s.size===i).map(r=>r.title).join(" + ");}
+function oral(){
+if(!Array.isArray(s.oral))s.oral=[];
+renderInto('<div class="puzzle-print-head"><h1>The Floodplain Puzzle · Individual oral recaps</h1></div><div class="puzzle-tag">STAGE 6 OF 6 · INDIVIDUAL SPEAKING</div><h2>🎤 One minute each, directly to your teacher</h2><p class="puzzle-lead">The investigation is complete. <strong>Every student speaks individually for about one minute.</strong> Use your own words; do not read the whole team report aloud. You can print your speaking notes.</p><div class="puzzle-hint"><strong>Structure for your minute:</strong> (1) My role; (2) One location fact; (3) One comparison; (4) One uncertainty; (5) Our recommendation. Use at least <strong>two comparatives</strong> and <strong>two location expressions</strong>.</div>'+s.names.map((name,i)=>'<section class="puzzle-oral"><h3>'+esc(name)+' · '+esc(roleFor(i))+'</h3><p><strong>My role:</strong> I investigated '+esc(roleFor(i).toLowerCase())+'.</p><p><strong>Where:</strong> Riverbend is near the river. Hilltop is farther inland and on higher ground.</p><p><strong>Compare:</strong> Riverbend is closer to the river than Hilltop. There are more buildings inside the mapped extent in Riverbend than in Mill Quarter.</p><p><strong>Be careful:</strong> Red symbols show buildings, not a guaranteed flood or insurance claim.</p><p><strong>Recommendation:</strong> Our team would check updated maps and property data before estimating losses.</p><div class="puzzle-field"><label for="oral-'+i+'">My own sentence (say what YOU discovered)</label><textarea id="oral-'+i+'" maxlength="420" placeholder="I discovered that...">'+esc(s.oral[i]||"")+'</textarea></div></section>').join("")+'<p class="puzzle-small">Your writing is stored only in this browser. To present, take turns while your teacher listens. The print button uses your current notes.</p><div class="puzzle-screen-actions">'+button("← Recommendation","puzzle-prev",false)+button("Print individual speaking cards","puzzle-print",true)+button("Restart the whole mission","puzzle-restart",false)+'</div>');
+s.names.forEach((_,i)=>{$("oral-"+i).oninput=e=>{s.oral[i]=e.target.value;save();};});
+$("puzzle-prev").onclick=()=>{s.step=5;save();render();};
+$("puzzle-print").onclick=()=>window.print();
+$("puzzle-restart").onclick=()=>{if(confirm("Restart the whole puzzle and clear local notes?")){s=fresh();save();render();}};
+}
+function render(){if(!s.size||s.step===0)setup();else if(s.step===1)clues();else if(s.step===2)mapStep();else if(s.step===3)compare();else if(s.step===4)trap();else if(s.step===5)decision();else oral();report();}
+render();
+})();
+</script><script defer src="pwa-r39.js"></script>
+</body></html>
