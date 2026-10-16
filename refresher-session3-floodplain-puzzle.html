@@ -112,7 +112,19 @@ const challenges=[
 ];
 const fresh=()=>({size:0,names:[],step:0,clues:[],map:[],answers:[],trap:null,decision:null,oral:[]});
 let s=fresh();
-try{const saved=JSON.parse(localStorage.getItem(KEY)||"null");if(saved&&typeof saved==="object"&&Number.isInteger(saved.step)&&saved.step>=0&&saved.step<=6&&[0,2,3,4].includes(saved.size)){s=Object.assign(fresh(),saved);}}catch(_){}
+// A damaged or outdated local browser save should never crash a student's session.
+function validSave(v){
+ if(!v||typeof v!=="object"||![0,2,3,4].includes(v.size)||!Number.isInteger(v.step)||v.step<0||v.step>6)return false;
+ if(!Array.isArray(v.names)||v.names.length!==v.size||v.names.some(n=>typeof n!=="string"||n.length>35))return false;
+ if(!Array.isArray(v.clues)||v.clues.length>4||v.clues.some(n=>![0,1,2,3].includes(n))||new Set(v.clues).size!==v.clues.length)return false;
+ if(!Array.isArray(v.map)||v.map.length>3||v.map.some(n=>n!==null&&![0,1,2].includes(n)))return false;
+ if(!Array.isArray(v.answers)||v.answers.length>3||v.answers.some(n=>n!==null&&![0,1,2].includes(n)))return false;
+ if(![null,0,1,2].includes(v.trap)||![null,0,1,2].includes(v.decision))return false;
+ if(!Array.isArray(v.oral)||v.oral.length>4||v.oral.some(n=>n!==null&&typeof n!=="string"))return false;
+ if(v.size===0&&v.step!==0)return false;
+ return true;
+}
+try{const saved=JSON.parse(localStorage.getItem(KEY)||"null");if(validSave(saved))s=saved;}catch(_){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(s));}catch(_){}}
 function renderInto(markup){$("puzzle-stage").innerHTML=markup;}
 function button(label,id,primary){return '<button type="button" class="puzzle-btn'+(primary?' primary':'')+'" id="'+id+'">'+esc(label)+'</button>';}
