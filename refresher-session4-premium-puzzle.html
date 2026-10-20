@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#102a43">
+<meta name="description" content="Session 4 interactive actuarial English team investigation: motor insurance, fleet pricing and modal verbs.">
+<title>The Premium Puzzle · Session 4 · Actuarial English</title>
+<link rel="icon" href="icons/favicon.png"><link rel="stylesheet" href="styles.css">
+<style>
+:root{--navy:#153652;--blue:#226183;--orange:#c56b31;--teal:#157765;--muted:#526c7b;--border:#cfdce5;--pale:#f2f7fa}
+body{background:#f2f6fa;color:var(--navy);font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.55}
+main.puzzle{max-width:1200px;margin:auto;padding:22px 20px 72px}
+.puzzle *{box-sizing:border-box}
+.puzzle a{color:#0d5379}
+.puzzle h1,.puzzle h2,.puzzle h3{line-height:1.22;color:var(--navy)}
+.puzzle h1{font-size:clamp(2rem,4vw,3rem);margin:5px 0 12px;color:#fff}
+.puzzle h2{font-size:1.65rem;margin:7px 0 12px}.puzzle h3{font-size:1.16rem;margin:14px 0 9px}
+.mast{background:linear-gradient(120deg,#102f4e,#175b77);color:white;padding:28px;border-radius:22px;margin-bottom:18px}
+.mast p{color:#f1f9ff;max-width:850px;margin:0}.mast .ey{color:#ffcd95;font-size:.84rem;font-weight:bold;letter-spacing:.10em}
+.story,.panel,.evidence{border:1px solid var(--border);background:#fff;border-radius:18px;box-shadow:0 7px 19px #173b5d0b}
+.story{padding:20px 23px;margin-bottom:17px}.story p{margin:8px 0}.story strong{color:#0f577d}
+.layout{display:grid;grid-template-columns:minmax(0,1.68fr) minmax(275px,.85fr);gap:18px;align-items:start}
+.panel{padding:23px;min-width:0}.evidence{padding:18px;position:sticky;top:90px}
+.ey{color:#a65b2e;font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:.055em}
+.lead{font-size:1.05rem;color:#395b70}.muted{color:var(--muted)}.tiny{font-size:.88rem}
+.case-photo{width:100%;height:240px;object-fit:cover;border-radius:12px;display:block;margin:14px 0}
+.photo-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.photo-pair figure{margin:0}.photo-pair .case-photo{height:165px;margin:0 0 7px}.photo-pair figcaption{font-weight:bold;font-size:.96rem}
+.callout{background:#eaf4fa;padding:14px 16px;border-left:4px solid #27759b;border-radius:8px;margin:14px 0}
+.warning{background:#fff2e7;padding:14px 16px;border-left:4px solid #df813a;border-radius:8px;margin:14px 0}
+.success{background:#e9f7ee;padding:13px 16px;border:1px solid #84c3a0;border-radius:9px;margin:12px 0}
+.error{background:#fff0e9;padding:13px 16px;border:1px solid #dfaa90;border-radius:9px;margin:12px 0}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 3px}
+.puzzle button{font:inherit;cursor:pointer;border:2px solid #23668c;color:#164968;background:white;border-radius:10px;padding:12px 15px;font-weight:700}
+.puzzle button:hover{background:#eaf5fa}.puzzle button:focus-visible,.puzzle input:focus-visible,.puzzle textarea:focus-visible{outline:3px solid #e6a14c;outline-offset:2px}
+.puzzle button.primary{background:#17658b;color:white;text-align:center}.puzzle button.primary:hover{background:#0e4968;color:white}
+.puzzle button.subtle{border-color:#b9cbd7;color:#335d74}
+.puzzle button:disabled{opacity:.52;cursor:not-allowed}
+.puzzle .option{display:block;width:100%;text-align:left;margin:9px 0;padding:14px;border:2px solid #bfd4df;background:#fafdff}
+.puzzle .option:hover{border-color:#266d90}.puzzle .option.chosen{border-color:#c66e36;background:#fff4e8}
+.puzzle input[type=text],.puzzle textarea{font:inherit;border:1px solid #8fa9b7;border-radius:9px;padding:12px;width:100%;min-width:0;color:#18394d;background:#fff}
+.puzzle textarea{min-height:85px;resize:vertical}.puzzle label{display:block;font-weight:700;margin:12px 0 5px}
+.puzzle .small-label{font-weight:500;font-size:.9rem;color:#456476}
+.puzzle .field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 13px}
+.puzzle .personline{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:8px 0;border-bottom:1px solid #e6edf1}
+.role{font-size:.86rem;color:#426373}.progress{height:10px;border-radius:30px;background:#e5edf1;overflow:hidden}.progress>div{height:100%;background:#c67538;transition:width .25s}
+.stamps{display:flex;flex-wrap:wrap;gap:7px;margin:13px 0}
+.stamps span{font-size:.8rem;padding:7px 9px;border:1px solid #ccdae1;border-radius:20px;background:#f1f5f7;color:#596f7a}
+.stamps .done{background:#ddf2e7;border-color:#8ac6a2;color:#186044}
+.stamps .now{background:#fff0dd;border-color:#e6b27a;color:#784417}
+.clue{margin:11px 0;padding:11px;border-radius:9px;background:#f4f8fa;border-left:3px solid #3a859e}
+.clue b{display:block;color:#165476}.clue p{font-size:.92rem;margin:4px 0}
+.filetable{border-collapse:collapse;width:100%;margin:13px 0}.filetable th,.filetable td{border-bottom:1px solid #dce5ec;padding:9px;text-align:left;vertical-align:top}.filetable th{width:40%;color:#315b72;background:#edf5f8}
+.inspect-choice{display:flex!important;align-items:flex-start;gap:12px;cursor:pointer;margin:9px 0!important;border:1px solid #d2e1e9;border-radius:10px;background:#fbfdff;padding:13px;font-weight:500!important}
+.inspect-choice input{flex:0 0 19px;width:19px;height:19px;margin:3px 0}
+.inspect-choice:has(input:checked){background:#e9f5fb;border-color:#3b829e}
+.rec{background:#f4f8fa;border-radius:12px;padding:16px;margin:13px 0;border:1px solid #d9e5ec}
+.rec p{margin:7px 0}.speak{background:#eaf4e9;border:1px solid #9cc7a7;padding:15px;border-radius:12px;margin:13px 0}
+.tally{font-size:.95rem;color:#355a6d}.puzzle ul,.puzzle ol{padding-left:21px}.puzzle li{margin:7px 0}
+@media(max-width:800px){.layout{grid-template-columns:1fr}.evidence{position:static}.panel,.story{padding:17px}.photo-pair .case-photo{height:130px}}
+@media(max-width:510px){.puzzle .field-grid,.photo-pair{grid-template-columns:1fr}.case-photo{height:190px}.photo-pair .case-photo{height:160px}.mast{padding:20px}.puzzle button{width:100%}}
+@media(prefers-reduced-motion:reduce){.progress>div{transition:none}}
+@media print{.mast,.topbar,.evidence,.actions,.story,.case-photo,.photo-pair,.puzzle button{display:none!important}.layout{display:block}.panel{border:none;box-shadow:none;padding:0}.rec{break-inside:avoid}main.puzzle{max-width:none;padding:0}.speak{break-inside:avoid}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to activity</a>
+<header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">📊</span><strong>Actuarial English</strong></a><nav class="main-nav" aria-label="Main navigation"><a href="index.html">Home</a><a href="refresher.html">English Refresher</a><a href="refresher-session3-risk-exposure.html">Session 3</a></nav></header>
+<main class="puzzle" id="main">
+<section class="mast"><div class="ey">ENGLISH REFRESHER · SESSION 4 · GROUP INVESTIGATION</div><h1>🕵️ The Premium Puzzle</h1><p>Two insurance quotes. Three suspicious statements. One inspection team. Save Emma's and FastMove's files before the manager signs them.</p></section>
+<section class="story" aria-label="Mission briefing"><strong>WHY ARE YOU HERE?</strong><p>It is <strong>9:00 a.m.</strong> at <strong>Northstar Insurance</strong> (a fictional insurer working with French motor-insurance rules). Two quotes must be checked today: one for <strong>Emma's first car</strong>, and one for <strong>FastMove's 15 delivery vans</strong>. An inspector has spotted contradictory information and misleading explanations about insurance obligations. <strong>Your job is to investigate, correct the errors and give responsible pricing advice.</strong></p><p class="tiny muted">One shared device · 2–4 students · no speed timer · no made-up premium calculations · final one-minute oral briefing for each student to your English teacher.</p></section>
+<div class="layout"><section id="stage" class="panel" aria-live="polite"></section><aside class="evidence" aria-label="Evidence board"><h2>📂 Evidence board</h2><div id="progress" class="progress" role="progressbar" aria-label="Mission progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div></div></div><div class="stamps" id="stamps"></div><div id="team"></div><div id="clues"></div></aside></div>
+</main>
+<footer class="site-footer"><p>Created by Mrs Lecomte and Mr Lemoine, with the help of ChatGPT · Progress stays on this device.</p></footer>
+<script>
+"use strict";
+(function(){
+var STORAGE_KEY="premium-puzzle-s4-v1";
+var PHOTOS={
+emma:"https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1100&q=83",
+fleet:"https://images.unsplash.com/photo-1566933293069-b55c7f326dd4?auto=format&fit=crop&w=1100&q=83",
+office:"https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1100&q=83"
+};
+var roles={
+2:["Pricing Analyst + Client Adviser","Risk Analyst + Compliance Inspector"],
+3:["Pricing Analyst","Risk Analyst","Compliance Inspector + Client Adviser"],
+4:["Pricing Analyst","Risk Analyst","Compliance Inspector","Client Adviser"]
+};
+var chapters=["Briefing","Emma's quote","FastMove's fleet","Inspector's desk","New evidence","Sign-off","Individual oral"];
+var evidence=[
+{stage:2,head:"Emma — first clue",body:"The customer declared 12,000 km per year, but the draft quotation says 5,000 km. Mandatory third-party liability cover is not the same as optional comprehensive cover."},
+{stage:3,head:"FastMove — second clue",body:"The fleet uses 15 commercial vans. Its company safety policy requires daily vehicle checks and accurate incident records. Telematics does not guarantee a discount."},
+{stage:4,head:"Audit complete",body:"The three unreliable statements have been identified: mileage mismatch, a false comprehensive-cover obligation, and a guaranteed telematics discount."},
+{stage:5,head:"Late update",body:"Emma confirmed 12,000 km; FastMove reported two recent incidents. The quote needs a review, not an invented premium figure."},
+{stage:6,head:"Supervisor sign-off",body:"Correct information first; then consider pricing factors, coverage and client communication."}
+];
+var questionSets={
+1:[
+{lead:"Emma's quote contains this sentence: 'Every French driver must buy comprehensive car insurance.'",ask:"Which correction is accurate?",options:["Comprehensive insurance is compulsory for all drivers.","A driver must have the legally required third-party liability cover, but does not have to buy comprehensive cover.","A new driver does not have to buy any car insurance."],answer:1,why:"In France, motor third-party liability insurance is mandatory; comprehensive cover is optional. 'Must' is not the same as 'don't have to'."},
+{lead:"Emma's application states 12,000 km a year. The draft quote uses 5,000 km.",ask:"What must the pricing team do?",options:["Keep 5,000 km because a lower number guarantees a cheaper and fairer quote.","Tell Emma she mustn't use her car anymore.","Correct and verify the mileage before finalising the quote."],answer:2,why:"Accurate mileage matters for pricing. The team needs to check the declared information before issuing a quotation."}
+],
+2:[
+{lead:"FastMove's internal safety policy explicitly requires a daily vehicle check before the first trip.",ask:"Which sentence reports that company rule correctly?",options:["Under FastMove's company policy, drivers have to check their vehicles before the first trip.","Drivers don't have to check their vehicles because they work in a fleet.","Drivers should never carry out safety checks."],answer:0,why:"'Have to' reports an obligation. This is FastMove's stated company policy, not a claim that every country has the same legal rule."},
+{lead:"A manager says, 'We have telematics, so the insurer must give us a 20% discount.'",ask:"What should an analyst explain?",options:["Telematics always guarantees a fixed discount.","Drivers mustn't send accurate telematics data.","Telematics may help evaluate driving behaviour, but it does not automatically guarantee a discount."],answer:2,why:"A telematics device provides information, not a guaranteed reduction. Pricing still depends on the full risk profile."}
+],
+4:[
+{lead:"10:45 a.m. Emma confirms her annual mileage is 12,000 km, not 5,000 km.",ask:"What is the correct next step?",options:["Say Emma must buy every optional guarantee.","Update the quote inputs and review the pricing assessment before sending it.","Keep the incorrect mileage to avoid delays."],answer:1,why:"A changed risk input means the quotation needs a review. We cannot responsibly claim a precise premium change without calculations."},
+{lead:"11:00 a.m. FastMove's claims report reveals two incidents that were missing from the first quotation.",ask:"What does the team need to do?",options:["Ignore the two incidents because the vans have telematics.","Tell the drivers they don't have to report incidents.","Check the incident details and revise the risk assessment before making a fleet quote."],answer:2,why:"Claims history may affect risk assessment. The evidence must be verified before pricing."}
+]
+};
+var auditItems=[
+"Emma's application says 12,000 km, but the quotation shows 5,000 km.",
+"French motor insurance requires third-party liability cover.",
+"The quote claims that comprehensive cover is always compulsory.",
+"FastMove's file correctly lists 15 delivery vans.",
+"FastMove's quote promises an automatic 20% telematics discount.",
+"Fleet risk assessment should consider verified claims history."
+];
+var auditCorrect=[0,2,4];
+function emptyState(){return {size:0,names:[],stage:0,index:0,answers:{1:[],2:[],4:[]},pending:null,notes:[],audit:[],auditPassed:false,final:[null,null],reason:"",oralExtra:[]};}
+var state=emptyState();
+function get(id){return document.getElementById(id);}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function validSaved(v){
+ if(!v||![2,3,4].includes(v.size)||!Array.isArray(v.names)||v.names.length!==v.size||!v.names.every(function(n){return typeof n==="string"&&n.length<=36;}))return false;
+ if(!Number.isInteger(v.stage)||v.stage<1||v.stage>6||!Number.isInteger(v.index)||v.index<0||v.index>2)return false;
+ if(!v.answers||![1,2,4].every(function(k){return Array.isArray(v.answers[k])&&v.answers[k].length<=2&&v.answers[k].every(function(a){return Number.isInteger(a)&&a>=0&&a<3;});}))return false;
+ if(!Array.isArray(v.notes)||v.notes.length!==v.size||!v.notes.every(function(n){return Array.isArray(n)&&n.length===2&&n.every(function(x){return typeof x==="string"&&x.length<=260;});}))return false;
+ if(!Array.isArray(v.audit)||!v.audit.every(function(x){return Number.isInteger(x)&&x>=0&&x<6;}))return false;
+ if(!Array.isArray(v.final)||v.final.length!==2||!v.final.every(function(x){return x===null||[0,1,2].includes(x);}))return false;
+ if(typeof v.reason!=="string"||v.reason.length>600||!Array.isArray(v.oralExtra)||v.oralExtra.length!==v.size||!v.oralExtra.every(function(x){return typeof x==="string"&&x.length<=300;}))return false;
+ if(v.stage>=2&&v.answers[1].length!==2)return false;
+ if(v.stage>=3&&v.answers[2].length!==2)return false;
+ if(v.stage>=4&&!v.auditPassed)return false;
+ if(v.stage>=5&&v.answers[4].length!==2)return false;
+ if(v.stage>=6&&(v.final[0]!==1||v.final[1]!==2||!v.reason.trim()))return false;
+ if([1,2,4].includes(v.stage)&&v.index!==v.answers[v.stage].length)return false;
+ if([3,5,6].includes(v.stage)&&v.index!==0)return false;
+ if(v.stage>=2&&v.notes.some(function(n){return !n[0].trim();}))return false;
+ if(v.stage>=3&&v.notes.some(function(n){return !n[1].trim();}))return false;
+ if(v.pending!==null&&(typeof v.pending!=="object"||v.pending.stage!==v.stage||v.pending.index!==v.index||![0,1,2].includes(v.pending.choice)||![1,2,4].includes(v.stage)))return false;
+ return true;
+}
+try{var raw=JSON.parse(localStorage.getItem(STORAGE_KEY)||"null");if(validSaved(raw))state=raw;}catch(e){}
+function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){get("saveNotice")&&(get("saveNotice").textContent="Progress cannot be stored on this browser. Keep this tab open.");}}
+function picture(url,alt,fallback){return '<img class="case-photo" loading="lazy" src="'+esc(url)+'" data-fallback="'+esc(fallback||"group-office-r27.webp")+'" alt="'+esc(alt)+'">';}
+function wirePictures(){document.querySelectorAll(".puzzle img[data-fallback]").forEach(function(img){img.onerror=function(){img.onerror=null;img.src=img.dataset.fallback;};});}
+function stageHTML(content){get("stage").innerHTML=content+'<p id="saveNotice" class="tiny muted" aria-live="polite"></p>';wirePictures();updateBoard();}
+function button(id,label,primary){return '<button type="button" id="'+id+'" class="'+(primary?"primary":"subtle")+'">'+label+'</button>';}
+function changeStage(n){state.stage=n;state.index=0;state.pending=null;save();render();window.scrollTo({top:0,behavior:"instant"});}
+function reset(){if(confirm("Restart the full investigation? This deletes this team's notes and answers on this device.")){state=emptyState();try{localStorage.removeItem(STORAGE_KEY);}catch(e){}render();window.scrollTo(0,0);}}
+function role(i){return roles[state.size][i];}
+function updateBoard(){
+ var level=Math.round(state.stage/6*100);
+ get("progress").firstElementChild.style.width=level+"%";get("progress").setAttribute("aria-valuenow",String(level));
+ get("stamps").innerHTML=chapters.map(function(x,i){return '<span class="'+(i<state.stage?"done":i===state.stage?"now":"")+'">'+(i<state.stage?"✓ ":"")+esc(x)+'</span>';}).join("");
+ get("team").innerHTML=state.size?'<h3>👥 Your investigation team</h3>'+state.names.map(function(n,i){return '<div class="personline"><strong>'+esc(n)+'</strong><span class="role">'+esc(role(i))+'</span></div>';}).join(""):'<p class="muted tiny">Choose 2, 3 or 4 investigators to begin.</p>';
+ get("clues").innerHTML='<h3>🔎 Evidence unlocked</h3>'+(evidence.filter(function(e){return state.stage>=e.stage;}).map(function(e){return '<div class="clue"><b>✓ '+esc(e.head)+'</b><p>'+esc(e.body)+'</p></div>';}).join("")||'<p class="muted tiny">No spoilers: evidence appears only after you solve each case.</p>');
+}
+function setup(){
+ var t='<div class="ey">CASE FILE 00 · THE BRIEFING</div><h2>Two quotes are in trouble!</h2>'+
+ '<div class="photo-pair"><figure>'+picture(PHOTOS.emma,"Private motor car","group-client-meeting-r27.webp")+'<figcaption>🚗 Emma · Private car</figcaption></figure><figure>'+picture(PHOTOS.fleet,"Commercial delivery fleet","group-office-r27.webp")+'<figcaption>🚚 FastMove · 15 vans</figcaption></figure></div>'+
+ '<div class="warning"><strong>Your manager says:</strong> “We cannot sign these two quotes while the information is contradictory. Find the mistakes, explain what is compulsory or optional, and recommend safe next steps.”</div>'+
+ '<h3>How to play</h3><ol><li>Choose <strong>2, 3 or 4 investigators</strong>. Share one device; everyone must contribute.</li><li>Investigate <strong>Emma</strong> and <strong>FastMove</strong>. Discuss each answer and collect evidence.</li><li>Complete the inspector's board: find <strong>three incorrect statements</strong>.</li><li>Handle two surprise updates and decide which quotes can be signed.</li><li>Each student gives a <strong>one-minute individual oral briefing to your English teacher</strong> using the notes prepared during the game.</li></ol>'+
+ '<div class="callout"><strong>English mission:</strong> distinguish <b>must</b> and <b>have to</b> (obligation), <b>need to</b> (necessity), <b>mustn’t</b> (prohibition), <b>don’t have to</b> (not compulsory), and <b>should</b> (advice). <b>Mustn’t ≠ don’t have to.</b></div>'+
+ '<h3>How many investigators?</h3><div class="actions">'+[2,3,4].map(function(n){return '<button data-size="'+n+'">'+n+' students</button>';}).join("")+'</div><div id="players"></div>';
+ stageHTML(t);
+ document.querySelectorAll("[data-size]").forEach(function(b){b.onclick=function(){
+ var n=Number(b.dataset.size);state=emptyState();state.size=n;state.names=Array.from({length:n},function(_,i){return "Student "+(i+1);});state.notes=Array.from({length:n},function(){return ["",""];});state.oralExtra=Array.from({length:n},function(){return "";});
+ get("players").innerHTML='<h3>Your roles</h3><p class="muted">Everyone speaks in each round. The role identifies the evidence each person should pay special attention to.</p>'+
+ state.names.map(function(_,i){return '<label for="person'+i+'">'+esc(role(i))+'</label><input type="text" id="person'+i+'" maxlength="36" placeholder="First name (optional)">';}).join("")+
+ '<div class="actions">'+button("begin","Open the first file →",true)+'</div>';
+ updateBoard();
+ get("begin").onclick=function(){state.names=state.names.map(function(n,i){return get("person"+i).value.trim()||n;});changeStage(1);};
+ };});
+}
+function fileDetails(stage){
+ if(stage===1)return '<table class="filetable"><tr><th>Customer application</th><td>Emma, 22; first car; <strong>12,000 km/year</strong>; no previous claims</td></tr><tr><th>Draft quote</th><td>5,000 km/year; “comprehensive cover is legally mandatory”</td></tr><tr><th>Question</th><td>Is this quotation accurate and legally clear?</td></tr></table>';
+ if(stage===2)return '<table class="filetable"><tr><th>Client</th><td>FastMove · <strong>15 commercial delivery vans</strong></td></tr><tr><th>Safety policy</th><td>Vehicle check before first trip; accurate incident records</td></tr><tr><th>Quote statement</th><td>“Telematics = guaranteed 20% insurance discount”</td></tr></table>';
+ return '<table class="filetable"><tr><th>10:45</th><td>Emma corrects her mileage to 12,000 km/year.</td></tr><tr><th>11:00</th><td>FastMove reports <strong>two incidents</strong> previously omitted.</td></tr><tr><th>Deadline</th><td>Manager asks for the final recommendation.</td></tr></table>';
+}
+function stepQuiz(){
+ var st=state.stage,arr=questionSets[st],q=state.index,site=st===1?"Emma's suspicious quote":st===2?"FastMove's fleet file":"Breaking news from the clients";
+ var art=st===1?PHOTOS.emma:st===2?PHOTOS.fleet:PHOTOS.office;
+ var fallback=st===1?"group-client-meeting-r27.webp":st===2?"group-office-r27.webp":"group-analytics-r27.webp";
+ if(q>=arr.length){if(st===4){changeStage(5);return;}return collectNotes();}
+ var task=arr[q];
+ var html='<div class="ey">CASE FILE '+(st===1?"01":st===2?"02":"04")+' · '+(q+1)+' / '+arr.length+'</div><h2>'+esc(site)+'</h2>'+picture(art,site,fallback)+fileDetails(st)+
+ '<h3>'+esc(task.ask)+'</h3><p class="lead">'+esc(task.lead)+'</p><p class="muted tiny">Discuss first. Select one response together. Incorrect answers show a clue and can be corrected.</p>'+
+ '<div id="choices">'+task.options.map(function(v,i){return '<button type="button" class="option" data-choice="'+i+'"><strong>'+String.fromCharCode(65+i)+'.</strong> '+esc(v)+'</button>';}).join("")+'</div><div id="feedback"></div>';
+ stageHTML(html);
+ document.querySelectorAll("[data-choice]").forEach(function(b){b.onclick=function(){
+ state.pending={stage:st,index:q,choice:Number(b.dataset.choice)};save();showAnswer();
+ };});
+ if(state.pending&&state.pending.stage===st&&state.pending.index===q)showAnswer();
+}
+function showAnswer(){
+ var t=questionSets[state.stage][state.index],choice=state.pending.choice,ok=choice===t.answer;
+ document.querySelectorAll("[data-choice]").forEach(function(b){b.disabled=true;if(Number(b.dataset.choice)===choice)b.classList.add("chosen");});
+ get("feedback").innerHTML='<div class="'+(ok?"success":"error")+'"><strong>'+(ok?"✓ Evidence checked":"⚠️ Not quite. Inspect the wording again.")+'</strong><p>'+esc(t.why)+'</p></div>'+
+ '<div class="actions">'+button(ok?"next":"retry",ok?"Stamp this check ✓ · Continue →":"Try another answer ↺",ok)+'</div>';
+ if(ok)get("next").onclick=function(){state.answers[state.stage].push(choice);state.index++;state.pending=null;save();render();};
+ else get("retry").onclick=function(){state.pending=null;save();render();};
+}
+function collectNotes(){
+ var idx=state.stage===1?0:1,which=idx===0?"Emma":"FastMove";
+ var intro=idx===0?"What did you discover about mandatory cover or Emma's mileage?":"What did you learn about fleet safety obligations or telematics?";
+ var html='<div class="ey">INVESTIGATION CHECKPOINT</div><h2>✅ '+which+' file inspected</h2>'+
+ '<div class="success">You have completed the two checks. The relevant evidence is now available on your investigation board.</div><h3>Everyone contributes one clue</h3>'+
+ '<p class="lead">'+intro+' Write a short sentence in your own words. You will use it when speaking to your English teacher.</p>'+
+ '<div id="notefields">'+state.names.map(function(name,i){return '<label for="note'+i+'">'+esc(name)+' · '+esc(role(i))+'</label><input type="text" maxlength="260" id="note'+i+'" value="'+esc(state.notes[i][idx])+'" placeholder="We found out that...">';}).join("")+'</div>'+
+ '<div class="actions">'+button("saveNotes",idx===0?"Continue to FastMove →":"Open the inspector's evidence desk →",true)+'</div>';
+ stageHTML(html);
+ state.names.forEach(function(_,i){get("note"+i).oninput=function(){state.notes[i][idx]=this.value;save();};});
+ get("saveNotes").onclick=function(){var values=state.names.map(function(_,i){return get("note"+i).value.trim();});if(values.some(function(x){return !x;})){get("saveNotice").textContent="Every student must write one short sentence before continuing.";return;}values.forEach(function(v,i){state.notes[i][idx]=v;});changeStage(idx===0?2:3);};
+}
+function audit(){
+ var html='<div class="ey">CASE FILE 03 · INSPECTOR MODE</div><h2>🔍 Find the three suspicious statements</h2>'+
+ picture(PHOTOS.office,"Office desk where a pricing file is being reviewed","group-analytics-r27.webp")+
+ '<div class="warning">The inspector has mixed reliable facts with incorrect statements. <strong>Select exactly THREE statements the team must flag.</strong> Not every mention of insurance rules is wrong!</div>'+
+ '<div id="auditBoxes">'+auditItems.map(function(x,i){return '<label class="inspect-choice"><input type="checkbox" data-audit="'+i+'" '+(state.audit.indexOf(i)!==-1?"checked":"")+'> <span><b>Evidence '+String.fromCharCode(65+i)+'.</b> '+esc(x)+'</span></label>';}).join("")+'</div>'+
+ '<p class="tally" id="auditCount"></p><div class="actions">'+button("checkAudit","Submit inspector report →",true)+'</div><div id="auditMessage"></div>';
+ stageHTML(html);
+ function count(){get("auditCount").textContent=state.audit.length+" of 3 suspicious statements selected.";}
+ document.querySelectorAll("[data-audit]").forEach(function(c){c.onchange=function(){
+ var n=Number(this.dataset.audit);if(this.checked){if(state.audit.indexOf(n)===-1)state.audit.push(n);}else state.audit=state.audit.filter(function(v){return v!==n;});
+ state.audit.sort(function(a,b){return a-b;});save();count();get("auditMessage").innerHTML="";
+ };});
+ count();
+ if(state.auditPassed){get("auditMessage").innerHTML='<div class="success">✓ All three findings confirmed. You have completed the inspection.</div>'+button("continueAudit","Open the new messages →",true);get("continueAudit").onclick=function(){changeStage(4);};document.querySelectorAll("[data-audit]").forEach(function(c){c.disabled=true;});get("checkAudit").disabled=true;}
+ get("checkAudit").onclick=function(){
+ if(state.audit.length!==3){get("auditMessage").innerHTML='<div class="error">Select exactly three statements before submitting.</div>';return;}
+ var correct=state.audit.every(function(n,i){return n===auditCorrect[i];});
+ if(!correct){get("auditMessage").innerHTML='<div class="error"><strong>One or more flags are misplaced.</strong> Check for a mileage mismatch, an invented legal obligation and a discount that is described as automatic. The other statements are reliable.</div>';return;}
+ state.auditPassed=true;save();render();
+ };
+}
+function finalDecision(){
+ var labels=["Emma's private car","FastMove's professional fleet"];
+ var text=[
+ ["Send the quote with 5,000 km and full compulsory cover to save time.","Use 12,000 km, retain legally required liability cover, and present comprehensive cover as an option.","Remove all insurance requirements because Emma has no claim history."],
+ ["Promise a 20% discount solely because FastMove has telematics.","Ignore the claims report and keep the first risk profile.","Verify the two incidents, assess the fleet's use and drivers, then explain the revised quote."]
+ ];
+ var correct=[1,2];
+ var html='<div class="ey">CASE FILE 05 · SUPERVISOR SIGN-OFF</div><h2>📨 Two quotes. Two final recommendations.</h2>'+
+ '<div class="callout">Your manager asks: <strong>What must we verify before approving the quotations?</strong> Complete both decisions, then write your team recommendation. Do not invent premium amounts.</div>'+
+ labels.map(function(l,j){return '<h3>'+esc(l)+'</h3><div class="choices">'+text[j].map(function(v,i){return '<button type="button" data-final="'+j+'" data-value="'+i+'" class="option '+(state.final[j]===i?"chosen":"")+'">'+String.fromCharCode(65+i)+'. '+esc(v)+'</button>';}).join("")+'</div><div id="decisionFeedback'+j+'"></div>';}).join("")+
+ '<label for="reason">Team recommendation (one or two full sentences)</label><textarea id="reason" maxlength="600" placeholder="We must correct the records before issuing the quotes. Comprehensive cover is optional for Emma...">'+esc(state.reason)+'</textarea>'+
+ '<p class="tiny muted">Everyone must agree on the recommendation. Each student will then speak individually to your English teacher.</p><div class="actions">'+button("orals","Prepare individual one-minute oral briefings →",true)+'</div>';
+ stageHTML(html);
+ document.querySelectorAll("[data-final]").forEach(function(b){b.onclick=function(){
+ var j=Number(b.dataset.final),i=Number(b.dataset.value);state.final[j]=i;save();render();
+ };});
+ labels.forEach(function(l,j){if(state.final[j]!==null){var ok=state.final[j]===correct[j];get("decisionFeedback"+j).innerHTML='<div class="'+(ok?"success":"error")+'">'+(ok?"✓ Approved recommendation.":"⚠️ Recheck the evidence before approving this option.")+'</div>'; }});
+ get("reason").oninput=function(){state.reason=this.value;save();};
+ get("orals").onclick=function(){
+ if(state.final[0]!==1||state.final[1]!==2){get("saveNotice").textContent="Choose the evidence-based recommendation for BOTH quotes before continuing.";return;}
+ if(state.reason.trim().length<20){get("saveNotice").textContent="Write a meaningful team recommendation of at least 20 characters.";return;}
+ changeStage(6);
+ };
+}
+function speaking(){
+ var html='<div class="ey">MISSION COMPLETED · INDIVIDUAL ORAL</div><h2>🎤 The one-minute briefing</h2>'+
+ '<div class="speak"><strong>Every student speaks individually to your English teacher for approximately one minute.</strong> Use your notes as prompts, not as a script. Mention one obligation, one optional action and one important pricing correction.</div>'+
+ '<p class="lead"><strong>Team conclusion:</strong> '+esc(state.reason)+'</p>'+
+ state.names.map(function(n,i){return '<section class="rec"><h3>'+esc(n)+' · '+esc(role(i))+'</h3>'+
+ '<p><strong>1. My role:</strong> My role was '+esc(role(i))+'.</p>'+
+ '<p><strong>2. Emma:</strong> '+esc(state.notes[i][0])+'</p>'+
+ '<p><strong>3. FastMove:</strong> '+esc(state.notes[i][1])+'</p>'+
+ '<p><strong>4. Our recommendations:</strong> We must verify the mileage and the missing incidents. Emma does not have to buy comprehensive cover.</p>'+
+ '<label for="extra'+i+'">5. My own contribution / why it matters</label>'+
+ '<textarea id="extra'+i+'" maxlength="300" placeholder="I checked... / I explained that...">'+esc(state.oralExtra[i])+'</textarea></section>';}).join("")+
+ '<div class="actions">'+button("print","Print oral prompt cards",true)+button("restart","Restart mission",false)+'</div>';
+ stageHTML(html);
+ state.names.forEach(function(_,i){get("extra"+i).oninput=function(){state.oralExtra[i]=this.value;save();};});
+ get("print").onclick=function(){if(state.oralExtra.some(function(s){return !s.trim();})){get("saveNotice").textContent="Each student needs a personal contribution sentence before printing.";return;}window.print();};
+ get("restart").onclick=reset;
+}
+function render(){
+ if(state.stage===0)setup();
+ else if([1,2,4].includes(state.stage))stepQuiz();
+ else if(state.stage===3)audit();
+ else if(state.stage===5)finalDecision();
+ else if(state.stage===6)speaking();
+ else {state=emptyState();setup();}
+}
+render();
+})();
+</script>
+</body></html>
