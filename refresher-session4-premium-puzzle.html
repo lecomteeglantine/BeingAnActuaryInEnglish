@@ -96,16 +96,16 @@ var evidence=[
 ];
 var questionSets={
 1:[
-{lead:"Emma's quote contains this sentence: 'Every French driver must buy comprehensive car insurance.'",ask:"Which correction is accurate?",options:["Comprehensive insurance is compulsory for all drivers.","A driver must have the legally required third-party liability cover, but does not have to buy comprehensive cover.","A new driver does not have to buy any car insurance."],answer:1,why:"In France, motor third-party liability insurance is mandatory; comprehensive cover is optional. 'Must' is not the same as 'don't have to'."},
-{lead:"Emma's application states 12,000 km a year. The draft quote uses 5,000 km.",ask:"What must the pricing team do?",options:["Keep 5,000 km because a lower number guarantees a cheaper and fairer quote.","Tell Emma she mustn't use her car anymore.","Correct and verify the mileage before finalising the quote."],answer:2,why:"Accurate mileage matters for pricing. The team needs to check the declared information before issuing a quotation."}
+{lead:"Emma's quote contains this sentence: 'Every French driver must buy comprehensive car insurance.'",ask:"Which correction is accurate?",options:["Comprehensive insurance is compulsory for all drivers.","A driver must have the legally required third-party liability cover, but does not have to buy comprehensive cover.","A new driver does not have to buy any car insurance."],answer:1,hint:"Think about which level of cover French law requires, and which cover is an extra choice.",why:"In France, motor third-party liability insurance is mandatory; comprehensive cover is optional. 'Must' is not the same as 'don't have to'."},
+{lead:"Emma's application states 12,000 km a year. The draft quote uses 5,000 km.",ask:"What must the pricing team do?",options:["Keep 5,000 km because a lower number guarantees a cheaper and fairer quote.","Tell Emma she mustn't use her car anymore.","Correct and verify the mileage before finalising the quote."],answer:2,hint:"Compare the distance in the customer's application with the distance used in the draft quote.",why:"Accurate mileage matters for pricing. The team needs to check the declared information before issuing a quotation."}
 ],
 2:[
-{lead:"FastMove's internal safety policy explicitly requires a daily vehicle check before the first trip.",ask:"Which sentence reports that company rule correctly?",options:["Under FastMove's company policy, drivers have to check their vehicles before the first trip.","Drivers don't have to check their vehicles because they work in a fleet.","Drivers should never carry out safety checks."],answer:0,why:"'Have to' reports an obligation. This is FastMove's stated company policy, not a claim that every country has the same legal rule."},
-{lead:"A manager says, 'We have telematics, so the insurer must give us a 20% discount.'",ask:"What should an analyst explain?",options:["Telematics always guarantees a fixed discount.","Drivers mustn't send accurate telematics data.","Telematics may help evaluate driving behaviour, but it does not automatically guarantee a discount."],answer:2,why:"A telematics device provides information, not a guaranteed reduction. Pricing still depends on the full risk profile."}
+{lead:"FastMove's internal safety policy explicitly requires a daily vehicle check before the first trip.",ask:"Which sentence reports that company rule correctly?",options:["Under FastMove's company policy, drivers have to check their vehicles before the first trip.","Drivers don't have to check their vehicles because they work in a fleet.","Drivers should never carry out safety checks."],answer:0,hint:"The company policy explicitly says that checks are required. Which modal reports this rule?",why:"'Have to' reports an obligation. This is FastMove's stated company policy, not a claim that every country has the same legal rule."},
+{lead:"A manager says, 'We have telematics, so the insurer must give us a 20% discount.'",ask:"What should an analyst explain?",options:["Telematics always guarantees a fixed discount.","Drivers mustn't send accurate telematics data.","Telematics may help evaluate driving behaviour, but it does not automatically guarantee a discount."],answer:2,hint:"Is an automatic discount promised anywhere in the evidence, or is that only the manager's claim?",why:"A telematics device provides information, not a guaranteed reduction. Pricing still depends on the full risk profile."}
 ],
 4:[
-{lead:"10:45 a.m. Emma confirms her annual mileage is 12,000 km, not 5,000 km.",ask:"What is the correct next step?",options:["Say Emma must buy every optional guarantee.","Update the quote inputs and review the pricing assessment before sending it.","Keep the incorrect mileage to avoid delays."],answer:1,why:"A changed risk input means the quotation needs a review. We cannot responsibly claim a precise premium change without calculations."},
-{lead:"11:00 a.m. FastMove's claims report reveals two incidents that were missing from the first quotation.",ask:"What does the team need to do?",options:["Ignore the two incidents because the vans have telematics.","Tell the drivers they don't have to report incidents.","Check the incident details and revise the risk assessment before making a fleet quote."],answer:2,why:"Claims history may affect risk assessment. The evidence must be verified before pricing."}
+{lead:"10:45 a.m. Emma confirms her annual mileage is 12,000 km, not 5,000 km.",ask:"What is the correct next step?",options:["Say Emma must buy every optional guarantee.","Update the quote inputs and review the pricing assessment before sending it.","Keep the incorrect mileage to avoid delays."],answer:1,hint:"Emma has now confirmed the true mileage. What should happen to the quotation data?",why:"A changed risk input means the quotation needs a review. We cannot responsibly claim a precise premium change without calculations."},
+{lead:"11:00 a.m. FastMove's claims report reveals two incidents that were missing from the first quotation.",ask:"What does the team need to do?",options:["Ignore the two incidents because the vans have telematics.","Tell the drivers they don't have to report incidents.","Check the incident details and revise the risk assessment before making a fleet quote."],answer:2,hint:"Two incident records have just been discovered. Should the team ignore or examine them?",why:"Claims history may affect risk assessment. The evidence must be verified before pricing."}
 ]
 };
 var auditItems=[
@@ -129,11 +129,19 @@ function validSaved(v){
  if(!Array.isArray(v.audit)||!v.audit.every(function(x){return Number.isInteger(x)&&x>=0&&x<6;}))return false;
  if(!Array.isArray(v.final)||v.final.length!==2||!v.final.every(function(x){return x===null||[0,1,2].includes(x);}))return false;
  if(typeof v.reason!=="string"||v.reason.length>600||!Array.isArray(v.oralExtra)||v.oralExtra.length!==v.size||!v.oralExtra.every(function(x){return typeof x==="string"&&x.length<=300;}))return false;
+ if(![1,2,4].every(function(k){return v.answers[k].every(function(a,i){return a===questionSets[k][i].answer;});}))return false;
+ if(v.stage===1&&(v.answers[2].length||v.answers[4].length))return false;
+ if(v.stage<=3&&v.answers[4].length)return false;
  if(v.stage>=2&&v.answers[1].length!==2)return false;
  if(v.stage>=3&&v.answers[2].length!==2)return false;
- if(v.stage>=4&&!v.auditPassed)return false;
+ if(typeof v.auditPassed!=="boolean")return false;
+ if(v.audit.length!==new Set(v.audit).size||v.audit.some(function(x,i){return i>0&&v.audit[i-1]>=x;}))return false;
+ if(v.stage<3&&(v.audit.length||v.auditPassed))return false;
+ if(v.stage>=4&&(!v.auditPassed||v.audit.length!==3||v.audit.some(function(x,i){return x!==auditCorrect[i];})))return false;
  if(v.stage>=5&&v.answers[4].length!==2)return false;
- if(v.stage>=6&&(v.final[0]!==1||v.final[1]!==2||!v.reason.trim()))return false;
+ if(v.stage<5&&(v.final.some(function(x){return x!==null;})||v.reason.trim()))return false;
+ if(v.stage<6&&v.oralExtra.some(function(x){return x.trim();}))return false;
+ if(v.stage>=6&&(v.final[0]!==1||v.final[1]!==2||v.reason.trim().length<20))return false;
  if([1,2,4].includes(v.stage)&&v.index!==v.answers[v.stage].length)return false;
  if([3,5,6].includes(v.stage)&&v.index!==0)return false;
  if(v.stage>=2&&v.notes.some(function(n){return !n[0].trim();}))return false;
@@ -197,7 +205,7 @@ function stepQuiz(){
 function showAnswer(){
  var t=questionSets[state.stage][state.index],choice=state.pending.choice,ok=choice===t.answer;
  document.querySelectorAll("[data-choice]").forEach(function(b){b.disabled=true;if(Number(b.dataset.choice)===choice)b.classList.add("chosen");});
- get("feedback").innerHTML='<div class="'+(ok?"success":"error")+'"><strong>'+(ok?"✓ Evidence checked":"⚠️ Not quite. Inspect the wording again.")+'</strong><p>'+esc(t.why)+'</p></div>'+
+ get("feedback").innerHTML='<div class="'+(ok?"success":"error")+'"><strong>'+(ok?"✓ Evidence checked":"⚠️ Not quite. Discuss this clue and try again.")+'</strong><p>'+esc(ok?t.why:t.hint)+'</p></div>'+
  '<div class="actions">'+button(ok?"next":"retry",ok?"Stamp this check ✓ · Continue →":"Try another answer ↺",ok)+'</div>';
  if(ok)get("next").onclick=function(){state.answers[state.stage].push(choice);state.index++;state.pending=null;save();render();};
  else get("retry").onclick=function(){state.pending=null;save();render();};
@@ -231,7 +239,7 @@ function audit(){
  get("checkAudit").onclick=function(){
  if(state.audit.length!==3){get("auditMessage").innerHTML='<div class="error">Select exactly three issues before submitting.</div>';return;}
  var correct=state.audit.every(function(n,i){return n===auditCorrect[i];});
- if(!correct){get("auditMessage").innerHTML='<div class="error"><strong>One or more flags are misplaced.</strong> Check for a mileage mismatch, an invented legal obligation and a discount that is described as automatic. The other statements are reliable.</div>';return;}
+ if(!correct){get("auditMessage").innerHTML='<div class="error"><strong>One or more flags are misplaced.</strong> Compare the draft quotations with the original client files. An error can be a contradictory figure or a misleading claim.</div>';return;}
  state.auditPassed=true;save();render();
  };
 }
@@ -251,7 +259,7 @@ function finalDecision(){
  document.querySelectorAll("[data-final]").forEach(function(b){b.onclick=function(){
  var j=Number(b.dataset.final),i=Number(b.dataset.value);state.final[j]=i;save();render();
  };});
- labels.forEach(function(l,j){if(state.final[j]!==null){var ok=state.final[j]===correct[j];get("decisionFeedback"+j).innerHTML='<div class="'+(ok?"success":"error")+'">'+(ok?"✓ Approved recommendation.":"⚠️ Recheck the evidence before approving this option.")+'</div>'; }});
+ labels.forEach(function(l,j){if(state.final[j]!==null){var ok=state.final[j]===correct[j];get("decisionFeedback"+j).innerHTML='<div class="'+(ok?"success":"error")+'">'+(ok?"✓ Appropriate next step selected.":"⚠️ Recheck the evidence before approving this option.")+'</div>'; }});
  get("reason").oninput=function(){state.reason=this.value;save();};
  get("orals").onclick=function(){
  if(state.final[0]!==1||state.final[1]!==2){get("saveNotice").textContent="Choose the evidence-based recommendation for BOTH quotes before continuing.";return;}
@@ -262,7 +270,7 @@ function finalDecision(){
 function speaking(){
  var html='<div class="ey">MISSION COMPLETED · INDIVIDUAL ORAL</div><h2>🎤 The one-minute briefing</h2>'+
  '<div class="speak"><strong>Every student speaks individually to your English teacher for approximately one minute.</strong> Use your notes as prompts, not as a script. Mention one obligation, one optional action and one important pricing correction.</div>'+
- '<p class="lead"><strong>Team conclusion:</strong> '+esc(state.reason)+'</p>'+
+ '<div class="warning"><strong>Final verdict:</strong> Neither original quote is ready to be sent. First correct and verify the facts, review the pricing, then explain the revised offers to the clients.</div><p class="lead"><strong>Team conclusion:</strong> '+esc(state.reason)+'</p>'+
  state.names.map(function(n,i){return '<section class="rec"><h3>'+esc(n)+' · '+esc(role(i))+'</h3>'+
  '<p><strong>1. My role:</strong> My role was '+esc(role(i))+'.</p>'+
  '<p><strong>2. Emma:</strong> '+esc(state.notes[i][0])+'</p>'+
