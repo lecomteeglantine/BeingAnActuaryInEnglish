@@ -28,6 +28,17 @@
       if(grammar) grammar.insertAdjacentElement('beforebegin',link);
       else nav.appendChild(link);
     }
+    // Listening appears beside Reading and Writing across shared navigation pages.
+    if(!nav.querySelector('a[href="listening.html"]')){
+      const link=document.createElement('a');
+      link.href='listening.html';
+      link.textContent='Listening';
+      const writing=nav.querySelector('a[href="writing.html"]');
+      const reading=nav.querySelector('a[href="reading.html"]');
+      if(writing) writing.insertAdjacentElement('afterend',link);
+      else if(reading) reading.insertAdjacentElement('afterend',link);
+      else nav.appendChild(link);
+    }
     const page=location.pathname.split('/').pop()||'index.html';
     const section=page.startsWith('m1-')?'m1.html':page.startsWith('m2-')?'m2.html':page;
     nav.querySelectorAll('a').forEach(a=>{
