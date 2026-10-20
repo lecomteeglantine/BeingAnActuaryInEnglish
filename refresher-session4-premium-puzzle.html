@@ -89,9 +89,9 @@ var roles={
 var chapters=["Briefing","Emma's quote","FastMove's fleet","Inspector's desk","New evidence","Sign-off","Individual oral"];
 var evidence=[
 {stage:2,head:"Emma — first clue",body:"The customer declared 12,000 km per year, but the draft quotation says 5,000 km. Mandatory third-party liability cover is not the same as optional comprehensive cover."},
-{stage:3,head:"FastMove — second clue",body:"The fleet uses 15 commercial vans. Its company safety policy requires daily vehicle checks and accurate incident records. Telematics does not guarantee a discount."},
+{stage:3,head:"FastMove — second clue",body:"The fleet has 15 vans and 18 drivers, with seven accidents recorded last year. Its company policy requires weekly vehicle checks and accurate records. Telematics does not guarantee a discount."},
 {stage:4,head:"Audit complete",body:"Three issues have been identified: mileage mismatch, a false comprehensive-cover obligation, and a guaranteed telematics discount."},
-{stage:5,head:"Late update",body:"Emma confirmed 12,000 km; FastMove reported two recent incidents. The quote needs a review, not an invented premium figure."},
+{stage:5,head:"Late update",body:"Emma confirmed 12,000 km; FastMove reported two additional incidents this year (separate from last year’s seven accidents). The quote needs a review, not an invented premium figure."},
 {stage:6,head:"Supervisor sign-off",body:"Correct information first; then consider pricing factors, coverage and client communication."}
 ];
 var questionSets={
@@ -100,12 +100,12 @@ var questionSets={
 {lead:"Emma's application states 12,000 km a year. The draft quote uses 5,000 km.",ask:"What must the pricing team do?",options:["Keep 5,000 km because a lower number guarantees a cheaper and fairer quote.","Tell Emma she mustn't use her car anymore.","Correct and verify the mileage before finalising the quote."],answer:2,hint:"Compare the distance in the customer's application with the distance used in the draft quote.",why:"Accurate mileage matters for pricing. The team needs to check the declared information before issuing a quotation."}
 ],
 2:[
-{lead:"FastMove's internal safety policy explicitly requires a daily vehicle check before the first trip.",ask:"Which sentence reports that company rule correctly?",options:["Under FastMove's company policy, drivers have to check their vehicles before the first trip.","Drivers don't have to check their vehicles because they work in a fleet.","Drivers should never carry out safety checks."],answer:0,hint:"The company policy explicitly says that checks are required. Which modal reports this rule?",why:"'Have to' reports an obligation. This is FastMove's stated company policy, not a claim that every country has the same legal rule."},
+{lead:"FastMove's internal safety policy requires a vehicle check every week.",ask:"Which sentence reports that company rule correctly?",options:["Under FastMove's company policy, drivers have to check their vehicles every week.","Drivers don't have to check their vehicles because they work in a fleet.","Drivers should never carry out safety checks."],answer:0,hint:"The company policy says weekly checks are required. Which modal reports this rule?",why:"'Have to' reports an obligation. This is FastMove's stated company policy, not a claim that every country has the same legal rule."},
 {lead:"A manager says, 'We have telematics, so the insurer must give us a 20% discount.'",ask:"What should an analyst explain?",options:["Telematics always guarantees a fixed discount.","Drivers mustn't send accurate telematics data.","Telematics may help evaluate driving behaviour, but it does not automatically guarantee a discount."],answer:2,hint:"Is an automatic discount promised anywhere in the evidence, or is that only the manager's claim?",why:"A telematics device provides information, not a guaranteed reduction. Pricing still depends on the full risk profile."}
 ],
 4:[
 {lead:"10:45 a.m. Emma confirms her annual mileage is 12,000 km, not 5,000 km.",ask:"What is the correct next step?",options:["Say Emma must buy every optional guarantee.","Update the quote inputs and review the pricing assessment before sending it.","Keep the incorrect mileage to avoid delays."],answer:1,hint:"Emma has now confirmed the true mileage. What should happen to the quotation data?",why:"A changed risk input means the quotation needs a review. We cannot responsibly claim a precise premium change without calculations."},
-{lead:"11:00 a.m. FastMove's claims report reveals two incidents that were missing from the first quotation.",ask:"What does the team need to do?",options:["Ignore the two incidents because the vans have telematics.","Tell the drivers they don't have to report incidents.","Check the incident details and revise the risk assessment before making a fleet quote."],answer:2,hint:"Two incident records have just been discovered. Should the team ignore or examine them?",why:"Claims history may affect risk assessment. The evidence must be verified before pricing."}
+{lead:"11:00 a.m. FastMove's latest report reveals two additional incidents this year, missing from the current quotation. The seven accidents reported last year are separate.",ask:"What does the team need to do?",options:["Ignore the two incidents because the vans have telematics.","Tell the drivers they don't have to report incidents.","Check the incident details and revise the risk assessment before making a fleet quote."],answer:2,hint:"Two incident records have just been discovered. Should the team ignore or examine them?",why:"Claims history may affect risk assessment. The evidence must be verified before pricing."}
 ]
 };
 var auditItems=[
@@ -184,8 +184,8 @@ function setup(){
 }
 function fileDetails(stage){
  if(stage===1)return '<table class="filetable"><tr><th>Customer application</th><td>Emma, 22; first car; <strong>12,000 km/year</strong>; no previous claims</td></tr><tr><th>Draft quote</th><td>5,000 km/year; “comprehensive cover is legally mandatory”</td></tr><tr><th>Question</th><td>Is this quotation accurate and legally clear?</td></tr></table>';
- if(stage===2)return '<table class="filetable"><tr><th>Client</th><td>FastMove · <strong>15 commercial delivery vans</strong></td></tr><tr><th>Safety policy</th><td>Vehicle check before first trip; accurate incident records</td></tr><tr><th>Quote statement</th><td>“Telematics = guaranteed 20% insurance discount”</td></tr></table>';
- return '<table class="filetable"><tr><th>10:45</th><td>Emma corrects her mileage to 12,000 km/year.</td></tr><tr><th>11:00</th><td>FastMove reports <strong>two incidents</strong> previously omitted.</td></tr><tr><th>Deadline</th><td>Manager asks for the final recommendation.</td></tr></table>';
+ if(stage===2)return '<table class="filetable"><tr><th>Client</th><td>FastMove · <strong>15 commercial delivery vans and 18 drivers</strong></td></tr><tr><th>Safety policy</th><td>Weekly vehicle checks; accurate incident records</td></tr><tr><th>Previous accidents</th><td>Seven accidents reported last year</td></tr><tr><th>Quote statement</th><td>“Telematics = guaranteed 20% insurance discount”</td></tr></table>';
+ return '<table class="filetable"><tr><th>10:45</th><td>Emma corrects her mileage to 12,000 km/year.</td></tr><tr><th>11:00</th><td>FastMove reports <strong>two new incidents this year</strong> missing from the quotation; seven accidents were already recorded last year.</td></tr><tr><th>Deadline</th><td>Manager asks for the final recommendation.</td></tr></table>';
 }
 function stepQuiz(){
  var st=state.stage,arr=questionSets[st],q=state.index,site=st===1?"Emma's suspicious quote":st===2?"FastMove's fleet file":"Breaking news from the clients";
@@ -214,7 +214,7 @@ function collectNotes(){
  var idx=state.stage===1?0:1,which=idx===0?"Emma":"FastMove";
  var intro=idx===0?"What did you discover about mandatory cover or Emma's mileage?":"What did you learn about fleet safety obligations or telematics?";
  var html='<div class="ey">INVESTIGATION CHECKPOINT</div><h2>✅ '+which+' file inspected</h2>'+
- '<div class="success">You have completed the two checks. The relevant evidence is now available on your investigation board.</div><h3>Everyone contributes one clue</h3>'+
+ '<div class="success">You have completed the two checks. Save all the individual notes to unlock the evidence on the board.</div><h3>Everyone contributes one clue</h3>'+
  '<p class="lead">'+intro+' Write a short sentence in your own words. You will use it when speaking to your English teacher.</p>'+
  '<div id="notefields">'+state.names.map(function(name,i){return '<label for="note'+i+'">'+esc(name)+' · '+esc(role(i))+'</label><input type="text" maxlength="260" id="note'+i+'" value="'+esc(state.notes[i][idx])+'" placeholder="We found out that...">';}).join("")+'</div>'+
  '<div class="actions">'+button("saveNotes",idx===0?"Continue to FastMove →":"Open the inspector's evidence desk →",true)+'</div>';
