@@ -68,8 +68,8 @@ main.puzzle{max-width:1200px;margin:auto;padding:22px 20px 72px}
 <header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">📊</span><strong>Actuarial English</strong></a><nav class="main-nav" aria-label="Main navigation"><a href="index.html">Home</a><a href="refresher.html">English Refresher</a><a href="refresher-session3-risk-exposure.html">Session 3</a></nav></header>
 <main class="puzzle" id="main">
 <section class="mast"><div class="ey">ENGLISH REFRESHER · SESSION 4 · GROUP INVESTIGATION</div><h1>🕵️ The Premium Puzzle</h1><p>Two insurance quotes. Three suspicious statements. One inspection team. Save Emma's and FastMove's files before the manager signs them.</p></section>
-<section class="story" aria-label="Mission briefing"><strong>WHY ARE YOU HERE?</strong><p>It is <strong>9:00 a.m.</strong> at <strong>Northstar Insurance</strong> (a fictional insurer working with French motor-insurance rules). Two quotes must be checked today: one for <strong>Emma's first car</strong>, and one for <strong>FastMove's 15 delivery vans</strong>. An inspector has spotted contradictory information and misleading explanations about insurance obligations. <strong>Your job is to investigate, correct the errors and give responsible pricing advice.</strong></p><p class="tiny muted">One shared device · 2–4 students · no speed timer · no made-up premium calculations · final one-minute oral briefing for each student to your English teacher.</p></section>
-<div class="layout"><section id="stage" class="panel" aria-live="polite"></section><aside class="evidence" aria-label="Evidence board"><h2>📂 Evidence board</h2><div id="progress" class="progress" role="progressbar" aria-label="Mission progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div></div></div><div class="stamps" id="stamps"></div><div id="team"></div><div id="clues"></div></aside></div>
+<section class="story" aria-label="Mission briefing"><strong>WHY ARE YOU HERE?</strong><p>It is <strong>9:00 a.m.</strong> at <strong>Northstar Insurance</strong> (a fictional insurer working with French motor-insurance rules). Two quotes must be checked today: one for <strong>Emma's first car</strong>, and one for <strong>FastMove's 15 delivery vans</strong>. An inspector has spotted contradictory information and misleading explanations about insurance obligations. <strong>Your job is to investigate, correct the errors and give responsible pricing advice.</strong></p><p class="tiny muted">One shared device · 2–4 students · no speed timer · no made-up premium calculations · final one-minute oral briefing for each student to your English teacher.</p><details><summary><strong>Read the game instructions at any time</strong></summary><ol><li>Choose your group size and enter first names.</li><li>Inspect Emma’s and FastMove’s files; discuss each option before choosing.</li><li>Each student writes one evidence sentence after each client file.</li><li>Find three errors on the Inspector’s Desk, then review the surprise messages.</li><li>Agree on both recommendations and prepare individual one-minute oral briefings for your English teacher.</li></ol><p><strong>Grammar reminder:</strong> <em>must / have to</em> = obligation; <em>need to</em> = necessity; <em>mustn’t</em> = prohibition; <em>don’t have to</em> = not compulsory; <em>should</em> = advice.</p></details></section>
+<div class="layout"><section id="stage" class="panel" aria-live="polite"></section><aside class="evidence" aria-label="Evidence board"><h2>📂 Evidence board</h2><div id="progress" class="progress" role="progressbar" aria-label="Mission progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div></div></div><div class="stamps" id="stamps"></div><div id="team"></div><div id="clues"></div><div class="actions"><button type="button" class="subtle" id="resetGame">Restart investigation</button></div></aside></div>
 </main>
 <footer class="site-footer"><p>Created by Mrs Lecomte and Mr Lemoine, with the help of ChatGPT · Progress stays on this device.</p></footer>
 <script>
@@ -147,7 +147,7 @@ function picture(url,alt,fallback){return '<img class="case-photo" loading="lazy
 function wirePictures(){document.querySelectorAll(".puzzle img[data-fallback]").forEach(function(img){img.onerror=function(){img.onerror=null;img.src=img.dataset.fallback;};});}
 function stageHTML(content){get("stage").innerHTML=content+'<p id="saveNotice" class="tiny muted" aria-live="polite"></p>';wirePictures();updateBoard();}
 function button(id,label,primary){return '<button type="button" id="'+id+'" class="'+(primary?"primary":"subtle")+'">'+label+'</button>';}
-function changeStage(n){state.stage=n;state.index=0;state.pending=null;save();render();window.scrollTo({top:0,behavior:"instant"});}
+function changeStage(n){state.stage=n;state.index=0;state.pending=null;save();render();window.scrollTo(0,0);}
 function reset(){if(confirm("Restart the full investigation? This deletes this team's notes and answers on this device.")){state=emptyState();try{localStorage.removeItem(STORAGE_KEY);}catch(e){}render();window.scrollTo(0,0);}}
 function role(i){return roles[state.size][i];}
 function updateBoard(){
@@ -285,6 +285,7 @@ function render(){
  else {state=emptyState();setup();}
 }
 render();
+get("resetGame").onclick=reset;
 })();
 </script>
 </body></html>
