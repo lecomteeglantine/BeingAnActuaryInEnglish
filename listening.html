@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#15566c">
-<meta name="description" content="Progressive A2–C1 listening practice with authentic Federal Reserve videos, automatic feedback and optional insurance writing.">
+<meta name="description" content="Progressive A2–C1 listening methodology: authentic videos, targeted skills, self-correction and exam-style practice.">
 <title>Listening Journey · Actuarial English</title>
 <link rel="stylesheet" href="styles.css">
 <link rel="icon" href="icons/favicon.png">
@@ -55,21 +55,33 @@
 .listen-order label{font-weight:700;font-size:.9rem}
 .listen-order select{width:100%;max-width:100%;margin-top:.3rem;background:white;border:1px solid #a9c4cf;border-radius:9px;padding:.65rem;min-height:45px}
 .listen-result{background:#e9f8f4;border-radius:13px;padding:1rem;margin:1rem 0;color:#165246}
-.listen-writing{background:linear-gradient(125deg,#fff9ed,#fff 60%);border-color:#ead9bc}
-.listen-writing textarea{width:100%;min-height:210px;resize:vertical;border:1px solid #a6c3c9;border-radius:12px;background:#fff;padding:1rem;line-height:1.65;font:inherit;color:#17394d}
-.listen-writing .listen-count{font-weight:800}
-.listen-writing .listen-count.ok{color:#12694c}.listen-writing .listen-count.notyet{color:#82522d}
-.listen-checklist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem;margin:1rem 0}
-.listen-checklist label{background:#fff;border:1px solid #e3ddc9;border-radius:10px;padding:.7rem;display:flex;gap:.55rem;align-items:flex-start;cursor:pointer}
-.listen-checklist input{margin-top:.33rem;accent-color:#087e7b}
-.listen-writing details{background:white;border:1px solid #eadfc8;border-radius:10px;padding:1rem;margin-top:.9rem}
-.listen-writing details summary{cursor:pointer;font-weight:800}
 .listen-footer-nav{display:flex;justify-content:space-between;gap:.6rem;flex-wrap:wrap;margin:1rem 0}
 .listen-done{color:#1c7957}
 [hidden]{display:none!important}
 @media(max-width:800px){.listen-hero{grid-template-columns:1fr}.listen-art{min-height:145px}.listen-art svg{max-height:160px}.listen-intro-grid,.listen-strategy-grid{grid-template-columns:1fr}.listen-track{grid-template-columns:repeat(2,minmax(0,1fr))}.listen-order{grid-template-columns:1fr}}
 @media(max-width:480px){.listen-page{padding:10px 13px 4rem}.listen-hero{padding:1.2rem}.listen-track button{min-height:92px;padding:.65rem}.listen-checklist{grid-template-columns:1fr}.listen-hero h1{font-size:2.15rem}}
 @media(prefers-reduced-motion:reduce){.listen-page *{scroll-behavior:auto!important;transition:none!important}}
+
+.listen-lab{scroll-margin-top:1rem;border-top:5px solid #138d89}
+.listen-competencies{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.65rem;margin:1.15rem 0}
+.listen-competencies>div{background:#eff8f7;border:1px solid #d1e7e6;border-radius:13px;padding:.75rem;min-width:0}
+.listen-competencies span{display:block;font-weight:900;color:#0e807a}
+.listen-competencies strong{display:block;font-size:.96rem;color:#15576a}
+.listen-competencies small{display:block;margin-top:.35rem;line-height:1.4;color:#466d7c}
+.listen-lab-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-top:1rem}
+.listen-lab-header h3{color:#115d70;margin:.25rem 0}
+.listen-lab-phases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem;margin:.9rem 0 1.4rem}
+.listen-lab-phases>div{background:#f1f8fb;border:1px solid #d8e8ef;padding:.85rem;border-radius:12px}
+.listen-lab-phases b{color:#195f70}
+.listen-lab-phases p{margin:.45rem 0 0;font-size:.94rem}
+.listen-gap{width:min(100%,240px);padding:.7rem;margin:.25rem;border:1px solid #a7c4d0;border-radius:9px;font:inherit;min-height:44px}
+.listen-open textarea{display:block;width:100%;max-width:100%;min-height:135px;line-height:1.6;resize:vertical;background:#fff;color:#16384d;border:1px solid #abc5cf;border-radius:11px;padding:.85rem;margin:.7rem 0;font:inherit}
+.listen-selfchecks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem;margin:.8rem 0}
+.listen-selfchecks label{display:flex;gap:.5rem;padding:.6rem;border-radius:9px;background:#fff;align-items:start}
+.listen-selfchecks input{margin-top:.3rem;accent-color:#0e807a}
+#labStatus{margin:.8rem 0;padding:.65rem .85rem;background:#f2f8fa;border-radius:9px;color:#24556a}
+@media(max-width:800px){.listen-competencies{grid-template-columns:repeat(2,minmax(0,1fr))}.listen-lab-phases{grid-template-columns:1fr}}
+@media(max-width:480px){.listen-selfchecks{grid-template-columns:1fr}.listen-gap{width:100%}}
 </style>
 </head>
 <body>
@@ -81,7 +93,7 @@
 </nav></header>
 <main id="main" class="listen-page">
 <section class="listen-hero">
-<div><p class="listen-overline">Actuarial English · A2 → C1</p><h1>🎧 Your Listening Journey</h1><p>Make sense of economic explanations, follow cause and effect, and recognise what a speaker really means. Four authentic educational videos, original activities and instant feedback.</p><p><strong>No marks. No locked levels.</strong> Learn at your own pace; nothing in these lessons comes from your listening test.</p></div>
+<div><p class="listen-overline">Actuarial English · A2 → C1</p><h1>🎧 Your Listening Journey</h1><p>Make sense of economic explanations, follow cause and effect, and recognise what a speaker really means. Four authentic educational videos, original activities and instant feedback.</p><p><strong>No marks. No locked levels.</strong> Prepare using original practice activities, not the assessment video or questions.</p></div>
 <div class="listen-art" aria-hidden="true"><svg viewBox="0 0 310 265" width="310" height="265"><rect x="48" y="54" width="216" height="144" rx="21" fill="#fff" stroke="#8abfc5" stroke-width="3"/><rect x="65" y="74" width="181" height="108" rx="12" fill="#e9f7f3"/><path d="M83 149l29-26 25 17 26-36 22 17 31-41" stroke="#0f817f" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="216" cy="80" r="7" fill="#e0a34b"/><rect x="140" y="199" width="31" height="14" rx="4" fill="#6ba4b1"/><rect x="117" y="213" width="78" height="9" rx="4" fill="#286a7d"/><path d="M71 108c-18-20-16-46 0-63m-15 87c-28-26-31-74-3-102m203 78c18-20 16-46 0-63m15 87c28-26 31-74 3-102" stroke="#189c99" stroke-width="6" stroke-linecap="round" fill="none"/></svg></div>
 </section>
 <section class="listen-card" aria-labelledby="howTitle"><h2 id="howTitle">🌱 How it works</h2>
@@ -90,31 +102,33 @@
 <div><strong>2 · Watch and listen</strong>Play the original English video. Watch once for the overall message, then replay for details.</div>
 <div><strong>3 · Check and improve</strong>Get instant explanations, retry whenever you like and keep your progress on this device.</div>
 </div></section>
-<section class="listen-card" id="listenNavigator"><div class="listen-summary"><div><h2>🧭 Choose your level</h2><p class="listen-muted">A2 and B1 build confidence; B2 and C1 train interpretation and relationships.</p></div><button class="listen-button secondary" id="exportListening" type="button">Export progress</button></div>
+<section class="listen-card" id="listenNavigator"><div class="listen-summary"><div><h2>🧭 Choose your level</h2><p class="listen-muted">A2: gist → B1: precise information → B2: causal explanations → C1: inference and synthesis.</p></div><button class="listen-button secondary" id="exportListening" type="button">Export progress</button></div>
 <div class="listen-track" id="listenTrack" aria-label="Listening levels"></div>
 <p class="listen-muted" id="listenProgressText" role="status" aria-live="polite"></p>
 <progress class="listen-progress-meter" id="listenProgress" max="4" value="0" aria-label="Modules completed"></progress>
 </section>
 <section class="listen-card listen-lessons" id="listenLesson" aria-label="Selected listening lesson" aria-live="polite"></section>
 <nav class="listen-footer-nav" aria-label="Lesson navigation"><button class="listen-button secondary" type="button" id="listenPrevious">← Previous level</button><button class="listen-button" type="button" id="listenNext">Next level →</button></nav>
-<section class="listen-card listen-writing" id="optionalWriting">
-<p class="listen-overline">Optional extension · Writing · 120–150 words</p>
-<h2>✍️ Should riot cover be included automatically in property insurance?</h2>
-<p>Write a short, balanced argument and state your position. Consider the benefits for policyholders, possible effects on premiums, and the consequences for insurers. You may support inclusion, oppose it, or propose conditions.</p>
-<div class="listen-strategy-grid">
-<div><strong>Opening</strong>Introduce the debate and explain why it matters.</div><div><strong>Reasoning</strong>Develop two distinct considerations, acknowledging a trade-off.</div><div><strong>Conclusion</strong>State your view with a clear, qualified recommendation.</div>
+<section class="listen-card listen-lab" id="listeningSkillsLab" aria-labelledby="listeningLabTitle">
+<p class="listen-overline">Methodology · Guided practice · A2 to C1</p>
+<h2 id="listeningLabTitle">🧠 Listening Skills Lab</h2>
+<p>Train the skills that matter in a listening assessment: recognising the speaker’s argument, catching precise information, following explanations, understanding expressions in context and interpreting implications. The practice uses <strong>different videos and newly written questions</strong>.</p>
+<div class="listen-competencies" aria-label="The learning progression">
+<div><span>A2</span><strong>Find the message</strong><small>Purpose · gist · everyday language</small></div>
+<div><span>B1</span><strong>Catch the evidence</strong><small>Numbers · details · paraphrasing</small></div>
+<div><span>B2</span><strong>Rebuild the logic</strong><small>Sequences · cause and effect · justification</small></div>
+<div><span>C1</span><strong>Read between the lines</strong><small>Speaker’s choices · inference · synthesis</small></div>
 </div>
-<p class="listen-muted">Useful language: <em>automatic inclusion, policyholder, premium, risk pooling, exclusions, affordability, property damage, optional add-on, claim, coverage</em>.</p>
-<label for="riotEssay"><strong>Your response (120–150 words)</strong></label>
-<textarea id="riotEssay" spellcheck="true" placeholder="Whether riot cover should be automatically included in property insurance is a question of…"></textarea>
-<p id="riotCount" class="listen-count notyet" role="status" aria-live="polite">0 words · Target: 120–150</p>
-<details><summary>✅ My self-review checklist (no automatic grading)</summary>
-<div class="listen-checklist"><label><input type="checkbox" class="riot-check">I have a clear position.</label><label><input type="checkbox" class="riot-check">I mention both policyholders and insurers.</label><label><input type="checkbox" class="riot-check">I discuss at least one counterargument or trade-off.</label><label><input type="checkbox" class="riot-check">I use appropriate insurance vocabulary.</label><label><input type="checkbox" class="riot-check">My conclusion follows from my reasons.</label><label><input type="checkbox" class="riot-check">I have revised the clarity and accuracy of my English.</label></div>
-</details>
-<div class="listen-actions"><button type="button" id="riotCopy">Copy writing</button><button type="button" class="secondary" id="riotDownload">Download .txt</button><button type="button" class="secondary" id="riotClear">Clear draft</button></div>
-<p class="listen-muted" id="riotMessage" role="status" aria-live="polite">This extension is optional and is not graded. Your draft is saved locally as you type.</p>
+<p class="listen-tip"><strong>How to practise:</strong> Select a level above, watch its video, then work through the matching lab below. Check the objective items instantly. For your own short answers, compare with a suggested response: <strong>free writing is not automatically graded</strong>. Nothing is locked.</p>
+<div id="labPanel" aria-live="polite"></div>
+<div class="listen-actions">
+<button type="button" id="labCheck">Check selected answers</button>
+<button type="button" id="labReview" class="secondary">Compare my written answer</button>
+<button type="button" id="labReset" class="secondary">Try this skill again</button>
+</div>
+<div id="labStatus" role="status" aria-live="polite"></div>
 </section>
-<section class="listen-card"><h2>🔎 Study tips</h2><p><strong>First viewing:</strong> listen without pausing to catch the main argument. <strong>Second viewing:</strong> note key facts, contrasts and connecting words. <strong>Third viewing:</strong> replay the difficult section and check exactly what the speaker says. You can repeat the videos and questions as many times as you want.</p><p class="listen-muted">Videos are provided by Federal Reserve Education through their official YouTube players. Playback needs internet access; if an embedded player is blocked, use the official video link shown under it. Video subtitles, when available, are controlled by YouTube. They are not the test video.</p></section>
+<section class="listen-card"><h2>🔎 Listening strategy for assessment day</h2><p><strong>Before listening:</strong> skim the questions and identify what type of information is needed; do not try to memorise every word. <strong>First viewing:</strong> identify the central message and the speaker’s purpose. <strong>Second viewing:</strong> listen for quantities, contrast words, examples and cause-effect links. <strong>After listening:</strong> distinguish what was actually stated from what you inferred; support True/False decisions with evidence when asked.</p><p class="listen-muted">Different tasks require different answers: choose one option for an MCQ, a brief fact for a short answer, the complete sequence for a mechanism, and a short explanation in your own words for an interpretation.</p><p class="listen-muted">Videos are provided by Federal Reserve Education through their official YouTube players. Playback needs internet access; if an embedded player is blocked, use the official video link shown under it. Video subtitles, when available, are controlled by YouTube. They are not the test video.</p></section>
 </main>
 <footer class="site-footer"><p><strong>Actuarial English</strong></p><p class="footer-credit">Created by Mrs Lecomte and Mr Lemoine, with the help of Chat GPT</p><p class="privacy"><a href="privacy.html">Privacy details</a> · <a href="accessibility.html">Accessibility</a></p></footer>
 <script src="shared.js"></script>
@@ -198,7 +212,7 @@ el('listenLesson').innerHTML='<p class="listen-overline">Level '+esc(d.level)+' 
 var draft=getDraftAnswers();el('listenQuestions').querySelectorAll('input').forEach(function(x){x.checked=draft[x.name]===x.value});el('listenQuestions').querySelectorAll('select').forEach(function(x){x.value=draft[x.name]||''});
 el('listenQuestions').addEventListener('change',function(){if(checked){checked=false;el('listenResult').textContent='Answers changed. Check again for updated feedback.';el('listenQuestions').querySelectorAll('.listen-feedback-slot').forEach(function(x){x.innerHTML=''})}saveCurrent()});
 el('listenCheck').addEventListener('click',checkAnswers);el('listenRetry').addEventListener('click',function(){el('listenQuestions').querySelectorAll('input').forEach(function(x){x.checked=false});el('listenQuestions').querySelectorAll('select').forEach(function(x){x.value=''});el('listenQuestions').querySelectorAll('.listen-feedback-slot').forEach(function(x){x.innerHTML=''});el('listenResult').textContent='Fresh attempt ready. Replay the video when you wish.';checked=false;saveCurrent()});
-el('listenPrevious').disabled=current===0;el('listenNext').disabled=current===LESSONS.length-1;updateProgress()}
+el('listenPrevious').disabled=current===0;el('listenNext').disabled=current===LESSONS.length-1;updateProgress();renderLab()}
 function showFeedback(card,correct,explanation,skipped){var slot=card.querySelector('.listen-feedback-slot');slot.innerHTML='<p class="listen-feedback '+(correct?'good':'bad')+'"><strong>'+(skipped?'Not answered':correct?'Correct':'Try this point again')+'</strong> — '+esc(explanation)+'</p>'}
 function checkAnswers(){saveCurrent();var d=LESSONS[current],ok=0,total=0,missing=0;var answers=getDraftAnswers();d.mcq.forEach(function(q,i){var v=answers[selectedName('m'+i)],sk=v===undefined;var right=!sk&&Number(v)===q.a;total++;if(sk)missing++;if(right)ok++;showFeedback(el('listenQuestions').querySelector('[data-index="'+i+'"]'),right,q.why,sk)});
 d.tf.forEach(function(q,i){var v=answers[selectedName('t'+i)],sk=v===undefined;var right=!sk&&(v==='true')===q.a;total++;if(sk)missing++;if(right)ok++;showFeedback(el('listenQuestions').querySelector('[data-tf="'+i+'"]'),right,q.why,sk)});
@@ -209,18 +223,114 @@ function fileDownload(content,filename,mime){var blob=new Blob([content],{type:m
 el('exportListening').addEventListener('click',function(){fileDownload(JSON.stringify({version:1,complete:saved.complete,answers:saved.answers},null,2),'actuarial-listening-progress.json','application/json')});
 el('listenPrevious').addEventListener('click',function(){selectLesson(current-1)});
 el('listenNext').addEventListener('click',function(){selectLesson(current+1)});
-var essay=el('riotEssay');
-var ESSAYKEY='actuarial-listening-optional-riot-writing-v1';
-var CHECKKEY='actuarial-listening-optional-riot-checks-v1';
-try{essay.value=localStorage.getItem(ESSAYKEY)||'';var ck=JSON.parse(localStorage.getItem(CHECKKEY)||'[]');document.querySelectorAll('.riot-check').forEach(function(x,i){x.checked=!!ck[i]})}catch(e){}
-function words(s){var t=s.trim();return t?t.split(/\s+/).filter(Boolean).length:0}
-function wordCount(){var n=words(essay.value),good=n>=120&&n<=150;el('riotCount').textContent=n+' words · Target: 120–150 '+(good?'✓ Within range':n<120?'· Keep developing your argument':'· Try removing repetition');el('riotCount').className='listen-count '+(good?'ok':'notyet')}
-essay.addEventListener('input',function(){try{localStorage.setItem(ESSAYKEY,essay.value)}catch(e){}wordCount()});
-document.querySelectorAll('.riot-check').forEach(function(x){x.addEventListener('change',function(){try{localStorage.setItem(CHECKKEY,JSON.stringify(Array.from(document.querySelectorAll('.riot-check')).map(function(y){return y.checked})))}catch(e){}})});
-el('riotCopy').addEventListener('click',function(){if(!essay.value.trim()){el('riotMessage').textContent='Write your argument before copying.';return}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(essay.value).then(function(){el('riotMessage').textContent='Draft copied. It has not been graded.'},function(){essay.focus();essay.select();el('riotMessage').textContent='Select the text and copy it using your keyboard.'})}else{essay.focus();essay.select();el('riotMessage').textContent='Select the text and copy it using your keyboard.'}});
-el('riotDownload').addEventListener('click',function(){if(!essay.value.trim()){el('riotMessage').textContent='Write your argument before downloading.';return}fileDownload('Should riot cover be included automatically in property insurance?\n\n'+essay.value,'riot-cover-optional-writing.txt','text/plain;charset=utf-8');el('riotMessage').textContent='Draft exported as a .txt file. No automatic assessment has been made.'});
-el('riotClear').addEventListener('click',function(){if(!essay.value||window.confirm('Clear this draft? This cannot be undone.')){essay.value='';try{localStorage.removeItem(ESSAYKEY)}catch(e){}wordCount();el('riotMessage').textContent='Draft cleared.'}});
-wordCount();renderNavigation();var start=0;try{start=Number(localStorage.getItem('actuarial-listening-current')||0)}catch(e){}if(!Number.isInteger(start)||start<0||start>=LESSONS.length)start=0;current=start;renderLesson();
+
+/* Listening Skills Lab. Objective items are automatically checked;
+   open responses are explicitly self-reviewed, never machine graded. */
+var LABS=[
+ {level:'A2',title:'Start with meaning, not individual words',
+  before:'Read the three questions. You are listening for the purpose of an example and the meaning of everyday expressions.',
+  during:'On the first play, identify the speaker’s concern. On the second, pay attention to the contrast between wages and prices.',
+  after:'A gist answer should cover the whole message; a detail should be directly supported by the narration.',
+  questions:[
+   {q:'Why does the narrator begin by imagining what a person’s money can buy?',o:['To give an exact prediction of next year’s inflation','To connect the economic topic to an everyday concern','To explain how banks issue credit cards'],a:1,ex:'The opening question draws listeners into the personal consequences of inflation.'},
+   {q:'In this context, who is a person on a “fixed income”?',o:['Someone whose regular income does not automatically rise','Someone who earns a salary that doubles each year','Someone who makes all payments in cash'],a:0,ex:'The video uses fixed income to identify a person with little or no income adjustment when prices rise.'},
+   {q:'Which transition helps you hear that rising wages may NOT solve every problem?',o:['For example','In contrast to the past','Where it can get complicated'],a:2,ex:'The narrator moves from the good news about wages to the problem when prices rise faster.'}
+  ],
+  open:{q:'In one sentence, explain what two changes a household must compare to judge whether it can afford the same purchases.',placeholder:'A household should compare…',
+    model:'It should compare how quickly prices rise with how quickly wages or other income rise.',criteria:['I identified both prices and income.','I explained the comparison rather than just listing words.']}
+ },
+ {level:'B1',title:'Separate details, numbers and real meaning',
+  before:'Notice which questions require a definition, which require a numerical example, and which require an inference.',
+  during:'Listen for the name of the index and the two alternative income examples; note the difference between nominal and inflation-adjusted income.',
+  after:'Repeat the number in your notes with its meaning. A figure without the relationship may not answer the question.',
+  questions:[
+   {q:'What is the function of the Consumer Price Index in the video?',o:['It tracks changes in consumer prices over time','It counts the total number of households','It guarantees that incomes will increase'],a:0,ex:'The CPI is given as an example of a price index measuring movements in the cost of a basket of goods and services.'},
+   {q:'In the example where income rises by 3% while the price index rises by 2%, real buying power…',o:['falls by about 5%','rises by about 1%','stays exactly the same'],a:1,ex:'The speaker contrasts the 3% increase in nominal income with a 2% increase in prices.'},
+   {q:'Why might a pay rise alone give an incomplete picture of a person’s financial position?',o:['Every salary figure is confidential','Banks decide the price of each purchase','Higher prices can absorb part or all of the pay rise'],a:2,ex:'A nominal rise need not produce a similar increase in purchasing power.'}
+  ],
+  open:{q:'The speaker gives another example where income increases by only 1%. What happens to purchasing power, and why?',placeholder:'In that example, purchasing power…',
+    model:'It falls by about 1%, because the speaker assumes that prices rise by 2% while income rises by only 1%.',criteria:['I described the direction of change.','I included the relevant figures and the reason.']}
+ },
+ {level:'B2',title:'Reconstruct a complete explanation',
+  before:'Look for verbs that express a sequence and a reason. Do not rely on recognising individual economic terms alone.',
+  during:'Follow the narrator’s account of falling demand, company decisions and employment. Identify how a feedback loop reinforces itself.',
+  after:'Write the mechanism as a chain and check that every link explains the next one.',
+  questions:[
+   {q:'What is the narrator doing by describing an earlier period of widespread falling prices?',o:['Using a historical example to show the wider effects of a downturn','Claiming that lower prices always produce higher demand','Giving an instruction to consumers to save money'],a:0,ex:'The example of a past downturn illustrates the consequences of falling demand and prices.'},
+   {q:'When inventories grow because products are not selling, “inventories” refers here to…',o:['the list of employees hired in a year','goods remaining in stock','money kept in a consumer’s wallet'],a:1,ex:'Growing inventories mean firms have goods that are not being bought.'}
+  ],
+  gaps:[
+   {lead:'If consumers expect prices to fall further, they may',tail:'purchases.',accept:['postpone','delay','put off'],answer:'postpone / delay / put off',why:'Consumers may wait for lower prices before buying.'},
+   {lead:'Firms experiencing weak sales may reduce',tail:'.',accept:['production','output'],answer:'production / output',why:'Lower demand can cause firms to cut production.'},
+   {lead:'A reduction in output can lead to higher',tail:'.',accept:['unemployment','joblessness'],answer:'unemployment',why:'Layoffs can increase when firms reduce output.'},
+   {lead:'Households with less income may further reduce',tail:'.',accept:['spending','consumption','demand'],answer:'spending / consumption',why:'Lower employment and income can weaken demand again.'}
+  ],
+  open:{q:'Why is a continuing fall in the overall price level not necessarily good news? Explain the links rather than simply stating that it is harmful.',placeholder:'The narrator suggests that…',
+    model:'A fall in prices can accompany weak demand. When sales decline, firms may cut production and jobs. Lower incomes then reduce spending even further, reinforcing the downturn.',criteria:['I described at least three connected stages.','I made the feedback effect clear.','I used my own words, not a list of isolated terms.']}
+ },
+ {level:'C1',title:'Infer, interpret and synthesise',
+  before:'Listen for the speaker’s overall argument, the difference between goals and tools, and how the examples are structured.',
+  during:'Note how the narrator contrasts a strong, overheating economy with a weaker one. Which words show that outcomes are tendencies, not guarantees?',
+  after:'Form a balanced inference supported by the explanation. Do not claim more certainty than the narrator does.',
+  questions:[
+   {q:'Why does the narrator describe both an overheating economy and a weakening economy?',o:['To prove employment is irrelevant to the Fed','To demonstrate how a policy choice depends on conditions and goals','To suggest that the Fed fixes the same rate forever'],a:1,ex:'Contrasting scenarios help explain the logic behind different policy responses.'},
+   {q:'Which statement best reflects the narrator’s cautious use of cause and effect?',o:['Higher rates always produce exactly the same outcome','An announced rate immediately fixes every price','Changes in financial conditions tend to influence decisions, which can affect jobs and prices'],a:2,ex:'The video describes a transmission mechanism and uses qualifiers rather than guarantees.'},
+   {q:'Which is an accurate distinction between the policy instrument and its intended outcomes?',o:['The rate target is an instrument; price stability and employment are goals','The rate target is an outcome; interest rates are never influenced by the Fed','The Fed directly fixes all consumer prices to achieve employment'],a:0,ex:'The FOMC sets a target for a short-term rate in pursuit of two economic goals.'}
+  ],
+  open:{q:'In about 25–45 words, explain why an interest-rate decision may be appropriate in one economic situation but inappropriate in another. Refer to the links between financial conditions, spending and the Fed’s aims.',placeholder:'A policy that is appropriate when…',range:[25,45],
+    model:'When inflation is too high, higher rates may discourage borrowing and spending. But if employment is weak, lower rates may support investment and demand. The suitable choice depends on economic conditions and the Fed’s objectives.',criteria:['I distinguished two economic situations.','I connected interest rates with financial decisions.','I explained the policy purpose.','I avoided absolute claims such as “always” or “guarantees”.']}
+ }
+];
+var LABKEY='actuarial-listening-skills-lab-v2';
+var labSaved;try{labSaved=JSON.parse(localStorage.getItem(LABKEY)||'{}')}catch(e){labSaved={}}
+if(!labSaved||typeof labSaved!=='object')labSaved={};
+function storeLab(){try{localStorage.setItem(LABKEY,JSON.stringify(labSaved))}catch(e){}}
+function labData(){return LABS[current]}
+function labItem(){var k=labData().level;if(!labSaved[k]||typeof labSaved[k]!=='object')labSaved[k]={choices:{},gaps:{},free:'',reviewed:false};return labSaved[k]}
+function nword(text){var t=(text||'').trim();return t?t.split(/\s+/).filter(Boolean).length:0}
+function normalise(text){return String(text||'').toLowerCase().trim().replace(/[.,!?;:]/g,'').replace(/\s+/g,' ')}
+function renderLab(){
+ var d=labData(),draft=labItem(),h='<div class="listen-lab-header"><div><p class="listen-overline">'+esc(d.level)+' · Targeted strategy</p><h3>'+esc(d.title)+'</h3></div><span class="listen-pill">'+esc(d.level)+' skill practice</span></div>';
+ h+='<div class="listen-lab-phases"><div><b>👀 Before</b><p>'+esc(d.before)+'</p></div><div><b>🎧 During</b><p>'+esc(d.during)+'</p></div><div><b>🔎 After</b><p>'+esc(d.after)+'</p></div></div>';
+ h+='<h3>1 · Listen for evidence</h3><p class="listen-muted">Choose one answer. These are new training questions about the practice video for this level.</p>';
+ d.questions.forEach(function(q,i){h+='<div class="listen-question" data-lab-choice="'+i+'"><fieldset><legend>'+(i+1)+'. '+esc(q.q)+'</legend>';q.o.forEach(function(opt,j){h+='<label class="listen-choice"><input type="radio" name="labc-'+i+'" value="'+j+'"><span>'+String.fromCharCode(65+j)+'. '+esc(opt)+'</span></label>'});h+='</fieldset><div class="listen-feedback-slot"></div></div>'});
+ if(d.gaps){h+='<h3>2 · Follow the explanation</h3><p class="listen-muted">Complete the four links using short phrases from the explanation. Equivalent words are accepted.</p>';d.gaps.forEach(function(g,i){h+='<div class="listen-question" data-lab-gap="'+i+'"><label for="labg-'+i+'"><strong>Link '+(i+1)+'.</strong> '+esc(g.lead)+'</label> <input class="listen-gap" id="labg-'+i+'" data-gap="'+i+'" autocomplete="off" placeholder="Your phrase"> '+esc(g.tail)+'<div class="listen-feedback-slot"></div></div>'})}
+ h+='<div class="listen-question listen-open" id="labOpenBox"><h3>'+ (d.gaps?'3':'2') +' · Explain it in your own words</h3><label for="labFree"><strong>'+esc(d.open.q)+'</strong></label><textarea id="labFree" rows="5" spellcheck="true" placeholder="'+esc(d.open.placeholder)+'"></textarea><p id="labWords" class="listen-muted"></p><div id="labModel" class="listen-feedback" hidden><strong>Suggested response · For self-review, not a grade</strong><p>'+esc(d.open.model)+'</p><strong>Compare your answer:</strong><div class="listen-selfchecks">'+d.open.criteria.map(function(c){return '<label><input class="listen-selfcheck" type="checkbox">'+esc(c)+'</label>'}).join('')+'</div></div></div>';
+ h+='<p class="listen-muted">The choice and gap exercises give automatic explanations. Your own explanation is saved, but it is <strong>not scored by a machine</strong>.</p>';
+ el('labPanel').innerHTML=h;
+ d.questions.forEach(function(q,i){el('labPanel').querySelectorAll('[name="labc-'+i+'"]').forEach(function(input){input.checked=String(draft.choices[i])===input.value;input.addEventListener('change',function(){draft.choices[i]=input.value;storeLab();clearLabFeedback()})})});
+ (d.gaps||[]).forEach(function(g,i){var input=el('labg-'+i);input.value=draft.gaps[i]||'';input.addEventListener('input',function(){draft.gaps[i]=input.value;storeLab();clearLabFeedback()})});
+ el('labFree').value=draft.free||'';
+ el('labFree').addEventListener('input',function(){draft.free=el('labFree').value;draft.reviewed=false;storeLab();el('labModel').hidden=true;updateLabWords();updateLabStatus('Your explanation is saved on this device.')});
+ el('labPanel').querySelectorAll('.listen-selfcheck').forEach(function(x){x.addEventListener('change',function(){updateLabStatus('Self-review recorded here for this attempt. Keep revising if you identified a missing element.')})});
+ el('labModel').hidden=!draft.reviewed;
+ updateLabWords();
+ updateLabStatus('Work with the video above; your practice is saved locally.');
+}
+function updateLabWords(){var d=labData(),n=nword(el('labFree').value);el('labWords').textContent=d.open.range?(n+' words · Suggested length: '+d.open.range[0]+'–'+d.open.range[1]):(n+' words · One or two clear sentences are enough.')}
+function updateLabStatus(message){el('labStatus').textContent=message||''}
+function clearLabFeedback(){el('labPanel').querySelectorAll('.listen-feedback-slot').forEach(function(x){x.innerHTML=''})}
+function labFeedback(node,good,message,unanswered){node.innerHTML='<p class="listen-feedback '+(good?'good':'bad')+'"><strong>'+(unanswered?'Not answered':good?'Correct':'Review this point')+'</strong> — '+esc(message)+'</p>'}
+function checkLab(){
+ var d=labData(),draft=labItem(),attempted=0,correct=0,total=d.questions.length+(d.gaps||[]).length;
+ d.questions.forEach(function(q,i){var value=draft.choices[i];var missing=value===undefined||value==='';var good=!missing&&Number(value)===q.a;if(!missing)attempted++;if(good)correct++;var slot=el('labPanel').querySelector('[data-lab-choice="'+i+'"] .listen-feedback-slot');labFeedback(slot,good,q.ex,missing)});
+ (d.gaps||[]).forEach(function(q,i){var value=normalise(draft.gaps[i]),missing=!value,good=!!value&&q.accept.some(function(x){return normalise(x)===value});if(!missing)attempted++;if(good)correct++;var slot=el('labPanel').querySelector('[data-lab-gap="'+i+'"] .listen-feedback-slot');labFeedback(slot,good,good?q.why:'Possible answer: '+q.answer+'. '+q.why,missing)});
+ updateLabStatus('You attempted '+attempted+' of '+total+' objective tasks; '+correct+' match the supported answers. These are practice checks, not a grade. Review the feedback and listen again if needed.');
+}
+function reviewLab(){
+ var d=labData(),draft=labItem();if(nword(draft.free)<5){updateLabStatus('Write an explanation in your own words before viewing the suggested answer.');el('labFree').focus();return}
+ draft.reviewed=true;storeLab();el('labModel').hidden=false;
+ updateLabStatus('Compare your explanation with the suggested answer and use the self-review checklist. This is not an automatic assessment.');
+ el('labModel').scrollIntoView({behavior:'auto',block:'nearest'});
+}
+function resetLab(){
+ var d=labData();if(!window.confirm('Clear the answers for '+d.level+' skill practice?'))return;
+ labSaved[d.level]={choices:{},gaps:{},free:'',reviewed:false};storeLab();renderLab();updateLabStatus('The practice is reset. You can start again.');
+}
+el('labCheck').addEventListener('click',checkLab);
+el('labReview').addEventListener('click',reviewLab);
+el('labReset').addEventListener('click',resetLab);
+renderNavigation();var start=0;try{start=Number(localStorage.getItem('actuarial-listening-current')||0)}catch(e){}if(!Number.isInteger(start)||start<0||start>=LESSONS.length)start=0;current=start;renderLesson();
 })();
 </script>
 </body></html>
