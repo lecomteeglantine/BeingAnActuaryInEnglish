@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#15566c">
+<meta name="description" content="Progressive A2–C1 listening practice with authentic Federal Reserve videos, automatic feedback and optional insurance writing.">
+<title>Listening Journey · Actuarial English</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="icons/favicon.png">
+<style>
+.listen-page{max-width:1170px;padding:1rem 18px 5rem;margin:auto;color:#17394d}
+.listen-hero{background:linear-gradient(125deg,#e5f7f3 0%,#e9f1ff 58%,#fff2e1 100%);border:1px solid #c8e4e3;border-radius:26px;padding:clamp(22px,5vw,46px);margin:1rem 0 1.2rem;display:grid;grid-template-columns:1.25fr .75fr;gap:1.5rem;align-items:center}
+.listen-hero h1{color:#123e55;font-size:clamp(2.25rem,5vw,3.7rem);line-height:1.06;letter-spacing:-.035em;margin:.3rem 0 .7rem}.listen-hero p{max-width:660px}
+.listen-art{min-height:245px;position:relative;display:grid;place-items:center}
+.listen-art:before{content:"";width:min(100%,255px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#fff 0 23%,#b8e8e1 24% 47%,#daf2ed 48% 60%,transparent 61%);position:absolute}
+.listen-art svg{position:relative;max-width:100%;filter:drop-shadow(0 8px 15px #396e7f26)}
+.listen-card{background:white;border:1px solid #d6e8ed;border-radius:19px;padding:clamp(17px,2.5vw,26px);box-shadow:0 7px 21px rgba(15,60,79,.045);margin:1.2rem 0}
+.listen-card h2{color:#12576b;margin:.1rem 0 .7rem;font-size:clamp(1.3rem,3vw,1.6rem)}
+.listen-overline{font-weight:850;letter-spacing:.12em;text-transform:uppercase;font-size:.75rem;color:#177c79}
+.listen-muted{color:#536f80;font-size:.97rem}
+.listen-intro-grid,.listen-strategy-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem}
+.listen-intro-grid>div,.listen-strategy-grid>div{background:#f3f9fa;border:1px solid #d8e8eb;border-radius:15px;padding:.9rem;line-height:1.5}
+.listen-intro-grid strong,.listen-strategy-grid strong{display:block;color:#155e6a;margin-bottom:.3rem}
+.listen-track{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.7rem}
+.listen-track button{border:2px solid #c8dce3;background:#fff;border-radius:14px;padding:1rem .65rem;text-align:left;color:#24495b;cursor:pointer;min-height:112px;transition:background .15s,border-color .15s;font:inherit}
+.listen-track button strong{display:block;font-size:1.2rem;color:#15566c}.listen-track button small{display:block;margin-top:.3rem;line-height:1.35}
+.listen-track button.active{border-color:#078c8a;background:#e7f8f4;box-shadow:inset 0 0 0 1px #078c8a}
+.listen-track button:focus-visible,.listen-page button:focus-visible,.listen-page a:focus-visible,.listen-page textarea:focus-visible,.listen-page select:focus-visible,.listen-page input:focus-visible{outline:3px solid #b9740c;outline-offset:3px}
+.listen-lessons{scroll-margin-top:1rem}
+.listen-summary{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.listen-summary p{margin:.3rem 0}
+.listen-progress-meter{width:100%;height:12px;accent-color:#0b817d}
+.listen-video{width:100%;aspect-ratio:16 / 9;background:#112939;border-radius:15px;overflow:hidden}
+.listen-video iframe{width:100%;height:100%;border:0;display:block}
+.listen-video-meta{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:.8rem 0}
+.listen-pill{background:#eaf4f8;border:1px solid #cbdee5;border-radius:999px;padding:.3rem .7rem;font-weight:700;font-size:.86rem}
+.listen-link{color:#076c81;text-decoration:underline;text-underline-offset:3px;font-weight:700}
+.listen-tip{border-left:4px solid #18a19c;background:#f0faf7;padding:1rem;border-radius:8px;margin:1rem 0}
+.listen-actions{display:flex;gap:.65rem;flex-wrap:wrap;margin:1rem 0}
+.listen-actions button,.listen-button{font:inherit;background:#15566c;color:#fff;border:1px solid #15566c;border-radius:10px;padding:.75rem 1.05rem;min-height:45px;cursor:pointer;font-weight:750}
+.listen-actions .secondary,.listen-button.secondary{background:white;color:#15566c;border-color:#a7c6d0}
+.listen-actions button:disabled{opacity:.5;cursor:not-allowed}
+.listen-questions{display:grid;gap:.9rem;margin:1.1rem 0}
+.listen-question{border:1px solid #d5e5e9;border-radius:14px;padding:1.1rem;min-width:0}
+.listen-question legend{font-weight:780;color:#173f54;line-height:1.45;padding:0 5px}
+.listen-question fieldset{border:0;margin:0;padding:0;min-width:0}
+.listen-choice{display:flex;align-items:flex-start;gap:.6rem;border:1px solid transparent;padding:.57rem .6rem;border-radius:9px;cursor:pointer;line-height:1.45}
+.listen-choice:hover{background:#f2f8fa}
+.listen-choice input{margin-top:.28rem;flex:none;accent-color:#087e7b}
+.listen-feedback{margin-top:.55rem;background:#f4f8fa;border-radius:9px;padding:.7rem;font-size:.96rem}
+.listen-feedback.good{border-left:4px solid #187e5c}
+.listen-feedback.bad{border-left:4px solid #ba633a}
+.listen-order{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem}
+.listen-order label{font-weight:700;font-size:.9rem}
+.listen-order select{width:100%;max-width:100%;margin-top:.3rem;background:white;border:1px solid #a9c4cf;border-radius:9px;padding:.65rem;min-height:45px}
+.listen-result{background:#e9f8f4;border-radius:13px;padding:1rem;margin:1rem 0;color:#165246}
+.listen-writing{background:linear-gradient(125deg,#fff9ed,#fff 60%);border-color:#ead9bc}
+.listen-writing textarea{width:100%;min-height:210px;resize:vertical;border:1px solid #a6c3c9;border-radius:12px;background:#fff;padding:1rem;line-height:1.65;font:inherit;color:#17394d}
+.listen-writing .listen-count{font-weight:800}
+.listen-writing .listen-count.ok{color:#12694c}.listen-writing .listen-count.notyet{color:#82522d}
+.listen-checklist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem;margin:1rem 0}
+.listen-checklist label{background:#fff;border:1px solid #e3ddc9;border-radius:10px;padding:.7rem;display:flex;gap:.55rem;align-items:flex-start;cursor:pointer}
+.listen-checklist input{margin-top:.33rem;accent-color:#087e7b}
+.listen-writing details{background:white;border:1px solid #eadfc8;border-radius:10px;padding:1rem;margin-top:.9rem}
+.listen-writing details summary{cursor:pointer;font-weight:800}
+.listen-footer-nav{display:flex;justify-content:space-between;gap:.6rem;flex-wrap:wrap;margin:1rem 0}
+.listen-done{color:#1c7957}
+[hidden]{display:none!important}
+@media(max-width:800px){.listen-hero{grid-template-columns:1fr}.listen-art{min-height:145px}.listen-art svg{max-height:160px}.listen-intro-grid,.listen-strategy-grid{grid-template-columns:1fr}.listen-track{grid-template-columns:repeat(2,minmax(0,1fr))}.listen-order{grid-template-columns:1fr}}
+@media(max-width:480px){.listen-page{padding:10px 13px 4rem}.listen-hero{padding:1.2rem}.listen-track button{min-height:92px;padding:.65rem}.listen-checklist{grid-template-columns:1fr}.listen-hero h1{font-size:2.15rem}}
+@media(prefers-reduced-motion:reduce){.listen-page *{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+<header class="topbar">
+<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">📊</span><span><strong>Actuarial English</strong></span></a>
+<nav aria-label="Main navigation" class="main-nav">
+<a href="index.html">Home</a><a href="dictionary.html">Dictionary</a><a href="m1.html">M1</a><a href="m2.html">M2</a><a href="refresher.html">English Refresher</a><a href="reading.html">Reading</a><a href="writing.html">Writing</a><a href="listening.html" aria-current="page" class="active">Listening</a><a href="grammar.html">Grammar</a><a href="pronunciation.html">Pronunciation</a><a href="games.html">Games</a>
+</nav></header>
+<main id="main" class="listen-page">
+<section class="listen-hero">
+<div><p class="listen-overline">Actuarial English · A2 → C1</p><h1>🎧 Your Listening Journey</h1><p>Make sense of economic explanations, follow cause and effect, and recognise what a speaker really means. Four authentic educational videos, original activities and instant feedback.</p><p><strong>No marks. No locked levels.</strong> Learn at your own pace; nothing in these lessons comes from your listening test.</p></div>
+<div class="listen-art" aria-hidden="true"><svg viewBox="0 0 310 265" width="310" height="265"><rect x="48" y="54" width="216" height="144" rx="21" fill="#fff" stroke="#8abfc5" stroke-width="3"/><rect x="65" y="74" width="181" height="108" rx="12" fill="#e9f7f3"/><path d="M83 149l29-26 25 17 26-36 22 17 31-41" stroke="#0f817f" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="216" cy="80" r="7" fill="#e0a34b"/><rect x="140" y="199" width="31" height="14" rx="4" fill="#6ba4b1"/><rect x="117" y="213" width="78" height="9" rx="4" fill="#286a7d"/><path d="M71 108c-18-20-16-46 0-63m-15 87c-28-26-31-74-3-102m203 78c18-20 16-46 0-63m15 87c28-26 31-74 3-102" stroke="#189c99" stroke-width="6" stroke-linecap="round" fill="none"/></svg></div>
+</section>
+<section class="listen-card" aria-labelledby="howTitle"><h2 id="howTitle">🌱 How it works</h2>
+<div class="listen-intro-grid">
+<div><strong>1 · Before you watch</strong>Start with a short listening strategy. Read the prompts, not the answers.</div>
+<div><strong>2 · Watch and listen</strong>Play the original English video. Watch once for the overall message, then replay for details.</div>
+<div><strong>3 · Check and improve</strong>Get instant explanations, retry whenever you like and keep your progress on this device.</div>
+</div></section>
+<section class="listen-card" id="listenNavigator"><div class="listen-summary"><div><h2>🧭 Choose your level</h2><p class="listen-muted">A2 and B1 build confidence; B2 and C1 train interpretation and relationships.</p></div><button class="listen-button secondary" id="exportListening" type="button">Export progress</button></div>
+<div class="listen-track" id="listenTrack" aria-label="Listening levels"></div>
+<p class="listen-muted" id="listenProgressText" role="status" aria-live="polite"></p>
+<progress class="listen-progress-meter" id="listenProgress" max="4" value="0" aria-label="Modules completed"></progress>
+</section>
+<section class="listen-card listen-lessons" id="listenLesson" aria-label="Selected listening lesson" aria-live="polite"></section>
+<nav class="listen-footer-nav" aria-label="Lesson navigation"><button class="listen-button secondary" type="button" id="listenPrevious">← Previous level</button><button class="listen-button" type="button" id="listenNext">Next level →</button></nav>
+<section class="listen-card listen-writing" id="optionalWriting">
+<p class="listen-overline">Optional extension · Writing · 120–150 words</p>
+<h2>✍️ Should riot cover be included automatically in property insurance?</h2>
+<p>Write a short, balanced argument and state your position. Consider the benefits for policyholders, possible effects on premiums, and the consequences for insurers. You may support inclusion, oppose it, or propose conditions.</p>
+<div class="listen-strategy-grid">
+<div><strong>Opening</strong>Introduce the debate and explain why it matters.</div><div><strong>Reasoning</strong>Develop two distinct considerations, acknowledging a trade-off.</div><div><strong>Conclusion</strong>State your view with a clear, qualified recommendation.</div>
+</div>
+<p class="listen-muted">Useful language: <em>automatic inclusion, policyholder, premium, risk pooling, exclusions, affordability, property damage, optional add-on, claim, coverage</em>.</p>
+<label for="riotEssay"><strong>Your response (120–150 words)</strong></label>
+<textarea id="riotEssay" spellcheck="true" placeholder="Whether riot cover should be automatically included in property insurance is a question of…"></textarea>
+<p id="riotCount" class="listen-count notyet" role="status" aria-live="polite">0 words · Target: 120–150</p>
+<details><summary>✅ My self-review checklist (no automatic grading)</summary>
+<div class="listen-checklist"><label><input type="checkbox" class="riot-check">I have a clear position.</label><label><input type="checkbox" class="riot-check">I mention both policyholders and insurers.</label><label><input type="checkbox" class="riot-check">I discuss at least one counterargument or trade-off.</label><label><input type="checkbox" class="riot-check">I use appropriate insurance vocabulary.</label><label><input type="checkbox" class="riot-check">My conclusion follows from my reasons.</label><label><input type="checkbox" class="riot-check">I have revised the clarity and accuracy of my English.</label></div>
+</details>
+<div class="listen-actions"><button type="button" id="riotCopy">Copy writing</button><button type="button" class="secondary" id="riotDownload">Download .txt</button><button type="button" class="secondary" id="riotClear">Clear draft</button></div>
+<p class="listen-muted" id="riotMessage" role="status" aria-live="polite">This extension is optional and is not graded. Your draft is saved locally as you type.</p>
+</section>
+<section class="listen-card"><h2>🔎 Study tips</h2><p><strong>First viewing:</strong> listen without pausing to catch the main argument. <strong>Second viewing:</strong> note key facts, contrasts and connecting words. <strong>Third viewing:</strong> replay the difficult section and check exactly what the speaker says. You can repeat the videos and questions as many times as you want.</p><p class="listen-muted">Videos are provided by Federal Reserve Education through their official YouTube players. Playback needs internet access; if an embedded player is blocked, use the official video link shown under it. Video subtitles, when available, are controlled by YouTube. They are not the test video.</p></section>
+</main>
+<footer class="site-footer"><p><strong>Actuarial English</strong></p><p class="footer-credit">Created by Mrs Lecomte and Mr Lemoine, with the help of Chat GPT</p><p class="privacy"><a href="privacy.html">Privacy details</a> · <a href="accessibility.html">Accessibility</a></p></footer>
+<script src="shared.js"></script>
+<script>
+(function(){
+'use strict';
+var LESSONS=[
+{level:'A2',name:'Inflation and daily life',focus:'Find the main message and simple consequences.',video:'Pcm5aLlXIlE',source:'https://www.federalreserveeducation.org/teaching-resources/economics/inflation/why-should-you-care-about-inflation',videoTitle:'Why Should You Care About Inflation?',strategy:'Listen first for the situation described. On the next play, notice the contrast introduced by words like but or when.',preview:'You will hear why rising prices matter differently for people whose income changes and people whose income stays fixed.',
+mcq:[
+{q:'What concern motivates the speaker’s everyday examples?',o:['How banks approve a mortgage','Why interest payments never change','How currencies are designed','What rising prices mean for ordinary budgets'],a:3,why:'The narrator connects price changes to everyday choices and budgets.'},
+{q:'Which group does the speaker identify as especially exposed?',o:['People whose pay rises faster than prices','People living on an income that does not rise','People who work only for central banks','People who own several credit cards'],a:1,why:'The video singles out people with fixed incomes as vulnerable when prices rise.'},
+{q:'How do salaries often respond to inflation, according to the video?',o:['They also rise, potentially offsetting some price increases','They are always frozen by law','They automatically increase at exactly the same rate','They fall whenever prices increase'],a:0,why:'The speaker says many wages also rise, although not necessarily enough.'},
+{q:'Why is the Federal Reserve mentioned at the end?',o:['It sells products directly to consumers','It sets individual employees’ wages','It has a role in keeping inflation under control','It chooses what households can buy'],a:2,why:'The Fed is introduced as the institution concerned with controlling inflation.'}
+],
+tf:[
+{q:'The speaker implies that price changes can affect personal choices.',a:true,why:'Examples connect inflation to purchasing and saving decisions.'},
+{q:'The speaker promises that rising wages always completely cancel inflation.',a:false,why:'The problem arises when prices increase faster than people’s incomes.'}
+],
+path:['Prices rise','Pay remains unchanged','The same income buys less'],pathHint:'From rising prices to a household consequence.'
+},
+{level:'B1',name:'Purchasing power',focus:'Understand examples, numbers and definitions.',video:'GmEWuH9QQz0',source:'https://www.federalreserveeducation.org/teaching-resources/economics/inflation/purchasing-power-explained',videoTitle:'What is Purchasing Power?',strategy:'Listen for definitions followed by examples. Note which value rises and which measure falls. Separate nominal income from real buying power.',preview:'A researcher explains how inflation and price indexes help us compare what money can purchase.',
+mcq:[
+{q:'What is purchasing power?',o:['The number of banknotes printed in a year','A government’s yearly tax receipts','The goods and services that money can buy','The size of a company’s profits'],a:2,why:'Purchasing power measures how much can be obtained with a unit of money.'},
+{q:'Which tool is introduced to follow overall price movements?',o:['A price index','A foreign-exchange passport','A company balance sheet','A loan repayment calendar'],a:0,why:'The speaker uses price indexes, including the CPI, to compare price levels over time.'},
+{q:'Suppose pay rises by 1% while prices rise by 2%. What happens to real buying power in the speaker’s example?',o:['It doubles','It stays unchanged','It increases by 3%','It decreases by about 1%'],a:3,why:'Income grows more slowly than prices; the video illustrates a roughly one-percentage-point decline.'},
+{q:'Why does the speaker distinguish income from inflation-adjusted income?',o:['To argue that wages never matter','To show that a higher pay figure need not mean greater buying power','To calculate the number of employed people','To suggest that prices are constant'],a:1,why:'The purchasing power of income depends on how wages change relative to prices.'}
+],
+tf:[
+{q:'A price index helps compare the level of prices over time.',a:true,why:'That is the function of a price index in the explanation.'},
+{q:'The narrator says inflation has no relevance to financial decisions.',a:false,why:'The conclusion highlights how useful inflation and purchasing-power information is for decisions.'}
+],
+path:['Record a change in nominal income','Compare it with price inflation','Interpret the change in real buying power'],pathHint:'From a salary figure to a real-income interpretation.'
+},
+{level:'B2',name:'Inflation, deflation and disinflation',focus:'Identify contrasts and follow an economic mechanism.',video:'-ESZxcWki-8',source:'https://www.federalreserveeducation.org/teaching-resources/economics/inflation/inflation-deflation-and-disinflation',videoTitle:'Inflation, Deflation, and Disinflation',strategy:'Listen for three easily confused terms. Notice how the speaker moves from a definition to a historical example and a chain of economic consequences.',preview:'An animated explainer contrasts increasing prices, falling prices and a slower rate of price increases.',
+mcq:[
+{q:'What distinguishes disinflation from deflation in this explanation?',o:['Disinflation means employment never changes','Disinflation means prices are rising more slowly rather than falling','Disinflation always produces a recession','Disinflation describes falling wages only'],a:1,why:'The inflation rate falls under disinflation, but the overall price level may still rise.'},
+{q:'Why does the speaker refer to the Great Depression?',o:['To explain why the Fed was founded','To show that wages always rise in a downturn','To illustrate a period of high consumption','To illustrate the harmful effects of economy-wide falling prices'],a:3,why:'The historical example supports the explanation of deflation’s potential consequences.'},
+{q:'What can happen when firms cannot sell what they produce?',o:['They immediately hire more employees','They increase production indefinitely','They may cut output and employment','They are required to reduce interest rates'],a:2,why:'Unsold stock and weak demand can lead to production cuts and layoffs.'},
+{q:'Why might consumers postpone purchases in a deflationary period?',o:['They anticipate buying the same items more cheaply later','They expect prices to jump immediately','They are legally prevented from shopping','They are waiting for their wages to double'],a:0,why:'The prospect of lower future prices is presented as an incentive to delay spending.'}
+],
+tf:[
+{q:'In the video, deflation and disinflation describe exactly the same process.',a:false,why:'The video explicitly separates falling prices from a slower increase in prices.'},
+{q:'The narrator suggests that delayed purchases may make a downturn worse.',a:true,why:'Reduced demand feeds into further cuts in production and employment.'}
+],
+path:['Customers postpone purchases','Companies sell less and reduce production','Layoffs and reduced incomes weaken demand further'],pathHint:'Follow the feedback effect between spending and employment.'
+},
+{level:'C1',name:'The Fed’s dual mandate',focus:'Interpret competing goals, causal links and policy choices.',video:'vHurDbCAfkA',source:'https://www.federalreserveeducation.org/teaching-resources/economics/monetary-policy-the-federal-reserve/the-fed-and-the-dual-mandate',videoTitle:'Monetary Policy, Part 1: The Fed and the Dual Mandate',strategy:'Listen for conditional reasoning: if the economy overheats, the central bank may respond one way; if activity weakens, it may respond differently. Separate policy instruments from economic outcomes.',preview:'A structured explanation shows how interest-rate decisions can influence spending, investment, employment and prices.',
+mcq:[
+{q:'Which interpretation best captures the phrase “dual mandate”?',o:['The Fed pursues both price stability and maximum sustainable employment','The Fed must announce two decisions every month','The Fed controls both taxes and government expenditure','The Fed is managed jointly by two banks'],a:0,why:'The two aims are price stability and maximum employment.'},
+{q:'Why does the FOMC examine several kinds of economic data?',o:['To avoid the use of any professional judgement','To ensure every region has identical conditions','To judge current conditions and where the economy is likely to move','To replace its goals with a single historical figure'],a:2,why:'The committee reviews present conditions and forecasts before setting a target range.'},
+{q:'Which consequence is most consistent with tighter interest-rate conditions as explained?',o:['Stronger spending immediately raises demand for employees','Less borrowing and spending can ease pressure on prices','All prices become legally fixed','Unemployment disappears as firms reduce investment'],a:1,why:'Higher rates generally discourage spending and investment, reducing demand pressure.'},
+{q:'What does the contrast between an overheating and weakening economy primarily demonstrate?',o:['That a single rate level is appropriate in every situation','That the Fed can completely remove uncertainty','That price stability requires no employment data','That appropriate policy depends on the direction and balance of economic risks'],a:3,why:'The FOMC adjusts policy differently according to conditions and its two goals.'}
+],
+tf:[
+{q:'The policy process described stops as soon as the FOMC announces an interest-rate target.',a:false,why:'Policy tools influence market rates, financial decisions and finally economic outcomes.'},
+{q:'Lower rates can encourage spending and investment when the economy is weak.',a:true,why:'The speaker describes this as a possible chain of effects from easier financial conditions.'}
+],
+path:['FOMC reviews economic indicators','It adjusts its interest-rate target and implements the decision','Financial conditions shape spending, employment and prices'],pathHint:'Distinguish evidence, action and its transmission through the economy.'
+}
+];
+var KEY='actuarial-listening-v1';
+function el(id){return document.getElementById(id)}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+function getSaved(){try{var x=JSON.parse(localStorage.getItem(KEY)||'{}');return x&&typeof x==='object'?x:{}}catch(e){return {}}}
+var saved=getSaved();
+if(!saved.complete||typeof saved.complete!=='object')saved.complete={};
+if(!saved.answers||typeof saved.answers!=='object')saved.answers={};
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}}
+var current=0,checked=false;
+function updateProgress(){var n=LESSONS.filter(function(x){return saved.complete[x.level]}).length;el('listenProgress').value=n;el('listenProgressText').textContent=n+' of 4 learning levels completed. Every level remains open.';el('listenTrack').querySelectorAll('button').forEach(function(b,i){b.classList.toggle('active',i===current);b.setAttribute('aria-pressed',String(i===current));var lab=b.querySelector('small');lab.textContent=LESSONS[i].focus+(saved.complete[LESSONS[i].level]?' · ✓ Practised':'')})}
+function renderNavigation(){el('listenTrack').innerHTML=LESSONS.map(function(d,i){return '<button type="button" data-lesson="'+i+'" aria-pressed="false"><strong>'+esc(d.level)+'</strong><small>'+esc(d.focus)+'</small></button>'}).join('');el('listenTrack').addEventListener('click',function(ev){var b=ev.target.closest('[data-lesson]');if(b)selectLesson(Number(b.dataset.lesson))})}
+function selectedName(qIndex){return 'listen-'+current+'-'+qIndex}
+function getDraftAnswers(){return saved.answers[LESSONS[current].level]||{}}
+function saveCurrent(){var o={};el('listenQuestions').querySelectorAll('input:checked').forEach(function(x){o[x.name]=x.value});el('listenQuestions').querySelectorAll('select').forEach(function(x){o[x.name]=x.value});saved.answers[LESSONS[current].level]=o;persist()}
+function choiceMarkup(name,value,label){return '<label class="listen-choice"><input type="radio" name="'+name+'" value="'+value+'"><span>'+label+'</span></label>'}
+function renderQuestion(q,i){var letters=['A','B','C','D'];return '<div class="listen-question" data-index="'+i+'"><fieldset><legend>'+(i+1)+'. '+esc(q.q)+'</legend>'+q.o.map(function(x,j){return choiceMarkup(selectedName('m'+i),String(j),'<strong>'+letters[j]+'.</strong> '+esc(x))}).join('')+'</fieldset><div class="listen-feedback-slot"></div></div>'}
+function renderTF(q,i){return '<div class="listen-question" data-tf="'+i+'"><fieldset><legend>'+(i+5)+'. '+esc(q.q)+'</legend>'+choiceMarkup(selectedName('t'+i),'true','True')+choiceMarkup(selectedName('t'+i),'false','False')+'</fieldset><div class="listen-feedback-slot"></div></div>'}
+function renderOrdering(d){var opts=['<option value="">Choose the stage</option>'].concat(d.path.map(function(x,i){return '<option value="'+i+'">'+esc(x)+'</option>'})).join('');return '<div class="listen-question" id="listenOrdering"><h3>🔗 Following a chain of events</h3><p>'+esc(d.pathHint)+' Select the first, second and third stage.</p><div class="listen-order">'+[0,1,2].map(function(i){return '<label>Stage '+(i+1)+'<select name="'+selectedName('order'+i)+'">'+opts+'</select></label>'}).join('')+'</div><div class="listen-feedback-slot"></div></div>'}
+function renderLesson(){checked=false;var d=LESSONS[current];var vid='<div class="listen-video"><iframe src="https://www.youtube-nocookie.com/embed/'+encodeURIComponent(d.video)+'?rel=0" title="'+esc(d.videoTitle)+' — video by Federal Reserve Education" loading="lazy" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>';
+el('listenLesson').innerHTML='<p class="listen-overline">Level '+esc(d.level)+' · Listening lesson '+(current+1)+' of 4</p><h2>'+esc(d.name)+'</h2><p><strong>Today’s skill:</strong> '+esc(d.focus)+'</p><div class="listen-tip"><strong>Before you listen</strong><p>'+esc(d.strategy)+'</p></div><p>'+esc(d.preview)+'</p>'+vid+'<div class="listen-video-meta"><span class="listen-pill">🎬 Original educational explainer</span><span class="listen-pill">English · Video &amp; narration</span><a class="listen-link" target="_blank" rel="noopener noreferrer" href="'+esc(d.source)+'">Open official video and transcript ↗</a></div><p class="listen-muted">Watch once for meaning, then replay as needed. These are practice videos, not the assessment video.</p><h3>🧠 Check what you heard</h3><p class="listen-muted">Each question is automatically checked and explained. No grades are recorded. Replay any section before you check.</p><div class="listen-questions" id="listenQuestions">'+d.mcq.map(renderQuestion).join('')+d.tf.map(renderTF).join('')+renderOrdering(d)+'</div><div class="listen-actions"><button type="button" id="listenCheck">Check my understanding</button><button type="button" id="listenRetry" class="secondary">Try again</button></div><div id="listenResult" role="status" aria-live="polite"></div>';
+var draft=getDraftAnswers();el('listenQuestions').querySelectorAll('input').forEach(function(x){x.checked=draft[x.name]===x.value});el('listenQuestions').querySelectorAll('select').forEach(function(x){x.value=draft[x.name]||''});
+el('listenQuestions').addEventListener('change',function(){if(checked){checked=false;el('listenResult').textContent='Answers changed. Check again for updated feedback.';el('listenQuestions').querySelectorAll('.listen-feedback-slot').forEach(function(x){x.innerHTML=''})}saveCurrent()});
+el('listenCheck').addEventListener('click',checkAnswers);el('listenRetry').addEventListener('click',function(){el('listenQuestions').querySelectorAll('input').forEach(function(x){x.checked=false});el('listenQuestions').querySelectorAll('select').forEach(function(x){x.value=''});el('listenQuestions').querySelectorAll('.listen-feedback-slot').forEach(function(x){x.innerHTML=''});el('listenResult').textContent='Fresh attempt ready. Replay the video when you wish.';checked=false;saveCurrent()});
+el('listenPrevious').disabled=current===0;el('listenNext').disabled=current===LESSONS.length-1;updateProgress()}
+function showFeedback(card,correct,explanation,skipped){var slot=card.querySelector('.listen-feedback-slot');slot.innerHTML='<p class="listen-feedback '+(correct?'good':'bad')+'"><strong>'+(skipped?'Not answered':correct?'Correct':'Try this point again')+'</strong> — '+esc(explanation)+'</p>'}
+function checkAnswers(){saveCurrent();var d=LESSONS[current],ok=0,total=0,missing=0;var answers=getDraftAnswers();d.mcq.forEach(function(q,i){var v=answers[selectedName('m'+i)],sk=v===undefined;var right=!sk&&Number(v)===q.a;total++;if(sk)missing++;if(right)ok++;showFeedback(el('listenQuestions').querySelector('[data-index="'+i+'"]'),right,q.why,sk)});
+d.tf.forEach(function(q,i){var v=answers[selectedName('t'+i)],sk=v===undefined;var right=!sk&&(v==='true')===q.a;total++;if(sk)missing++;if(right)ok++;showFeedback(el('listenQuestions').querySelector('[data-tf="'+i+'"]'),right,q.why,sk)});
+var ord=[0,1,2].map(function(i){return answers[selectedName('order'+i)]});var completeOrder=ord.every(function(v){return v!==undefined&&v!==''});var rightOrder=completeOrder&&ord.every(function(v,i){return Number(v)===i});total++;if(!completeOrder)missing++;if(rightOrder)ok++;showFeedback(el('listenOrdering'),rightOrder,rightOrder?'You followed all three stages in the order described.':'Listen for what comes first, what happens next and what the consequences are; use each stage once.',!completeOrder);
+checked=true;var msg=el('listenResult');msg.className='listen-result';if(missing===total){msg.textContent='Choose some answers first, then check your understanding.';return}if(!missing && ok===total){saved.complete[d.level]=true;persist();msg.innerHTML='<strong>🌟 Well done!</strong> You recognised the main message, details and chain of events. You can move to the next level or repeat this one.'}else{msg.innerHTML='<strong>Keep practising.</strong> '+(total-missing)+' of '+total+' activities attempted. '+(missing?'Complete the unanswered items, ':'Replay a tricky section, ')+'then try again. Read the explanations under each question.'}updateProgress()}
+function selectLesson(i){current=Math.max(0,Math.min(LESSONS.length-1,i));try{localStorage.setItem('actuarial-listening-current',String(current))}catch(e){}renderLesson();el('listenLesson').scrollIntoView({behavior:'auto',block:'start'})}
+function fileDownload(content,filename,mime){var blob=new Blob([content],{type:mime}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},1000)}
+el('exportListening').addEventListener('click',function(){fileDownload(JSON.stringify({version:1,complete:saved.complete,answers:saved.answers},null,2),'actuarial-listening-progress.json','application/json')});
+el('listenPrevious').addEventListener('click',function(){selectLesson(current-1)});
+el('listenNext').addEventListener('click',function(){selectLesson(current+1)});
+var essay=el('riotEssay');
+var ESSAYKEY='actuarial-listening-optional-riot-writing-v1';
+var CHECKKEY='actuarial-listening-optional-riot-checks-v1';
+try{essay.value=localStorage.getItem(ESSAYKEY)||'';var ck=JSON.parse(localStorage.getItem(CHECKKEY)||'[]');document.querySelectorAll('.riot-check').forEach(function(x,i){x.checked=!!ck[i]})}catch(e){}
+function words(s){var t=s.trim();return t?t.split(/\s+/).filter(Boolean).length:0}
+function wordCount(){var n=words(essay.value),good=n>=120&&n<=150;el('riotCount').textContent=n+' words · Target: 120–150 '+(good?'✓ Within range':n<120?'· Keep developing your argument':'· Try removing repetition');el('riotCount').className='listen-count '+(good?'ok':'notyet')}
+essay.addEventListener('input',function(){try{localStorage.setItem(ESSAYKEY,essay.value)}catch(e){}wordCount()});
+document.querySelectorAll('.riot-check').forEach(function(x){x.addEventListener('change',function(){try{localStorage.setItem(CHECKKEY,JSON.stringify(Array.from(document.querySelectorAll('.riot-check')).map(function(y){return y.checked})))}catch(e){}})});
+el('riotCopy').addEventListener('click',function(){if(!essay.value.trim()){el('riotMessage').textContent='Write your argument before copying.';return}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(essay.value).then(function(){el('riotMessage').textContent='Draft copied. It has not been graded.'},function(){essay.focus();essay.select();el('riotMessage').textContent='Select the text and copy it using your keyboard.'})}else{essay.focus();essay.select();el('riotMessage').textContent='Select the text and copy it using your keyboard.'}});
+el('riotDownload').addEventListener('click',function(){if(!essay.value.trim()){el('riotMessage').textContent='Write your argument before downloading.';return}fileDownload('Should riot cover be included automatically in property insurance?\n\n'+essay.value,'riot-cover-optional-writing.txt','text/plain;charset=utf-8');el('riotMessage').textContent='Draft exported as a .txt file. No automatic assessment has been made.'});
+el('riotClear').addEventListener('click',function(){if(!essay.value||window.confirm('Clear this draft? This cannot be undone.')){essay.value='';try{localStorage.removeItem(ESSAYKEY)}catch(e){}wordCount();el('riotMessage').textContent='Draft cleared.'}});
+wordCount();renderNavigation();var start=0;try{start=Number(localStorage.getItem('actuarial-listening-current')||0)}catch(e){}if(!Number.isInteger(start)||start<0||start>=LESSONS.length)start=0;current=start;renderLesson();
+})();
+</script>
+</body></html>
