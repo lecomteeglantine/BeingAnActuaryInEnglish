@@ -39,6 +39,15 @@
       else if(reading) reading.insertAdjacentElement('afterend',link);
       else nav.appendChild(link);
     }
+    // Speaking is part of the four communication skills and is available on every shared page.
+    if(!nav.querySelector('a[href="speaking.html"]')){
+      const link=document.createElement('a');
+      link.href='speaking.html';
+      link.textContent='Speaking';
+      const listening=nav.querySelector('a[href="listening.html"]');
+      if(listening) listening.insertAdjacentElement('afterend',link);
+      else nav.appendChild(link);
+    }
     const page=location.pathname.split('/').pop()||'index.html';
     const section=page.startsWith('m1-')?'m1.html':page.startsWith('m2-')?'m2.html':page;
     nav.querySelectorAll('a').forEach(a=>{
