@@ -115,6 +115,7 @@
         <button type="button" id="speakingNext" class="speaking-btn">Next situation →</button>
         <button type="button" id="speakingReplay" class="speaking-btn secondary">🔊 Hear an example</button>
       </div>
+      <p id="speakingExampleStatus" class="speaking-record-status" role="status" aria-live="polite"></p>
       <details class="speaking-details" id="speakingPhraseDetails"><summary>Useful phrases (open when you need them)</summary><ul class="speaking-phrases" id="speakingPhrases"></ul></details>
       <details class="speaking-details" id="speakingExampleDetails"><summary>See an example response</summary><p id="speakingExample"></p><p class="muted">This is one possible answer, not a script to learn.</p></details>
       <p class="muted">Tip: speak once without stopping. Then try again, with one improvement. Communicating clearly matters more than finding perfect words.</p>
@@ -240,6 +241,7 @@ function render(){
   byId('speakingTitle').textContent=pack.name;
   byId('speakingGoal').textContent=pack.goal;
   byId('speakingPrompt').textContent=item.prompt;
+  byId('speakingExampleStatus').textContent='';
   byId('speakingInstruction').textContent='Your turn: answer out loud as if you were really there. You do not need to memorise anything.';
   byId('speakingSupportText').textContent=supportText();
   const ul=byId('speakingPhrases');ul.replaceChildren();
@@ -254,7 +256,7 @@ function render(){
 choices.forEach(b=>b.addEventListener('click',()=>{packId=b.dataset.pack;index=0;render();byId('speakingTitle').focus()}));
 byId('speakingNext').addEventListener('click',()=>{index=(index+1)%packs[packId].situations.length;render()});
 byId('speakingSupport').addEventListener('change',()=>{byId('speakingSupportText').textContent=supportText()});
-byId('speakingReplay').addEventListener('click',()=>{if(typeof window.speakWord==='function'){const worked=window.speakWord(current().sample);if(!worked)byId('speakingRecordStatus').textContent='Audio examples are unavailable in this browser.'}else byId('speakingRecordStatus').textContent='Audio examples are unavailable in this browser.'});
+byId('speakingReplay').addEventListener('click',()=>{if(typeof window.speakWord==='function'){const worked=window.speakWord(current().sample);if(!worked)byId('speakingExampleStatus').textContent='Audio examples are unavailable in this browser.'}else byId('speakingExampleStatus').textContent='Audio examples are unavailable in this browser.'});
 byId('speakingRecord').addEventListener('click',async()=>{
   if(typeof window.stopSpeech==='function')window.stopSpeech();
   clearRecording();
