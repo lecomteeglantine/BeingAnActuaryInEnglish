@@ -23,7 +23,7 @@ jobs:
         run: node tests/site-links-audit.cjs
       - name: Install Playwright
         run: npm install --no-save playwright@1.56.1
-      - name: Install browser engines
-        run: npx playwright install --with-deps chromium webkit
+      - name: Verify preinstalled Chrome
+        run: google-chrome --version
       - name: Audit Speaking Studio on desktop and mobile
         run: node tests/speaking-smoke.cjs
