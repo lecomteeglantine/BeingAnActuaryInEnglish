@@ -94,7 +94,7 @@ async function contentChecks(browserType, viewport) {
   } finally { await context.close(); await browser.close(); }
 }
 
-function fakeMicrophone(grant=true, delayed=false) {
+function fakeMicrophone({grant=true, delayed=false}={}) {
   // This runs inside Playwright before the page scripts.
   window.__stoppedTracks = 0;
   const makeStream = () => ({getTracks: () => [{stop() {window.__stoppedTracks++}}]});
@@ -126,7 +126,7 @@ async function microphoneChecks() {
   const browser=await chromium.launch({headless:true});
   try {
     const context=await browser.newContext();
-    await context.addInitScript(fakeMicrophone, true, false);
+    await context.addInitScript(fakeMicrophone, {grant:true, delayed:false});
     const page=await context.newPage(), errors=[];
     page.on('pageerror',e=>errors.push(e.message));
     await page.goto(pageUrl('speaking.html'));
@@ -151,7 +151,7 @@ async function microphoneChecks() {
     console.log('PASS microphone: record, stop, local replay, release, activity change');
 
     const denied=await browser.newContext();
-    await denied.addInitScript(fakeMicrophone,false,false);
+    await denied.addInitScript(fakeMicrophone,{grant:false, delayed:false});
     const pageDenied=await denied.newPage();
     const errs=[];pageDenied.on('pageerror',e=>errs.push(e.message));
     await pageDenied.goto(pageUrl('speaking.html'));
@@ -163,7 +163,7 @@ async function microphoneChecks() {
     console.log('PASS microphone: permission denial');
 
     const pending=await browser.newContext();
-    await pending.addInitScript(fakeMicrophone,true,true);
+    await pending.addInitScript(fakeMicrophone,{grant:true, delayed:true});
     const pagePending=await pending.newPage();
     await pagePending.goto(pageUrl('speaking.html'));
     await pagePending.locator('#speakingRecord').click();
