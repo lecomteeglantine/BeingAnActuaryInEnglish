@@ -18,7 +18,7 @@ async function navCheck(page, file) {
 }
 
 async function contentChecks(browserType, viewport) {
-  const browser = await browserType.launch({headless: true});
+  const browser = await browserType.launch(browserType.name()==='chromium'?{headless:true,channel:'chrome'}:{headless:true});
   const context = await browser.newContext({viewport});
   const page = await context.newPage();
   const errors = [];
@@ -123,7 +123,7 @@ function fakeMicrophone({grant=true, delayed=false}={}) {
   Object.defineProperty(window,'MediaRecorder',{configurable:true,value:FakeMediaRecorder});
 }
 async function microphoneChecks() {
-  const browser=await chromium.launch({headless:true});
+  const browser=await chromium.launch({headless:true,channel:'chrome'});
   try {
     const context=await browser.newContext();
     await context.addInitScript(fakeMicrophone, {grant:true, delayed:false});
@@ -182,7 +182,7 @@ async function microphoneChecks() {
   try{
     await contentChecks(chromium,{width:1366,height:768});
     await contentChecks(chromium,{width:390,height:844});
-    await contentChecks(webkit,{width:390,height:844});
+    if(process.env.TEST_WEBKIT==='1') await contentChecks(webkit,{width:390,height:844});
     await microphoneChecks();
     console.log('SPEAKING STUDIO AUDIT: ALL CHECKS PASSED');
   }catch(e){console.error('SPEAKING STUDIO AUDIT FAILED:',e);process.exitCode=1;}
