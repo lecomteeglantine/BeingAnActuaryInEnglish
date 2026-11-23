@@ -19,34 +19,25 @@
       if(m2) m2.insertAdjacentElement('afterend',link);
       else nav.appendChild(link);
     }
-    // Reading is available in the main menu on every page.
-    if(!nav.querySelector('a[href="reading.html"]')){
-      const link=document.createElement('a');
-      link.href='reading.html';
-      link.textContent='Reading';
-      const grammar=nav.querySelector('a[href="grammar.html"]');
-      if(grammar) grammar.insertAdjacentElement('beforebegin',link);
+    // Keep the four skills visible and in the same order on every page.
+    // Existing links are moved instead of cloned, so there are no duplicates.
+    const skillLinks=[
+      ['reading.html','Reading'],
+      ['writing.html','Writing'],
+      ['listening.html','Listening'],
+      ['speaking.html','Speaking']
+    ];
+    let previous=nav.querySelector('a[href="refresher.html"]') || nav.querySelector('a[href="m2.html"]');
+    for(const [href,label] of skillLinks){
+      let link=nav.querySelector('a[href="'+href+'"]');
+      if(!link){
+        link=document.createElement('a');
+        link.href=href;
+        link.textContent=label;
+      }
+      if(previous) previous.insertAdjacentElement('afterend',link);
       else nav.appendChild(link);
-    }
-    // Listening appears beside Reading and Writing across shared navigation pages.
-    if(!nav.querySelector('a[href="listening.html"]')){
-      const link=document.createElement('a');
-      link.href='listening.html';
-      link.textContent='Listening';
-      const writing=nav.querySelector('a[href="writing.html"]');
-      const reading=nav.querySelector('a[href="reading.html"]');
-      if(writing) writing.insertAdjacentElement('afterend',link);
-      else if(reading) reading.insertAdjacentElement('afterend',link);
-      else nav.appendChild(link);
-    }
-    // Speaking is part of the four communication skills and is available on every shared page.
-    if(!nav.querySelector('a[href="speaking.html"]')){
-      const link=document.createElement('a');
-      link.href='speaking.html';
-      link.textContent='Speaking';
-      const listening=nav.querySelector('a[href="listening.html"]');
-      if(listening) listening.insertAdjacentElement('afterend',link);
-      else nav.appendChild(link);
+      previous=link;
     }
     const page=location.pathname.split('/').pop()||'index.html';
     const section=page.startsWith('m1-')?'m1.html':page.startsWith('m2-')?'m2.html':page;
