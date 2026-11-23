@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102a43">
+  <meta name="description" content="Practical English speaking activities for future actuaries: small talk, meetings, explaining risk, chart talk and professional conversations.">
+  <title>Speaking Studio · Actuarial English</title>
+  <link rel="icon" href="icons/favicon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .speaking-page{max-width:1160px;margin:0 auto;padding:0 22px 65px}
+    .speaking-hero{padding:54px 0 35px;border-bottom:1px solid var(--line)}
+    .speaking-hero h1{font-size:clamp(2.4rem,6vw,4.1rem);letter-spacing:-.05em;line-height:1.06;margin:9px 0 16px;color:var(--navy)}
+    .speaking-hero p:not(.section-kicker){font-size:1.1rem;max-width:740px;color:#4e687d;margin:0}
+    .speaking-keyline{display:flex;gap:9px;flex-wrap:wrap;margin:24px 0 0}
+    .speaking-keyline span{border:1px solid #c9e1e4;background:#eff8f8;color:#185967;border-radius:8px;padding:6px 10px;font-weight:750;font-size:.88rem}
+    .speaking-section-title{margin:35px 0 17px}
+    .speaking-section-title h2{font-size:1.55rem;color:var(--navy);margin:0 0 5px}
+    .speaking-section-title p{margin:0;color:var(--muted)}
+    .speaking-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .speaking-choice{text-align:left;border:1px solid var(--line);border-radius:16px;background:#fff;padding:18px;min-height:155px;color:var(--ink);cursor:pointer;display:flex;flex-direction:column;gap:7px;transition:border-color .15s,background .15s}
+    .speaking-choice:hover{background:#f7fbfc;border-color:#9ac8d0}
+    .speaking-choice[aria-pressed="true"]{background:#eef8f7;border-color:#16818b;box-shadow:inset 0 0 0 1px #16818b}
+    .speaking-choice .choice-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .speaking-choice .choice-icon{font-size:1.5rem}
+    .speaking-choice .choice-number{color:#698598;font-size:.78rem;font-weight:800;letter-spacing:.08em}
+    .speaking-choice strong{font-size:1.1rem;color:var(--navy)}
+    .speaking-choice small{font-size:.91rem;color:#4d6577;line-height:1.4}
+    .speaking-workspace{margin-top:22px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(275px,.85fr);gap:18px;align-items:start}
+    .speaking-panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;min-width:0}
+    .speaking-panel h2{font-size:1.5rem;color:var(--navy);margin:6px 0 12px}
+    .speaking-kicker{font-weight:800;letter-spacing:.11em;font-size:.73rem;color:#0c6873;text-transform:uppercase}
+    .speaking-situation{background:#f1f7f9;border-left:4px solid #0f7988;border-radius:0 12px 12px 0;padding:16px 18px;margin:18px 0}
+    .speaking-situation p{font-size:1.15rem;font-weight:650;line-height:1.55;margin:7px 0 0}
+    .speaking-panel .muted{color:#536c7e}
+    .speaking-instruction{padding:13px 16px;border:1px solid #e4e5d0;border-radius:11px;background:#fffdf1;margin:18px 0}
+    .speaking-actions{display:flex;flex-wrap:wrap;gap:9px;margin:16px 0}
+    .speaking-btn{display:inline-flex;justify-content:center;align-items:center;gap:7px;border:1px solid #1c6074;border-radius:9px;background:#164c63;color:#fff;padding:10px 15px;min-height:43px;font-weight:750;cursor:pointer;text-align:center}
+    .speaking-btn:hover{filter:brightness(.94)}
+    .speaking-btn.secondary{background:#fff;color:#164c63;border-color:#a8c4d0}
+    .speaking-btn:disabled{opacity:.5;cursor:not-allowed}
+    .speaking-btn:focus-visible,.speaking-choice:focus-visible{outline:3px solid #ecae35;outline-offset:3px}
+    .speaking-divider{border:0;border-top:1px solid var(--line);margin:22px 0}
+    .speaking-details{border:1px solid var(--line);border-radius:11px;margin:12px 0;background:#fbfdff;padding:10px 14px}
+    .speaking-details summary{font-weight:800;color:var(--navy);cursor:pointer}
+    .speaking-details p{margin:9px 0 2px;line-height:1.6}
+    .speaking-phrases{margin:9px 0 2px;padding-left:20px}
+    .speaking-phrases li{margin:5px 0;line-height:1.5}
+    .speaking-aside{display:grid;gap:16px}
+    .speaking-aside .speaking-panel{padding:20px}
+    .speaking-aside h3{color:var(--navy);font-size:1.17rem;margin:4px 0 9px}
+    .speaking-aside p{margin:8px 0;color:#526b7d}
+    .speaking-level{display:block;width:100%;border:1px solid #9eb7c6;border-radius:10px;padding:10px;background:#fff;color:var(--ink);font:inherit;margin:10px 0 13px}
+    .speaking-check{display:flex;align-items:flex-start;gap:9px;margin:10px 0;line-height:1.45;cursor:pointer}
+    .speaking-check input{width:18px;height:18px;flex:none;margin-top:3px;accent-color:#0c7781}
+    .speaking-record-status{font-size:.88rem;min-height:1.5em;color:#455e70}
+    .speaking-audio{display:block;width:100%;margin-top:12px}
+    .speaking-record-note{font-size:.84rem;line-height:1.45}
+    .speaking-chart{background:#f9fbfc;border:1px solid #dbe5eb;border-radius:10px;padding:14px;margin:13px 0}
+    .speaking-chart h3{font-size:1rem;margin:0 0 10px;color:var(--navy)}
+    .speaking-chart-bars{display:grid;gap:9px}
+    .speaking-chart-line{display:grid;grid-template-columns:52px 1fr 65px;align-items:center;gap:10px;font-size:.89rem}
+    .speaking-bar-track{height:20px;background:#e5edf1;border-radius:4px;overflow:hidden}
+    .speaking-bar{height:100%;display:block;background:#377b8d}
+    .speaking-chart-value{text-align:right;font-variant-numeric:tabular-nums;font-weight:750}
+    .speaking-chart table{border-collapse:collapse;width:100%;font-size:.86rem;margin-top:13px}
+    .speaking-chart th,.speaking-chart td{padding:5px 8px;border-bottom:1px solid #d7e4ea;text-align:left}
+    .speaking-chart .chart-note{font-size:.78rem;margin:9px 0 0;color:#526a79}
+    [hidden]{display:none!important}
+    @media(max-width:880px){.speaking-choices{grid-template-columns:repeat(2,minmax(0,1fr))}.speaking-workspace{grid-template-columns:1fr}.speaking-aside{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:600px){.speaking-page{padding:0 14px 50px}.speaking-hero{padding:30px 0 26px}.speaking-choices,.speaking-aside{grid-template-columns:1fr}.speaking-choice{min-height:0;padding:15px}.speaking-panel{padding:17px}.speaking-btn{flex:1 1 100%}.speaking-chart-line{grid-template-columns:42px 1fr 60px;gap:7px}}
+    @media(prefers-reduced-motion:reduce){.speaking-choice{transition:none}}
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">📊</span><span><strong>Actuarial English</strong></span></a>
+  <nav class="main-nav" aria-label="Main navigation">
+    <a href="index.html">Home</a><a href="dictionary.html">Dictionary</a><a href="m1.html">M1</a><a href="m2.html">M2</a>
+    <a href="refresher.html">English Refresher</a><a href="reading.html">Reading</a><a href="writing.html">Writing</a>
+    <a href="listening.html">Listening</a><a href="speaking.html">Speaking</a><a href="grammar.html">Grammar</a>
+    <a href="pronunciation.html">Pronunciation</a><a href="games.html">Games</a>
+  </nav>
+</header>
+<main id="main" class="speaking-page">
+  <header class="speaking-hero">
+    <p class="section-kicker">PRACTICAL ENGLISH · REAL CONVERSATIONS</p>
+    <h1>Speaking Studio</h1>
+    <p>Say what you mean, respond naturally and feel more comfortable speaking English at work. No marks, no scripts to memorise — just useful situations to practise at your own pace.</p>
+    <div class="speaking-keyline"><span>Everyday professional English</span><span>Choose your own support</span><span>Practise aloud</span></div>
+  </header>
+  <section aria-labelledby="chooseTitle">
+    <div class="speaking-section-title"><h2 id="chooseTitle">What would you like to practise?</h2><p>Pick a situation. Every choice opens a different set of speaking prompts.</p></div>
+    <div class="speaking-choices" id="speakingChoices">
+      <button class="speaking-choice" type="button" data-pack="smalltalk" aria-pressed="true"><span class="choice-top"><span class="choice-icon" aria-hidden="true">☕</span><span class="choice-number">01</span></span><strong>Start a conversation</strong><small>Small talk, introductions and natural follow-up questions.</small></button>
+      <button class="speaking-choice" type="button" data-pack="meeting" aria-pressed="false"><span class="choice-top"><span class="choice-icon" aria-hidden="true">💬</span><span class="choice-number">02</span></span><strong>Speak up in a meeting</strong><small>Clarify, agree, disagree and get your point across.</small></button>
+      <button class="speaking-choice" type="button" data-pack="explain" aria-pressed="false"><span class="choice-top"><span class="choice-icon" aria-hidden="true">🧩</span><span class="choice-number">03</span></span><strong>Explain it simply</strong><small>Make technical ideas clear to non-specialists.</small></button>
+      <button class="speaking-choice" type="button" data-pack="data" aria-pressed="false"><span class="choice-top"><span class="choice-icon" aria-hidden="true">📈</span><span class="choice-number">04</span></span><strong>Talk about data</strong><small>Describe trends and explain what the numbers suggest.</small></button>
+      <button class="speaking-choice" type="button" data-pack="recommend" aria-pressed="false"><span class="choice-top"><span class="choice-icon" aria-hidden="true">🧭</span><span class="choice-number">05</span></span><strong>Give your opinion</strong><small>Recommend, explain trade-offs and respond to objections.</small></button>
+      <button class="speaking-choice" type="button" data-pack="unexpected" aria-pressed="false"><span class="choice-top"><span class="choice-icon" aria-hidden="true">🔄</span><span class="choice-number">06</span></span><strong>Handle the unexpected</strong><small>Buy time, rephrase and respond when you are unsure.</small></button>
+    </div>
+  </section>
+  <section class="speaking-workspace" aria-label="Speaking practice">
+    <div class="speaking-panel">
+      <div class="speaking-kicker" id="speakingCounter">SITUATION 1 OF 3</div>
+      <h2 id="speakingTitle">Start a conversation</h2>
+      <p class="muted" id="speakingGoal"></p>
+      <div class="speaking-situation"><strong>You're in this situation:</strong><p id="speakingPrompt"></p></div>
+      <div id="speakingChart" class="speaking-chart" hidden></div>
+      <p class="speaking-instruction" id="speakingInstruction"></p>
+      <div class="speaking-actions">
+        <button type="button" id="speakingNext" class="speaking-btn">Next situation →</button>
+        <button type="button" id="speakingReplay" class="speaking-btn secondary">🔊 Hear an example</button>
+      </div>
+      <details class="speaking-details" id="speakingPhraseDetails"><summary>Useful phrases (open when you need them)</summary><ul class="speaking-phrases" id="speakingPhrases"></ul></details>
+      <details class="speaking-details" id="speakingExampleDetails"><summary>See an example response</summary><p id="speakingExample"></p><p class="muted">This is one possible answer, not a script to learn.</p></details>
+      <p class="muted">Tip: speak once without stopping. Then try again, with one improvement. Communicating clearly matters more than finding perfect words.</p>
+    </div>
+    <aside class="speaking-aside" aria-label="Speaking practice tools">
+      <div class="speaking-panel">
+        <h3>Choose your support</h3>
+        <label for="speakingSupport" class="muted">Make the task fit how confident you feel today.</label>
+        <select id="speakingSupport" class="speaking-level">
+          <option value="guided">Guided — give me a starting point</option>
+          <option value="free">Independent — let me speak freely</option>
+          <option value="stretch">Stretch — add a new challenge</option>
+        </select>
+        <p id="speakingSupportText" aria-live="polite"></p>
+      </div>
+      <div class="speaking-panel">
+        <h3>Record &amp; listen</h3>
+        <p>Optional: record your answer and listen back. The audio stays in this browser session and is not uploaded.</p>
+        <div class="speaking-actions">
+          <button type="button" id="speakingRecord" class="speaking-btn">● Record</button>
+          <button type="button" id="speakingStop" class="speaking-btn secondary" disabled>■ Stop</button>
+        </div>
+        <div id="speakingRecordStatus" role="status" aria-live="polite" class="speaking-record-status">Microphone permission is only requested if you select Record.</div>
+        <audio id="speakingAudio" class="speaking-audio" controls hidden></audio>
+        <p class="speaking-record-note muted">Recording is optional. It requires browser microphone support and permission. Refreshing or closing this page removes the recording.</p>
+      </div>
+      <div class="speaking-panel">
+        <h3>How did that feel?</h3>
+        <p class="muted">A quick self-check after speaking:</p>
+        <label class="speaking-check"><input type="checkbox" class="speaking-reflect"> <span>I communicated my main idea.</span></label>
+        <label class="speaking-check"><input type="checkbox" class="speaking-reflect"> <span>I used natural connecting words or follow-up questions.</span></label>
+        <label class="speaking-check"><input type="checkbox" class="speaking-reflect"> <span>I kept going, even when I needed to rephrase.</span></label>
+        <p class="muted">Not sure? Try the same situation again. No score is recorded.</p>
+      </div>
+    </aside>
+  </section>
+</main>
+<footer class="site-footer"><p><strong>Actuarial English</strong></p><p class="footer-credit">Created by Mrs Lecomte and Mr Lemoine, with the help of Chat GPT</p><p class="privacy"><strong>Privacy &amp; GDPR:</strong> no student account, analytics, advertising or remote database. Learning-tool data is stored locally in this browser. <a href="privacy.html">Privacy details</a> · <a href="accessibility.html">Accessibility</a></p></footer>
+<script src="shared.js"></script>
+<script>
+(function(){
+'use strict';
+const packs={
+  smalltalk:{name:'Start a conversation',goal:'Keep everyday conversations going without sounding rehearsed.',phrases:["How's your week going so far?","That's interesting — how did you get into that?","I'm currently working on…","What about you?"],situations:[
+    {prompt:"You arrive early for an online meeting. A colleague you've never met asks, 'How's your week going?' Reply naturally and ask something back.",sample:"It's going well, thanks. We've been busy preparing a report for a client, so it's been quite a full week. How about you — what are you working on at the moment?",stretch:"Keep the conversation going with a specific follow-up question."},
+    {prompt:"You meet someone from another team at a coffee break. They mention that they've recently joined the pricing department. Respond and find out more.",sample:"Oh, welcome to the team! How are you finding the pricing department so far? I've only worked with that team on a couple of projects, but it's been really interesting.",stretch:"Add a natural comment before asking your question."},
+    {prompt:"At a networking event, someone asks, 'So, what do you actually do?' Introduce your work in an approachable way, then involve them in the conversation.",sample:"I'm studying actuarial science, so I use statistics and modelling to help understand financial risks. For example, I might look at how insurers estimate future claims. What's your background?",stretch:"Avoid specialist vocabulary and give a relatable example."}
+  ]},
+  meeting:{name:'Speak up in a meeting',goal:'Take part in discussions politely, clearly and with confidence.',phrases:["Could you clarify what you mean by…?","Can I just add something here?","I see your point, although…","Would it be fair to say that…?"],situations:[
+    {prompt:"A colleague explains a model using several abbreviations you do not recognise. Ask for clarification without making the meeting awkward.",sample:"Sorry, could I just check something? When you say 'IBNR', could you briefly explain what it stands for? I want to make sure I'm following the assumptions correctly.",stretch:"Summarise your understanding after asking."},
+    {prompt:"Your team wants to approve a recommendation today. You broadly agree, but you think the data needs another check. Explain your position constructively.",sample:"I agree with the general direction. My only concern is that we haven't checked the latest claims data yet. Could we validate that before making a final decision?",stretch:"Offer a practical next step and a reason."},
+    {prompt:"Someone interrupts while you are explaining a result. Respond politely and return to your point.",sample:"That's a useful question. I'll come to it in a moment, if that's all right. I just want to finish explaining what drove the change in the results.",stretch:"Acknowledge their question and link back to your original point naturally."}
+  ]},
+  explain:{name:'Explain it simply',goal:'Make actuarial ideas understandable to someone outside the profession.',phrases:["In simple terms, …","You can think of it as…","For example, …","What matters for the customer is…"],situations:[
+    {prompt:"A friend asks why people pay for insurance when they may never make a claim. Explain the idea without technical jargon.",sample:"You're paying for protection against something that might happen, rather than for something you'll definitely use. Most people won't have a major accident, but if they do, the costs can be huge. Insurance helps spread that financial risk.",stretch:"Use an everyday analogy, then explain where the analogy has limits."},
+    {prompt:"A new intern asks what an actuary actually does. Give a clear and engaging explanation without listing software or equations.",sample:"An actuary helps organisations make decisions about uncertain future events. We use data to estimate risks, like how often insurance claims might happen, and what they could cost. That helps companies plan responsibly.",stretch:"Describe one specific decision your analysis could influence."},
+    {prompt:"A client asks why two customers might receive different insurance premiums. Give an accessible, careful explanation.",sample:"Premiums can differ because insurers estimate the likelihood and potential cost of a claim using relevant information. The price also reflects the cover you choose. It's important that pricing is fair and follows the applicable rules.",stretch:"Explain a limitation and avoid suggesting that every pricing difference is automatically justified."}
+  ]},
+  data:{name:'Talk about data',goal:'Describe numbers accurately, then explain what they mean.',phrases:["The main pattern is…","There was a noticeable rise in…","Compared with the previous year, …","These figures suggest…, although…"],situations:[
+    {prompt:"You're presenting the number of motor insurance claims (thousands). Describe the change across the three years and what you would investigate next.",sample:"Claims rose from 80,000 in 2024 to 92,000 in 2025, before easing to 88,000 in 2026. That leaves them above the 2024 level. I'd want to check exposure and changes in the customer base before interpreting the trend.",stretch:"Distinguish claim counts from claim frequency; mention what information is missing.",chart:{title:"Motor claims (thousands)",unit:"k",rows:[["2024",80],["2025",92],["2026",88]]}},
+    {prompt:"Your manager wants a quick summary of average home insurance claim cost. Describe the figures and suggest a possible explanation without claiming to know the cause.",sample:"The average cost increased from £1,600 in 2024 to £1,920 in 2026. It's a steady increase, but the figures alone don't explain why. Inflation in repair costs might be one factor, so I'd look at the claim types and supporting data.",stretch:"Separate observation, hypothesis and evidence clearly.",chart:{title:"Average home claim cost (£)",unit:"£",rows:[["2024",1600],["2025",1770],["2026",1920]]}},
+    {prompt:"A colleague asks whether customer satisfaction improved. Summarise the survey percentages and point out what you would need to know before drawing a firm conclusion.",sample:"Positive responses rose from 72% in 2024 to 78% in 2025, then slipped slightly to 76% in 2026. Overall, that's higher than the starting point, but I'd check the sample sizes and how the survey was conducted before saying satisfaction definitely improved.",stretch:"Use 'percentage points' correctly and mention one methodological concern.",chart:{title:"Positive survey responses (%)",unit:"%",rows:[["2024",72],["2025",78],["2026",76]]}}
+  ]},
+  recommend:{name:'Give your opinion',goal:'State a recommendation while recognising uncertainty and trade-offs.',phrases:["My suggestion would be to…","One advantage is…, but the trade-off is…","Based on what we know so far, …","I'd recommend this provided that…"],situations:[
+    {prompt:"Your team is taking longer to answer customer questions. Suggest one practical improvement and explain a possible drawback.",sample:"I'd suggest creating a clearer triage system so urgent customer queries reach the right person faster. It could improve response times, although we'd need to make sure complex cases still receive enough attention.",stretch:"Propose a way to test whether your idea works."},
+    {prompt:"A client wants the lowest possible insurance premium. Explain one trade-off they should consider before choosing a policy.",sample:"A lower premium can be attractive, but it may come with a higher excess or less comprehensive cover. I'd compare the actual protection as well as the price so the client understands what they would pay if something happened.",stretch:"Ask a question that helps identify the client's priorities."},
+    {prompt:"A dashboard shows an unusual change, but some data is missing. Your manager wants a decision now. Recommend a responsible next step.",sample:"I'd avoid making a final recommendation until we've checked the missing figures. We can flag the provisional finding now and investigate what's driving the change. That gives the team something useful without overstating the evidence.",stretch:"Suggest a temporary action and a clear decision point."}
+  ]},
+  unexpected:{name:'Handle the unexpected',goal:'Stay calm, rephrase and respond professionally when you are unsure.',phrases:["That's a good question. Let me think for a moment.","I wouldn't want to guess — I'll check and come back to you.","Let me put that another way.","What I can say at this stage is…"],situations:[
+    {prompt:"A client asks you for an exact figure, but the model has not been finalised. Respond honestly while still being helpful.",sample:"I don't have a confirmed figure I can give you yet, because we're still validating the model. What I can explain now is which factors affect the result. I'll share the final estimate once it's been checked.",stretch:"Offer a useful interim explanation without implying you can promise a date."},
+    {prompt:"A colleague challenges a forecast in a meeting: 'How do you know these numbers are right?' Respond without becoming defensive.",sample:"That's a fair challenge. The forecast depends on a set of assumptions, so there is uncertainty around it. We've checked the model against the available data, but I'd be happy to go through the assumptions and sensitivity tests with you.",stretch:"Acknowledge a specific limitation while maintaining confidence in the process."},
+    {prompt:"Halfway through explaining your work, you forget the English word for an important concept. Keep talking by describing what you mean.",sample:"I'm thinking of the amount a customer has to pay themselves before the insurer covers the rest — the excess. The key point is that this changes how much the customer pays when they make a claim.",stretch:"Explain the idea without eventually using the missing term at all."}
+  ]}
+};
+const byId=id=>document.getElementById(id);
+const choices=[...document.querySelectorAll('[data-pack]')];
+const checks=[...document.querySelectorAll('.speaking-reflect')];
+const audio=byId('speakingAudio');
+let packId='smalltalk',index=0,mediaRecorder=null,micStream=null,blobUrl=null,recordingAttempt=0;
+const current=()=>packs[packId].situations[index];
+function clearRecording(){
+  recordingAttempt++;
+  if(mediaRecorder && mediaRecorder.state!=='inactive'){try{mediaRecorder.stop()}catch(_){}}
+  if(micStream){micStream.getTracks().forEach(t=>t.stop());micStream=null}
+  mediaRecorder=null;
+  if(blobUrl){URL.revokeObjectURL(blobUrl);blobUrl=null}
+  audio.pause();audio.removeAttribute('src');audio.load();audio.hidden=true;
+  byId('speakingRecord').disabled=false;byId('speakingStop').disabled=true;
+  byId('speakingRecordStatus').textContent='Microphone permission is only requested if you select Record.';
+}
+function drawChart(data){
+  const root=byId('speakingChart');
+  root.replaceChildren();
+  if(!data){root.hidden=true;return}
+  root.hidden=false;
+  const h=document.createElement('h3');h.textContent=data.title;root.appendChild(h);
+  const bars=document.createElement('div');bars.className='speaking-chart-bars';
+  const max=Math.max(...data.rows.map(r=>r[1]));
+  const table=document.createElement('table');table.innerHTML='<caption class="visually-hidden">Illustrative data used in this practice activity</caption><thead><tr><th scope="col">Year</th><th scope="col">Value</th></tr></thead><tbody></tbody>';
+  for(const [year,value] of data.rows){
+    const line=document.createElement('div');line.className='speaking-chart-line';line.setAttribute('aria-hidden','true');
+    const y=document.createElement('span');y.textContent=year;
+    const track=document.createElement('span');track.className='speaking-bar-track';const b=document.createElement('span');b.className='speaking-bar';b.style.width=(value/max*100)+'%';track.appendChild(b);
+    const val=document.createElement('span');val.className='speaking-chart-value';val.textContent=data.unit==='£'?'£'+value.toLocaleString('en-GB'):value+data.unit;
+    line.append(y,track,val);bars.appendChild(line);
+    const row=document.createElement('tr');const cellY=document.createElement('th');cellY.scope='row';cellY.textContent=year;const cellV=document.createElement('td');cellV.textContent=val.textContent;row.append(cellY,cellV);table.tBodies[0].appendChild(row);
+  }
+  root.append(bars,table);
+  const note=document.createElement('p');note.className='chart-note';note.textContent='Illustrative figures created for speaking practice; not real market data.';root.appendChild(note);
+}
+function supportText(){
+  const mode=byId('speakingSupport').value;
+  const item=current();
+  if(mode==='guided')return 'Start with one clear sentence. Add a reason or example. Use the phrase bank if you need it.';
+  if(mode==='stretch')return item.stretch;
+  return 'Speak naturally in your own words. Try to make your point without reading any phrases.';
+}
+function render(){
+  const pack=packs[packId],item=current();
+  choices.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.pack===packId)));
+  byId('speakingCounter').textContent='SITUATION '+(index+1)+' OF '+pack.situations.length;
+  byId('speakingTitle').textContent=pack.name;
+  byId('speakingGoal').textContent=pack.goal;
+  byId('speakingPrompt').textContent=item.prompt;
+  byId('speakingInstruction').textContent='Your turn: answer out loud as if you were really there. You do not need to memorise anything.';
+  byId('speakingSupportText').textContent=supportText();
+  const ul=byId('speakingPhrases');ul.replaceChildren();
+  pack.phrases.forEach(p=>{const li=document.createElement('li');li.textContent=p;ul.appendChild(li)});
+  byId('speakingExample').textContent=item.sample;
+  byId('speakingPhraseDetails').open=false;
+  byId('speakingExampleDetails').open=false;
+  checks.forEach(c=>c.checked=false);
+  drawChart(item.chart);
+  clearRecording();
+}
+choices.forEach(b=>b.addEventListener('click',()=>{packId=b.dataset.pack;index=0;render();byId('speakingTitle').focus?.()}));
+byId('speakingNext').addEventListener('click',()=>{index=(index+1)%packs[packId].situations.length;render()});
+byId('speakingSupport').addEventListener('change',()=>{byId('speakingSupportText').textContent=supportText()});
+byId('speakingReplay').addEventListener('click',()=>{if(typeof window.speakWord==='function'){const worked=window.speakWord(current().sample);if(!worked)byId('speakingRecordStatus').textContent='Audio examples are unavailable in this browser.'}else byId('speakingRecordStatus').textContent='Audio examples are unavailable in this browser.'});
+byId('speakingRecord').addEventListener('click',async()=>{
+  clearRecording();
+  const attempt=recordingAttempt;
+  if(!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder){byId('speakingRecordStatus').textContent='Recording is not supported in this browser. You can still practise aloud.';return}
+  byId('speakingRecord').disabled=true;
+  byId('speakingRecordStatus').textContent='Requesting microphone access…';
+  let stream;
+  try{
+    stream=await navigator.mediaDevices.getUserMedia({audio:true});
+    if(attempt!==recordingAttempt){stream.getTracks().forEach(t=>t.stop());return}
+    const formats=['audio/webm;codecs=opus','audio/mp4','audio/webm'];
+    const mime=formats.find(t=>MediaRecorder.isTypeSupported(t));
+    const recorder=mime?new MediaRecorder(stream,{mimeType:mime}):new MediaRecorder(stream);
+    micStream=stream;mediaRecorder=recorder;
+    const pieces=[];
+    recorder.addEventListener('dataavailable',ev=>{if(ev.data.size)pieces.push(ev.data)});
+    recorder.addEventListener('stop',()=>{
+      stream.getTracks().forEach(t=>t.stop());
+      if(micStream===stream)micStream=null;
+      if(attempt!==recordingAttempt)return;
+      if(pieces.length){
+        const blob=new Blob(pieces,{type:recorder.mimeType||'audio/webm'});
+        blobUrl=URL.createObjectURL(blob);
+        audio.src=blobUrl;audio.hidden=false;
+        byId('speakingRecordStatus').textContent='Recording ready. Listen back, then try again if you like.';
+      }else byId('speakingRecordStatus').textContent='No audio was captured. Please try again.';
+      byId('speakingRecord').disabled=false;byId('speakingStop').disabled=true;
+    });
+    recorder.start();
+    byId('speakingStop').disabled=false;
+    byId('speakingRecordStatus').textContent='Recording… speak naturally, then select Stop.';
+  }catch(e){
+    if(stream)stream.getTracks().forEach(t=>t.stop());
+    if(attempt!==recordingAttempt)return;
+    byId('speakingRecord').disabled=false;
+    byId('speakingStop').disabled=true;
+    byId('speakingRecordStatus').textContent=e && e.name==='NotAllowedError'?'Microphone access was declined. You can still practise aloud.':'Could not start the microphone. You can still practise aloud.';
+  }
+});
+byId('speakingStop').addEventListener('click',()=>{
+  if(mediaRecorder?.state==='recording'){
+    byId('speakingStop').disabled=true;
+    byId('speakingRecordStatus').textContent='Preparing your recording…';
+    try{mediaRecorder.stop()}catch(e){byId('speakingRecordStatus').textContent='Unable to finish recording.';clearRecording()}
+  }
+});
+window.addEventListener('pagehide',clearRecording);
+render();
+})();
+</script>
+<script defer src="pwa-r39.js"></script>
+</body>
+</html>
