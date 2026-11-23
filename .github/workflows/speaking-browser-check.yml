@@ -1,0 +1,26 @@
+name: Speaking Studio browser audit
+on:
+  push:
+    paths:
+      - 'speaking.html'
+      - 'shared.js'
+      - 'index.html'
+      - 'privacy.html'
+      - 'tests/speaking-smoke.cjs'
+      - '.github/workflows/speaking-browser-check.yml'
+  workflow_dispatch:
+jobs:
+  speaking-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright
+        run: npm install --no-save playwright@1.56.1
+      - name: Install browser engines
+        run: npx playwright install --with-deps chromium webkit
+      - name: Audit Speaking Studio on desktop and mobile
+        run: node tests/speaking-smoke.cjs
