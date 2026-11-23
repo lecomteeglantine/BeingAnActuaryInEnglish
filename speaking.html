@@ -233,6 +233,7 @@ function supportText(){
   return 'Speak naturally in your own words. Try to make your point without reading any phrases.';
 }
 function render(){
+  if(typeof window.stopSpeech==='function')window.stopSpeech();
   const pack=packs[packId],item=current();
   choices.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.pack===packId)));
   byId('speakingCounter').textContent='SITUATION '+(index+1)+' OF '+pack.situations.length;
@@ -255,6 +256,7 @@ byId('speakingNext').addEventListener('click',()=>{index=(index+1)%packs[packId]
 byId('speakingSupport').addEventListener('change',()=>{byId('speakingSupportText').textContent=supportText()});
 byId('speakingReplay').addEventListener('click',()=>{if(typeof window.speakWord==='function'){const worked=window.speakWord(current().sample);if(!worked)byId('speakingRecordStatus').textContent='Audio examples are unavailable in this browser.'}else byId('speakingRecordStatus').textContent='Audio examples are unavailable in this browser.'});
 byId('speakingRecord').addEventListener('click',async()=>{
+  if(typeof window.stopSpeech==='function')window.stopSpeech();
   clearRecording();
   const attempt=recordingAttempt;
   if(!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder){byId('speakingRecordStatus').textContent='Recording is not supported in this browser. You can still practise aloud.';return}
