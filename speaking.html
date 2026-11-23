@@ -30,7 +30,7 @@
     .speaking-choice small{font-size:.91rem;color:#4d6577;line-height:1.4}
     .speaking-workspace{margin-top:22px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(275px,.85fr);gap:18px;align-items:start}
     .speaking-panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;min-width:0}
-    .speaking-panel h2{font-size:1.5rem;color:var(--navy);margin:6px 0 12px}
+    .speaking-panel h2{font-size:1.5rem;color:var(--navy);margin:6px 0 12px;scroll-margin-top:125px}
     .speaking-kicker{font-weight:800;letter-spacing:.11em;font-size:.73rem;color:#0c6873;text-transform:uppercase}
     .speaking-situation{background:#f1f7f9;border-left:4px solid #0f7988;border-radius:0 12px 12px 0;padding:16px 18px;margin:18px 0}
     .speaking-situation p{font-size:1.15rem;font-weight:650;line-height:1.55;margin:7px 0 0}
@@ -105,8 +105,8 @@
   </section>
   <section class="speaking-workspace" aria-label="Speaking practice">
     <div class="speaking-panel">
-      <div class="speaking-kicker" id="speakingCounter">SITUATION 1 OF 3</div>
-      <h2 id="speakingTitle">Start a conversation</h2>
+      <div class="speaking-kicker" id="speakingCounter" aria-live="polite">SITUATION 1 OF 3</div>
+      <h2 id="speakingTitle" tabindex="-1">Start a conversation</h2>
       <p class="muted" id="speakingGoal"></p>
       <div class="speaking-situation"><strong>You're in this situation:</strong><p id="speakingPrompt"></p></div>
       <div id="speakingChart" class="speaking-chart" hidden></div>
@@ -139,7 +139,7 @@
         </div>
         <div id="speakingRecordStatus" role="status" aria-live="polite" class="speaking-record-status">Microphone permission is only requested if you select Record.</div>
         <audio id="speakingAudio" class="speaking-audio" controls hidden></audio>
-        <p class="speaking-record-note muted">Recording is optional. It requires browser microphone support and permission. Refreshing or closing this page removes the recording.</p>
+        <p class="speaking-record-note muted">Recording is optional. It requires browser microphone support and permission. Changing the situation, refreshing or closing this page removes the recording.</p>
       </div>
       <div class="speaking-panel">
         <h3>How did that feel?</h3>
@@ -250,7 +250,7 @@ function render(){
   drawChart(item.chart);
   clearRecording();
 }
-choices.forEach(b=>b.addEventListener('click',()=>{packId=b.dataset.pack;index=0;render();byId('speakingTitle').focus?.()}));
+choices.forEach(b=>b.addEventListener('click',()=>{packId=b.dataset.pack;index=0;render();byId('speakingTitle').focus()}));
 byId('speakingNext').addEventListener('click',()=>{index=(index+1)%packs[packId].situations.length;render()});
 byId('speakingSupport').addEventListener('change',()=>{byId('speakingSupportText').textContent=supportText()});
 byId('speakingReplay').addEventListener('click',()=>{if(typeof window.speakWord==='function'){const worked=window.speakWord(current().sample);if(!worked)byId('speakingRecordStatus').textContent='Audio examples are unavailable in this browser.'}else byId('speakingRecordStatus').textContent='Audio examples are unavailable in this browser.'});
