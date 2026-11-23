@@ -49,7 +49,7 @@ async function contentChecks(browserType, viewport) {
       const observed = new Set();
       for (let i = 0; i < 3; i++) {
         const prompt = await page.locator('#speakingPrompt').innerText();
-        const sample = await page.locator('#speakingExample').innerText();
+        const sample = await page.locator('#speakingExample').textContent();
         assert(prompt.length > 50, pack + ': prompt too short');
         assert(sample.length > 60, pack + ': example too short');
         assert(!observed.has(prompt), pack + ': repeated scenario');
