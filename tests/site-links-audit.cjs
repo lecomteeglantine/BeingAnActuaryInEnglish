@@ -13,7 +13,10 @@ let examined=0;
 for(const file of pages){
   if(!fs.existsSync(file)){issues.push(file+': main page missing');continue}
   const html=fs.readFileSync(file,'utf8');
-  const elements=html.match(/<(?:a|script|link|img|source|iframe)\b[^>]*>/gi)||[];
+  // Exclude inline JS/CSS strings that contain HTML-like examples, but keep script src attributes.
+  const markup=html.replace(/(<script\b[^>]*>)[\s\S]*?(<\/script>)/gi,'$1$2')
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi,'');
+  const elements=markup.match(/<(?:a|script|link|img|source|iframe)\b[^>]*>/gi)||[];
   for(const tag of elements){
     const attrs=[...tag.matchAll(/\b(href|src)\s*=\s*(["'])(.*?)\2/gi)];
     for(const m of attrs){
