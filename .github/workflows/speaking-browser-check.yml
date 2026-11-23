@@ -7,6 +7,7 @@ on:
       - 'index.html'
       - 'privacy.html'
       - 'tests/speaking-smoke.cjs'
+      - 'tests/site-links-audit.cjs'
       - '.github/workflows/speaking-browser-check.yml'
   workflow_dispatch:
 jobs:
@@ -18,6 +19,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Check site navigation targets and local assets
+        run: node tests/site-links-audit.cjs
       - name: Install Playwright
         run: npm install --no-save playwright@1.56.1
       - name: Install browser engines
